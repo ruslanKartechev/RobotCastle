@@ -12,12 +12,12 @@ namespace RobotCastle.UI
         {
             var go = new GameObject("ui_manager");
             var ui = go.AddComponent<UIManager>();
+            DontDestroyOnLoad(go);
             return ui;
         }
 
         private Dictionary<string, IScreenUI> _openedScreens = new(20);
         private Dictionary<string, Action> _closedCallbacks = new(20);
-
 
         public void Refresh()
         {
@@ -25,13 +25,23 @@ namespace RobotCastle.UI
             _closedCallbacks.Clear();
         }
 
-        public IScreenUI Show<T>(string id, Action onClosed) where T : IScreenUI
+        public T Show<T>(string id, Action onClosed) where T : IScreenUI
         {
-            var path = $"prefabs/ui/{id}";
-            var obj = Resources.Load<GameObject>(path).GetComponent<T>();
-            _openedScreens.Add(id, obj);
-            _closedCallbacks.Add(id, onClosed);
-            return obj;
+            if (_openedScreens.ContainsKey(id))
+            {
+                var obj = _openedScreens[id];
+                _closedCallbacks[id] = onClosed;
+                return (T)obj;
+            }
+            else
+            {
+                var path = $"prefabs/ui/{id}";
+                var prefab = Resources.Load<GameObject>(path);
+                var obj = UnityEngine.Object.Instantiate(prefab).GetComponent<T>();
+                _openedScreens.Add(id, obj);
+                _closedCallbacks.Add(id, onClosed);
+                return obj;
+            }
         }
 
         public void ShowScene(string id, Action onClosed)

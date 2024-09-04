@@ -1,6 +1,6 @@
 ﻿namespace RobotCastle.Merging
 {
-    public enum MergeResult
+    public enum EMergeResult
     {
         NoMerge, MergedIntoNew, MergedOneIntoAnother
     }

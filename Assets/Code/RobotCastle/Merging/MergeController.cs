@@ -20,7 +20,11 @@ namespace RobotCastle.Merging
         private ICellAvailabilityController _availabilityController;
         private Camera _camera;
         private DraggedItem _draggedItem;
-
+        private MergePutResult _lastPutResult;
+        private ICellView _lastPutCell;
+        private bool _isProcessingPut;
+        
+        
         public MergeController(MergeGrid grid,
             IMergeProcessor processor, 
             IGridItemsSpawner itemsSpawner,
@@ -59,6 +63,8 @@ namespace RobotCastle.Merging
         public void OnDown(Vector3 screenPosition)
         {
             CLog.Log($"[{nameof(MergeController)}] On Down");
+            if (_isProcessingPut)
+                return;
             var cell = RaycastForCellView(screenPosition);
             if (cell == null)
             {
@@ -78,36 +84,23 @@ namespace RobotCastle.Merging
             item.OnPicked();
             // CLog.Log($"Raycast: {cell.cell.x}, {cell.cell.y}. Picked {item.Data.GetStr()}");
         }
-
-        private (bool, ICellView) TryHitCellToPut(Vector3 screenPosition)
-        {
-            var didHitCell = false;
-            var scrPos = _camera.WorldToScreenPoint(_draggedItem.itemView.Transform.position);
-            var cellView = RaycastForCellView(scrPos);
-            if (cellView == null)
-            {
-                cellView = RaycastForCellView(screenPosition);
-                if (cellView == null)
-                    _draggedItem.PutBack();             
-                else
-                    didHitCell = true;
-            }
-            else
-                didHitCell = true;
-
-            return (didHitCell, cellView);
-        }
         
         public void OnUp(Vector3 screenPosition)
         {
             CLog.Log($"[{nameof(MergeController)}] On Up");
             if (_draggedItem == null)
                 return;
+            if (_isProcessingPut)
+            {
+                CLog.LogRed("_isProcessingPut !!!!!!!!!!!");
+                return;
+            }
+            _isProcessingPut = true;
             var putResult = MergePutResult.MissedCell;
             var (didHitCell, cellView) = TryHitCellToPut(screenPosition);
-            
             if(didHitCell)
             {
+                _lastPutCell = cellView;
                 if (cellView == _draggedItem.originalCellView)
                 {
                     putResult = MergePutResult.PutToSameCell;
@@ -129,30 +122,18 @@ namespace RobotCastle.Merging
                 }
                 else // cell is occupied
                 {
-                    var mergeResult = _processor.TryMerge(_draggedItem.itemView, cellView.item, _gridView, out var oneIntoTwo);
-                    switch (mergeResult)
-                    {
-                        case MergeResult.NoMerge:
-                            if(!TrySwap(_draggedItem.originalCellView, cellView))
-                                _draggedItem.PutBack();
-                            putResult = MergePutResult.MergeFailed;
-                            break;
-                        case MergeResult.MergedOneIntoAnother or MergeResult.MergedIntoNew:
-                            putResult = MergePutResult.Merged;
-                            break;
-                    }
+                    _processor.TryMerge(_draggedItem.itemView, cellView.item, _gridView, MergeCallback, out var oneIntoTwo);
+                    return;
                 }
             }
             else
             {
                 _draggedItem.PutBack();             
             }
-            _availabilityController.OnGridUpdated(_grid);
-            _draggedItem = null;
-            CLog.LogGreen($"On Put Result: {putResult.ToString()}");
-            OnPutItem?.Invoke(putResult);
+            _lastPutResult = putResult;
+            UpdateGridAndNullDragged();
         }
-        
+
         public void OnMove(Vector3 screenPosition)
         {
             // CLog.Log($"[{nameof(MergeController)}] On move");
@@ -175,6 +156,53 @@ namespace RobotCastle.Merging
             cellView = _gridView.GetCell(coord.x, coord.y);
             return true;
         }
+        
+        private void MergeCallback(EMergeResult mergeResult, bool oneIntoTwo)
+        {
+            CLog.LogBlue($"MergeCallback {mergeResult}");
+            var putResult = MergePutResult.Merged;
+            switch (mergeResult)
+            {
+                case EMergeResult.NoMerge:
+                    if(!TrySwap(_draggedItem.originalCellView, _lastPutCell))
+                        _draggedItem.PutBack();
+                    putResult = MergePutResult.MergeFailed;
+                    break;
+                case EMergeResult.MergedIntoNew:
+                    putResult = MergePutResult.Merged;
+                    
+                    break;
+                case EMergeResult.MergedOneIntoAnother:
+                    putResult = MergePutResult.Merged;
+                    if (oneIntoTwo)
+                    {
+                        MergeFunctions.ClearCell(_gridView, _draggedItem.itemView);
+                        _draggedItem.itemView.Hide();
+                    }
+                    else
+                    {
+                        if (_lastPutCell.item != null)
+                        {
+                            _lastPutCell.item.Hide();
+                            _lastPutCell.item = null;        
+                        }
+                        MergeFunctions.PutItemToCell(_draggedItem.itemView, _lastPutCell);
+                        _draggedItem.originalCellView.item = null;
+                    }
+                    break;
+            }
+            _lastPutResult = putResult;
+            UpdateGridAndNullDragged();
+        }
+        
+        private void UpdateGridAndNullDragged()
+        {
+            _isProcessingPut = false;
+            _availabilityController.OnGridUpdated(_grid);
+            _draggedItem = null;
+            CLog.Log($"[{nameof(MergeController)}] Put Result: {_lastPutResult.ToString()}");
+            OnPutItem?.Invoke(_lastPutResult);
+        }
 
         private bool TrySwap(ICellView cell1, ICellView cell2)
         {
@@ -195,6 +223,26 @@ namespace RobotCastle.Merging
             }
             return null;
         }
+        
+        private (bool, ICellView) TryHitCellToPut(Vector3 screenPosition)
+        {
+            var didHitCell = false;
+            var scrPos = _camera.WorldToScreenPoint(_draggedItem.itemView.Transform.position);
+            var cellView = RaycastForCellView(scrPos);
+            if (cellView == null)
+            {
+                cellView = RaycastForCellView(screenPosition);
+                if (cellView == null)
+                    _draggedItem.PutBack();             
+                else
+                    didHitCell = true;
+            }
+            else
+                didHitCell = true;
+
+            return (didHitCell, cellView);
+        }
+
         
         private class DraggedItem
         {

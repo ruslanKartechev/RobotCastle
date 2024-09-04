@@ -1,0 +1,37 @@
+Merging:
+
+IGridView
+	- Holds the references to all view elements in the scene
+	- Builds the grid from the given view elements in the scene
+
+MergeManager
+	- Initializes the system, sets up components, "kicks off" the mechanic
+
+IMergeController
+	- Core merge logic, controls the movement of items on grid
+
+IMergeInput
+	- Takes input from user and passes into IMergeConroller
+
+IGridItemsSpawner
+	- Spawns a new item on the given merge grid
+
+IMergeProcessor
+	- Merges two grid items if possible. Supposed to be used by IMergeController
+	- Processes all possible merge combinations - units, upgrades, etc...
+
+ICellAvailabilityController
+	- Validates if the given cell on merge grid can take a new item. 
+	- (For example, an area of the grid may not be available)
+
+
+
+
+BattleGridSpawner
+	- Another layer on top of (Merging)
+	- Is used to control what to spawn on the grid during battle game modes
+	- Provides the user with UI prompts (not enough space on grid, etc...)
+	- May take input from UI elements
+
+
+	

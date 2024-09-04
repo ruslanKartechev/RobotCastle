@@ -13,8 +13,9 @@ namespace RobotCastle.Merging
         {
             if (ItemInfo.ContainsKey(id))
             {
-                var fullId = $"{id}_lvl_{levelIndex + 1}";
-                return Resources.Load<GameObject>(ItemInfo[fullId].Prefab);
+                var path = $"{ItemInfo[id].Prefab}_lvl_{levelIndex + 1}";
+                CLog.LogRed($"id {id}. level {levelIndex}. Path {path}");
+                return Resources.Load<GameObject>(path);
             }
             CLog.LogError($"DataBase does not contain id {id}");
             return null;
@@ -34,8 +35,8 @@ namespace RobotCastle.Merging
         {
             if (ItemInfo.ContainsKey(id))
             {
-                var fullId = $"{id}_lvl_{levelIndex + 1}";
-                return Resources.Load<Sprite>(ItemInfo[fullId].Icon);
+                var path = $"{ItemInfo[id].Icon}_lvl_{levelIndex + 1}";
+                return Resources.Load<Sprite>(path);
             }
             CLog.LogError($"DataBase does not contain fullId {id}");
             return null;

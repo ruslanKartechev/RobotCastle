@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Merging;
+using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
 
@@ -37,11 +38,12 @@ namespace RobotCastle.Battling
             }
             else
             {
-                CLog.Log($"No available cell!");
-                return true;
+                CLog.Log($"[BattleGridSpawner] No available cell!");
+                var ui = ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => { });
+                ui.ShowNotEnoughSpace();
+                return false;
             }
         }
-        
 
         public bool SpawnRandomHero(WeightedList<string> ids)
         {
@@ -60,16 +62,13 @@ namespace RobotCastle.Battling
             }
             else
             {
-                CLog.Log($"No available cell!");
-                return true;
+                CLog.Log($"[BattleGridSpawner] No available cell!");
+                var ui = ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => { });
+                ui.ShowNotEnoughSpace();
+                return false;
             }
         }
 
-        public bool CanSpawnNew()
-        {
-            var controller = ServiceLocator.Get<MergeController>();
-            return controller.GetFreeCellForNewHero(out var cellView);
-        }
     }
 
 }

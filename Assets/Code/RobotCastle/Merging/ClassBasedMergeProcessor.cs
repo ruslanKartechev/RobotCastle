@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using RobotCastle.Battling;
 using RobotCastle.Core;
 using SleepDev;
+using System;
+using RobotCastle.UI;
 
 namespace RobotCastle.Merging
 {
@@ -11,11 +13,15 @@ namespace RobotCastle.Merging
         /// Max level when merging items. Replace this with merging table!!
         /// </summary>
         private const int MaxItemLevel = 3;
-
+        private const int MaxItemsCount = 3;
+        private Action<EMergeResult, bool> _callback;
+        
         public bool DoLog { get; set; } = true;
         
-        public MergeResult TryMerge(IItemView itemViewTaken, IItemView itemViewInto, IGridView gridView, out bool oneIntoTwo)
+        public void TryMerge(IItemView itemViewTaken, IItemView itemViewInto, IGridView gridView,
+            Action<EMergeResult, bool> callback, out bool oneIntoTwo)
         {
+            _callback = callback;
             var itemTaken = itemViewTaken.Data;
             var itemInto = itemViewInto.Data;
             ItemData mergedItem = null;
@@ -31,7 +37,8 @@ namespace RobotCastle.Merging
                     if (itemInto.core.level >= db.GetMaxMergeLevel(itemInto.core.id))
                     {
                         CLog.Log($"{itemInto.core.level} is already max merge level");
-                        return MergeResult.NoMerge;
+                        _callback?.Invoke(EMergeResult.NoMerge, oneIntoTwo);
+                        return;
                     }
                     switch (itemInto.core.type)
                     {
@@ -52,16 +59,20 @@ namespace RobotCastle.Merging
                             mergedItem = new ItemData(itemInto);
                             mergedItem.core.level++;
                             itemViewInto.UpdateViewToData(mergedItem);
-                            TryAddItemsFromOneToAnother(itemViewTaken, itemViewInto);
-                        
-                            MergeFunctions.ClearCell(gridView, itemViewTaken);
-                            itemViewTaken.Hide();
+                            if (TryAddItemsFromOneToAnother(itemViewTaken, itemViewInto, oneIntoTwo)) // all is OK, invoke callback
+                            {
+                                MergeFunctions.ClearCell(gridView, itemViewTaken);
+                                itemViewTaken.Hide();
+                            }
+                            else // wait until the user chooses 3 items out of more > 3
+                                return;
                             break;
                     }
-                    return MergeResult.MergedIntoNew;
+                    _callback?.Invoke(EMergeResult.MergedIntoNew, oneIntoTwo);
                 }
                 // No merge, expect controller to swap them
-                return MergeResult.NoMerge;
+                _callback?.Invoke(EMergeResult.NoMerge, oneIntoTwo);
+                return;
             }
             else // Two different types
             {
@@ -79,18 +90,16 @@ namespace RobotCastle.Merging
                     viewItem = itemViewTaken;
                     oneIntoTwo = true;
                 }
-                if (TryAddItem(viewUnit, viewItem))
+                if (TryAddItem(viewUnit, viewItem, oneIntoTwo))
                 {
-                    viewItem.Hide();
-                    MergeFunctions.ClearCell(gridView, viewItem);
-                    return MergeResult.MergedOneIntoAnother;
+                    // viewItem.Hide();
+                    // MergeFunctions.ClearCell(gridView, viewItem);
+                    _callback?.Invoke(EMergeResult.MergedOneIntoAnother, oneIntoTwo);
                 }
-                return MergeResult.NoMerge;
             }
-            return MergeResult.NoMerge;
         }
 
-        public MergeResult TryMerge(ItemData item1, ItemData item2, out ItemData mergedItem, out bool oneIntoTwo)
+        public EMergeResult TryMerge(ItemData item1, ItemData item2, out ItemData mergedItem, out bool oneIntoTwo)
         {
             oneIntoTwo = true;
             mergedItem = null;
@@ -101,25 +110,25 @@ namespace RobotCastle.Merging
                 {
                     mergedItem = new ItemData(item1);
                     mergedItem.core.level++;
-                    return MergeResult.MergedIntoNew;
+                    return EMergeResult.MergedIntoNew;
                 }
             }
-            return MergeResult.NoMerge;
+            return EMergeResult.NoMerge;
         }
 
-        private bool TryAddItem(IItemView viewUnit, IItemView viewItem)
+        private bool TryAddItem(IItemView viewUnit, IItemView viewItem, bool oneIntoTwo)
         {
-            var container = viewUnit.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
-            if (container == null)
+            var itemContainerInto = viewUnit.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
+            if (itemContainerInto == null)
             {
                 CLog.LogRed($"NO <IUnitsItemsContainer> on {viewUnit.Transform.gameObject.name}");
                 return false;
             }
-            var items = container.Items;
+            var currentItems = itemContainerInto.Items;
             var newItem = viewItem.Data.core;
-            for (var i = 0; i < items.Count; i++)
+            for (var i = 0; i < currentItems.Count; i++)
             {
-                var item = items[i];
+                var item = currentItems[i];
                 if (item.id == newItem.id)
                 {
                     if (item.level == newItem.level && item.level < MaxItemLevel)
@@ -130,31 +139,50 @@ namespace RobotCastle.Merging
                             level = newItem.level + 1,
                             type = newItem.type
                         };
-                        container.ReplaceWithMergedItem(i, data);
+                        itemContainerInto.ReplaceWithMergedItem(i, data);
                         return true;
                     }
                 }
             }
-            if (items.Count < container.MaxCount)
+            if (currentItems.Count < MaxItemsCount)
             {
-                container.AddNewItem(newItem);
+                itemContainerInto.AddNewItem(newItem);
                 return true;
             }
+            var allItems = new List<CoreItemData>(MaxItemsCount+1);
+            allItems.AddRange(currentItems);
+            allItems.Add(newItem);
+            CLog.LogRed($"All items (total {allItems.Count}) won't fit!!");
+            var ui = ServiceLocator.Get<IUIManager>().Show<ChooseUnitItemsUI>(UIConstants.UIPickUnitItems, () => {});
+            ui.PickMaximum(allItems, MaxItemsCount, (List<CoreItemData> chosen) =>
+            {
+                itemContainerInto.SetItems(chosen);
+                _callback?.Invoke(EMergeResult.MergedOneIntoAnother, oneIntoTwo);
+            });
             return false;
         }
 
-        private bool TryAddItemsFromOneToAnother(IItemView itemTaken, IItemView itemInto)
+        private bool TryAddItemsFromOneToAnother(IItemView itemTaken, IItemView itemInto, bool oneIntoTwo)
         {
             var itemContainerInto = itemInto.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
             var itemContainerTaken = itemTaken.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
             var newItemsList = MergeItemsList(itemContainerInto.Items, itemContainerTaken.Items);
+            var result = false;
             if (newItemsList.Count > itemContainerInto.MaxCount)
             {
                 // SHOW UI WITH SELECTION OF ITEMS
                 CLog.LogRed($"All items (total {newItemsList.Count}) won't fit!!");
+                var ui = ServiceLocator.Get<IUIManager>().Show<ChooseUnitItemsUI>(UIConstants.UIPickUnitItems, () => {});
+                ui.PickMaximum(newItemsList, MaxItemsCount, (List<CoreItemData> chosen) =>
+                {
+                    itemContainerInto.SetItems(chosen);
+                    _callback?.Invoke(EMergeResult.MergedOneIntoAnother, oneIntoTwo);
+                } );
             }
+            else
+                result = true;
             itemContainerInto.SetItems(newItemsList);
-            return true;
+            return result;
         }
 
         private List<CoreItemData> MergeItemsList(List<CoreItemData> items1, List<CoreItemData> items2)
@@ -166,7 +194,7 @@ namespace RobotCastle.Merging
             var result = new List<CoreItemData>(totalCount);
             result.AddRange(items1);
             result.AddRange(items2);
-
+            var db = ServiceLocator.Get<ViewDataBase>();
             for (var i = 0; i < result.Count; i++)
             {
                 if(result[i] is null)
@@ -177,18 +205,61 @@ namespace RobotCastle.Merging
                     var item2 = result[k];
                     if (item1 == item2)
                     {
-                        item1.level++;
-                        result[k] = null;
-                        break;
+                        if (item1.level < db.GetMaxMergeLevel(item1.id))
+                        {
+                            item1.level++;
+                            result[k] = null;
+                            break;
+                        }
                     }
                 }                
             }
-            return result;
+
+            var cleanResult = new List<CoreItemData>(result.Count); // only contains non-null values
+            for (var i = result.Count - 1; i >= 0; i--)
+            {
+                if (result[i] != null)
+                    cleanResult.Add(result[i]);
+            }
+            return cleanResult;
         }
 
         public Cell GetPotentialMerge(MergeGrid grid, ItemData item)
         {
             return null;
         }
+
+
+
+        public class ChooseItemsOffer
+        {
+            public ChooseItemsOffer(IItemView itemViewTaken, 
+                IItemView itemViewInto, 
+                Action<EMergeResult> callback,
+                List<CoreItemData> items)
+            {
+                this.itemViewTaken = itemViewTaken;
+                this.itemViewInto = itemViewInto;
+                _callback = callback;
+                this.items = items;
+            }
+
+            private IItemView itemViewTaken;
+            private IItemView itemViewInto;
+            private List<CoreItemData> items;
+            private Action<EMergeResult> _callback;
+            
+
+            public void Show()
+            {
+                var ui = ServiceLocator.Get<IUIManager>().Show<ChooseUnitItemsUI>(UIConstants.UIPickUnitItems, () => {});
+                ui.PickMaximum(items, 3, OnChosen);
+            }
+
+            private void OnChosen(List<CoreItemData> pickedItems)
+            {
+                                
+            }
+        } 
     }
 }

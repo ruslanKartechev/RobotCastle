@@ -1,5 +1,6 @@
 using System;
 using RobotCastle.Core;
+using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace RobotCastle.Merging
         [SerializeField] private bool _autoInit;
         [SerializeField] private bool _allowInputOnStart;
         [SerializeField] private GameObject _gridViewGo;
-        [SerializeField] private CellAvailabilityControllerByCount _cellAvailabilityController;
+        [SerializeField] private CellAvailabilityControllerBySection _cellAvailabilityController;
         private IGridView _gridView;
         private IMergeProcessor _mergeProcessor;
         private MergeController _mergeController;
@@ -48,9 +49,8 @@ namespace RobotCastle.Merging
             _cellAvailabilityController.SetMaxCount(maxCount);
             ServiceLocator.Bind<MergeController>(_mergeController);
             ServiceLocator.Bind<IGridItemsSpawner>(_itemsSpawner);
+            ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {}).ShowIdle();
         }
-
-   
 
         public void SetInputActive(bool active) => _mergeInput.SetActive(active);
 

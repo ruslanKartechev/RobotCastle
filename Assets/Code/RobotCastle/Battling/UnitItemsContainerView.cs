@@ -16,7 +16,7 @@ namespace RobotCastle.Battling
         {
             On();
             var db = ServiceLocator.Get<ViewDataBase>();
-            var itemsCount = items.Count;
+            var itemsCount = items.Count < _icons.Count ? items.Count : _icons.Count;
             for (var ind = 0; ind < itemsCount; ind++)
             {
                 _icons[ind].gameObject.SetActive(true);

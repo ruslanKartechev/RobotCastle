@@ -1,12 +1,12 @@
-﻿using System;
-using RobotCastle.Battling;
+﻿using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Merging
 {
-    public class CellAvailabilityControllerByCount : MonoBehaviour, ICellAvailabilityController
+    public class CellAvailabilityControllerBySection : MonoBehaviour, ICellAvailabilityController
     {
         [SerializeField] private int _minYIndex = 2;
         [SerializeField] private int _maxCount = 3;
@@ -31,10 +31,23 @@ namespace RobotCastle.Merging
                 CLog.Log("ITroopsCountView not setup yet!");
         }
         
-        public bool IsCellAllowed(int x, int y, ItemData item)
+        public bool IsCellAllowed(int x, int y, ItemData item, bool promptUser = true)
         {
-            if (y < _minYIndex)
+            if (y < _minYIndex) // moving to lower region
                 return true;
+            if (item.pivotY >= _minYIndex && y >= _minYIndex) // already in the upper region and moving to upper region
+                return true;
+            if (item.core.type != MergeConstants.TypeUnits && y >= _minYIndex) // moving non-unit to upper zone
+            {
+                return false;
+            }
+            
+            var allowed = _currentCount < _maxCount;
+            if (promptUser && !allowed)
+            {
+                var ui = ServiceLocator.Get<IUIManager>().Show<IMergeInfoUI>(UIConstants.UIMergeInfo, () => {});
+                ui.ShowNotEnoughTroopSize(_currentCount, _maxCount);
+            }
             return _currentCount < _maxCount;
         }
 

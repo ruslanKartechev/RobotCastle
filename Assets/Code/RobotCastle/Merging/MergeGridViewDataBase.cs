@@ -9,6 +9,13 @@ namespace RobotCastle.Merging
         public LayerMask cellsMask;
         public Material cellDefaultMaterial; 
         public Material cellHighlightedMaterial;
+        [Space(10)]
+        public Color mergeItemIdleColor = Color.white;
+        public Color mergeItemPickedColor = Color.yellow;
+        public float mergeItemIdleScale = 1f;
+        public float mergeItemPickedScale = 1.1f;
+        public float mergeItemScaleTime = .12f;
         
+
     }
 }

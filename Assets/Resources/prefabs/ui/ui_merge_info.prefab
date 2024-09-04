@@ -428,6 +428,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5684608618839165016}
   - component: {fileID: 6020716299332012394}
+  - component: {fileID: 3700250569936665689}
   m_Layer: 5
   m_Name: grid_size_block
   m_TagString: Untagged
@@ -468,6 +469,56 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &3700250569936665689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4685694853155723609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc95143999494714b5900596032ab7cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadeDelay: 0.25
+  _fadeTime: 1
+  _curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.8
+      inSlope: 1.9715235
+      outSlope: 1.9715235
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.22678381
+    - serializedVersion: 3
+      time: 0.21984175
+      value: 1
+      inSlope: 0.08740621
+      outSlope: 0.08740621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.137994
+    - serializedVersion: 3
+      time: 1
+      value: 0.3
+      inSlope: -1.8366857
+      outSlope: -1.8366857
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.07765452
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _controlBlockState: 1
+  _canvasGroup: {fileID: 6020716299332012394}
+  _block: {fileID: 4685694853155723609}
 --- !u!1 &4780210680839231402
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,6 +529,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5080837793294003968}
   - component: {fileID: 4740141327411453176}
+  - component: {fileID: 8559789637231290646}
   m_Layer: 5
   m_Name: money_block
   m_TagString: Untagged
@@ -518,6 +570,56 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &8559789637231290646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4780210680839231402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc95143999494714b5900596032ab7cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadeDelay: 0.25
+  _fadeTime: 1
+  _curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.8
+      inSlope: 1.9715235
+      outSlope: 1.9715235
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.22678381
+    - serializedVersion: 3
+      time: 0.21984175
+      value: 1
+      inSlope: 0.08740621
+      outSlope: 0.08740621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.137994
+    - serializedVersion: 3
+      time: 1
+      value: 0.3
+      inSlope: -1.8366857
+      outSlope: -1.8366857
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.07765452
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _controlBlockState: 1
+  _canvasGroup: {fileID: 4740141327411453176}
+  _block: {fileID: 4780210680839231402}
 --- !u!1 &5019234706358122765
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,7 +655,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 100}
+  m_SizeDelta: {x: 900, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &311001681213531703
 CanvasRenderer:
@@ -583,7 +685,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Troops max 3/3
+  m_text: Not enough troop size 3/3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b741db7ac3d1c423aad5b49a9780ca2d, type: 2}
   m_sharedMaterial: {fileID: 5568139486216784236, guid: b741db7ac3d1c423aad5b49a9780ca2d, type: 2}
@@ -662,6 +764,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4193706779403514529}
   - component: {fileID: 7936556845540846057}
+  - component: {fileID: 3398941700656639462}
   m_Layer: 5
   m_Name: troops_size_block
   m_TagString: Untagged
@@ -702,6 +805,56 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &3398941700656639462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5490881043896442995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc95143999494714b5900596032ab7cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadeDelay: 0.25
+  _fadeTime: 1
+  _curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.8
+      inSlope: 1.9715235
+      outSlope: 1.9715235
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.22678381
+    - serializedVersion: 3
+      time: 0.21984175
+      value: 1
+      inSlope: 0.08740621
+      outSlope: 0.08740621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.137994
+    - serializedVersion: 3
+      time: 1
+      value: 0.3
+      inSlope: -1.8366857
+      outSlope: -1.8366857
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.07765452
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _controlBlockState: 1
+  _canvasGroup: {fileID: 7936556845540846057}
+  _block: {fileID: 5490881043896442995}
 --- !u!1 &7741397428464724047
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,7 +940,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       propertyPath: m_Name
-      value: ui_merge_info Variant
+      value: ui_merge_info
       objectReference: {fileID: 0}
     - target: {fileID: 697934586019279730, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
@@ -885,8 +1038,32 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8674299170616164390, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5684608618839165016}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3874379080263967239}
   m_SourcePrefab: {fileID: 100100000, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
+--- !u!1 &4343667078576370486 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
+  m_PrefabInstance: {fileID: 4418697106279843619}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3874379080263967239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4343667078576370486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b68f9eff81c84682b79255e61ccdaa87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textTroopSize: {fileID: 295995502023294432}
+  _notEnoughTroopSizeBlock: {fileID: 3398941700656639462}
+  _notEnoughMoneyBlock: {fileID: 8559789637231290646}
+  _notEnoughSpaceBlock: {fileID: 3700250569936665689}
 --- !u!224 &4986347596933072645 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8674299170616164390, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
