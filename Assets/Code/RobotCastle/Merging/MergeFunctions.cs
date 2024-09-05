@@ -16,7 +16,14 @@
             // gridView.Grid[item.Data.pivotX, item.Data.pivotY].cell.currentItem = null;
             // gridView.Grid[item.Data.pivotX, item.Data.pivotY].cell.isOccupied = false;
             gridView.Grid[item.Data.pivotX, item.Data.pivotY].item = null;
-            
+        }
+        
+        public static void ClearCellAndHideItem(IGridView gridView, IItemView item)
+        {
+            // gridView.Grid[item.Data.pivotX, item.Data.pivotY].cell.currentItem = null;
+            // gridView.Grid[item.Data.pivotX, item.Data.pivotY].cell.isOccupied = false;
+            gridView.Grid[item.Data.pivotX, item.Data.pivotY].item = null;
+            item.Hide();
         }
         
         public static void ClearCell(MergeGrid grid, ItemData item)

@@ -169,26 +169,26 @@ namespace RobotCastle.Merging
                     putResult = MergePutResult.MergeFailed;
                     break;
                 case EMergeResult.MergedIntoNew:
-                    putResult = MergePutResult.Merged;
                     
+                    putResult = MergePutResult.Merged;
                     break;
                 case EMergeResult.MergedOneIntoAnother:
-                    putResult = MergePutResult.Merged;
-                    if (oneIntoTwo)
-                    {
-                        MergeFunctions.ClearCell(_gridView, _draggedItem.itemView);
-                        _draggedItem.itemView.Hide();
-                    }
-                    else
-                    {
-                        if (_lastPutCell.item != null)
-                        {
-                            _lastPutCell.item.Hide();
-                            _lastPutCell.item = null;        
-                        }
-                        MergeFunctions.PutItemToCell(_draggedItem.itemView, _lastPutCell);
-                        _draggedItem.originalCellView.item = null;
-                    }
+                    // putResult = MergePutResult.Merged;
+                    // if (oneIntoTwo)
+                    // {
+                    //     MergeFunctions.ClearCell(_gridView, _draggedItem.itemView);
+                    //     _draggedItem.itemView.Hide();
+                    // }
+                    // else
+                    // {
+                    //     if (_lastPutCell.item != null)
+                    //     {
+                    //         _lastPutCell.item.Hide();
+                    //         _lastPutCell.item = null;        
+                    //     }
+                    //     MergeFunctions.PutItemToCell(_draggedItem.itemView, _lastPutCell);
+                    //     _draggedItem.originalCellView.item = null;
+                    // }
                     break;
             }
             _lastPutResult = putResult;

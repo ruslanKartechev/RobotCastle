@@ -47,6 +47,7 @@ namespace RobotCastle.Merging
             // Change this!
             const int maxCount = 3;
             _cellAvailabilityController.SetMaxCount(maxCount);
+            ServiceLocator.Bind<ICellAvailabilityController>(_cellAvailabilityController);
             ServiceLocator.Bind<MergeController>(_mergeController);
             ServiceLocator.Bind<IGridItemsSpawner>(_itemsSpawner);
             ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {}).ShowIdle();

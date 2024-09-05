@@ -34,6 +34,12 @@ namespace RobotCastle.Merging
             size = Vector2Int.one;
         }
 
+        public ItemData(CoreItemData core)
+        {
+            this.core = new CoreItemData(core);
+            size = Vector2Int.one;
+        }
+
         public static bool operator ==(ItemData lhs, ItemData rhs)
         {
             if (lhs is null && rhs is null)

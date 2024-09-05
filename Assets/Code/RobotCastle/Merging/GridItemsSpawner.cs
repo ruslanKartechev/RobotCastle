@@ -58,7 +58,7 @@ namespace RobotCastle.Merging
             itemData.pivotY = cellView.cell.y;
             itemView.Data = itemData;
             cellView.item = itemView;
-            
+            itemView.UpdateViewToData(itemData);
             // extend for case of multi cell items!
         }
 

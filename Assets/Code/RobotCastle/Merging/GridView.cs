@@ -8,7 +8,8 @@ namespace RobotCastle.Merging
     {
         [SerializeField] private int _perRow = 5;
         [SerializeField] private List<GameObject> _cellViewGameObjects;
-
+        private MergeGrid _lastGrid;
+        
         public int PerRowCount
         {
             get => _perRow;
@@ -16,7 +17,8 @@ namespace RobotCastle.Merging
         }
         private ICellView[,] _grid;
         public ICellView[,] Grid => _grid;
-        
+        public MergeGrid BuiltGrid => _lastGrid;
+
         public ICellView GetCell(int x, int y)
         {
             return _grid[x, y];
@@ -81,8 +83,10 @@ namespace RobotCastle.Merging
                 }
                 grid.rows.Add(row);                
             }
+            _lastGrid = grid;
             return grid;
         }
+
 
         public void GetGrid()
         {

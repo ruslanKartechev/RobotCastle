@@ -14,7 +14,7 @@ namespace RobotCastle.Merging
             if (ItemInfo.ContainsKey(id))
             {
                 var path = $"{ItemInfo[id].Prefab}_lvl_{levelIndex + 1}";
-                CLog.LogRed($"id {id}. level {levelIndex}. Path {path}");
+                // CLog.LogRed($"id {id}. level {levelIndex}. Path {path}");
                 return Resources.Load<GameObject>(path);
             }
             CLog.LogError($"DataBase does not contain id {id}");

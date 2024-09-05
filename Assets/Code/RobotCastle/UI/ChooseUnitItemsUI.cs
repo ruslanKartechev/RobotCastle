@@ -16,14 +16,14 @@ namespace RobotCastle.UI
         [SerializeField] private Button _confirmButton;
         private List<ChoosableUnitItemUI> _activeUI;
         private List<CoreItemData> _items;
-        private Action<List<CoreItemData>> _callback;
+        private IItemsChoiceListener _listener;
         private int _max;
         private int _count;
         private bool _takeInput;
 
-        public void PickMaximum(List<CoreItemData> items, int max, Action<List<CoreItemData>> callback)
+        public void PickMaximum(List<CoreItemData> items, int max, IItemsChoiceListener listener)
         {
-            _callback = callback;
+            _listener = listener;
             _count = 0;
             _max = max;
             _items = items;
@@ -49,6 +49,7 @@ namespace RobotCastle.UI
             }
             _textCount.text = $"{_count}/{_max}";
             _takeInput = true;
+            gameObject.SetActive(true);
         }
 
         private void AllowPicking(bool allow)
@@ -88,16 +89,19 @@ namespace RobotCastle.UI
         private void OnConfirmBtn()
         {
             if (!_takeInput) return;
-            
             if (_count == _max)
             {
                 var chosenItems = new List<CoreItemData>(_max);
+                var leftItems = new List<CoreItemData>(_max);
+                
                 foreach (var active in _activeUI)
                 {
                     if(active.IsChosen)
                         chosenItems.Add(_items[active.Index]);
+                    else
+                        leftItems.Add(_items[active.Index]);
                 }
-                _callback.Invoke(chosenItems);
+                _listener.ConfirmChosenItems(chosenItems, leftItems);
                 _takeInput = false;
                 _confirmButton.interactable = false;
                 gameObject.SetActive(false);
