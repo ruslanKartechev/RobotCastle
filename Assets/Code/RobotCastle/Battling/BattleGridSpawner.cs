@@ -53,6 +53,8 @@ namespace RobotCastle.Battling
 
         public bool SpawnHero(string id)
         {
+            var manager = ServiceLocator.Get<MergeManager>();
+            
             var controller = ServiceLocator.Get<MergeController>();
             if (controller.GetFreeCellForNewHero(out var view))
             {

@@ -40,26 +40,16 @@ namespace RobotCastle.Merging
             size = Vector2Int.one;
         }
 
-        public static bool operator ==(ItemData lhs, ItemData rhs)
+        public bool IsEqualTo(ItemData rhs)
         {
-            if (lhs is null && rhs is null)
-                return true;
-            if (lhs is null)
-                return false;
             if (rhs is null)
                 return false;
-            
             var equal = true;
-            equal &= lhs.core == rhs.core;
-            equal &= lhs.size == rhs.size;
+            equal &= this.core == rhs.core;
+            equal &= this.size == rhs.size;
             return equal;
         }
-
-        public static bool operator !=(ItemData lhs, ItemData rhs)
-        {
-            return !(lhs == rhs);
-        }
-
+        
         public string GetStr() => core.ItemDataStr();
     }
 }

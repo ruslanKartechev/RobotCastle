@@ -274,12 +274,35 @@
                     spawner.SpawnItemOnCell(cell, new ItemData(coreData));
                 }
                 _callback?.Invoke(EMergeResult.MergedOneIntoAnother, _oneIntoTwo);
-        }
-        
-        public Cell GetPotentialMerge(MergeGrid grid, ItemData item)
-        {
-            return null;
-        }
+            }
+            
+            public List<Cell> GetCellsForPotentialMerge(MergeGrid grid, ItemData item)
+            {
+                if (item.core.type != MergeConstants.TypeUnits)
+                    return null;
+                var list = new List<Cell>(3);
+                var db = ServiceLocator.Get<ViewDataBase>();
+                var maxLvl = db.GetMaxMergeLevel(item.core.id);
+                if (item.core.level >= maxLvl)
+                    return null;
+                for (var y = 0; y < grid.rows.Count; y++)
+                {
+                    var row = grid.rows[y].cells;
+                    for (var x = 0; x < row.Count; x++)
+                    {
+                        var cell = row[x];
+                        if (!cell.isOccupied)
+                            continue;
+                        if (cell.currentItem == item)
+                            continue;
+                        if (cell.currentItem.core == item.core)
+                        {
+                            list.Add(cell);   
+                        }
+                    }   
+                }
+                return list;
+            }
 
-    }
+        } 
     }

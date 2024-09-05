@@ -9,6 +9,7 @@ namespace RobotCastle.Merging
         public LayerMask cellsMask;
         public Material cellDefaultMaterial; 
         public Material cellHighlightedMaterial;
+        public Material cellHighlightedForAttackMaterial;
         [Space(10)]
         public Color mergeItemIdleColor = Color.white;
         public Color mergeItemPickedColor = Color.yellow;

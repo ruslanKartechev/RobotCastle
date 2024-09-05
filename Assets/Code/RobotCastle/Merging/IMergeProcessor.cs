@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace RobotCastle.Merging
 {
@@ -15,6 +16,6 @@ namespace RobotCastle.Merging
         /// </summary>
         /// <returns></returns>
         EMergeResult TryMerge(ItemData item1, ItemData item2, out ItemData mergedItem, out bool oneIntoTwo);
-        Cell GetPotentialMerge(MergeGrid grid, ItemData item);
+        List<Cell> GetCellsForPotentialMerge(MergeGrid grid, ItemData item);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using RobotCastle.Core;
-using SleepDev;
 using UnityEngine;
+using SleepDev;
 
 namespace RobotCastle.Merging
 {
@@ -19,7 +19,6 @@ namespace RobotCastle.Merging
                 {
                     _item = null;
                     cell.SetEmpty();
-                    // CLog.LogRed($"{cell.x} {cell.y} SET EMPTY");
                 }
                 else
                 {
@@ -29,17 +28,16 @@ namespace RobotCastle.Merging
             } 
         }
 
+        public Transform ItemPoint => transform;
+
         public void OnPicked()
-        {
-        }
+        { }
 
         public void OnPut()
-        {
-        }
+        { }
 
         public void OnDroppedBack()
-        {
-        }
+        { }
 
         public void SetHighlightForMerge(bool on)
         {
@@ -48,6 +46,11 @@ namespace RobotCastle.Merging
             _meshRenderer.sharedMaterial = mat;
         }
 
-        public Transform ItemPoint => transform;
+        public void SetHighlightForAttack(bool on)
+        {
+            var db = ServiceLocator.Get<MergeGridViewDataBase>();
+            var mat = on ? db.cellHighlightedForAttackMaterial : db.cellDefaultMaterial;
+            _meshRenderer.sharedMaterial = mat;
+        }
     }
 }

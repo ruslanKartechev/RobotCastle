@@ -13,6 +13,7 @@ namespace RobotCastle.Merging
         [SerializeField] private bool _allowInputOnStart;
         [SerializeField] private GameObject _gridViewGo;
         [SerializeField] private CellAvailabilityControllerBySection _cellAvailabilityController;
+        [SerializeField] private MergeGridHighlighter _highlighter;
         private IGridView _gridView;
         private IMergeProcessor _mergeProcessor;
         private MergeController _mergeController;
@@ -50,10 +51,37 @@ namespace RobotCastle.Merging
             ServiceLocator.Bind<ICellAvailabilityController>(_cellAvailabilityController);
             ServiceLocator.Bind<MergeController>(_mergeController);
             ServiceLocator.Bind<IGridItemsSpawner>(_itemsSpawner);
+            ServiceLocator.Bind<MergeManager>(this);
             ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {}).ShowIdle();
         }
 
         public void SetInputActive(bool active) => _mergeInput.SetActive(active);
+
+        public bool SpawnHero(string id)
+        {
+            var controller = ServiceLocator.Get<MergeController>();
+            if (controller.GetFreeCellForNewHero(out var view))
+            {
+                var spawner = ServiceLocator.Get<IGridItemsSpawner>();
+                spawner.SpawnItemOnCell(view, id);
+                return true;
+            }
+            return false;
+        }
+
+        public bool SpawnHero(CoreItemData coreData)
+        {
+            if (_mergeController.GetFreeCellForNewHero(out var view))
+            {
+                var spawner = ServiceLocator.Get<IGridItemsSpawner>();
+                spawner.SpawnItemOnCell(view, new ItemData(coreData.level, coreData.id, coreData.type));
+                return true;
+            }
+            return false;
+        }
+        
+        
+        
 
         [ContextMenu("LogGridState")]
         public void LogGridState()
