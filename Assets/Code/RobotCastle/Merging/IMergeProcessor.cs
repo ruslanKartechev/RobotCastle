@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace RobotCastle.Merging
 {
@@ -16,6 +17,8 @@ namespace RobotCastle.Merging
         /// </summary>
         /// <returns></returns>
         EMergeResult TryMerge(ItemData item1, ItemData item2, out ItemData mergedItem, out bool oneIntoTwo);
-        List<Cell> GetCellsForPotentialMerge(MergeGrid grid, ItemData item);
+        List<Vector2Int> GetCellsForPotentialMerge(MergeGrid grid, ItemData srcItem);
+        List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem);
+        
     }
 }

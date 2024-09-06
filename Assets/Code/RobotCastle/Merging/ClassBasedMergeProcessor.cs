@@ -4,6 +4,7 @@
     using SleepDev;
     using System;
     using RobotCastle.UI;
+    using UnityEngine;
 
     namespace RobotCastle.Merging
     {
@@ -31,7 +32,7 @@
                 _gridView = gridView;
                 var itemTaken = itemViewTaken.Data;
                 var itemInto = itemViewInto.Data;
-                ItemData mergedItem = null;
+                // ItemData mergedItem = null;
                 oneIntoTwo = true;
                 if(DoLog)
                     CLog.Log($"Trying to merge\n1: {itemTaken.GetStr()}\n2: {itemInto.GetStr()}\n Pos_1 {{{itemTaken.pivotX},{itemTaken.pivotY}}}\n Pos_2 {{{itemInto.pivotX},{itemInto.pivotY}}}");
@@ -50,21 +51,22 @@
                         switch (itemInto.core.type)
                         {
                             case MergeConstants.TypeItems:
-                                mergedItem = new ItemData(itemInto);
+                                var mergedItem = new ItemData(itemInto);
                                 mergedItem.core.level++;
                                 itemViewInto.Hide();
                                 itemViewTaken.Hide();
                                 MergeFunctions.ClearCell(gridView, itemViewTaken);
                                 MergeFunctions.ClearCell(gridView, itemViewInto);
-                            
+                                
                                 var spawner = ServiceLocator.Get<IGridItemsSpawner>();
                                 var cell = gridView.Grid[itemInto.pivotX, itemInto.pivotY];
                                 spawner.SpawnItemOnCell(cell, mergedItem);
                                 break;
                             case MergeConstants.TypeUnits:
-                                mergedItem = new ItemData(itemInto);
-                                mergedItem.core.level++;
-                                itemViewInto.UpdateViewToData(mergedItem);
+                                // mergedItem = new ItemData(itemInto);
+                                // mergedItem.core.level++;
+                                itemViewInto.Data.core.level++;
+                                itemViewInto.UpdateViewToData(itemViewInto.Data);
                                 if (TryAddItemsFromOneToAnother(itemViewTaken, itemViewInto, oneIntoTwo)) // all is OK, invoke callback
                                 {
                                     MergeFunctions.ClearCellAndHideItem(gridView, itemViewTaken);
@@ -276,15 +278,15 @@
                 _callback?.Invoke(EMergeResult.MergedOneIntoAnother, _oneIntoTwo);
             }
             
-            public List<Cell> GetCellsForPotentialMerge(MergeGrid grid, ItemData item)
+            public List<Vector2Int> GetCellsForPotentialMerge(MergeGrid grid, ItemData srcItem)
             {
-                if (item.core.type != MergeConstants.TypeUnits)
+                if (srcItem.core.type != MergeConstants.TypeUnits)
                     return null;
-                var list = new List<Cell>(3);
                 var db = ServiceLocator.Get<ViewDataBase>();
-                var maxLvl = db.GetMaxMergeLevel(item.core.id);
-                if (item.core.level >= maxLvl)
+                var maxLvl = db.GetMaxMergeLevel(srcItem.core.id);
+                if (srcItem.core.level >= maxLvl)
                     return null;
+                var list = new List<Vector2Int>(3);
                 for (var y = 0; y < grid.rows.Count; y++)
                 {
                     var row = grid.rows[y].cells;
@@ -293,16 +295,34 @@
                         var cell = row[x];
                         if (!cell.isOccupied)
                             continue;
-                        if (cell.currentItem == item)
+                        if (cell.currentItem == srcItem)
                             continue;
-                        if (cell.currentItem.core == item.core)
+                        if (cell.currentItem.core == srcItem.core)
                         {
-                            list.Add(cell);   
+                            list.Add(new Vector2Int(cell.x, cell.y));   
                         }
                     }   
                 }
                 return list;
             }
 
+            public List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem)
+            {
+                if (srcItem.core.type != MergeConstants.TypeUnits)
+                    return null;
+                var db = ServiceLocator.Get<ViewDataBase>();
+                var maxLvl = db.GetMaxMergeLevel(srcItem.core.id);
+                if (srcItem.core.level >= maxLvl)
+                    return null;
+                var list = new List<Vector2Int>(3);
+                foreach (var otherItem in allItems)
+                {
+                    if(otherItem == srcItem)
+                        continue;
+                    if(otherItem.core == srcItem.core)
+                        list.Add(new Vector2Int(otherItem.pivotX, otherItem.pivotY));
+                }
+                return list;
+            }
         } 
     }

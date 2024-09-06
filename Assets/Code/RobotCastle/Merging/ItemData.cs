@@ -5,7 +5,7 @@ namespace RobotCastle.Merging
     [System.Serializable]
     public class ItemData
     {
-        public static ItemData Null => new ItemData(-1, default);
+        public static ItemData Null => new ItemData(-1, "");
 
         public CoreItemData core;
         public int pivotX;
@@ -49,6 +49,8 @@ namespace RobotCastle.Merging
             equal &= this.size == rhs.size;
             return equal;
         }
+
+        public bool IsEmpty() => core.level < 0;
         
         public string GetStr() => core.ItemDataStr();
     }

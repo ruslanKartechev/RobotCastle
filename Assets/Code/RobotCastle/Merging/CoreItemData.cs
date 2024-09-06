@@ -1,4 +1,6 @@
-﻿namespace RobotCastle.Merging
+﻿using SleepDev;
+
+namespace RobotCastle.Merging
 {
     [System.Serializable]
     public class CoreItemData
@@ -43,7 +45,7 @@
             return !(lhs == rhs);
         }
         
-        public string ItemDataStr() => $"{id}. Type {type}. Level {level}";
+        public string ItemDataStr() => $"ID: {id}. {type}. Level: {level}";
 
     }
 }

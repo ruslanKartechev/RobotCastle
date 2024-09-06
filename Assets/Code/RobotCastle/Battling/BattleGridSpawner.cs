@@ -9,18 +9,6 @@ namespace RobotCastle.Battling
     [DefaultExecutionOrder(5)]
     public class BattleGridSpawner : MonoBehaviour, IBattleGridSpawner
     {
-        private void OnEnable()
-        {
-            ServiceLocator.Bind<IBattleGridSpawner>(this);
-            ServiceLocator.Bind<BattleGridSpawner>(this);
-        }
-
-        private void OnDisable()
-        {
-            ServiceLocator.Unbind<IBattleGridSpawner>();
-            ServiceLocator.Unbind<BattleGridSpawner>();
-        }
-
         public bool SpawnRandomHero(WeightedList<CoreItemData> ids)
         {
             var coreData = ids.Random();
@@ -29,20 +17,13 @@ namespace RobotCastle.Battling
 
         public bool SpawnHero(CoreItemData coreData)
         {
-            var controller = ServiceLocator.Get<MergeController>();
-            if (controller.GetFreeCellForNewHero(out var view))
-            {
-                var spawner = ServiceLocator.Get<IGridItemsSpawner>();
-                spawner.SpawnItemOnCell(view, new ItemData(coreData.level, coreData.id, coreData.type));
+            var manager = ServiceLocator.Get<MergeManager>();
+            if (manager.SpawnHero(coreData))
                 return true;
-            }
-            else
-            {
-                CLog.Log($"[BattleGridSpawner] No available cell!");
-                var ui = ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => { });
-                ui.ShowNotEnoughSpace();
-                return false;
-            }
+            CLog.Log($"[BattleGridSpawner] No available cell!");
+            var ui = ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => { });
+            ui.ShowNotEnoughSpace();
+            return false;
         }
 
         public bool SpawnRandomHero(WeightedList<string> ids)
@@ -54,21 +35,24 @@ namespace RobotCastle.Battling
         public bool SpawnHero(string id)
         {
             var manager = ServiceLocator.Get<MergeManager>();
-            
-            var controller = ServiceLocator.Get<MergeController>();
-            if (controller.GetFreeCellForNewHero(out var view))
-            {
-                var spawner = ServiceLocator.Get<IGridItemsSpawner>();
-                spawner.SpawnItemOnCell(view, id);
+            if (manager.SpawnHero(id))
                 return true;
-            }
-            else
-            {
-                CLog.Log($"[BattleGridSpawner] No available cell!");
-                var ui = ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => { });
-                ui.ShowNotEnoughSpace();
-                return false;
-            }
+            CLog.Log($"[BattleGridSpawner] No available cell!");
+            var ui = ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => { });
+            ui.ShowNotEnoughSpace();
+            return false;
+        }
+        
+        private void OnEnable()
+        {
+            ServiceLocator.Bind<IBattleGridSpawner>(this);
+            ServiceLocator.Bind<BattleGridSpawner>(this);
+        }
+
+        private void OnDisable()
+        {
+            ServiceLocator.Unbind<IBattleGridSpawner>();
+            ServiceLocator.Unbind<BattleGridSpawner>();
         }
 
     }
