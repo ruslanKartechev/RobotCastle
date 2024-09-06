@@ -1,4 +1,5 @@
-﻿using RobotCastle.Battling;
+﻿using System.Collections.Generic;
+using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.UI;
 using SleepDev;
@@ -6,20 +7,18 @@ using UnityEngine;
 
 namespace RobotCastle.Merging
 {
-    public class CellAvailabilityControllerBySection : MonoBehaviour, ICellAvailabilityController
+    public class GridSectionsController : MonoBehaviour, IGridSectionsController
     {
         [SerializeField] private int _minYIndex = 2;
         [SerializeField] private int _maxCount = 3;
+        private IGridView _gridView;
         private int _currentCount = 0;
 
         public int MaxCount => _maxCount;
 
-        private void Start()
+        public void Init(IGridView gridView)
         {
-            if (ServiceLocator.GetIfContains(out ITroopsCountView troopsCountView))
-                troopsCountView.UpdateCount(_currentCount, _maxCount);
-            else
-                CLog.Log("ITroopsCountView not setup yet!");
+            _gridView = gridView;
         }
 
         public void SetMaxCount(int maxCount)
@@ -64,6 +63,23 @@ namespace RobotCastle.Merging
             }
         }
 
+        public void OnItemPut(ItemData item)
+        {
+            OnGridUpdated(_gridView.BuiltGrid);
+            var cell = _gridView.GetCell(item.pivotX, item.pivotY);
+            if (!cell.cell.isOccupied)
+                return;
+            var itemView = cell.item;
+            if (item.core.type == MergeConstants.TypeUnits)
+            {
+                var ui = itemView.Transform.GetComponent<UnitView>().UnitUI;
+                if(item.pivotY >= _minYIndex)
+                    ui.SetBattleMode();
+                else
+                    ui.SetMergeMode();              
+            }
+        }
+
         public bool GetFreeCell(MergeGrid grid, out Vector2Int coordinates)
         {
             for (var y = _minYIndex-1; y >= 0; y--)
@@ -99,14 +115,42 @@ namespace RobotCastle.Merging
             return count;
         }
 
-        public void OnPutToCell(int x, int y, ItemData item)
+        public List<ItemData> GetAllItems()
         {
-            if (y >= _minYIndex)
+            var allItems = new List<ItemData>(20);
+            var grid = _gridView.BuiltGrid;
+            foreach (var row in grid.rows)
             {
-                _currentCount++;
-                if (ServiceLocator.GetIfContains(out ITroopsCountView troopsCountView))
-                    troopsCountView.UpdateCount(_currentCount, _maxCount);
+                foreach (var cell in row.cells)
+                {
+                    if(cell.currentItem.IsEmpty() == false)
+                        allItems.Add(cell.currentItem);
+                }
             }
+            return allItems;
+        }
+
+        public List<ItemData> GetAllItemsInMergeArea()
+        {
+            var allItems = new List<ItemData>(20);
+            var grid = _gridView.BuiltGrid;
+            foreach (var row in grid.rows)
+            {
+                foreach (var cell in row.cells)
+                {
+                    if(cell.currentItem.IsEmpty() == false)
+                        allItems.Add(cell.currentItem);
+                }
+            }
+            return allItems;
+        }
+
+        private void Start()
+        {
+            if (ServiceLocator.GetIfContains(out ITroopsCountView troopsCountView))
+                troopsCountView.UpdateCount(_currentCount, _maxCount);
+            else
+                CLog.Log("ITroopsCountView not setup yet!");
         }
     }
 }

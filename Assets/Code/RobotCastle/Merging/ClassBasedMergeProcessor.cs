@@ -3,12 +3,11 @@
     using RobotCastle.Core;
     using SleepDev;
     using System;
-    using RobotCastle.UI;
     using UnityEngine;
 
     namespace RobotCastle.Merging
     {
-        public class ClassBasedMergeProcessor : IMergeProcessor, IItemsChoiceListener
+        public class ClassBasedMergeProcessor : IMergeProcessor
         {
             /// <summary>
             /// Max level when merging items. Replace this with merging table!!
@@ -67,7 +66,7 @@
                                 // mergedItem.core.level++;
                                 itemViewInto.Data.core.level++;
                                 itemViewInto.UpdateViewToData(itemViewInto.Data);
-                                if (TryAddItemsFromOneToAnother(itemViewTaken, itemViewInto, oneIntoTwo)) // all is OK, invoke callback
+                                if (TryAddItemsFromOneToAnother(itemViewTaken, itemViewInto)) // all is OK, invoke callback
                                 {
                                     MergeFunctions.ClearCellAndHideItem(gridView, itemViewTaken);
                                 }
@@ -85,25 +84,13 @@
                 }
                 else // Two different types
                 {
-                    IItemView viewItem = null;
-                    IItemView viewUnit = null;
                     if (itemTaken.core.type == MergeConstants.TypeUnits && itemInto.core.type == MergeConstants.TypeItems)
-                    {
-                        viewUnit = itemViewTaken;
-                        viewItem = itemViewInto;
                         oneIntoTwo = false;
-                    }
                     else if (itemTaken.core.type == MergeConstants.TypeItems && itemInto.core.type == MergeConstants.TypeUnits)
-                    {
-                        viewUnit = itemViewInto;
-                        viewItem = itemViewTaken;
                         oneIntoTwo = true;
-                    }
                     _oneIntoTwo = oneIntoTwo;
-                    if (TryAddItem(viewUnit, viewItem, oneIntoTwo))
-                    {
-                        _callback?.Invoke(EMergeResult.MergedOneIntoAnother, oneIntoTwo);
-                    }
+                    var operation = new AddItemOperation(_itemViewTaken, _itemViewInto, _gridView, _callback);
+                    operation.Do();
                 }
             }
 
@@ -124,60 +111,7 @@
                 return EMergeResult.NoMerge;
             }
 
-            private bool TryAddItem(IItemView viewUnit, IItemView viewItem, bool oneIntoTwo)
-            {
-                var itemContainerInto = viewUnit.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
-                if (itemContainerInto == null)
-                {
-                    CLog.LogRed($"NO <IUnitsItemsContainer> on {viewUnit.Transform.gameObject.name}");
-                    return false;
-                }
-                var currentItems = itemContainerInto.Items;
-                var newItem = viewItem.Data.core;
-                for (var i = 0; i < currentItems.Count; i++)
-                {
-                    var item = currentItems[i];
-                    if (item.id == newItem.id)
-                    {
-                        if (item.level == newItem.level && item.level < MaxItemLevel)
-                        {
-                            var data = new CoreItemData()
-                            {
-                                id = newItem.id,
-                                level = newItem.level + 1,
-                                type = newItem.type
-                            };
-                            itemContainerInto.ReplaceWithMergedItem(i, data);
-                            MergeFunctions.ClearCellAndHideItem(_gridView, viewItem);
-                            return true;
-                        }
-                    }
-                }
-                if (currentItems.Count < MaxItemsCount)
-                {
-                    itemContainerInto.AddNewItem(newItem);
-                    if (oneIntoTwo) // dragged into standing. Item into Unit
-                    {
-                        MergeFunctions.ClearCell(_gridView, viewItem);
-                        viewItem.Hide();
-                    }
-                    else // standing into dragged. Unit into item
-                    {
-                        MergeFunctions.ClearCell(_gridView, viewUnit);
-                        var targetCell = _gridView.GetCell(viewItem.Data.pivotX, viewItem.Data.pivotY);
-                        MergeFunctions.ClearCellAndHideItem(_gridView, viewItem);
-                        MergeFunctions.PutItemToCell(viewUnit, targetCell);
-                    }
-                    return true;
-                }
-                var allItems = new List<CoreItemData>(MaxItemsCount * 2);
-                allItems.AddRange(currentItems);
-                allItems.Add(newItem);
-                OfferChooseItems(allItems);
-                return false;
-            }
-
-            private bool TryAddItemsFromOneToAnother(IItemView itemTaken, IItemView itemInto, bool oneIntoTwo)
+            private bool TryAddItemsFromOneToAnother(IItemView itemTaken, IItemView itemInto)
             {
                 var itemContainerInto = itemInto.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
                 var itemContainerTaken = itemTaken.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
@@ -185,7 +119,7 @@
                 var result = false;
                 if (newItemsList.Count > itemContainerInto.MaxCount)
                 {
-                    OfferChooseItems(newItemsList);
+                    // OfferChooseItems(newItemsList);
                 }
                 else
                     result = true;
@@ -231,57 +165,8 @@
                 return cleanResult;
             }
 
-            private void OfferChooseItems(List<CoreItemData> items)
-            {
-                CLog.LogRed($"All items (total {items.Count}) won't fit!!");
-                var ui = ServiceLocator.Get<IUIManager>().Show<ChooseUnitItemsUI>(UIConstants.UIPickUnitItems, () => {});
-                ui.PickMaximum(items, MaxItemsCount, this);
-            }
-
-            public void ConfirmChosenItems(List<CoreItemData> chosen, List<CoreItemData> left)
-            {
-                foreach (var it in chosen)
-                    CLog.LogGreen($"Chosen: {it.ItemDataStr()}");
-                foreach (var it in left)
-                    CLog.LogBlue($"Left: {it.ItemDataStr()}");
-                
-                if (_oneIntoTwo) // dragged into standing. Unit is standing
-                {
-                    var container = _itemViewInto.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
-                    container.SetItems(chosen);
-                    MergeFunctions.ClearCellAndHideItem(_gridView, _itemViewTaken);
-                }
-                else // standing into dragged. Unit is dragged
-                {
-                    var container = _itemViewTaken.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
-                    container.SetItems(chosen);
-                    
-                    MergeFunctions.ClearCell(_gridView, _itemViewTaken);
-                    var targetCell = _gridView.GetCell(_itemViewInto.Data.pivotX, _itemViewInto.Data.pivotY);
-                    MergeFunctions.ClearCellAndHideItem(_gridView, _itemViewInto);
-                    MergeFunctions.PutItemToCell(_itemViewTaken, targetCell);
-                }
-
-                var spawner = ServiceLocator.Get<IGridItemsSpawner>();
-                var cellPicker = ServiceLocator.Get<ICellAvailabilityController>();
-                foreach (var coreData in left)
-                {
-                    var hasCell = cellPicker.GetFreeCell(_gridView.BuiltGrid, out var coords);
-                    if (!hasCell)
-                    {
-                        CLog.LogRed($"[{nameof(ClassBasedMergeProcessor)}] No more free cells to put items");
-                        break;
-                    }
-                    var cell = _gridView.GetCell(coords.x, coords.y);
-                    spawner.SpawnItemOnCell(cell, new ItemData(coreData));
-                }
-                _callback?.Invoke(EMergeResult.MergedOneIntoAnother, _oneIntoTwo);
-            }
-            
             public List<Vector2Int> GetCellsForPotentialMerge(MergeGrid grid, ItemData srcItem)
             {
-                if (srcItem.core.type != MergeConstants.TypeUnits)
-                    return null;
                 var db = ServiceLocator.Get<ViewDataBase>();
                 var maxLvl = db.GetMaxMergeLevel(srcItem.core.id);
                 if (srcItem.core.level >= maxLvl)
@@ -308,8 +193,6 @@
 
             public List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem)
             {
-                if (srcItem.core.type != MergeConstants.TypeUnits)
-                    return null;
                 var db = ServiceLocator.Get<ViewDataBase>();
                 var maxLvl = db.GetMaxMergeLevel(srcItem.core.id);
                 if (srcItem.core.level >= maxLvl)
@@ -324,5 +207,5 @@
                 }
                 return list;
             }
-        } 
+        }
     }

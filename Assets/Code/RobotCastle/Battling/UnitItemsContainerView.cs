@@ -54,6 +54,11 @@ namespace RobotCastle.Battling
             for (var i = itemsCount; i < _icons.Count; i++)
                 _icons[i].gameObject.SetActive(false);
         }
+
+        public void Animate()
+        {
+            
+        }
         
         public void Off() => _viewBlock.gameObject.SetActive(false);
         

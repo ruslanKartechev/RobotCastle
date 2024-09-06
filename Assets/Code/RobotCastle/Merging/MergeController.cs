@@ -19,7 +19,7 @@ namespace RobotCastle.Merging
         private IGridView _gridView;
         private LayerMask _layerMask;
         private Vector3 _offset;
-        private ICellAvailabilityController _availabilityController;
+        private IGridSectionsController _sectionsController;
         private Camera _camera;
         private DraggedItem _draggedItem;
         private MergePutResult _lastPutResult;
@@ -30,13 +30,13 @@ namespace RobotCastle.Merging
         public MergeController(MergeGrid grid,
             IMergeProcessor processor, 
             IGridItemsSpawner itemsSpawner,
-            ICellAvailabilityController availabilityController,
+            IGridSectionsController availabilityController,
             IGridView gridView)
         {
             _grid = grid;
             _processor = processor;
             _itemsSpawner = itemsSpawner;
-            _availabilityController = availabilityController;
+            _sectionsController = availabilityController;
             _gridView = gridView;
             _camera = Camera.main;
             var db = ServiceLocator.Get<MergeGridViewDataBase>();
@@ -115,7 +115,7 @@ namespace RobotCastle.Merging
                 }
                 else if (!cellView.cell.isOccupied) // cell is free
                 {
-                    if (!_availabilityController.IsCellAllowed(cellView.cell.x, cellView.cell.y, _draggedItem.itemView.Data))
+                    if (!_sectionsController.IsCellAllowed(cellView.cell.x, cellView.cell.y, _draggedItem.itemView.Data))
                     {
                         putResult = MergePutResult.CellNotAllowed;
                         _draggedItem.PutBack();
@@ -143,7 +143,7 @@ namespace RobotCastle.Merging
 
         public void OnMove(Vector3 screenPosition)
         {
-            if (_draggedItem == null)
+            if (_draggedItem == null || _isProcessingPut)
                 return;
             if (Physics.Raycast(_camera.ScreenPointToRay(screenPosition), out var hitInfo, 100, _layerMask))
             {
@@ -184,7 +184,7 @@ namespace RobotCastle.Merging
         
         public bool GetFreeCellForNewHero(out ICellView cellView)
         {
-            var hasFree = _availabilityController.GetFreeCell(_grid, out var coord);
+            var hasFree = _sectionsController.GetFreeCell(_grid, out var coord);
             if (!hasFree)
             {
                 cellView = null;
@@ -226,7 +226,7 @@ namespace RobotCastle.Merging
         private void UpdateGridAndNullDragged()
         {
             _isProcessingPut = false;
-            _availabilityController.OnGridUpdated(_grid);
+            _sectionsController.OnItemPut(_draggedItem.itemView.Data);
             PutDown();
             CLog.Log($"[{nameof(MergeController)}] Put Result: {_lastPutResult.ToString()}");
             OnPutItem?.Invoke(_lastPutResult);

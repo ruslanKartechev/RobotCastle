@@ -6,6 +6,7 @@ namespace RobotCastle.Merging
     public class MergeCellView : MonoBehaviour, ICellView
     {
         [SerializeField] private MeshRenderer _meshRenderer;
+        [SerializeField] private Transform _itemPoint;
         private IItemView _item;
         private CellHighlight _highlight;
         
@@ -36,7 +37,7 @@ namespace RobotCastle.Merging
             _meshRenderer.sharedMaterial = mat;
         }
 
-        public Transform ItemPoint => transform;
+        public Transform ItemPoint => _itemPoint;
 
         public void OnPicked()
         { }

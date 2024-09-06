@@ -39,8 +39,8 @@ namespace RobotCastle.Battling
             _data = data;
             if (_unitView != null)
             {
-                _unitView.levelView.SetLevel(data.core.level);
-                _unitView.levelView.AnimateUpdated();                
+                _unitView.UnitUI.Level.SetLevel(data.core.level);
+                _unitView.UnitUI.Level.AnimateUpdated();                
             }
         }
 

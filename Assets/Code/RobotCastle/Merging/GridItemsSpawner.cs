@@ -41,7 +41,7 @@ namespace RobotCastle.Merging
             }
         }
 
-        public void SpawnItemOnCell(ICellView cellView, ItemData itemData)
+        public IItemView SpawnItemOnCell(ICellView cellView, ItemData itemData)
         {
             var db = ServiceLocator.Get<ViewDataBaseContainer>();
             GameObject prefab = null;
@@ -60,9 +60,10 @@ namespace RobotCastle.Merging
             cellView.item = itemView;
             itemView.UpdateViewToData(itemData);
             // extend for case of multi cell items!
+            return itemView;
         }
 
-        public void SpawnItemOnCell(ICellView cellView, string itemId)
+        public IItemView SpawnItemOnCell(ICellView cellView, string itemId)
         {
             var db = ServiceLocator.Get<ViewDataBaseContainer>();
             var prefab = db.DataBase.GetMergePrefab(itemId);
@@ -72,6 +73,7 @@ namespace RobotCastle.Merging
             itemView.Data = new ItemData(0, itemId);
             cellView.item = itemView;
             // extend for case of multi cell items!
+            return itemView;
         }
     }
 }

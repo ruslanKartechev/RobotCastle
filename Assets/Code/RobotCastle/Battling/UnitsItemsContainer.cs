@@ -18,6 +18,18 @@ namespace RobotCastle.Battling
         
         public List<CoreItemData> Items => _items;
 
+        public void UpdateItems(List<CoreItemData> items)
+        {
+            if (_items != items)
+            {
+                _items.Clear();
+                foreach (var it in items)
+                    _items.Add(it);
+            }
+            _view.ShowItems(items);
+            _view.Animate();
+        }
+
         public void SetItems(List<CoreItemData> items)
         {
             if (_items != items)
@@ -42,6 +54,7 @@ namespace RobotCastle.Battling
                 _items[indexAt] = newItem;
             }
             _view.UpdateMergedItem(_items, indexAt);
+            _view.Animate();
         }
 
         public void AddNewItem(CoreItemData newItem)
@@ -49,6 +62,7 @@ namespace RobotCastle.Battling
             CLog.LogGreen($"AddNewItem. {newItem.ItemDataStr()}");
             _items.Add(newItem);
             _view.ShowLastAddedItem(_items);
+            _view.Animate();
         }
 
         public void UpdateView()

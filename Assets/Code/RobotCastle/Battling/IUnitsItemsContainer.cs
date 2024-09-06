@@ -10,7 +10,8 @@ namespace RobotCastle.Battling
         List<CoreItemData> Items { get; }
         void ReplaceWithMergedItem(int indexAt, CoreItemData newItem);
         void AddNewItem(CoreItemData newItem);
-        void UpdateView();
+        void UpdateItems(List<CoreItemData> items);
         void SetItems(List<CoreItemData> items);
+        void UpdateView();
     }
 }

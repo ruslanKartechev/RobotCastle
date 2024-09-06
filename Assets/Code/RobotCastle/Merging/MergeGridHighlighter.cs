@@ -51,7 +51,7 @@ namespace RobotCastle.Merging
             StopHighlight();
             _highlightedCells = new List<ICellView>(allItems.Count);
             var cellsForMerge = _mergeProcessor.GetCellsForPotentialMerge(allItems, srcItem);
-            if (cellsForMerge.Count == 0)
+            if (cellsForMerge == null || cellsForMerge.Count == 0)
                 return;
             foreach (var cell in cellsForMerge)
             {

@@ -13,7 +13,7 @@ namespace RobotCastle.Merging
         [SerializeField] private bool _autoInit;
         [SerializeField] private bool _allowInputOnStart;
         [SerializeField] private GameObject _gridViewGo;
-        [SerializeField] private CellAvailabilityControllerBySection _cellAvailabilityController;
+        [SerializeField] private GridSectionsController _sectionsController;
         [SerializeField] private MergeGridHighlighter _highlighter;
         [SerializeField] private MergeCellHighlightPool _mergeCellHighlight;
         private IGridView _gridView;
@@ -37,7 +37,7 @@ namespace RobotCastle.Merging
             CLog.Log($"[{nameof(MergeManager)}] Building grid view");
             _itemsSpawner = gameObject.GetComponent<IGridItemsSpawner>();
             _mergeProcessor = new ClassBasedMergeProcessor();
-            _mergeController = new MergeController(_grid, _mergeProcessor,_itemsSpawner, _cellAvailabilityController, _gridView);
+            _mergeController = new MergeController(_grid, _mergeProcessor,_itemsSpawner, _sectionsController, _gridView);
             _mergeInput = gameObject.GetComponent<MergeInput>();
             _mergeInput.Init(_mergeController);
             if(_allowInputOnStart)
@@ -45,8 +45,9 @@ namespace RobotCastle.Merging
             
             // Change this!
             const int maxCount = 3;
-            _cellAvailabilityController.SetMaxCount(maxCount);
-            ServiceLocator.Bind<ICellAvailabilityController>(_cellAvailabilityController);
+            _sectionsController.SetMaxCount(maxCount);
+            _sectionsController.Init(_gridView);
+            ServiceLocator.Bind<IGridSectionsController>(_sectionsController);
             ServiceLocator.Bind<MergeController>(_mergeController);
             ServiceLocator.Bind<IGridItemsSpawner>(_itemsSpawner);
             ServiceLocator.Bind<MergeManager>(this);
@@ -67,7 +68,8 @@ namespace RobotCastle.Merging
             if (controller.GetFreeCellForNewHero(out var view))
             {
                 var spawner = ServiceLocator.Get<IGridItemsSpawner>();
-                spawner.SpawnItemOnCell(view, id);
+                var itemView = spawner.SpawnItemOnCell(view, id);
+                _sectionsController.OnItemPut(itemView.Data);
                 HighlightMergeOptions();
                 return true;
             }
@@ -79,13 +81,13 @@ namespace RobotCastle.Merging
             if (_mergeController.GetFreeCellForNewHero(out var view))
             {
                 var spawner = ServiceLocator.Get<IGridItemsSpawner>();
-                spawner.SpawnItemOnCell(view, new ItemData(coreData.level, coreData.id, coreData.type));
+                var itemView = spawner.SpawnItemOnCell(view, new ItemData(coreData.level, coreData.id, coreData.type));
+                _sectionsController.OnItemPut(itemView.Data);
                 HighlightMergeOptions();
                 return true;
             }
             return false;
         }
-        
 
         [ContextMenu("LogGridState")]
         public void LogGridState()
@@ -98,33 +100,19 @@ namespace RobotCastle.Merging
         private void HighlightMergeOptions()
         {
             CLog.LogWhite($"[{nameof(MergeManager)}] Highlight");
-            var allItems = GetAllItemsOnGrid();
+            var allItems = _sectionsController.GetAllItems();
             _highlighter.HighlightAllPotentialCombinations(allItems);
         }
         
         private void OnItemPicked(ItemData srcItem)
         {
-            var allItems = GetAllItemsOnGrid();
+            var allItems = _sectionsController.GetAllItems();
             _highlighter.HighlightForSpecificItem(allItems, srcItem);
         }
         
         private void OnItemPut(MergePutResult result)
         {
             HighlightMergeOptions();
-        }
-
-        private List<ItemData> GetAllItemsOnGrid()
-        {
-            var allItems = new List<ItemData>(20);
-            foreach (var row in _grid.rows)
-            {
-                foreach (var cell in row.cells)
-                {
-                    if(cell.currentItem.IsEmpty() == false)
-                        allItems.Add(cell.currentItem);
-                }
-            }
-            return allItems;
         }
 
         private void Start()

@@ -3,8 +3,8 @@
     public interface IGridItemsSpawner
     {
         void SpawnItemsForGrid(IGridView gridView, MergeGrid saves);
-        void SpawnItemOnCell(ICellView cell, ItemData item);
-        void SpawnItemOnCell(ICellView cell, string itemId);
+        IItemView SpawnItemOnCell(ICellView cell, ItemData item);
+        IItemView SpawnItemOnCell(ICellView cell, string itemId);
         
         
     }

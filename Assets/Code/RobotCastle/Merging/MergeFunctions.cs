@@ -1,4 +1,6 @@
-﻿namespace RobotCastle.Merging
+﻿using System.Collections.Generic;
+
+namespace RobotCastle.Merging
 {
     public static class MergeFunctions
     {
@@ -31,5 +33,35 @@
             grid.rows[item.pivotY].cells[item.pivotX].currentItem = null;
             grid.rows[item.pivotY].cells[item.pivotX].isOccupied = false;
         }
+
+        public static List<CoreItemData> TryMergeAll(List<CoreItemData> items, int maxLvl)
+        {
+            var result = new List<CoreItemData>(items);
+            var can = true;
+            while (can)
+                can = TryMergeInList(result, maxLvl);
+            return result;
+        }
+
+        public static bool TryMergeInList(List<CoreItemData> items, int maxLvl)
+        {
+            for (var i = items.Count - 1; i >= 1; i--)
+            {
+                var item = items[i];
+                if (item.level >= maxLvl)
+                    continue;
+                for (var k = i - 1; k >= 0; k--)
+                {
+                    if (item == items[k])
+                    {
+                        item.level++;
+                        items.RemoveAt(k);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        
     }
 }
