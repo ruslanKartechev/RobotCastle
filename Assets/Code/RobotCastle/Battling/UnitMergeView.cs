@@ -8,7 +8,7 @@ namespace RobotCastle.Battling
         [SerializeField] private UnitView _unitView;
         private ItemData _data;
         
-        public ItemData Data
+        public ItemData itemData
         {
             get => _data;
             set
@@ -34,12 +34,13 @@ namespace RobotCastle.Battling
         public void OnMerged()
         { }
 
-        public void UpdateViewToData(ItemData data)
+        public void UpdateViewToData(ItemData data = null)
         {
-            _data = data;
+            if (data != null)
+                _data = data;
             if (_unitView != null)
             {
-                _unitView.UnitUI.Level.SetLevel(data.core.level);
+                _unitView.UnitUI.Level.SetLevel(_data.core.level);
                 _unitView.UnitUI.Level.AnimateUpdated();                
             }
         }

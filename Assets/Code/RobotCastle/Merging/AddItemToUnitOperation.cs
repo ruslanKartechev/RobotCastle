@@ -6,7 +6,7 @@ using SleepDev;
 
 namespace RobotCastle.Merging
 {
-    public class AddItemOperation : IItemsChoiceListener
+    public class AddItemToUnitOperation : IItemsChoiceListener
     {
         private const int MaxItemLevel = 3;
         private const int MaxItemsCount = 3;
@@ -18,11 +18,11 @@ namespace RobotCastle.Merging
         private IGridView _gridView;
         private ChooseItemsOffer _offer;
 
-        public AddItemOperation(IItemView item1, IItemView item2, IGridView gridView, Action<EMergeResult,bool> callback)
+        public AddItemToUnitOperation(IItemView item1, IItemView item2, IGridView gridView, Action<EMergeResult,bool> callback)
         {
             _callback = callback;
             _gridView = gridView;
-            if (item1.Data.core.type == MergeConstants.TypeUnits)
+            if (item1.itemData.core.type == MergeConstants.TypeUnits)
             {
                 _unitView = item1;
                 _itemView = item2;
@@ -36,7 +36,7 @@ namespace RobotCastle.Merging
             }
         }
 
-        public void Do()
+        public void Process()
         {
             var itemContainerInto = _unitView.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
             if (itemContainerInto == null)
@@ -45,7 +45,7 @@ namespace RobotCastle.Merging
                 return;
             }
             var currentItems = itemContainerInto.Items;
-            var newItem = _itemView.Data.core;
+            var newItem = _itemView.itemData.core;
             var didMerge = false;
             var replaceIndex = 0;
             var replaceItem = (CoreItemData)null;
@@ -110,7 +110,7 @@ namespace RobotCastle.Merging
             else // standing into dragged. Unit into item
             {
                 MergeFunctions.ClearCell(_gridView, _unitView);
-                var targetCell = _gridView.GetCell(_itemView.Data.pivotX, _itemView.Data.pivotY);
+                var targetCell = _gridView.GetCell(_itemView.itemData.pivotX, _itemView.itemData.pivotY);
                 MergeFunctions.ClearCellAndHideItem(_gridView, _itemView);
                 MergeFunctions.PutItemToCell(_unitView, targetCell);
             }
@@ -118,10 +118,10 @@ namespace RobotCastle.Merging
         
         public void ConfirmChosenItems(List<CoreItemData> chosen, List<CoreItemData> left)
         {
-            foreach (var it in chosen)
-                    CLog.LogGreen($"Chosen: {it.ItemDataStr()}");
-            foreach (var it in left)
-                CLog.LogBlue($"Left: {it.ItemDataStr()}");
+            // foreach (var it in chosen)
+            //         CLog.LogGreen($"Chosen: {it.ItemDataStr()}");
+            // foreach (var it in left)
+            //     CLog.LogBlue($"Left: {it.ItemDataStr()}");
                 
             if (_oneIntoTwo) // dragged into standing. Unit is standing
             {
@@ -133,13 +133,11 @@ namespace RobotCastle.Merging
             {
                 var container = _unitView.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
                 container.SetItems(chosen);
-                    
                 MergeFunctions.ClearCell(_gridView, _unitView);
-                var targetCell = _gridView.GetCell(_itemView.Data.pivotX, _itemView.Data.pivotY);
+                var targetCell = _gridView.GetCell(_itemView.itemData.pivotX, _itemView.itemData.pivotY);
                 MergeFunctions.ClearCellAndHideItem(_gridView, _itemView);
                 MergeFunctions.PutItemToCell(_unitView, targetCell);
             }
-
             var spawner = ServiceLocator.Get<IGridItemsSpawner>();
             var cellPicker = ServiceLocator.Get<IGridSectionsController>();
             foreach (var coreData in left)

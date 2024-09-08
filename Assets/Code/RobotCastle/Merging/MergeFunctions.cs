@@ -7,9 +7,9 @@ namespace RobotCastle.Merging
         public static void PutItemToCell(IItemView itemView, ICellView targetCell)
         {
             itemView.Transform.position = targetCell.ItemPoint.position;
-            targetCell.item = itemView;
-            itemView.Data.pivotX = targetCell.cell.x;
-            itemView.Data.pivotY = targetCell.cell.y;
+            targetCell.itemView = itemView;
+            itemView.itemData.pivotX = targetCell.cell.x;
+            itemView.itemData.pivotY = targetCell.cell.y;
             itemView.OnPut();
         }
         
@@ -17,14 +17,14 @@ namespace RobotCastle.Merging
         {
             // gridView.Grid[item.Data.pivotX, item.Data.pivotY].cell.currentItem = null;
             // gridView.Grid[item.Data.pivotX, item.Data.pivotY].cell.isOccupied = false;
-            gridView.Grid[item.Data.pivotX, item.Data.pivotY].item = null;
+            gridView.Grid[item.itemData.pivotX, item.itemData.pivotY].itemView = null;
         }
         
         public static void ClearCellAndHideItem(IGridView gridView, IItemView item)
         {
             // gridView.Grid[item.Data.pivotX, item.Data.pivotY].cell.currentItem = null;
             // gridView.Grid[item.Data.pivotX, item.Data.pivotY].cell.isOccupied = false;
-            gridView.Grid[item.Data.pivotX, item.Data.pivotY].item = null;
+            gridView.Grid[item.itemData.pivotX, item.itemData.pivotY].itemView = null;
             item.Hide();
         }
         

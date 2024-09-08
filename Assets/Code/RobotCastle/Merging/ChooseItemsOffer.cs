@@ -18,7 +18,7 @@ namespace RobotCastle.Merging
             
         public void OfferChooseItems(List<CoreItemData> items)
         {
-            CLog.LogRed($"All items (total {items.Count}) won't fit!!");
+            CLog.Log($"[ChooseItemsOffer] All items (total: {items.Count}) won't fit");
             var ui = ServiceLocator.Get<IUIManager>().Show<ChooseUnitItemsUI>(UIConstants.UIPickUnitItems, () => {});
             ui.PickMaximum(items, MaxItemsCount, _listener);
         }

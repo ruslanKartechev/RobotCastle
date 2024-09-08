@@ -30,8 +30,8 @@ namespace RobotCastle.Merging
                         var instance= SleepDev.MiscUtils.Spawn(prefab, _unitsParent);
                         instance.transform.position = pivotCellView.ItemPoint.position;
                         var itemView = instance.GetComponent<IItemView>();
-                        itemView.Data = itemData;
-                        pivotCellView.item = itemView;
+                        itemView.itemData = itemData;
+                        pivotCellView.itemView = itemView;
                         
                         itemData.pivotX = pivotCell.x;
                         itemData.pivotY = pivotCell.y;
@@ -56,8 +56,8 @@ namespace RobotCastle.Merging
             var itemView = instance.GetComponent<IItemView>();
             itemData.pivotX = cellView.cell.x;
             itemData.pivotY = cellView.cell.y;
-            itemView.Data = itemData;
-            cellView.item = itemView;
+            itemView.itemData = itemData;
+            cellView.itemView = itemView;
             itemView.UpdateViewToData(itemData);
             // extend for case of multi cell items!
             return itemView;
@@ -70,8 +70,8 @@ namespace RobotCastle.Merging
             var instance= SleepDev.MiscUtils.Spawn(prefab, transform);
             instance.transform.position = cellView.ItemPoint.position;
             var itemView = instance.GetComponent<IItemView>();
-            itemView.Data = new ItemData(0, itemId);
-            cellView.item = itemView;
+            itemView.itemData = new ItemData(0, itemId);
+            cellView.itemView = itemView;
             // extend for case of multi cell items!
             return itemView;
         }

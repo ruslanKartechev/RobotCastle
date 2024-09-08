@@ -4,14 +4,14 @@ namespace RobotCastle.Merging
 {
     public interface IItemView
     {
-        ItemData Data { get; set; }
+        ItemData itemData { get; set; }
         Transform Transform { get; }
         
         void OnPicked();
         void OnPut();
         void OnDroppedBack();
         void OnMerged();
-        void UpdateViewToData(ItemData data);
+        void UpdateViewToData(ItemData data = null);
         void Hide();
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8661320116897343453}
   - component: {fileID: 8795855019495986585}
   - component: {fileID: 5356807780595161456}
+  - component: {fileID: 3323465988767487165}
   m_Layer: 0
   m_Name: 'game boot '
   m_TagString: Untagged
@@ -48,6 +49,7 @@ MonoBehaviour:
   _autoStart: 1
   _initSdk: 1
   _dataInitializer: {fileID: 11400000, guid: 119024e5550d8d24d85ae14786a9aba0, type: 2}
+  _gameInput: {fileID: 3323465988767487165}
   _adPlayMode: 1
   _intersReloadtime: 30
 --- !u!114 &5356807780595161456
@@ -67,3 +69,19 @@ MonoBehaviour:
   _levelsDataBase: {fileID: 11400000, guid: d008c782ddff58041b480eea19801740, type: 2}
   _mergeGridView: {fileID: 11400000, guid: 4b489493fce82fa42943ca0d47edcfaf, type: 2}
   _unitsDataBase: {fileID: 11400000, guid: 47b2a3fafceeebe4da29520382d411fd, type: 2}
+--- !u!114 &3323465988767487165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715592485936151961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2789777916044e0f9b2bb12225354fb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _raycastWorldButtons: 1
+  _worldButtonsLayer:
+    serializedVersion: 2
+    m_Bits: 23

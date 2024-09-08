@@ -51,14 +51,14 @@ namespace RobotCastle.Merging
 
         public static void SetItemGridPosition(IItemView item, ICellView pivotCell, IGridView grid)
         {
-            item.Data.pivotX = pivotCell.cell.x;
-            item.Data.pivotY = pivotCell.cell.y;
+            item.itemData.pivotX = pivotCell.cell.x;
+            item.itemData.pivotY = pivotCell.cell.y;
         }
         
         public static void SetItemGridAndWorldPosition(IItemView item, ICellView pivotCell, IGridView grid)
         {
-            item.Data.pivotX = pivotCell.cell.x;
-            item.Data.pivotY = pivotCell.cell.y;
+            item.itemData.pivotX = pivotCell.cell.x;
+            item.itemData.pivotY = pivotCell.cell.y;
             item.Transform.position = pivotCell.ItemPoint.position;
         }
         
@@ -70,22 +70,20 @@ namespace RobotCastle.Merging
             var cell = RaycastForCellView(screenPosition);
             if (cell == null)
             {
-                CLog.Log("Raycast: no cell");
                 PutDown();
                 return;
             }
             if (!cell.cell.isOccupied)
             {
-                CLog.Log($"Raycast: {cell.cell.x}, {cell.cell.y} is empty");
                 PutDown();
                 return;
             }
-            var item = cell.item;
+            var item = cell.itemView;
             _draggedItem = new DraggedItem(cell, item);
             cell.OnPicked();
             item.OnPicked();
             _draggedItem.SetUnderCell(cell);
-            OnItemPicked?.Invoke(item.Data);
+            OnItemPicked?.Invoke(item.itemData);
             // CLog.Log($"Raycast: {cell.cell.x}, {cell.cell.y}. Picked {item.Data.GetStr()}");
         }
 
@@ -115,21 +113,21 @@ namespace RobotCastle.Merging
                 }
                 else if (!cellView.cell.isOccupied) // cell is free
                 {
-                    if (!_sectionsController.IsCellAllowed(cellView.cell.x, cellView.cell.y, _draggedItem.itemView.Data))
+                    if (!_sectionsController.IsCellAllowed(cellView.cell.x, cellView.cell.y, _draggedItem.itemView.itemData))
                     {
                         putResult = MergePutResult.CellNotAllowed;
                         _draggedItem.PutBack();
                     }
                     else
                     {
-                        _draggedItem.originalCellView.item = null;
+                        _draggedItem.originalCellView.itemView = null;
                         MergeFunctions.PutItemToCell(_draggedItem.itemView, cellView);
                         putResult = MergePutResult.PutToEmptyCell;              
                     }
                 }
                 else // cell is occupied
                 {
-                    _processor.TryMerge(_draggedItem.itemView, cellView.item, _gridView, MergeCallback, out var oneIntoTwo);
+                    _processor.TryMerge(_draggedItem.itemView, cellView.itemView, _gridView, MergeCallback, out var oneIntoTwo);
                     return;
                 }
             }
@@ -226,7 +224,7 @@ namespace RobotCastle.Merging
         private void UpdateGridAndNullDragged()
         {
             _isProcessingPut = false;
-            _sectionsController.OnItemPut(_draggedItem.itemView.Data);
+            _sectionsController.OnItemPut(_draggedItem.itemView.itemData);
             PutDown();
             CLog.Log($"[{nameof(MergeController)}] Put Result: {_lastPutResult.ToString()}");
             OnPutItem?.Invoke(_lastPutResult);
@@ -234,10 +232,10 @@ namespace RobotCastle.Merging
 
         private bool TrySwap(ICellView cell1, ICellView cell2)
         {
-            var item1 = cell1.item;
-            var item2 = cell2.item;
-            cell1.item = item2;
-            cell2.item = item1;
+            var item1 = cell1.itemView;
+            var item2 = cell2.itemView;
+            cell1.itemView = item2;
+            cell2.itemView = item1;
             SetItemGridAndWorldPosition(item1, cell2, _gridView);
             SetItemGridAndWorldPosition(item2, cell1, _gridView);
             return true;

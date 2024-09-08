@@ -7,7 +7,7 @@ namespace RobotCastle.Battling
     {
         private ItemData _data;
         
-        public ItemData Data
+        public ItemData itemData
         {
             get => _data;
             set => _data = value;

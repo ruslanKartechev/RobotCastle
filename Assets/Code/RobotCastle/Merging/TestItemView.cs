@@ -8,7 +8,7 @@ namespace RobotCastle.Merging
         [SerializeField] private StarsLevelView _starsLevelView;
         private ItemData _data;
         
-        public ItemData Data
+        public ItemData itemData
         {
             get => _data;
             set

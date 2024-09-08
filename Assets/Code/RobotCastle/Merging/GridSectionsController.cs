@@ -69,7 +69,7 @@ namespace RobotCastle.Merging
             var cell = _gridView.GetCell(item.pivotX, item.pivotY);
             if (!cell.cell.isOccupied)
                 return;
-            var itemView = cell.item;
+            var itemView = cell.itemView;
             if (item.core.type == MergeConstants.TypeUnits)
             {
                 var ui = itemView.Transform.GetComponent<UnitView>().UnitUI;
@@ -132,19 +132,36 @@ namespace RobotCastle.Merging
 
         public List<ItemData> GetAllItemsInMergeArea()
         {
-            var allItems = new List<ItemData>(20);
+            var allItems = new List<ItemData>(10);
             var grid = _gridView.BuiltGrid;
-            foreach (var row in grid.rows)
+            for (var y = 0; y <= _minYIndex; y++)
             {
+                var row = grid.rows[y];
                 foreach (var cell in row.cells)
                 {
-                    if(cell.currentItem.IsEmpty() == false)
+                    if (cell.currentItem.IsEmpty() == false)
                         allItems.Add(cell.currentItem);
                 }
             }
             return allItems;
         }
 
+        public List<IItemView> GetAllItemViewsInMergeArea()
+        {
+            var allItems = new List<IItemView>(10);
+            for (var y = 0; y <= _minYIndex; y++)
+            {
+                var maxX = _gridView.Grid.GetLength(0);
+                for (var x = 0; x < maxX; x++)
+                {
+                    var cell = _gridView.Grid[x, y];
+                    if(cell.itemView != null && !cell.itemView.itemData.IsEmpty())
+                        allItems.Add(cell.itemView);
+                }
+            }
+            return allItems;
+        }
+        
         private void Start()
         {
             if (ServiceLocator.GetIfContains(out ITroopsCountView troopsCountView))

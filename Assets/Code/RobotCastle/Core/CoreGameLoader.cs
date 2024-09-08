@@ -14,6 +14,7 @@ namespace RobotCastle.Core
         [SerializeField] private bool _autoStart = true;
         [SerializeField] private bool _initSdk = true;
         [SerializeField] private DataInitializer _dataInitializer;
+        [SerializeField] private GameInput _gameInput;
         [Header("Ads")]
         [SerializeField] private AdsPlayer.AdPlayMode _adPlayMode;
         [SerializeField] private float _intersReloadtime = 30f;
@@ -50,6 +51,8 @@ namespace RobotCastle.Core
             ServiceLocator.Bind<UIManager>(uiManager);
             ServiceLocator.Bind<GameMoney>(GameMoney.Create());
             ServiceLocator.Bind<SceneLoader>(SceneLoader.Create());
+            ServiceLocator.Bind<GameInput>(_gameInput);
+            _gameInput.Init();
             CLog.Log($"Loading saves");
             _dataInitializer.LoadAll();
             CLog.Log($"Init AdsPlayer");
@@ -61,7 +64,6 @@ namespace RobotCastle.Core
                 ll.Load();
             if(_initSdk)
                 InitSdk();
-
             InputBtn.Create();
         }
 

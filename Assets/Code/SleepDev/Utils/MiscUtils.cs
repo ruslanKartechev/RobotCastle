@@ -400,8 +400,16 @@ namespace SleepDev
             screenPosition.y *= canvas.pixelRect.height / camera.pixelHeight;
             return screenPosition - canvas.pixelRect.size / 2f;
         }
-        
-        
-        
+
+        public static List<T> RemoveNulls<T>(this List<T> list) where T : class
+        {
+            for (var i = list.Count - 1; i >= 0; i--)
+            {
+                if (list[i] == null)
+                    list.RemoveAt(i); 
+            }
+            return list;
+        }
+
     }
 }

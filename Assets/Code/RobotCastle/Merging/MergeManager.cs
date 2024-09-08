@@ -69,7 +69,7 @@ namespace RobotCastle.Merging
             {
                 var spawner = ServiceLocator.Get<IGridItemsSpawner>();
                 var itemView = spawner.SpawnItemOnCell(view, id);
-                _sectionsController.OnItemPut(itemView.Data);
+                _sectionsController.OnItemPut(itemView.itemData);
                 HighlightMergeOptions();
                 return true;
             }
@@ -82,7 +82,7 @@ namespace RobotCastle.Merging
             {
                 var spawner = ServiceLocator.Get<IGridItemsSpawner>();
                 var itemView = spawner.SpawnItemOnCell(view, new ItemData(coreData.level, coreData.id, coreData.type));
-                _sectionsController.OnItemPut(itemView.Data);
+                _sectionsController.OnItemPut(itemView.itemData);
                 HighlightMergeOptions();
                 return true;
             }
@@ -95,6 +95,23 @@ namespace RobotCastle.Merging
             var msg = _grid.GetStateAsStr();
             CLog.LogGreen("=== Grid State ===");
             CLog.LogWhite(msg);
+        }
+
+        public void MergeAll()
+        {
+            CLog.Log($"[{nameof(MergeManager)}] Merge All");
+            var items = _sectionsController.GetAllItemViewsInMergeArea();
+            var merged = _mergeProcessor.MergeAllItemsPossible(items, _gridView);
+            _mergeProcessor.SortAllItemsPossible(merged, _gridView);
+            HighlightMergeOptions();
+        }
+
+        public void SortAll()
+        {
+            CLog.Log($"[{nameof(MergeManager)}] Sort All");   
+            var items = _sectionsController.GetAllItemViewsInMergeArea();
+            _mergeProcessor.SortAllItemsPossible(items, _gridView);
+            HighlightMergeOptions();
         }
 
         private void HighlightMergeOptions()

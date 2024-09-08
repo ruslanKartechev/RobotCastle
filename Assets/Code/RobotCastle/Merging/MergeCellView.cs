@@ -12,7 +12,7 @@ namespace RobotCastle.Merging
         
         public Cell cell { get; set; }
         
-        public IItemView item
+        public IItemView itemView
         {
             get => _item;
             set
@@ -25,7 +25,7 @@ namespace RobotCastle.Merging
                 else
                 {
                     _item = value;
-                    cell.SetItem(value.Data); 
+                    cell.SetItem(value.itemData); 
                 }
             } 
         }

@@ -12,7 +12,8 @@ namespace RobotCastle.Merging
         int GetFreeCellsCount(MergeGrid grid);
         List<ItemData> GetAllItems();
         List<ItemData> GetAllItemsInMergeArea();
-        
+        List<IItemView> GetAllItemViewsInMergeArea();
+
 
     }
 }

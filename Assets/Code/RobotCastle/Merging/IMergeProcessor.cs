@@ -17,8 +17,11 @@ namespace RobotCastle.Merging
         /// </summary>
         /// <returns></returns>
         EMergeResult TryMerge(ItemData item1, ItemData item2, out ItemData mergedItem, out bool oneIntoTwo);
-        List<Vector2Int> GetCellsForPotentialMerge(MergeGrid grid, ItemData srcItem);
+        
         List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem);
+
+        List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, IGridView gridView);
+        List<IItemView> SortAllItemsPossible(List<IItemView> allItems, IGridView gridView);
         
     }
 }
