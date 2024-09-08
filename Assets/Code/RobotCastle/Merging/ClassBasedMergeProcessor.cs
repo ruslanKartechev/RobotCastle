@@ -250,7 +250,10 @@
                     var core2 = b.itemData.core;
                     if (core1.type == core2.type)
                     {
-                        return core1.level.CompareTo(core2.level);
+                        if (core1.id == core2.id)
+                            return core2.level.CompareTo(core1.level);
+                        else
+                            return String.Compare(core2.id, core1.id, StringComparison.Ordinal);
                     }
                     if (core1.type == MergeConstants.TypeUnits || core2.type == MergeConstants.TypeItems)
                         return -1;
