@@ -7,6 +7,8 @@ namespace RobotCastle.Merging
         public static void PutItemToCell(IItemView itemView, ICellView targetCell)
         {
             itemView.Transform.position = targetCell.ItemPoint.position;
+            itemView.Transform.rotation = targetCell.ItemPoint.rotation;
+            
             targetCell.itemView = itemView;
             itemView.itemData.pivotX = targetCell.cell.x;
             itemView.itemData.pivotY = targetCell.cell.y;

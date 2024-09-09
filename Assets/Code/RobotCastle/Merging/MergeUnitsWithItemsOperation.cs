@@ -29,7 +29,6 @@ namespace RobotCastle.Merging
 
         public void Process()
         {
-            var alteredIndices = new List<int>(3);
             var cont1 = _unitStanding.Transform.GetComponent<IUnitsItemsContainer>();
             var cont2 = _unitMoving.Transform.GetComponent<IUnitsItemsContainer>();
             if (cont1.ItemsCount + cont2.ItemsCount == 0)
@@ -42,19 +41,13 @@ namespace RobotCastle.Merging
             var allItems = new List<CoreItemData>(6);
             allItems.AddRange(cont1.Items);
             allItems.AddRange(cont2.Items);
-            var didMergeOnce = false;
             var it = 0;
             const int itMax = 100;
             while (it < itMax && TryAdd())
             {
                 it++;
-                didMergeOnce = true;
             }
-            if (!didMergeOnce) // animated only added once
-            {
-                for(var i = cont1.Items.Count; i < allItems.Count; i++)
-                    alteredIndices.Add(i);
-            }
+ 
             allItems.RemoveNulls();
             if (allItems.Count > MaxItemsCount)
             {

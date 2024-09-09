@@ -15,6 +15,7 @@ namespace RobotCastle.Merging
             get => _perRow;
             set => _perRow = value;
         }
+        
         private ICellView[,] _grid;
         public ICellView[,] Grid => _grid;
         public MergeGrid BuiltGrid => _lastGrid;
@@ -68,8 +69,7 @@ namespace RobotCastle.Merging
                     cells = new List<Cell>(xCount) };
                 for (var x = 0; x < xCount; x++)
                 {
-                    var newCell = new Cell()
-                    {
+                    var newCell = new Cell() {
                         isUnlocked = true,
                         currentItem = ItemData.Null,
                         isOccupied = false,
@@ -116,6 +116,10 @@ namespace RobotCastle.Merging
         
         
 #if UNITY_EDITOR
+        [Space(20)]
+        public List<Transform> e_transforms;
+        public float e_posZ;
+
         [ContextMenu("E_GetViews")]
         public void E_GetViews()
         {
@@ -148,6 +152,39 @@ namespace RobotCastle.Merging
                     UnityEditor.EditorUtility.SetDirty(go);
                 }
                 _grid[x, y] = view;
+            }
+        }
+
+        [ContextMenu("E_SetFrontPos")]
+        public void E_SetFrontPos()
+        {
+            foreach (var cell in e_transforms)
+            {
+                var tr = cell.GetChild(2);
+                var pos = tr.localPosition;
+                pos.z = -e_posZ;
+                tr.localPosition = pos;
+                tr.localEulerAngles = new Vector3(0f, 0f, 0f);
+                UnityEditor.EditorUtility.SetDirty(tr);
+            }
+        }
+        
+        [ContextMenu("E_SetBackPos")]
+        public void E_SetBackPos()
+        {
+            var half = e_transforms.Count / 2;
+            for (var i = 0; i < e_transforms.Count; i++)
+            {
+                var cell = e_transforms[i];
+                var tr = cell.GetChild(2);
+                var pos = tr.localPosition;
+                if (i < half)
+                    pos.z = -e_posZ;
+                else
+                    pos.z = 0;
+                tr.localPosition = pos;
+                tr.localEulerAngles = new Vector3(0f, 180, 0f);
+                UnityEditor.EditorUtility.SetDirty(tr);
             }
         }
 #endif

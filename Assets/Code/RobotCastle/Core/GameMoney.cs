@@ -16,6 +16,8 @@ namespace RobotCastle.Core
         
         public event Action<int> OnMoneyUpdated;
         
+        
+        
         public int Money
         {
             get

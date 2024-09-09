@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SleepDev
 {
@@ -411,5 +412,12 @@ namespace SleepDev
             return list;
         }
 
+        public static Image SetAlpha(this Image image, float alpha)
+        {
+            var col = image.color;
+            col.a = alpha;
+            image.color = col;
+            return image;
+        }
     }
 }

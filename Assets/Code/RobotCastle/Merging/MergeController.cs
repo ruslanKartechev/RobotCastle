@@ -293,6 +293,7 @@ namespace RobotCastle.Merging
             public void PutBack()
             {
                 itemView.Transform.position = originalCellView.ItemPoint.position;
+                itemView.Transform.rotation = originalCellView.ItemPoint.rotation;
                 originalCellView.OnDroppedBack();
                 itemView.OnDroppedBack();
             }

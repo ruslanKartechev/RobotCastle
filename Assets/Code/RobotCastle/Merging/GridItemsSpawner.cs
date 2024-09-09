@@ -31,17 +31,14 @@ namespace RobotCastle.Merging
                         instance.transform.position = pivotCellView.ItemPoint.position;
                         var itemView = instance.GetComponent<IItemView>();
                         itemView.itemData = itemData;
-                        pivotCellView.itemView = itemView;
-                        
-                        itemData.pivotX = pivotCell.x;
-                        itemData.pivotY = pivotCell.y;
+                        MergeFunctions.PutItemToCell(itemView, pivotCellView);
                         // extend for case of multi cell items!
                     }
                 }
             }
         }
 
-        public IItemView SpawnItemOnCell(ICellView cellView, ItemData itemData)
+        public IItemView SpawnItemOnCell(ICellView pivotCell, ItemData itemData)
         {
             var db = ServiceLocator.Get<ViewDataBaseContainer>();
             GameObject prefab = null;
@@ -52,26 +49,26 @@ namespace RobotCastle.Merging
                 prefab = db.DataBase.GetMergePrefab(itemData.core.id);
             
             var instance= SleepDev.MiscUtils.Spawn(prefab, transform);
-            instance.transform.position = cellView.ItemPoint.position;
+            instance.transform.position = pivotCell.ItemPoint.position;
             var itemView = instance.GetComponent<IItemView>();
-            itemData.pivotX = cellView.cell.x;
-            itemData.pivotY = cellView.cell.y;
             itemView.itemData = itemData;
-            cellView.itemView = itemView;
+            MergeFunctions.PutItemToCell(itemView, pivotCell);
             itemView.UpdateViewToData(itemData);
             // extend for case of multi cell items!
             return itemView;
         }
 
-        public IItemView SpawnItemOnCell(ICellView cellView, string itemId)
+        public IItemView SpawnItemOnCell(ICellView pivotCell, string itemId)
         {
             var db = ServiceLocator.Get<ViewDataBaseContainer>();
             var prefab = db.DataBase.GetMergePrefab(itemId);
             var instance= SleepDev.MiscUtils.Spawn(prefab, transform);
-            instance.transform.position = cellView.ItemPoint.position;
+            instance.transform.position = pivotCell.ItemPoint.position;
             var itemView = instance.GetComponent<IItemView>();
             itemView.itemData = new ItemData(0, itemId);
-            cellView.itemView = itemView;
+            pivotCell.itemView = itemView;
+            MergeFunctions.PutItemToCell(itemView, pivotCell);
+
             // extend for case of multi cell items!
             return itemView;
         }

@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using RobotCastle.Core;
-using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
 
@@ -34,33 +31,33 @@ namespace RobotCastle.Merging
             _didInit = true;
             _gridView = _gridViewGo.GetComponent<IGridView>();
             _grid = _gridView.BuildGridFromView();
-            CLog.Log($"[{nameof(MergeManager)}] Building grid view");
             _itemsSpawner = gameObject.GetComponent<IGridItemsSpawner>();
+            _mergeInput = gameObject.GetComponent<MergeInput>();
             _mergeProcessor = new ClassBasedMergeProcessor();
             _mergeController = new MergeController(_grid, _mergeProcessor,_itemsSpawner, _sectionsController, _gridView);
-            _mergeInput = gameObject.GetComponent<MergeInput>();
             _mergeInput.Init(_mergeController);
-            if(_allowInputOnStart)
-                _mergeInput.SetActive(true);
-            
+            _sectionsController.Init(_gridView);
+            _mergeCellHighlight.Init();
+            _highlighter.Init(_gridView, _mergeProcessor);
+            _mergeController.OnPutItem += OnItemPut;
+            _mergeController.OnItemPicked += OnItemPicked;
             // Change this!
             const int maxCount = 3;
             _sectionsController.SetMaxCount(maxCount);
-            _sectionsController.Init(_gridView);
+            //
             ServiceLocator.Bind<IGridSectionsController>(_sectionsController);
             ServiceLocator.Bind<MergeController>(_mergeController);
             ServiceLocator.Bind<IGridItemsSpawner>(_itemsSpawner);
             ServiceLocator.Bind<MergeManager>(this);
             ServiceLocator.Bind<MergeCellHighlightPool>(_mergeCellHighlight);
             ServiceLocator.Bind<IMergeCellHighlightPool>(_mergeCellHighlight);
-            _mergeCellHighlight.Init();
-            _highlighter.Init(_gridView, _mergeProcessor);
-            _mergeController.OnPutItem += OnItemPut;
-            _mergeController.OnItemPicked += OnItemPicked;
-            ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {}).ShowIdle();
+            
+            if(_allowInputOnStart)
+                _mergeInput.SetActive(true);
         }
 
-        public void SetInputActive(bool active) => _mergeInput.SetActive(active);
+        
+        public void AllowInput(bool active) => _mergeInput.SetActive(active);
 
         public bool SpawnHero(string id)
         {
@@ -140,8 +137,14 @@ namespace RobotCastle.Merging
         
         private void OnDestroy()
         {
+            ServiceLocator.Unbind<IGridSectionsController>();
             ServiceLocator.Unbind<MergeController>();
+            ServiceLocator.Unbind<IGridItemsSpawner>();
+            ServiceLocator.Unbind<MergeManager>();
+            ServiceLocator.Unbind<MergeCellHighlightPool>();
+            ServiceLocator.Unbind<IMergeCellHighlightPool>();
         }
+        
     }
     
 }

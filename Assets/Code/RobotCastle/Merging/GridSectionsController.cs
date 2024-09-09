@@ -134,7 +134,7 @@ namespace RobotCastle.Merging
         {
             var allItems = new List<ItemData>(10);
             var grid = _gridView.BuiltGrid;
-            for (var y = 0; y <= _minYIndex; y++)
+            for (var y = 0; y < _minYIndex; y++)
             {
                 var row = grid.rows[y];
                 foreach (var cell in row.cells)
@@ -149,9 +149,9 @@ namespace RobotCastle.Merging
         public List<IItemView> GetAllItemViewsInMergeArea()
         {
             var allItems = new List<IItemView>(10);
-            for (var y = 0; y <= _minYIndex; y++)
+            var maxX = _gridView.Grid.GetLength(0);
+            for (var y = 0; y < _minYIndex; y++)
             {
-                var maxX = _gridView.Grid.GetLength(0);
                 for (var x = 0; x < maxX; x++)
                 {
                     var cell = _gridView.Grid[x, y];
