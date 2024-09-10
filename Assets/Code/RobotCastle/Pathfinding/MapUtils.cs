@@ -17,7 +17,7 @@ namespace Bomber
         
         public static float DistanceEstimateSum(this Vector2Int vec)
         {
-            return (vec.x + vec.y);
+            return (Mathf.Abs(vec.x) + Mathf.Abs(vec.y));
         }
         
         public static List<Vector2Int> GetNeighbours(Vector2Int size, Vector2Int center)

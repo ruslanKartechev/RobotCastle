@@ -1,4 +1,4 @@
-using System;
+#define __DrawPathCells
 using System.Threading;
 using System.Threading.Tasks;
 using SleepDev;
@@ -21,6 +21,8 @@ namespace Bomber
         private bool _isMoving;
         private bool _didInit;
 
+        public IMap Map => _map;
+        
         public float Speed
         {
             get => _speed;
@@ -90,12 +92,20 @@ namespace Bomber
             var path = await _pathfinder.FindPath(mCellPos, targetCellPos);
             if (token.IsCancellationRequested)
             {
-                CLog.LogRed("token.IsCancellationRequested");
+                // CLog.LogRed("token.IsCancellationRequested");
                 return;
             }
             if (!path.success) {
                 CLog.Log($"[{nameof(PathfindingAgent)}] Pathfinding to {targetCellPos} FAILED..." );
             }
+#if DrawPathCells
+            foreach (var cp in path.points)
+            {
+                var p1 = _map.Grid[cp.x, cp.y].worldPosition;
+                var p2 = p1 + Vector3.up * 2;
+                Debug.DrawLine(p1, p2, Color.blue, 3f);
+            }
+#endif
             if (path.points.Count < 2)
             {
                 // CLog.LogWhite($"[{nameof(PathfindingAgent)}] path count < 2...");
