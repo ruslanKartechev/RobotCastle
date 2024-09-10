@@ -128,6 +128,21 @@ namespace SleepDev
 
         
 #region Public Buttons
+
+        public static bool Btn(string label, float width, float height, Color color, int fontSize = -1)
+        {
+            var style = GetButtonStyle(width, height);
+            style.fontStyle = FontStyle.Bold;
+            if (fontSize > 0)
+                style.fontSize = fontSize;
+            var prevColor = GUI.color;
+            GUI.color = color;
+            SetButtonTextColor(style,color);
+            var clicked = GUILayout.Button(label, style);
+            GUI.color = prevColor;
+            return clicked;
+        }
+
         /// <summary>
         /// Small Square button. Use this with no text or one character
         /// </summary>
