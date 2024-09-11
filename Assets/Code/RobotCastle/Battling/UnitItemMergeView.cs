@@ -1,4 +1,5 @@
-﻿using RobotCastle.Merging;
+﻿using DG.Tweening;
+using RobotCastle.Merging;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -15,17 +16,21 @@ namespace RobotCastle.Battling
 
         public Transform Transform => transform;
 
-        public void OnPicked()
-        { }
+        public void OnPicked() { }
 
-        public void OnPut()
-        { }
+        public void OnPut() { }
 
-        public void OnDroppedBack()
-        { }
+        public void OnDroppedBack() { }
 
-        public void OnMerged()
-        { }
+        public void OnMerged() { }
+
+        public void InitView(ItemData data)
+        {
+            _data = data;
+            var scale = transform.localScale;
+            transform.localScale = scale * .6f;
+            transform.DOScale(scale, .3f);
+        }
 
         public void UpdateViewToData(ItemData data)
         {

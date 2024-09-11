@@ -9,8 +9,8 @@ namespace RobotCastle.Merging
     [CreateAssetMenu(menuName = "SO/ViewDataBaseContainer", fileName = "ViewDataBaseContainer", order = 0)]
     public class ViewDataBaseContainer : ScriptableObject
     {
-        private const string FileName = "ViewDataBase";
-        public const string FileNameFormat = "ViewDataBase.json";
+        private const string FileName = "View Data Base";
+        public const string FileNameFormat = "View Data Base.json";
 
         private ViewDataBase _dataBase;
 
@@ -100,37 +100,7 @@ namespace RobotCastle.Merging
                 // CreateNewFile(path);
             }
         }
-
-        private void CreateNewFile(string path)
-        {
-            var db = new ViewDataBase();
-            db.ItemInfo.Add("unit_1", new ItemInfo()
-            {
-                Icon = "sprites/unit_1",
-                Prefab = "units/unit_1",
-                MaxMergeLevel = 3,
-            });
-            db.ItemInfo.Add("unit_2", new ItemInfo()
-            {
-                Icon = "sprites/unit_2",
-                Prefab = "units/unit_2",
-                MaxMergeLevel = 3,
-            });
-            db.ItemInfo.Add("sword_lvl_1", new ItemInfo()
-            {
-                Icon = "sprites/sword_lvl_1",
-                Prefab = "units/sword_1",
-                MaxMergeLevel = 3,
-            });
-            db.ItemInfo.Add("sword_lvl_2", new ItemInfo()
-            {
-                Icon = "sprites/sword_lvl_2",
-                Prefab = "units/sword_2",
-                MaxMergeLevel = 3,
-            });
-            var str = JsonConvert.SerializeObject(db, Formatting.Indented);
-            File.WriteAllText(path,str);
-        }
+   
 #endif
 
     }

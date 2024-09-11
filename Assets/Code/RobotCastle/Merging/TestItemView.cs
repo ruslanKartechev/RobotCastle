@@ -23,17 +23,23 @@ namespace RobotCastle.Merging
 
         public Transform Transform => transform;
 
-        public void OnPicked()
-        { }
+        public void OnPicked() { }
 
-        public void OnPut()
-        { }
+        public void OnPut() { }
 
-        public void OnDroppedBack()
-        { }
+        public void OnDroppedBack() { }
 
-        public void OnMerged()
-        { }
+        public void OnMerged() { }
+
+        public void InitView(ItemData data)
+        {
+            _data = data;
+            if (_starsLevelView != null)
+            {
+                _starsLevelView.SetLevel(data.core.level);
+                _starsLevelView.AnimateUpdated();                
+            }
+        }
 
         public void UpdateViewToData(ItemData data)
         {

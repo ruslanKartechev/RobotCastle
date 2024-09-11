@@ -23,6 +23,26 @@ namespace Bomber
 
         public IMap Map => _map;
         
+        public Transform movable
+        {
+            get => _movable;
+            set => _movable = value;
+        }
+
+        public Rigidbody rb
+        {
+            get => _rb;
+            set => _rb = value;
+        }
+
+        public GameObject iPathfindingAgentAnimatorGo
+        {
+            get => _IPathfindingAgentAnimatorGO;
+            set => _IPathfindingAgentAnimatorGO = value;
+        }
+        
+        public IFloatGetter SpeedGetter { get; set; }
+        
         public float Speed
         {
             get => _speed;
@@ -150,12 +170,12 @@ namespace Bomber
 
                 var vec = targetPos - _rb.transform.position;
                 var d2 = vec.sqrMagnitude;
-                var moveAmount = _speed * Time.fixedDeltaTime;
+                var moveAmount = SpeedGetter.Get() * Time.fixedDeltaTime;
                 while (!token.IsCancellationRequested && d2 > moveAmount * moveAmount)
                 {
                     vec = targetPos - _rb.transform.position;
                     d2 = vec.sqrMagnitude;
-                    var force = vec.normalized * _speed;
+                    var force = vec.normalized * SpeedGetter.Get();
                     _rb.velocity = force;
                     await Task.Yield();
                 }

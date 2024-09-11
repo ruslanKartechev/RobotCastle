@@ -42,18 +42,24 @@ namespace RobotCastle.Merging
         {
             var db = ServiceLocator.Get<ViewDataBaseContainer>();
             GameObject prefab = null;
-            
-            if(itemData.core.type == MergeConstants.TypeItems) 
-                prefab = db.DataBase.GetMergePrefabAtLevel(itemData.core.id, itemData.core.level);
-            else
-                prefab = db.DataBase.GetMergePrefab(itemData.core.id);
-            
-            var instance= SleepDev.MiscUtils.Spawn(prefab, transform);
+            GameObject instance = null;
+            switch (itemData.core.type)
+            {
+                case MergeConstants.TypeItems:
+                    prefab = db.DataBase.GetMergePrefabAtLevel(itemData.core.id, itemData.core.level);
+                    break;
+                case MergeConstants.TypeUnits:
+                    prefab = db.DataBase.GetMergePrefab(itemData.core.id);
+                    break;
+                default:
+                    CLog.LogRed($"[GridItemsSpawner] {itemData.core.type} Unknown type");
+                    break;
+            }
+            instance = SleepDev.MiscUtils.Spawn(prefab, transform);
             instance.transform.position = pivotCell.ItemPoint.position;
             var itemView = instance.GetComponent<IItemView>();
-            itemView.itemData = itemData;
+            itemView.InitView(itemData);
             MergeFunctions.PutItemToCell(itemView, pivotCell);
-            itemView.UpdateViewToData(itemData);
             // extend for case of multi cell items!
             return itemView;
         }

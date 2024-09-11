@@ -8,6 +8,10 @@ namespace RobotCastle.Core
     
     public class GameInput : MonoBehaviour
     {
+        
+        public event Action<Vector3> OnDownIgnoreUI;
+        public event Action<Vector3> OnUpIgnoreUI;
+        
         public event Action<Vector3> OnDownMain;
         public event Action<Vector3> OnUpMain;
         public event Action<Vector3> OnDownSecond;
@@ -46,7 +50,7 @@ namespace RobotCastle.Core
                             if (!_mainDown)
                             {
                                 _mainDown = true;
-                                CLog.Log("[Input] Main Touch Down");
+                                // CLog.Log("[Input] Main Touch Down");
                                 WorldButtons(true, touch.position);
                                 OnDownMain?.Invoke(touch.position);
                             }
@@ -55,7 +59,7 @@ namespace RobotCastle.Core
                             if (!_secondDown)
                             {
                                 _secondDown = true;
-                                CLog.Log("[Input] Seconds Touch Down");
+                                // CLog.Log("[Input] Seconds Touch Down");
                                 OnDownSecond?.Invoke(touch.position);
                             }
                             break;
@@ -104,13 +108,13 @@ namespace RobotCastle.Core
                         {
                             case 0:
                                 _mainDown = false;
-                                CLog.Log("[Input] Main Touch Up");
+                                // CLog.Log("[Input] Main Touch Up");
                                 WorldButtons(false, touch.position);
                                 OnUpMain?.Invoke(touch.position);
                                 break;
                             case 1:
                                 _secondDown = false;
-                                CLog.Log("[Input] Seconds Touch Up");
+                                // CLog.Log("[Input] Seconds Touch Up");
                                 OnUpSecond?.Invoke(touch.position);
                                 break;
                         }
@@ -147,6 +151,15 @@ namespace RobotCastle.Core
             {
                 while (!InputAllowed)
                     yield return null;
+                if (Input.GetMouseButtonDown(0))
+                {
+                    OnDownIgnoreUI?.Invoke(Input.mousePosition);
+                }
+                else if(Input.GetMouseButtonUp(0))
+                {
+                    OnUpIgnoreUI?.Invoke(Input.mousePosition);
+                }
+                
                 CheckInputFingersUp();
                 CheckSlide();
                 CheckZoom();

@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace RobotCastle.Saving
 {
-    [CreateAssetMenu(menuName = "SO/DataInitializer", fileName = "DataInitializer", order = -200)]
+    [CreateAssetMenu(menuName = "SO/Data Initializer", fileName = "Data Initializer", order = -200)]
     public class DataInitializer : ScriptableObject
     {
         [SerializeField] private bool _clearOnStart;
@@ -32,7 +32,7 @@ namespace RobotCastle.Saving
                 _cheatManager.ApplyStartCheat();
         }
 
-        [ContextMenu("ClearAllSaveFiles")]
+        [ContextMenu("Clear All Save Files")]
         public void ClearAllSaveFiles()
         {
             DataSaver.DeleteFile<SavePlayerData>();
@@ -41,7 +41,7 @@ namespace RobotCastle.Saving
             DataSaver.DeleteFile<SavePlayerHeroes>();
         }
 
-        [ContextMenu("LogSavesPath")]
+        [ContextMenu("Log Saves Path")]
         public void LogSavesPath()
         {
             CLog.LogGreen($"{Application.persistentDataPath}");

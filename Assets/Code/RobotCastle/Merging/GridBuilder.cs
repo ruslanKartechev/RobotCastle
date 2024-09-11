@@ -5,6 +5,7 @@ namespace RobotCastle.Merging
 {
     public class GridBuilder : MonoBehaviour
     {
+        [SerializeField] private bool _originCenter;
         [SerializeField] private bool _deleteBeforeNew;
         [SerializeField] private List<GameObject> _cellViewGameObjects;
         [SerializeField] private Vector2Int _gridSize;
@@ -28,14 +29,18 @@ namespace RobotCastle.Merging
         {
             if(_deleteBeforeNew)
                 DeleteAll();
-            var center = Vector3.zero;
-            center.x -= (_gridSize.x * .5f * _cellSize.x);
-            if (_gridSize.x % 2 > 0)
-                center.x += _cellSize.x * .5f;
+            var center = transform.position;
+            if (_originCenter)
+            {
+                center = Vector3.zero;
+                center.x -= (_gridSize.x * .5f * _cellSize.x);
+                if (_gridSize.x % 2 > 0)
+                    center.x += _cellSize.x * .5f;
             
-            center.z -= (_gridSize.y * .5f * _cellSize.y);
-            if (_gridSize.y % 2 > 0)
-                center.z += _cellSize.y * .5f;
+                center.z -= (_gridSize.y * .5f * _cellSize.y);
+                if (_gridSize.y % 2 > 0)
+                    center.z += _cellSize.y * .5f;
+            }
             
             _cellViewGameObjects = new List<GameObject>(_gridSize.x * _gridSize.y);
             for (var y = 0; y < _gridSize.y; y++)

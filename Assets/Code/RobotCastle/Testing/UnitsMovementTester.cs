@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Bomber;
 using RobotCastle.Battling;
 using RobotCastle.Core;
@@ -13,7 +12,9 @@ namespace RobotCastle.Testing
 #if UNITY_EDITOR
         [SerializeField] private MapBuilder _mapBuilder;
         [SerializeField] private Transform _transform;
-        [SerializeField] private List<UnitView> _units;
+        [SerializeField] private List<HeroView> _units;
+        private List<HeroController> _initedUnits = new();
+        
 
         private void Awake()
         {
@@ -28,12 +29,20 @@ namespace RobotCastle.Testing
         
         public void GetUnits()
         {
-            _units = new List<UnitView>(FindObjectsOfType<UnitView>());
+            _units = new List<HeroView>(FindObjectsOfType<HeroView>());
             foreach (var unit in _units)
             {
-                var uc = unit.gameObject.GetComponent<UnitController>();
-                if(uc != null)
-                    uc.InitUnit();
+                var uc = unit.gameObject.GetComponent<HeroController>();
+                if (uc != null)
+                {
+                    if (_initedUnits.Contains(uc) == false)
+                    {
+                        uc.InitAsPlayerHero("aramis", 1, 1);
+                        uc.PrepareForBattle();
+                        _initedUnits.Add(uc);
+                    }
+                    uc.UpdateMap();
+                }
             }
         }
 
@@ -48,8 +57,15 @@ namespace RobotCastle.Testing
             map.GetCellAtPosition(_transform.position, out var pos, out var cell);
             var unit = _units[0];
             
-            var uc = unit.gameObject.GetComponent<UnitController>();
-            uc.InitUnit();
+            var uc = unit.gameObject.GetComponent<HeroController>();
+            if (_initedUnits.Contains(uc) == false)
+            {
+                uc.InitAsPlayerHero("aramis", 0, 0);
+                uc.PrepareForBattle();
+                _initedUnits.Add(uc);
+            }
+            
+            uc.UpdateMap();
             
             var mover = unit.gameObject.GetComponent<UnitMover>();
             mover.MoveToCell(pos.x, pos.y);

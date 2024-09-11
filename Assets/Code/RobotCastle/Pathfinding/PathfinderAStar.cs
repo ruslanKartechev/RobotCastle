@@ -144,7 +144,6 @@ namespace Bomber
                         continue;
                     if (_map.Grid[nextPos.x, nextPos.y].isPlayerWalkable == false)
                         continue;
-                    
 #if DRAW_STEP_BY_STEP
                     var drawPos1 = _map.Grid[nextPos.x, nextPos.y].worldPosition;
                     var drawPos2 = drawPos1 + Vector3.up;

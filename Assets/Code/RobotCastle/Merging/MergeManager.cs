@@ -1,4 +1,6 @@
+using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Saving;
 using SleepDev;
 using UnityEngine;
 
@@ -79,6 +81,12 @@ namespace RobotCastle.Merging
             {
                 var spawner = ServiceLocator.Get<IGridItemsSpawner>();
                 var itemView = spawner.SpawnItemOnCell(view, new ItemData(coreData.level, coreData.id, coreData.type));
+                var hero = itemView.Transform.GetComponent<HeroController>();
+                
+                var heroSave = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerHeroes>().GetSave(coreData.id);
+                heroSave.isUnlocked = true;
+                hero.InitAsPlayerHero(coreData.id, heroSave.level, coreData.level);
+                
                 _sectionsController.OnItemPut(itemView.itemData);
                 HighlightMergeOptions();
                 return true;

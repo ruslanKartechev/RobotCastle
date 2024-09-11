@@ -12,9 +12,11 @@ namespace RobotCastle.Battling
     {
         [SerializeField] private MergeManager _mergeManager;
         [SerializeField] private BattleManager _battleManager;
+        [SerializeField] private Canvas _mainCanvas;
         
         private void Start()
         {
+            ServiceLocator.Get<IUIManager>().ParentCanvas = _mainCanvas;
             StartCoroutine(Init());
         }
 
