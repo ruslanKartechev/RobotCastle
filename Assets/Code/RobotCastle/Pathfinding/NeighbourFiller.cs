@@ -31,11 +31,12 @@ namespace Bomber
         
         public static List<PathNode> Fill(IMap map, PathNode parent, Vector2Int target, IHeuristicFunction heuristicFunction)
         {
-            var buffer = new List<PathNode>(8);
+            const int count = 4;
+            var buffer = new List<PathNode>(count);
             if (parent.Position.x > 0 && parent.Position.x < map.Size.x-1
                 && parent.Position.y > 0 && parent.Position.y < map.Size.y-1)
             {
-                for (var i = 0; i < 4; i++)
+                for (var i = 0; i < count; i++)
                 {
                     (var relativePosition, var cost) = CloseNeighbours[i];
                     var nodePosition = relativePosition + parent.Position;
@@ -46,11 +47,12 @@ namespace Bomber
             }
             else
             {
-                for (var i = 0; i < 4; i++)
+                for (var i = 0; i < count; i++)
                 {
                     (var relativePosition, var cost) = CloseNeighbours[i];
                     var nodePosition = relativePosition + parent.Position;
-                    if (nodePosition.x < 0 || nodePosition.x > map.Size.x - 1 || nodePosition.y < 0 || nodePosition.y > map.Size.y - 1)
+                    if (nodePosition.x < 0 || nodePosition.x >= map.Size.x ||
+                        nodePosition.y < 0 || nodePosition.y >= map.Size.y)
                     {
                         continue;
                     }

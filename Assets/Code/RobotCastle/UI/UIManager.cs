@@ -19,6 +19,8 @@ namespace RobotCastle.UI
         private Dictionary<string, IScreenUI> _openedScreens = new(20);
         private Dictionary<string, Action> _closedCallbacks = new(20);
 
+        public Canvas ParentCanvas { get; set; }
+
         public void Refresh()
         {
             _openedScreens.Clear();
@@ -37,7 +39,7 @@ namespace RobotCastle.UI
             {
                 var path = $"prefabs/ui/{id}";
                 var prefab = Resources.Load<GameObject>(path);
-                var obj = UnityEngine.Object.Instantiate(prefab).GetComponent<T>();
+                var obj = UnityEngine.Object.Instantiate(prefab, ParentCanvas.transform).GetComponent<T>();
                 _openedScreens.Add(id, obj);
                 _closedCallbacks.Add(id, onClosed);
                 return obj;

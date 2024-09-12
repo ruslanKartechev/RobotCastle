@@ -9,16 +9,16 @@ namespace Bomber
         // protected const int MaxNeighbours = 8;
         // protected readonly MapCell[] neighbours = new MapCell[MaxNeighbours];
         protected IMap _map;
-        protected HashSet<Vector2Int> closedList;
+        protected List<Vector2Int> closedList;
         protected IBinaryHeap<Vector2Int, PathNode> openList;
         protected IDictionary<Vector2Int, Vector2Int> links;
         protected IList<Vector2Int> pathPoints;
 
         public PathfindingAlgorithm()
         {
-            closedList =  new HashSet<Vector2Int>();
-            links = new Dictionary<Vector2Int, Vector2Int>();
-            pathPoints = new List<Vector2Int>();
+            closedList =  new List<Vector2Int>(30);
+            links = new Dictionary<Vector2Int, Vector2Int>(30);
+            pathPoints = new List<Vector2Int>(30);
         }
         
         public abstract Task<Path> FindPath(Vector2Int from, Vector2Int target);

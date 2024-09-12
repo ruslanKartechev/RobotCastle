@@ -1,4 +1,6 @@
+using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Saving;
 using SleepDev;
 using UnityEngine;
 
@@ -59,7 +61,7 @@ namespace RobotCastle.Merging
         
         public void AllowInput(bool active) => _mergeInput.SetActive(active);
 
-        public bool SpawnHero(string id)
+        public bool SpawnOnMergeGrid(string id)
         {
             var controller = ServiceLocator.Get<MergeController>();
             if (controller.GetFreeCellForNewHero(out var view))
@@ -73,16 +75,17 @@ namespace RobotCastle.Merging
             return false;
         }
 
-        public bool SpawnHero(CoreItemData coreData)
+        public bool SpawnOnMergeGrid(CoreItemData coreData, out IItemView itemView)
         {
             if (_mergeController.GetFreeCellForNewHero(out var view))
             {
                 var spawner = ServiceLocator.Get<IGridItemsSpawner>();
-                var itemView = spawner.SpawnItemOnCell(view, new ItemData(coreData.level, coreData.id, coreData.type));
+                itemView = spawner.SpawnItemOnCell(view, new ItemData(coreData.level, coreData.id, coreData.type));
                 _sectionsController.OnItemPut(itemView.itemData);
                 HighlightMergeOptions();
                 return true;
             }
+            itemView = null;
             return false;
         }
 

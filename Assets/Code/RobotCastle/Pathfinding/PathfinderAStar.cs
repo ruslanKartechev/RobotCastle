@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿#define __DRAW_STEP_BY_STEP
+using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using SleepDev;
 
 namespace Bomber
 {
@@ -40,8 +42,7 @@ namespace Bomber
                 _heuristicFunction = heuristicFunction;
             _excludedPos = new HashSet<Vector2Int>();
             
-            var comparer = new MapCellsComparer(_map);
-            openList = new BinaryHeapNodes(comparer);
+            openList = new BinaryHeapNodes(new MapCellsComparer());
         }
 
         public override async Task<Path> FindPath(Vector2Int start, Vector2Int target)
@@ -142,21 +143,44 @@ namespace Bomber
                     if (closedList.Contains(nextPos)) 
                         continue;
                     if (_map.Grid[nextPos.x, nextPos.y].isPlayerWalkable == false)
-                    {
-                        closedList.Add(nextPos);
                         continue;
-                    }
-                    if (openList.TryGet(nextPos, out var existingNode) == false)
+#if DRAW_STEP_BY_STEP
+                    var drawPos1 = _map.Grid[nextPos.x, nextPos.y].worldPosition;
+                    var drawPos2 = drawPos1 + Vector3.up;
+                    var drawColor = Color.white;
+                    var drawTime = 1f;
+#endif
+                    if (openList.TryGet(nextPos, out var existingNode) == false) // new
                     {
                         openList.Enqueue(nextNode);
                         links[nextPos] = currentNode.Position; // Add link to dictionary.
+#if DRAW_STEP_BY_STEP
+                        drawColor = Color.blue;
+#endif
                     }
-                    else if (nextNode.EstimatedTotalCost < existingNode.EstimatedTotalCost)
+                    else
                     {
-                        openList.Modify(nextNode);
-                        links[nextPos] = currentNode.Position; // Add link to dictionary.
+#if DRAW_STEP_BY_STEP
+                        drawColor = Color.white;
+#endif
+                        if (nextNode.EstimatedTotalCost < existingNode.EstimatedTotalCost) // checked
+                        {
+                            openList.Modify(nextNode);
+                            links[nextPos] = currentNode.Position; // Add link to dictionary.
+#if DRAW_STEP_BY_STEP
+                            drawColor = Color.green;
+#endif
+                        }
                     }
+#if DRAW_STEP_BY_STEP
+                    Debug.DrawLine(drawPos1, drawPos2, drawColor, drawTime);
+#endif
                 }
+#if DRAW_STEP_BY_STEP
+                var delaySec = .1f;
+                await Task.Delay(Mathf.RoundToInt(1000 * delaySec));
+#endif
+                
                 steps++;
                 stepsBeforeAwait++;
                 if (stepsBeforeAwait == StepsPerFrameMax)
@@ -168,36 +192,6 @@ namespace Bomber
             }
             return false;
         }
-        
-        private void AddToOpenList(PathNode parent, Vector2Int target)
-        {
-            var neighbours = NeighbourFiller.Fill(_map, parent, target, _heuristicFunction);
-            foreach (var nextNode in neighbours)
-            {
-                // CLog.Log($"Checking {nextNode.Position}");
-                var nextPos = nextNode.Position;
-                if (closedList.Contains(nextPos)) 
-                    continue;
-                if (_map.Grid[nextPos.x, nextPos.y].isPlayerWalkable == false)
-                {
-                    closedList.Add(nextPos);
-                    continue;
-                }
-                if (openList.TryGet(nextPos, out var existingNode) == false)
-                {
-                    // Node is not on the open list.
-                    openList.Enqueue(nextNode);
-                    links[nextPos] = parent.Position; // Add link to dictionary.
-                }
-                else if (nextNode.EstimatedTotalCost < existingNode.EstimatedTotalCost)
-                {
-                    // If already on the list, check if current estimate is less than previous
-                    openList.Modify(nextNode);
-                    links[nextPos] = parent.Position; // Add link to dictionary.
-                }
-            }
-        }
-
 
         // private void RemoveExtraPoints(IList<Vector2Int> path, IPathfindingGrid grid)
         // {

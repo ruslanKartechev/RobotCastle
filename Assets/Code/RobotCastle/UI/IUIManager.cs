@@ -1,9 +1,11 @@
 ﻿using System;
+using UnityEngine;
 
 namespace RobotCastle.UI
 {
     public interface IUIManager
     {
+        Canvas ParentCanvas { get; set; }
         void Refresh();
         T Show<T>(string id, Action onClosed) where T : IScreenUI;
         void ShowScene(string id, Action onClosed);

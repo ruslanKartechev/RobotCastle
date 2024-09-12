@@ -1,4 +1,4 @@
-using System;
+#define __DrawPathCells
 using System.Threading;
 using System.Threading.Tasks;
 using SleepDev;
@@ -21,6 +21,28 @@ namespace Bomber
         private bool _isMoving;
         private bool _didInit;
 
+        public IMap Map => _map;
+        
+        public Transform movable
+        {
+            get => _movable;
+            set => _movable = value;
+        }
+
+        public Rigidbody rb
+        {
+            get => _rb;
+            set => _rb = value;
+        }
+
+        public GameObject iPathfindingAgentAnimatorGo
+        {
+            get => _IPathfindingAgentAnimatorGO;
+            set => _IPathfindingAgentAnimatorGO = value;
+        }
+        
+        public IFloatGetter SpeedGetter { get; set; }
+        
         public float Speed
         {
             get => _speed;
@@ -90,12 +112,20 @@ namespace Bomber
             var path = await _pathfinder.FindPath(mCellPos, targetCellPos);
             if (token.IsCancellationRequested)
             {
-                CLog.LogRed("token.IsCancellationRequested");
+                // CLog.LogRed("token.IsCancellationRequested");
                 return;
             }
             if (!path.success) {
                 CLog.Log($"[{nameof(PathfindingAgent)}] Pathfinding to {targetCellPos} FAILED..." );
             }
+#if DrawPathCells
+            foreach (var cp in path.points)
+            {
+                var p1 = _map.Grid[cp.x, cp.y].worldPosition;
+                var p2 = p1 + Vector3.up * 2;
+                Debug.DrawLine(p1, p2, Color.blue, 3f);
+            }
+#endif
             if (path.points.Count < 2)
             {
                 // CLog.LogWhite($"[{nameof(PathfindingAgent)}] path count < 2...");
@@ -140,12 +170,12 @@ namespace Bomber
 
                 var vec = targetPos - _rb.transform.position;
                 var d2 = vec.sqrMagnitude;
-                var moveAmount = _speed * Time.fixedDeltaTime;
+                var moveAmount = SpeedGetter.Get() * Time.fixedDeltaTime;
                 while (!token.IsCancellationRequested && d2 > moveAmount * moveAmount)
                 {
                     vec = targetPos - _rb.transform.position;
                     d2 = vec.sqrMagnitude;
-                    var force = vec.normalized * _speed;
+                    var force = vec.normalized * SpeedGetter.Get();
                     _rb.velocity = force;
                     await Task.Yield();
                 }

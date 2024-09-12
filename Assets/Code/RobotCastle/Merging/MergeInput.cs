@@ -1,4 +1,5 @@
 using System.Collections;
+using RobotCastle.Core;
 using SleepDev;
 using UnityEngine;
 
@@ -23,29 +24,31 @@ namespace RobotCastle.Merging
             _isActive = active;
             if(_positionChecking != null)
                 StopCoroutine(_positionChecking);
-            var ui = InputBtn.Inst.Btn;
+            var ui = ServiceLocator.Get<GameInput>();
             if (active)
             {
-                ui.OnDown += OnDown;
-                ui.OnUp += OnUp;
+                ui.OnDownMain += OnDown;
+                ui.OnUpMain += OnUp;
             }
             else
             {
+                ui.OnDownMain -= OnDown;
+                ui.OnUpMain -= OnUp;
                 _mergeController.OnUp(Input.mousePosition);
             }
         }
 
-        private void OnUp()
+        private void OnUp(Vector3 pos)
         {
             if(_positionChecking != null)
                 StopCoroutine(_positionChecking);
-            _mergeController.OnUp(Input.mousePosition);
+            _mergeController.OnUp(pos);
         }
 
-        private void OnDown()
+        private void OnDown(Vector3 pos)
         {
             _positionChecking = StartCoroutine(PositionChecking());
-            _mergeController.OnDown(Input.mousePosition);
+            _mergeController.OnDown(pos);
 
         }
 

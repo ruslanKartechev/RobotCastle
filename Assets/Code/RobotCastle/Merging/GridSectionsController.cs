@@ -72,7 +72,7 @@ namespace RobotCastle.Merging
             var itemView = cell.itemView;
             if (item.core.type == MergeConstants.TypeUnits)
             {
-                var ui = itemView.Transform.GetComponent<UnitView>().UnitUI;
+                var ui = itemView.Transform.GetComponent<HeroView>().heroUI;
                 if(item.pivotY >= _minYIndex)
                     ui.SetBattleMode();
                 else

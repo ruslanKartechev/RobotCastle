@@ -8,8 +8,6 @@ namespace RobotCastle.Merging
 {
     public class AddItemToUnitOperation : IItemsChoiceListener
     {
-        private const int MaxItemLevel = 3;
-        private const int MaxItemsCount = 3;
         
         private Action<EMergeResult, bool> _callback;
         private bool _oneIntoTwo;
@@ -54,7 +52,7 @@ namespace RobotCastle.Merging
                 var item = currentItems[i];
                 if (item.id == newItem.id && 
                     item.level == newItem.level &&
-                    item.level < MaxItemLevel)
+                    item.level < MergeConstants.MaxItemLevel)
                 {
                     replaceItem = new CoreItemData(){
                         id = newItem.id,
@@ -72,7 +70,7 @@ namespace RobotCastle.Merging
             if (didMerge)
             {
                 var count = currentItems.Count;
-                var mergedItems = MergeFunctions.TryMergeAll(currentItems, MaxItemLevel);
+                var mergedItems = MergeFunctions.TryMergeAll(currentItems, MergeConstants.MaxItemLevel);
                 if (mergedItems.Count == count) // nothing changed
                 {
                     itemContainerInto.ReplaceWithMergedItem(replaceIndex, replaceItem);
@@ -86,17 +84,17 @@ namespace RobotCastle.Merging
                 return;
             }
             
-            if (currentItems.Count < MaxItemsCount)
+            if (currentItems.Count < MergeConstants.MaxItemsCount)
             {
                 itemContainerInto.AddNewItem(newItem);
                 ProcessItemsPositions();
                 Complete();
                 return;
             }
-            var allItems = new List<CoreItemData>(MaxItemsCount * 2);
+            var allItems = new List<CoreItemData>(MergeConstants.MaxItemsCount * 2);
             allItems.AddRange(currentItems);
             allItems.Add(newItem);
-            _offer = new ChooseItemsOffer(MaxItemsCount, this);
+            _offer = new ChooseItemsOffer(MergeConstants.MaxItemsCount, this);
             _offer.OfferChooseItems(allItems);
         }
 

@@ -64,7 +64,7 @@ namespace RobotCastle.Merging
         
         public void OnDown(Vector3 screenPosition)
         {
-            CLog.Log($"[{nameof(MergeController)}] On Down");
+            // CLog.Log($"[{nameof(MergeController)}] On Down");
             if (_isProcessingPut)
                 return;
             var cell = RaycastForCellView(screenPosition);
@@ -89,7 +89,7 @@ namespace RobotCastle.Merging
 
         public void OnUp(Vector3 screenPosition)
         {
-            CLog.Log($"[{nameof(MergeController)}] On Up");
+            // CLog.Log($"[{nameof(MergeController)}] On Up");
             if (_draggedItem == null)
                 return;
             if (_isProcessingPut)
