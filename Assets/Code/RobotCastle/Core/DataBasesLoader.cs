@@ -22,7 +22,8 @@ namespace RobotCastle.Core
             
             _viewDb.Load();
             _heroesDb.Load();
-            ServiceLocator.Bind<ViewDataBase>(_viewDb.DataBase);
+            ServiceLocator.Bind<ViewDataBase>(_viewDb.viewDb);
+            ServiceLocator.Bind<DescriptionsDataBase>(_viewDb.descriptionsDb);
             ServiceLocator.Bind<HeroesDatabase>(_heroesDb.DataBase);
         }
     }

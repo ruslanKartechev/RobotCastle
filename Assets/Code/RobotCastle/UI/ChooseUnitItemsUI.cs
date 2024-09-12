@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Merging;
 using SleepDev;

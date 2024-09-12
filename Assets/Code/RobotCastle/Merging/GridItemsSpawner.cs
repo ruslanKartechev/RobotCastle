@@ -1,4 +1,5 @@
-﻿using RobotCastle.Core;
+﻿using RobotCastle.Battling;
+using RobotCastle.Core;
 using SleepDev;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace RobotCastle.Merging
         
         public void SpawnItemsForGrid(IGridView gridView, MergeGrid saves)
         {
-            var db = ServiceLocator.Get<ViewDataBaseContainer>().DataBase;
+            var db = ServiceLocator.Get<ViewDataBaseContainer>().viewDb;
             for (var y = 0; y < saves.RowsCount; y++)
             {
                 for (var x = 0; x < saves.rows[y].cells.Count; x++)
@@ -46,10 +47,10 @@ namespace RobotCastle.Merging
             switch (itemData.core.type)
             {
                 case MergeConstants.TypeItems:
-                    prefab = db.DataBase.GetMergePrefabAtLevel(itemData.core.id, itemData.core.level);
+                    prefab = db.viewDb.GetMergePrefabAtLevel(itemData.core.id, itemData.core.level);
                     break;
                 case MergeConstants.TypeUnits:
-                    prefab = db.DataBase.GetMergePrefab(itemData.core.id);
+                    prefab = db.viewDb.GetMergePrefab(itemData.core.id);
                     break;
                 default:
                     CLog.LogRed($"[GridItemsSpawner] {itemData.core.type} Unknown type");
@@ -67,7 +68,7 @@ namespace RobotCastle.Merging
         public IItemView SpawnItemOnCell(ICellView pivotCell, string itemId)
         {
             var db = ServiceLocator.Get<ViewDataBaseContainer>();
-            var prefab = db.DataBase.GetMergePrefab(itemId);
+            var prefab = db.viewDb.GetMergePrefab(itemId);
             var instance= SleepDev.MiscUtils.Spawn(prefab, transform);
             instance.transform.position = pivotCell.ItemPoint.position;
             var itemView = instance.GetComponent<IItemView>();

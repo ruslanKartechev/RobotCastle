@@ -1,24 +1,54 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
 
-namespace RobotCastle.Merging
+namespace RobotCastle.Battling
 {
     [CreateAssetMenu(menuName = "SO/ViewDataBaseContainer", fileName = "ViewDataBaseContainer", order = 0)]
     public class ViewDataBaseContainer : ScriptableObject
     {
-        private const string FileName = "View Data Base";
-        public const string FileNameFormat = "View Data Base.json";
+        private const string FileNameDescriptions = "Descriptions Data Base";
+        private const string FileNameFormatDescriptions = "Descriptions Data Base.json";
+        
+        private const string FileNameView = "View Data Base";
+        private const string FileNameFormatView = "View Data Base.json";
 
-        private ViewDataBase _dataBase;
+        private DescriptionsDataBase _descriptionsDb;
+        private ViewDataBase _viewDb;
 
-        public ViewDataBase DataBase => _dataBase;
+        public DescriptionsDataBase descriptionsDb => _descriptionsDb;
+        public ViewDataBase viewDb => _viewDb;
+        
 
         public void Load()
         {
-            var text = UnityEngine.Resources.Load<TextAsset>(FileName);
+            LoadView();
+            Descriptions();
+        }
+
+        private void Descriptions()
+        {
+            var text = UnityEngine.Resources.Load<TextAsset>(FileNameDescriptions);
+            if (text == null)
+            {
+                CLog.LogError("FileName Does not exist!");
+                return;
+            }
+            var data = JsonConvert.DeserializeObject<DescriptionsDataBase>(text.text);
+            if (data == null)
+            {
+                CLog.LogError("UnitsDatDescriptionInfoaBase could not be loaded");
+                return;
+            }
+            _descriptionsDb = data;
+        }
+
+        private void LoadView()
+        {
+            var text = UnityEngine.Resources.Load<TextAsset>(FileNameView);
             if (text == null)
             {
                 CLog.LogError("FileName Does not exist!");
@@ -30,7 +60,7 @@ namespace RobotCastle.Merging
                 CLog.LogError("UnitsDataBase could not be loaded");
                 return;
             }
-            _dataBase = data;
+            _viewDb = data;
         }
         
         
@@ -41,7 +71,7 @@ namespace RobotCastle.Merging
         {
             var path = Application.streamingAssetsPath;
             path = path.Replace("StreamingAssets", "Resources");
-            path = Path.Join(path, FileNameFormat);
+            path = Path.Join(path, FileNameFormatView);
             return path;
         }
 
@@ -49,13 +79,13 @@ namespace RobotCastle.Merging
         public void CreateNewFile()
         {
            Load();
-           if (_dataBase == null)
+           if (_viewDb == null)
            {
                CLog.LogRed("DABASE IS NULL");
                return;
            }
            
-           _dataBase.ItemInfo = new Dictionary<string, ItemInfo>(50);
+           _viewDb.ItemInfo = new Dictionary<string, ItemInfo>(50);
            var ids = new List<string>(50);
            var items = new List<string>() {
                "sword", "armor", "staff", "bow", "book_xp"
@@ -86,9 +116,9 @@ namespace RobotCastle.Merging
                    Prefab = prefab + id,
                    Icon = $"sprites/icon_{id}"
                };
-               _dataBase.ItemInfo.Add(id, info);
+               _viewDb.ItemInfo.Add(id, info);
            }
-           var str = JsonConvert.SerializeObject(_dataBase, Formatting.Indented);
+           var str = JsonConvert.SerializeObject(_viewDb, Formatting.Indented);
            File.WriteAllText(GetPathToFile(),str);
         } 
         

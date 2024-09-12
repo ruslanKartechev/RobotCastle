@@ -21,7 +21,6 @@ namespace RobotCastle.UI
         [SerializeField] private SpellDescriptionUI _spellDescription;
         [SerializeField] private Image _heroIcon;
         private HeroView _heroView;
-            
         
         public override void Show(GameObject source)
         {

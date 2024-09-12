@@ -1,14 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
 
-namespace RobotCastle.Merging
+namespace RobotCastle.Battling
 {
     [System.Serializable]
     public class ViewDataBase
     {
-        public Dictionary<string, ItemInfo> ItemInfo;
+        public Dictionary<string, ItemInfo> ItemInfo = new (5);
+        public Dictionary<string, string> StatsIcons = new (5);
+        public Dictionary<string, string> SpellsIcons = new (5);
 
+        public static string GetStatId(EStatType statType)
+        {
+            switch (statType)
+            {
+                case EStatType.Attack: return "attack";
+                case EStatType.AttackSpeed: return "attack_speed";
+                case EStatType.Health: return "health";
+                case EStatType.MoveSpeed: return "move_speed";
+                case EStatType.Range: return "range";
+                case EStatType.SpellPower: return "spell_power";
+            }
+            throw new Exception($"{statType.ToString()} is not supported!");
+        }
+
+        public Sprite GetStatIcon(EStatType statType)
+        {
+            return GetIconForStat(GetStatId(statType));
+        }
+        
+        public Sprite GetIconForStat(string statId)
+        {
+            return Resources.Load<Sprite>($"sprites/{StatsIcons[statId]}");
+        }
+        
         public GameObject GetMergePrefabAtLevel(string id, int levelIndex)
         {
             if (ItemInfo.ContainsKey(id))
