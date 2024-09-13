@@ -32,7 +32,7 @@ namespace RobotCastle.Merging
             }
             if (anotherData.type == _bookItem.itemData.core.type)
             {
-                Upgrade();
+                UpgradeAsItem();
                 _callback.Invoke(EMergeResult.MergedOneIntoAnother, _isBookTaken);
                 return;
             }
@@ -47,11 +47,10 @@ namespace RobotCastle.Merging
             switch (anotherData.type)
             {
                 case MergeConstants.TypeItems:
-                    Upgrade();             
+                    UpgradeAsItem();             
                     break;
                 case MergeConstants.TypeUnits:
-                    anotherData.level++;
-                    _anotherItem.UpdateViewToData();
+                    UpgradeAsUnit();
                     break;
                 default:
                     Failed();
@@ -59,7 +58,27 @@ namespace RobotCastle.Merging
             }
             _callback.Invoke(EMergeResult.MergedOneIntoAnother, _isBookTaken);
 
-            void Upgrade()
+            void UpgradeAsUnit()
+            {
+                IItemView taken = null;
+                IItemView standing = null;
+                
+                if (_isBookTaken)
+                {
+                    taken = _bookItem;
+                    standing = _anotherItem;
+                }
+                else
+                {
+                    taken = _anotherItem;
+                    standing = _bookItem;
+                }
+                anotherData.level++;
+                standing.UpdateViewToData();
+                MergeFunctions.ClearCellAndHideItem(_gridView, taken);
+            }            
+            
+            void UpgradeAsItem()
             {
                 IItemView taken = null;
                 IItemView standing = null;
