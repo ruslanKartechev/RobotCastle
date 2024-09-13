@@ -30,8 +30,7 @@ namespace RobotCastle.Testing
                 CLog.Log("[TestBattleGridSpawner] Not in play mode!");
                 return;
             }
-            
-            SpawnItem(_oneHero, _itemsForHero);
+            SpawnItem(_oneHero, _addItemsToSpawnedHero ? _itemsForHero : null);
 #endif
         }
 
@@ -111,9 +110,9 @@ namespace RobotCastle.Testing
         public void SpawnBow3() => SpawnItem(new CoreItemData(2, "bow", MergeConstants.TypeItems));
         public void SpawnBow4() => SpawnItem(new CoreItemData(3, "bow", MergeConstants.TypeItems));
 
-        public void SpawnXPBook1() => SpawnItem(new CoreItemData(0, "book_xp", MergeConstants.TypeItems));
-        public void SpawnXPBook2() => SpawnItem(new CoreItemData(1, "book_xp", MergeConstants.TypeItems));
-        public void SpawnXPBook3() => SpawnItem(new CoreItemData(2, "book_xp", MergeConstants.TypeItems));
+        public void SpawnXPBook1() => SpawnItem(new CoreItemData(0, MergeConstants.UpgradeBookId, MergeConstants.TypeItems));
+        public void SpawnXPBook2() => SpawnItem(new CoreItemData(1, MergeConstants.UpgradeBookId, MergeConstants.TypeItems));
+        public void SpawnXPBook3() => SpawnItem(new CoreItemData(2, MergeConstants.UpgradeBookId, MergeConstants.TypeItems));
         
         public void SpawnPreset(List<CoreItemData> list)
         {

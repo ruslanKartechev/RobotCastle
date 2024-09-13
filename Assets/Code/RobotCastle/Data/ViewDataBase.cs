@@ -32,6 +32,11 @@ namespace RobotCastle.Battling
             return GetIconForStat(GetStatId(statType));
         }
         
+        public Sprite GetSpellIcon(string id)
+        {
+            return Resources.Load<Sprite>($"sprites/{SpellsIcons[id]}");
+        }
+        
         public Sprite GetIconForStat(string statId)
         {
             return Resources.Load<Sprite>($"sprites/{StatsIcons[statId]}");

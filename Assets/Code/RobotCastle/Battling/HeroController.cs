@@ -7,6 +7,7 @@ namespace RobotCastle.Battling
     public class HeroController : MonoBehaviour
     {
         [SerializeField] private HeroView _unitView;
+        [SerializeField] private HeroSpellsContainer _spellsContainer;
         private HeroStatsContainer _stats;
         private IUnitBehaviour _currentBehaviour;
         private IUnitsItemsContainer _itemsContainer;

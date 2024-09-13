@@ -7,5 +7,7 @@
         
         public const int MaxItemLevel = 3;
         public const int MaxItemsCount = 3;
+
+        public const string UpgradeBookId = "book_xp";
     }
 }

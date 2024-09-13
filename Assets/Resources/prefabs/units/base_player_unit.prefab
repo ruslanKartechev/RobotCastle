@@ -64,6 +64,9 @@ PrefabInstance:
       addedObject: {fileID: 1451587380498265510}
     - targetCorrespondingSourceObject: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 6618750351878436254}
+    - targetCorrespondingSourceObject: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1835956978038810276}
     - targetCorrespondingSourceObject: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
       insertIndex: -1
@@ -110,6 +113,19 @@ MonoBehaviour:
   _ragdoll: {fileID: 0}
   _agent: {fileID: 0}
   _unitMover: {fileID: 0}
+--- !u!114 &6618750351878436254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6474838686143646402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3fefc6a4e8846729048be21bdb5774b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _modifiers: []
 --- !u!114 &1835956978038810276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitView: {fileID: 1451587380498265510}
+  _spellsContainer: {fileID: 6618750351878436254}
 --- !u!114 &4013108132105696753
 MonoBehaviour:
   m_ObjectHideFlags: 0

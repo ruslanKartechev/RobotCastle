@@ -1,14 +1,20 @@
-﻿using RobotCastle.Battling;
+﻿using System;
+using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Merging;
 using UnityEngine;
 
 namespace RobotCastle.UI
 {
-    public class UnitItemDescriptionProvider : MonoBehaviour, IItemDescriptionProvider
+    public class UnitItemDescriptionProvider : MonoBehaviour, IHeroItemDescriptionProvider
     {
-        [SerializeField] private UnitItemMergeView _mergeView;
-        
+        private IItemView _mergeView;
+
+        private void OnEnable()
+        {
+            _mergeView = gameObject.GetComponent<IItemView>();
+        }
+
         public int Lvl => _mergeView.itemData.core.level;
         
         public DescriptionInfo GetInfo()
@@ -18,6 +24,8 @@ namespace RobotCastle.UI
             return ServiceLocator.Get<DescriptionsDataBase>().GetDescription(fullId);
         }
 
+        public EItemDescriptionMode Mode => EItemDescriptionMode.Modifier;
+
         public Sprite GetItemIcon()
         {
             return ServiceLocator.Get<ViewDataBase>().GetUnitItemSpriteAtLevel(_mergeView.itemData.core.id, Lvl);
@@ -26,9 +34,9 @@ namespace RobotCastle.UI
         public string GetIdForUI()
         {
             if (_mergeView.itemData.core.level < 3)
-                return "ui_item_description_short";
+                return UIConstants.DescriptionItemShort;
             else
-                return "ui_item_description_long";
+                return UIConstants.DescriptionItemLong;
         }
         
         public GameObject GetGameObject() => gameObject;

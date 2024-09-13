@@ -16,4 +16,5 @@ namespace RobotCastle.Merging
         void OnDroppedBack();
         void OnMerged();
     }
+    
 }

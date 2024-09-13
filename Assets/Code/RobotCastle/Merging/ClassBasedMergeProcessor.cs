@@ -24,6 +24,20 @@
             public void TryMerge(IItemView itemViewTaken, IItemView itemViewInto, IGridView gridView,
                 Action<EMergeResult, bool> callback, out bool oneIntoTwo)
             {
+                oneIntoTwo = true;
+                if (itemViewTaken.itemData.core.id == MergeConstants.UpgradeBookId)
+                {
+                    var upgradeOperation = new UpgradeWithBookOperation(itemViewTaken, itemViewInto, true, gridView, callback);
+                    upgradeOperation.Process();
+                    return;
+                }
+                if (itemViewInto.itemData.core.id == MergeConstants.UpgradeBookId)
+                {
+                    var upgradeOperation = new UpgradeWithBookOperation(itemViewInto, itemViewTaken, false, gridView, callback);
+                    upgradeOperation.Process();
+                    return;
+                }
+                
                 _itemViewTaken = itemViewTaken;
                 _itemViewInto = itemViewInto;
                 _callback = callback;
@@ -85,7 +99,8 @@
                     operation.Process();
                 }
             }
-
+            
+            
             public EMergeResult TryMerge(ItemData item1, ItemData item2, out ItemData mergedItem, out bool oneIntoTwo)
             {
                 oneIntoTwo = true;

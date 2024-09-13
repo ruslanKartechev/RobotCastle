@@ -119,6 +119,8 @@ namespace RobotCastle.Merging
         [Space(20)]
         public List<Transform> e_transforms;
         public float e_posZ;
+        public List<Material> e_materials;
+        public string e_mat_holder_id = "cube outer";
 
         [ContextMenu("E_GetViews")]
         public void E_GetViews()
@@ -185,6 +187,34 @@ namespace RobotCastle.Merging
                 tr.localPosition = pos;
                 tr.localEulerAngles = new Vector3(0f, 180, 0f);
                 UnityEditor.EditorUtility.SetDirty(tr);
+            }
+        }
+        
+        [ContextMenu("E_SetMaterials")]
+        public void E_SetMaterials()
+        {
+            var matInd = 0;
+            foreach (var go in _cellViewGameObjects)
+            {
+                for (var i = 0; i < go.transform.childCount; i++)
+                {
+                    var child = go.transform.GetChild(i).gameObject;
+                    if (child.name.Contains(e_mat_holder_id))
+                    {
+                        SetMat(child);
+                        continue;
+                    }
+                }
+            }
+
+            void SetMat(GameObject go)
+            {
+                var rend = go.GetComponent<MeshRenderer>();
+                rend.sharedMaterial = e_materials[matInd];
+                matInd++;
+                if (matInd >= e_materials.Count)
+                    matInd = 0;
+                UnityEditor.EditorUtility.SetDirty(rend);
             }
         }
 #endif
