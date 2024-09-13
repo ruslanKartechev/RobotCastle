@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using RobotCastle.Core;
+﻿using RobotCastle.Core;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -21,11 +20,10 @@ namespace RobotCastle.Battling
         public int MergeTier { get; private set; }
         public int HeroLvl { get; private set; }
 
-        public readonly static List<float> TierMultipliers = new() { 1f, 1.6f, 2.6f, 3.6f, 4.8f, 6.0f, 7.0f };
 
         public static float GetMaxHealth(HeroStats stats, int levelIndex, int mergeLevel)
         {
-            return stats.health[levelIndex] * TierMultipliers[mergeLevel];
+            return stats.health[levelIndex] * HeroesConfig.TierStatMultipliers[mergeLevel];
         }
         
         public static float GetMana(HeroStats stats, int levelIndex, int mergeLevel)
@@ -35,12 +33,12 @@ namespace RobotCastle.Battling
         
         public static float GetAttack(HeroStats stats, int levelIndex, int mergeLevel)
         {
-            return stats.attack[levelIndex] * TierMultipliers[mergeLevel];
+            return stats.attack[levelIndex] * HeroesConfig.TierStatMultipliers[mergeLevel];
         }
         
         public static float GetSpellPower(HeroStats stats, int levelIndex, int mergeLevel)
         {
-            return stats.spellPower[levelIndex] * TierMultipliers[mergeLevel];
+            return stats.spellPower[levelIndex] * HeroesConfig.TierStatMultipliers[mergeLevel];
         }
         
         public static float GetAttackSpeed(HeroStats stats, int levelIndex, int mergeLevel)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Merging;
@@ -19,6 +20,48 @@ namespace RobotCastle.Testing
         [SerializeField] private List<CoreItemData> _itemsPreset1;
         [SerializeField] private List<CoreItemData> _itemsPreset2;
         [SerializeField] private List<CoreItemData> _itemsPreset3;
+        [Space(10)] 
+        [SerializeField] private int _heroIndex;
+        [SerializeField] private List<string> _heroIds;
+        // [SerializeField] private 
+
+        public string HeroID { get; set; }
+
+        public int HeroLvl { get; set; }
+
+        public void NextHero()
+        {
+            _heroIndex++;
+            CorrectIndexAndSetId();
+        }
+
+        public void PrevHero()
+        {
+            _heroIndex--;
+            CorrectIndexAndSetId();
+        }
+
+        public void NextHeroLvl()
+        {
+            HeroLvl++;
+            if (HeroLvl >= MergeConstants.HeroMaxLvl)
+                HeroLvl = MergeConstants.HeroMaxLvl - 1;
+        }
+
+        public void PrevHeroLvl()
+        {
+            HeroLvl--;
+            if(HeroLvl < 0)
+                HeroLvl = 0;
+            
+        }
+
+        [ContextMenu("Spawn Chosen Hero")]
+        public void SpawnChosenHero()
+        {
+            var coreItem = new CoreItemData(HeroLvl, HeroID, MergeConstants.TypeUnits);
+            SpawnItem(coreItem, null);
+        }
 
 
         [ContextMenu("Spawn One Hero")]
@@ -148,7 +191,26 @@ namespace RobotCastle.Testing
             if (!did)
                 CLog.LogRed("[CheatSpawner] Did not spawn hero!");        
         }
-        
-        
+
+        private void CorrectIndexAndSetId()
+        {
+            if (_heroIds.Count > 0)
+            {
+                _heroIndex = Mathf.Clamp(_heroIndex, 0, _heroIds.Count - 1);
+                HeroID = _heroIds[_heroIndex];
+            }
+            else
+                _heroIndex = 0;
+        }
+
+        private void OnValidate()
+        {
+            CorrectIndexAndSetId();    
+        }
+
+        private void OnEnable()
+        {
+            CorrectIndexAndSetId();
+        }
     }
 }

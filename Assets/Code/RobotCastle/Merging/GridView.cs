@@ -157,6 +157,47 @@ namespace RobotCastle.Merging
             }
         }
 
+        [ContextMenu("E_SetSpawnPositions")]
+        public void E_SetSpawnPositions()
+        {
+            var rowInd = 0;
+            var cellNum = 1;
+            foreach (var cell in _cellViewGameObjects)
+            {
+                cellNum++;
+                if (cellNum >= 7)
+                {
+                    cellNum = 0;
+                    rowInd++;
+                }
+                CLog.Log($"Cell num {cellNum}. Row {rowInd}");
+                if (cell.transform.childCount < 3)
+                {
+                    CLog.Log("SKIPPED");
+                    continue;
+                }
+                
+                var tr = cell.transform.GetChild(2);
+                var pos = tr.localPosition;
+                var eulers = new Vector3();
+                
+                if (rowInd < 2)
+                {
+                    pos.z = 0f;
+                    eulers = new Vector3(0f, 180f, 0f);
+                }
+                else
+                {
+                    pos.z = -e_posZ;
+                    eulers = new Vector3(0f, 0f, 0f);
+                }
+                tr.localPosition = pos;
+                tr.localEulerAngles = eulers;
+                UnityEditor.EditorUtility.SetDirty(tr);
+            }
+        }
+        
+
         [ContextMenu("E_SetFrontPos")]
         public void E_SetFrontPos()
         {

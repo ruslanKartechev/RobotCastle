@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using RobotCastle.Battling;
 using RobotCastle.Core;
 using TMPro;
@@ -20,6 +21,7 @@ namespace RobotCastle.UI
         [SerializeField] private BarTrackerUI _mana;
         [SerializeField] private SpellDescriptionUI _spellDescription;
         [SerializeField] private Image _heroIcon;
+        [SerializeField] private List<ItemDescriptionShortUI> _itemsUI;
         private GameObject _src;
         
         public override void Show(GameObject source)
@@ -38,11 +40,23 @@ namespace RobotCastle.UI
             else
                 spell = (SpellProvider)spells.defaultSpell;
             Show(stats, info, spell);
-                
-            // _spellDescription.Show(provider);
+
+            var items = source.GetComponent<IUnitsItemsContainer>();
+            if (items != null)
+            {
+                var count = items.ItemsCount;
+                for(var i = count; i < _itemsUI.Count; i++)
+                    _itemsUI[i].gameObject.SetActive(false);
+                for (var i = 0; i < count; i++)
+                {
+                    _itemsUI[i].gameObject.SetActive(true);
+                    var itemData = items.Items[i];
+                    _itemsUI[i].ShowCore(itemData);
+                }
+            }
             _animator.FadeIn();
         }
-
+        
         public void Show(HeroStatsContainer stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
         {
             _attackText.text = (stats.Attack.Val).ToString(CultureInfo.InvariantCulture);

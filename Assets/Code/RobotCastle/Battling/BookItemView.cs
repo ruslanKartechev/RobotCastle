@@ -1,4 +1,5 @@
 ﻿using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using UnityEngine;
@@ -49,25 +50,17 @@ namespace RobotCastle.Battling
 
         public Vector3 WorldPosition => transform.position;
 
-        public int Lvl => itemData.core.level;
-        
+        CoreItemData IHeroItemDescriptionProvider.CoreData => itemData.core;
+
         public Sprite GetItemIcon()
         {
-            return ServiceLocator.Get<ViewDataBase>().GetUnitItemSpriteAtLevel(itemData.core.id, Lvl);
-        }
-
-        public DescriptionInfo GetInfo()
-        {
-            var id = itemData.core.id;
-            var fullId = $"{id}_lvl_{Lvl}";
-            return ServiceLocator.Get<DescriptionsDataBase>().GetDescription(fullId);
+            return ServiceLocator.Get<ViewDataBase>().GetUnitItemSpriteAtLevel(itemData.core.id, itemData.core.level);
         }
 
         public EItemDescriptionMode Mode => EItemDescriptionMode.DescriptionOnly;
         
-        public bool CanUpgrade(CoreItemData item)
-        {
-            return item.level <= _maxItemLevelIndexToUpgrade;
-        }
+        public DescriptionInfo GetInfo() => DataHelpers.GetItemDescription(itemData.core);
+        
+        public bool CanUpgrade(CoreItemData item) => item.level <= _maxItemLevelIndexToUpgrade;
     }
 }

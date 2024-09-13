@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Battling;
-using RobotCastle.Merging;
+using RobotCastle.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,11 +25,11 @@ namespace RobotCastle.UI
             switch (src.Mode)
             {
                 case EItemDescriptionMode.DescriptionOnly:
-                    Show(info, icon);
+                    ShowCore(info, icon);
                     break;
                 case EItemDescriptionMode.Modifier:
                     var modifiers = source.gameObject.GetComponent<ModifiersContainer>().Modifiers;
-                    Show(info, icon, modifiers, src.GetGameObject());
+                    ShowCoreAndModifiers(info, icon, modifiers, src.GetGameObject());
                     break;
             }
           
@@ -37,7 +37,7 @@ namespace RobotCastle.UI
             _animator.FadeIn();
         }
 
-        public void Show(DescriptionInfo info, Sprite icon)
+        public void ShowCore(DescriptionInfo info, Sprite icon)
         {
             _lvlText.text = info.parts[1];
             _nameText.text = info.parts[0];
@@ -45,7 +45,7 @@ namespace RobotCastle.UI
             _heroIcon.sprite = icon;
         }
         
-        public void Show(DescriptionInfo info, Sprite icon, List<ModifierProvider> modifiers, GameObject target)
+        public void ShowCoreAndModifiers(DescriptionInfo info, Sprite icon, List<ModifierProvider> modifiers, GameObject target)
         {
             _lvlText.text = info.parts[1];
             _nameText.text = info.parts[0];

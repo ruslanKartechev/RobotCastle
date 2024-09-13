@@ -5,7 +5,7 @@ using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
 
-namespace RobotCastle.Battling
+namespace RobotCastle.Data
 {
     [CreateAssetMenu(menuName = "SO/ViewDataBaseContainer", fileName = "ViewDataBaseContainer", order = 0)]
     public class ViewDataBaseContainer : ScriptableObject

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RobotCastle.Merging
+namespace RobotCastle.Data
 {
     [System.Serializable]
     public class DescriptionInfo

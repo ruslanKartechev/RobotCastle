@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
-using RobotCastle.Merging;
+using RobotCastle.Data;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -14,6 +15,7 @@ namespace RobotCastle.Battling
 
         public virtual int GetTier(GameObject hero)
         {
+            var merge = hero.GetComponent<HeroStatsContainer>().MergeTier;
             return HeroesConfig.GetSpellTier(hero.GetComponent<HeroStatsContainer>().MergeTier);
         }
 

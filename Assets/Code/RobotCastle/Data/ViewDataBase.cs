@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using RobotCastle.Battling;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
 
-namespace RobotCastle.Battling
+namespace RobotCastle.Data
 {
     [System.Serializable]
     public class ViewDataBase

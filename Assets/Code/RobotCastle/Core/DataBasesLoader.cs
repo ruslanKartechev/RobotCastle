@@ -1,4 +1,5 @@
 ﻿using RobotCastle.Battling;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using UnityEngine;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using SleepDev;
 using TMPro;

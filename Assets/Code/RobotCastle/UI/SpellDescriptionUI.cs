@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

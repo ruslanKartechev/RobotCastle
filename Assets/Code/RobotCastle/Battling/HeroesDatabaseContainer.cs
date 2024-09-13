@@ -89,7 +89,8 @@ namespace RobotCastle.Battling
         private void CreateFile(string id)
         {
             var heroInfo = new HeroInfo(_dbgHero);
-            heroInfo.viewInfo.name = string.Concat(id[0].ToString().ToUpper(), id.Substring(1));
+            var vName = id;
+            heroInfo.viewInfo.name = string.Concat(vName[0].ToString().ToUpper(), vName.Substring(1));
             heroInfo.viewInfo.iconId = $"hero_icon_{id}";
             var str = JsonConvert.SerializeObject(heroInfo, Formatting.Indented);
             File.WriteAllText(GetPathToFile(id),str);

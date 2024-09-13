@@ -34,8 +34,25 @@ namespace RobotCastle.Testing
 
             GUILayout.EndHorizontal();
             
-            GUILayout.Space(5);      
+            GUILayout.Space(10);      
+            
+            // GUILayout.BeginHorizontal();
 
+            EU.TwoButtonAndLabel("<<", ">>", $"Hero: {me.HeroID}", EU.Lime, EU.Lime, EU.White,
+                        me.PrevHero, me.NextHero);
+            GUILayout.Space(5);
+            EU.TwoButtonAndLabel("<<", ">>", $"Level: {me.HeroLvl+1}", EU.Lime, EU.Lime, EU.White,
+                        me.PrevHeroLvl, me.NextHeroLvl);
+            GUILayout.Space(5);
+            if(EU.BtnMidWide2($"Spawn {me.HeroID}", EU.Fuchsia))
+                me.SpawnChosenHero();
+            
+            // GUILayout.EndHorizontal();
+            
+            
+            GUILayout.Space(10);      
+
+            
             GUILayout.BeginHorizontal();
             if (EU.BtnMid1("Sword 1", EU.Red))
                 me.SpawnSword1();

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using UnityEngine;
 using UnityEngine.UI;

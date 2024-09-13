@@ -1,6 +1,7 @@
 ﻿using System;
 using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
 
 namespace RobotCastle.Merging
 {
@@ -75,6 +76,7 @@ namespace RobotCastle.Merging
                 }
                 anotherData.level++;
                 standing.UpdateViewToData();
+                standing.OnMerged();
                 MergeFunctions.ClearCellAndHideItem(_gridView, taken);
             }            
             

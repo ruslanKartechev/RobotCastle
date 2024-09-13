@@ -3,6 +3,7 @@
     using RobotCastle.Core;
     using SleepDev;
     using System;
+    using RobotCastle.Data;
     using UnityEngine;
 
     namespace RobotCastle.Merging
@@ -77,6 +78,7 @@
                             case MergeConstants.TypeUnits:
                                 itemViewInto.itemData.core.level++;
                                 itemViewInto.UpdateViewToData();
+                                itemViewInto.OnMerged();
                                 var process = new MergeUnitsWithItemsOperation(itemViewTaken, itemViewInto, _gridView, _callback);
                                 process.Process();
                                 return;
@@ -236,6 +238,7 @@
                                         allItems[indTwo] = null;
                                         data1.level++;
                                         allItems[indOne].UpdateViewToData();
+                                        allItems[indOne].OnMerged();
                                         return true;
                                     case MergeConstants.TypeItems:
                                         MergeFunctions.ClearCellAndHideItem(gridView, allItems[indOne]);

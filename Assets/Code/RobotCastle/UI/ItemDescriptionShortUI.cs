@@ -1,5 +1,8 @@
-﻿using RobotCastle.Battling;
+﻿using System.Collections.Generic;
+using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
+using RobotCastle.Merging;
 using SleepDev;
 using TMPro;
 using UnityEngine;
@@ -9,6 +12,7 @@ namespace RobotCastle.UI
 {
     public class ItemDescriptionShortUI : DescriptionUI
     {
+        [SerializeField] private bool _dontShowSpell;
         [SerializeField] private UIRectToScreenFitter _rectToScreenFitter;
         [SerializeField] private FadeInOutAnimator _animator;
         [SerializeField] private TextMeshProUGUI _lvlText;
@@ -24,20 +28,44 @@ namespace RobotCastle.UI
 
         public override void Show(GameObject source)
         {
-            var src = source.GetComponent<UnitItemDescriptionProvider>();
-            var info = src.GetInfo();
-            _lvlText.text = info.parts[1];
-            _nameText.text = info.parts[0];
-            _heroIcon.sprite = src.GetItemIcon();
-            _rectToScreenFitter.SetScreenPos(Camera.main.WorldToScreenPoint(src.WorldPosition));
-            var viewDb = ServiceLocator.Get<ViewDataBase>();
+            var src = source.GetComponent<IHeroItemDescriptionProvider>();
+            ShowCore(src.GetInfo(), src.GetItemIcon());
             var modifiers = source.gameObject.GetComponent<ModifiersContainer>().Modifiers;
-            if (src.Lvl < 2)
+            if(_dontShowSpell)
                 _additionalBonusBlock.SetActive(false);
             else
-                _additionalBonusBlock.SetActive(true);
+            {
+                if (src.CoreData.level < 2)
+                    _additionalBonusBlock.SetActive(false);
+                else
+                    _additionalBonusBlock.SetActive(true);                
+            }
+            ShowStats(modifiers, source);
+            
+            _rectToScreenFitter.SetScreenPos(Camera.main.WorldToScreenPoint(src.WorldPosition));
+            _animator.FadeIn();
+        }
+
+        public void ShowCore(DescriptionInfo info, Sprite icon)
+        {
+            _lvlText.text = info.parts[1];
+            _nameText.text = info.parts[0];
+            _heroIcon.sprite = icon;
+        }
+        
+        public void ShowCore(CoreItemData itemData)
+        {
+            var info = DataHelpers.GetItemDescription(itemData);   
+            _lvlText.text = info.parts[1];
+            _nameText.text = info.parts[0];
+            _heroIcon.sprite = DataHelpers.GetItemIcon(itemData);
+        }
+
+        public void ShowStats(List<ModifierProvider> modifiers, GameObject source = null)
+        {
             var didFindStat = false;
             var didFindBonus = false;
+            var viewDb = ServiceLocator.Get<ViewDataBase>();
             foreach (var mod in modifiers)
             {
                 if (mod is StatsModifierProvider statMod)
@@ -47,6 +75,8 @@ namespace RobotCastle.UI
                     didFindStat = true;
                     _statsIcon.sprite = viewDb.GetStatIcon(statMod.StatType);
                     _statsText.text = statMod.GetDescription(source);
+                    if (_dontShowSpell)
+                        break;
                 }
                 else if (!didFindBonus)
                 {
@@ -56,11 +86,6 @@ namespace RobotCastle.UI
                 if (didFindBonus && didFindStat)
                     break;
             }
-            if (!didFindStat)
-            {
-                CLog.LogRed($"Did not find any StatsModifierProvider on {source.gameObject.name}");
-            }
-            _animator.FadeIn();
         }
 
         public override void Hide()

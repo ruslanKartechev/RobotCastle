@@ -7,7 +7,12 @@
         
         public const int MaxItemLevel = 3;
         public const int MaxItemsCount = 3;
-
+        
+        /// <summary>
+        /// Not index. Max Index is 6  
+        /// </summary>
+        public const int HeroMaxLvl = 7;
+        
         public const string UpgradeBookId = "book_xp";
     }
 }
