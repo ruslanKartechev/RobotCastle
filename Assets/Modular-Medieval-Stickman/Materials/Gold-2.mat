@@ -12,7 +12,10 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - TCP2_DISABLE_WRAPPED_LIGHT
   - TCP2_STYLIZED_FRESNEL
+  - _GLOSSYREFLECTIONS_OFF
+  - _SPECULARHIGHLIGHTS_OFF
   m_InvalidKeywords:
   - TCP2_UV_NORMALS_FULL
   m_LightmapFlags: 4
@@ -72,8 +75,8 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0
-    - _GlossyReflections: 1
+    - _Glossiness: 0.17
+    - _GlossyReflections: 0
     - _Metallic: 0
     - _Mode: 0
     - _NormalsSource: 0
@@ -85,16 +88,16 @@ Material:
     - _Parallax: 0.02
     - _RampSmooth: 1
     - _RampSmoothAdd: 0
-    - _RampThreshold: 0.94
+    - _RampThreshold: 0.62
     - _RimMax: 1
     - _RimMin: 0.57
     - _RimStrength: 2
     - _SmoothnessTextureChannel: 0
     - _SpecBlend: 1
     - _SpecSmooth: 0
-    - _SpecularHighlights: 1
+    - _SpecularHighlights: 0
     - _SrcBlend: 1
-    - _TCP2_DISABLE_WRAPPED_LIGHT: 0
+    - _TCP2_DISABLE_WRAPPED_LIGHT: 1
     - _TCP2_OUTLINE_CONST_SIZE: 0
     - _TCP2_OUTLINE_TEXTURED: 0
     - _TCP2_RAMPTEXT: 0
