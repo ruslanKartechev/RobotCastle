@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52005cb416a243b5b998d62b08550cbe, type: 3}
   m_Name: Hero Database Container
   m_EditorClassIdentifier: 
+  pathToHeroes: config_heroes
+  pathToEnemies: config_enemies
   _heroIdsForFiles:
   - aramis
   - evan
@@ -26,6 +28,9 @@ MonoBehaviour:
   - Mara
   - Joi
   - Saras
+  _enemiesIdsForFiles:
+  - orc_1
+  - orc_2
   _dbgHero:
     stats:
       health:
@@ -111,7 +116,96 @@ MonoBehaviour:
       - 150
       rangeId: aramis
     spellInfo:
+      mainSpellId: headshot
+    viewInfo:
+      name: Aramis
+      iconId: hero_icon_aramis
+  _dbgEnemy:
+    stats:
+      health:
+      - 150
+      - 180
+      - 210
+      - 285
+      - 315
+      - 345
+      - 375
+      - 450
+      - 480
+      - 510
+      - 540
+      - 570
+      - 600
+      - 630
+      - 660
+      - 705
+      - 750
+      - 795
+      - 840
+      - 885
+      spellPower:
+      - 70
+      - 84
+      - 98
+      - 133
+      - 147
+      - 161
+      - 175
+      - 210
+      - 224
+      - 238
+      - 252
+      - 266
+      - 280
+      - 294
+      - 308
+      - 329
+      - 350
+      - 371
+      - 392
+      - 413
+      attack:
+      - 45
+      - 54
+      - 63
+      - 86
+      - 95
+      - 104
+      - 113
+      - 135
+      - 144
+      - 153
+      - 162
+      - 171
+      - 180
+      - 189
+      - 198
+      - 212
+      - 225
+      - 239
+      - 252
+      - 266
+      mana:
+      - 70
+      - 80
+      - 90
+      - 100
+      - 110
+      - 120
+      - 130
+      attackSpeed:
+      - 67
+      - 74
+      - 80
+      - 87
+      - 94
+      - 101
+      - 107
+      moveSpeed:
+      - 150
+      rangeId: orc_1
+    spellInfo:
       mainSpellId: 
     viewInfo:
-      name: 
-      iconId: 
+      name: Orc 1
+      iconId: hero_icon_orc_1

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Data;
 
 namespace RobotCastle.Merging
 {
@@ -6,12 +7,20 @@ namespace RobotCastle.Merging
     {
         public static void PutItemToCell(IItemView itemView, ICellView targetCell)
         {
-            itemView.Transform.position = targetCell.ItemPoint.position;
-            itemView.Transform.rotation = targetCell.ItemPoint.rotation;
-            
             targetCell.itemView = itemView;
             itemView.itemData.pivotX = targetCell.cell.x;
             itemView.itemData.pivotY = targetCell.cell.y;
+            itemView.Transform.position = targetCell.ItemPoint.position;
+            itemView.Transform.rotation = targetCell.ItemPoint.rotation;
+            itemView.OnPut();
+        }
+
+        public static void PutToCellAnimated(IItemView itemView, ICellView targetCell)
+        {
+            targetCell.itemView = itemView;
+            itemView.itemData.pivotX = targetCell.cell.x;
+            itemView.itemData.pivotY = targetCell.cell.y;
+            itemView.MoveToPoint(targetCell.ItemPoint, MergeConstants.MergeItemPutAnimationTime);
             itemView.OnPut();
         }
         
@@ -64,6 +73,16 @@ namespace RobotCastle.Merging
             }
             return false;
         }
+     
+                
+        public static void SetItemGridAndWorldPosition(IItemView item, ICellView pivotCell)
+        {
+            item.itemData.pivotX = pivotCell.cell.x;
+            item.itemData.pivotY = pivotCell.cell.y;
+            item.Transform.position = pivotCell.ItemPoint.position;
+            item.Transform.rotation = pivotCell.ItemPoint.rotation;
+        }
+        
         
     }
 }

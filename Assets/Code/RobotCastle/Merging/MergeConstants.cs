@@ -14,5 +14,10 @@
         public const int HeroMaxLvl = 7;
         
         public const string UpgradeBookId = "book_xp";
+        
+        public const string HeroRangeFxId = "hero_range";
+        public const string UnderCellFxId = "cell_center";
+
+        public const float MergeItemPutAnimationTime = .3f;
     }
 }

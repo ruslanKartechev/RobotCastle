@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RobotCastle.Merging
 {
-    public class MergeController
+    public partial class MergeController
     {
         private const float RaycastMaxDistance = 100;
 
@@ -15,7 +15,7 @@ namespace RobotCastle.Merging
 
         private MergeGrid _grid;
         private IMergeProcessor _processor;
-        private IGridItemsSpawner _itemsSpawner;
+        private IMergeItemsFactory _itemsSpawner;
         private IGridView _gridView;
         private LayerMask _layerMask;
         private Vector3 _offset;
@@ -29,7 +29,7 @@ namespace RobotCastle.Merging
         
         public MergeController(MergeGrid grid,
             IMergeProcessor processor, 
-            IGridItemsSpawner itemsSpawner,
+            IMergeItemsFactory itemsSpawner,
             IGridSectionsController availabilityController,
             IGridView gridView)
         {
@@ -43,25 +43,7 @@ namespace RobotCastle.Merging
             _layerMask = db.cellsMask;
             _offset = db.draggingOffset;
         }
-        
-        public static void AddItemToGrid(ItemData item, MergeGrid saves)
-        {
-            saves.rows[item.pivotY].cells[item.pivotX].SetItem(item);
-        }
 
-        public static void SetItemGridPosition(IItemView item, ICellView pivotCell, IGridView grid)
-        {
-            item.itemData.pivotX = pivotCell.cell.x;
-            item.itemData.pivotY = pivotCell.cell.y;
-        }
-        
-        public static void SetItemGridAndWorldPosition(IItemView item, ICellView pivotCell, IGridView grid)
-        {
-            item.itemData.pivotX = pivotCell.cell.x;
-            item.itemData.pivotY = pivotCell.cell.y;
-            item.Transform.position = pivotCell.ItemPoint.position;
-        }
-        
         public void OnDown(Vector3 screenPosition)
         {
             // CLog.Log($"[{nameof(MergeController)}] On Down");
@@ -79,7 +61,7 @@ namespace RobotCastle.Merging
                 return;
             }
             var item = cell.itemView;
-            _draggedItem = new DraggedItem(cell, item);
+            _draggedItem = new DraggedItem(cell, item, _gridView);
             cell.OnPicked();
             item.OnPicked();
             _draggedItem.SetUnderCell(cell);
@@ -121,7 +103,7 @@ namespace RobotCastle.Merging
                     else
                     {
                         _draggedItem.originalCellView.itemView = null;
-                        MergeFunctions.PutItemToCell(_draggedItem.itemView, cellView);
+                        MergeFunctions.PutToCellAnimated(_draggedItem.itemView, cellView);
                         putResult = MergePutResult.PutToEmptyCell;              
                     }
                 }
@@ -236,8 +218,8 @@ namespace RobotCastle.Merging
             var item2 = cell2.itemView;
             cell1.itemView = item2;
             cell2.itemView = item1;
-            SetItemGridAndWorldPosition(item1, cell2, _gridView);
-            SetItemGridAndWorldPosition(item2, cell1, _gridView);
+            MergeFunctions.SetItemGridAndWorldPosition(item1, cell2);
+            MergeFunctions.SetItemGridAndWorldPosition(item2, cell1);
             return true;
         }
 
@@ -253,7 +235,6 @@ namespace RobotCastle.Merging
         private (bool, ICellView) TryHitCellToPut(Vector3 screenPosition)
         {
             var didHitCell = false;
-            
             var scrPos = _camera.WorldToScreenPoint(_draggedItem.itemView.Transform.position);
             var cellView = RaycastForCellView(scrPos);
             if (cellView == null)
@@ -269,47 +250,5 @@ namespace RobotCastle.Merging
 
             return (didHitCell, cellView);
         }
-
-        
-        private class DraggedItem
-        {
-            public ICellView originalCellView;
-            public IItemView itemView;
-            public ICellView underCell;
-
-            public DraggedItem(ICellView cell, IItemView item)
-            {
-                originalCellView = cell;
-                itemView = item;
-                underCell = null;
-            }
-
-            public void OnPut()
-            {
-                if(underCell != null)
-                    underCell.HighlightAsUnderCell(false);
-            }
-            
-            public void PutBack()
-            {
-                itemView.Transform.position = originalCellView.ItemPoint.position;
-                itemView.Transform.rotation = originalCellView.ItemPoint.rotation;
-                originalCellView.OnDroppedBack();
-                itemView.OnDroppedBack();
-            }
-
-            public void SetUnderCell(ICellView cell)
-            {
-                if (underCell == cell)
-                    return;
-                if(underCell != null)
-                    underCell.HighlightAsUnderCell(false);
-                if(cell != null)
-                    cell.HighlightAsUnderCell(true);
-                underCell = cell;
-            }
-            
-        }
-        
     }
 }

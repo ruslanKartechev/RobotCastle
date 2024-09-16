@@ -5,6 +5,10 @@ namespace RobotCastle.Battling
 {
     public class HeroStatsContainer : MonoBehaviour
     {
+        private HeroStats _stats;
+        private IAttackRange _range;
+        public IAttackRange Range => _range;
+        
         public Stat SpellPower {get; set;} = new Stat();
         public Stat Attack {get; set;} = new Stat();
         public Stat AttackSpeed {get; set;} = new Stat();
@@ -45,9 +49,7 @@ namespace RobotCastle.Battling
         {
             return stats.attackSpeed[mergeLevel];
         }
-        
-        private HeroStats _stats;
-        private IAttackRange _range;
+
 
         public void Init(string id, int levelIndex, int mergeLevel)
         {
@@ -55,7 +57,7 @@ namespace RobotCastle.Battling
             var db = ServiceLocator.Get<HeroesDatabase>();
             _stats = db.GetStatsForHero(id);
             SetLevel(levelIndex, mergeLevel);
-            _range = AttackRangeFactory.GetAttackRangeById(_stats.rangeId);
+            _range = AttackRangeFactory.GetAttackRangeById(id);
         }
         
         public void SetLevel(int levelIndex, int mergeLevel)
@@ -69,7 +71,7 @@ namespace RobotCastle.Battling
             SpellPower.SetBaseAndCurrent(GetSpellPower(_stats, levelIndex, mergeLevel));
             Attack.SetBaseAndCurrent(GetAttack(_stats, levelIndex, mergeLevel));
             AttackSpeed.SetBaseAndCurrent(GetAttackSpeed(_stats, levelIndex, mergeLevel));
-            MoveSpeed.SetBaseAndCurrent(_stats.moveSpeed[0]);
+            MoveSpeed.SetBaseAndCurrent(_stats.moveSpeed[0] * HeroesConfig.SpeedStatMultiplier);
             
             MergeTier = mergeLevel;
             HeroLvl = levelIndex;

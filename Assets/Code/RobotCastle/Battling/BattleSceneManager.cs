@@ -10,8 +10,10 @@ namespace RobotCastle.Battling
     [DefaultExecutionOrder(35)]
     public class BattleSceneManager : MonoBehaviour
     {
+        [SerializeField] private string _enemiesPreset;
         [SerializeField] private MergeManager _mergeManager;
         [SerializeField] private BattleManager _battleManager;
+        [SerializeField] private EnemiesManager _enemiesManager;
         [SerializeField] private Canvas _mainCanvas;
         
         private void Start()
@@ -25,6 +27,7 @@ namespace RobotCastle.Battling
             InitUI();
             yield return null;
             _mergeManager.Init();
+            _enemiesManager.SpawnPreset(_enemiesPreset);
             yield return null;
             _mergeManager.AllowInput(true);
         }

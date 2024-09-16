@@ -1,4 +1,6 @@
-﻿namespace RobotCastle.Merging
+﻿using UnityEngine;
+
+namespace RobotCastle.Merging
 {
     [System.Serializable]
     public class Cell 
@@ -8,6 +10,8 @@
         public int y;
         public bool isUnlocked;
         public bool isOccupied;
+
+        public Vector2Int Coord => new Vector2Int(x, y);
         
         public Cell(){}
 

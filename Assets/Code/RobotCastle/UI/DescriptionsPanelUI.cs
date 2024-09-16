@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using RobotCastle.Core;
-using SleepDev;
 using UnityEngine;
 using UnityEngine.UI;
+using SleepDev;
 
 namespace RobotCastle.UI
 {
@@ -16,6 +17,7 @@ namespace RobotCastle.UI
         private IItemDescriptionProvider _provider;
         private float _clickTime;
         private int _clicks;
+        private Coroutine _waitingInput;
 
         private void OnEnable()
         {
@@ -33,33 +35,35 @@ namespace RobotCastle.UI
 
         private void OnDownMain(Vector3 screenPos)
         {
-            _clicks++;
-            if ((Time.time - _clickTime > _clickMaxDelay))
-            {
-                _clickTime = Time.time;
-                _clicks = 0;
-                if (_currentDescription != null)
-                {
-                    _currentDescription.Hide();
-                    _currentDescription = null;
-                    _provider = null;
-                }  
-                return;
-            }
             _clickTime = Time.time;
-            // CLog.LogWhite($"Count: {_clicks}");
-            if (_clicks >= 1)
+            Hide();
+        }
+
+        private void OnUpMain(Vector3 screenPos)
+        {
+            if (Time.time - _clickTime < _clickMaxDelay)
             {
-                _clicks = 0;
-                // CLog.LogGreen($"Trying to raycast");
                 if (TryRaycastWorld(screenPos))
-                { }
+                {
+                    return;
+                }
+                if (TryRaycastUI())
+                {
+                    return;
+                }
             }
         }
         
-        private void OnUpMain(Vector3 screenPos)
-        { }
-
+        private void Hide()
+        {
+            if (_currentDescription != null)
+            {
+                _currentDescription.Hide();
+                _currentDescription = null;
+                _provider = null;
+            }  
+        }
+        
         private bool TryRaycastWorld(Vector3 pos)
         {
             var ray = Camera.main.ScreenPointToRay(pos);

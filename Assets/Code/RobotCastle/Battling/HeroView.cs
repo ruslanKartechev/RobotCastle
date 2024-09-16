@@ -1,8 +1,8 @@
 ﻿using Bomber;
+using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev.Ragdoll;
 using UnityEngine;
-using SleepDev;
 
 namespace RobotCastle.Battling
 {
@@ -14,27 +14,20 @@ namespace RobotCastle.Battling
         public Collider collider => _collider;
         public Rigidbody rb => _rb;
 
-        public PathfindingAgent agent
-        {
-            get => _agent;
-            set => _agent = value;
-        }
+        public PathfindingAgent agent { get; set; }
 
-        public UnitMover unitMover
-        {
-            get => _unitMover;
-            set => _unitMover = value;
-        }
+        public HeroMovementManager unitMovementManager { get; set; }
         
         public HeroStatsContainer Stats { get; set; }
+
+        public IItemView MergeItemView => _mergeView;
         
         [SerializeField] private BattleUnitUI _heroUI;
         [SerializeField] private Collider _collider;
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Animator _animator;
         [SerializeField] private Ragdoll _ragdoll;
-        [SerializeField] private PathfindingAgent _agent;
-        [SerializeField] private UnitMover _unitMover;
+        [SerializeField] private UnitMergeView _mergeView;
     }
     
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
@@ -86,8 +87,8 @@ namespace RobotCastle.Testing
                 CLog.Log("[TestBattleGridSpawner]Not in play mode!");
                 return;
             }
-            var battleGridSpawner = ServiceLocator.Get<IBattleGridSpawner>();
-            var did = battleGridSpawner.SpawnHero(_oneItem, out var view);
+            var battleGridSpawner = ServiceLocator.Get<IBattleUnitsFactory>();
+            var did = battleGridSpawner.SpawnHeroOrItem(_oneItem, out var view);
             if (!did)
                 CLog.LogRed("[TestBattleGridSpawner] Did not spawn hero!");
 #endif
@@ -164,19 +165,19 @@ namespace RobotCastle.Testing
                 CLog.Log("Preset list is empty");
                 return;
             }
-            var battleGridSpawner = ServiceLocator.Get<IBattleGridSpawner>();
+            var battleGridSpawner = ServiceLocator.Get<IBattleUnitsFactory>();
             if (battleGridSpawner == null)
             {
                 CLog.LogError("NO IBattleGridSpawner found!");
                 return;
             }
             foreach (var itemData in list)
-                battleGridSpawner.SpawnHero(itemData, out var view);
+                battleGridSpawner.SpawnHeroOrItem(itemData, out var view);
         }
         
         public void SpawnItem(CoreItemData data, List<CoreItemData> items = null)
         {
-            var battleGridSpawner = ServiceLocator.Get<IBattleGridSpawner>();
+            var battleGridSpawner = ServiceLocator.Get<IBattleUnitsFactory>();
             if (battleGridSpawner == null)
             {
                 CLog.LogError("NO IBattleGridSpawner found!");
@@ -185,7 +186,7 @@ namespace RobotCastle.Testing
 
             var did = false;
             if (items == null)
-                did = battleGridSpawner.SpawnHero(data, out var view);
+                did = battleGridSpawner.SpawnHeroOrItem(data, out var view);
             else
                 did = battleGridSpawner.SpawnHeroWithItems(data, items, out var view);
             if (!did)

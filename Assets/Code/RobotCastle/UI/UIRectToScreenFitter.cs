@@ -9,11 +9,14 @@ namespace RobotCastle.UI
         
         public RectTransform Rect => _rect; 
 
-        public void SetScreenPos(Vector3 pos)
+        public void SetScreenPos(Vector3 pos, float addedWidth = 0, float addedHeight = 0)
         {
             pos.z = 0f;
-            var offsetX = new Vector2((-_rect.pivot.x) * _rect.sizeDelta.x, (1 - _rect.pivot.x) * _rect.sizeDelta.x);
-            var offsetY = new Vector2((-_rect.pivot.y) * _rect.sizeDelta.y, (1 - _rect.pivot.y) * _rect.sizeDelta.y);
+            var width = _rect.sizeDelta.x + addedWidth;
+            var height = _rect.sizeDelta.y + addedHeight;
+            
+            var offsetX = new Vector2((-_rect.pivot.x) * width, (1 - _rect.pivot.x) * width);
+            var offsetY = new Vector2((-_rect.pivot.y) * height, (1 - _rect.pivot.y) * height);
 
             var rightOverflow = (pos.x + offsetX.y) - Screen.width;
             if (rightOverflow > 0)

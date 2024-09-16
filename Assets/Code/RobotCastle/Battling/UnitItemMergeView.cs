@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using RobotCastle.Merging;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -23,6 +24,14 @@ namespace RobotCastle.Battling
         public void OnDroppedBack() { }
 
         public void OnMerged() { }
+        public void Rotate(Quaternion rotation, float time)
+        {
+        }
+
+        public void MoveToPoint(Transform endPoint, float time)
+        {
+            transform.CopyPosRot(endPoint);
+        }
 
         public void InitView(ItemData data)
         {

@@ -6,7 +6,7 @@ namespace RobotCastle.Merging
 {
     public class GridView : MonoBehaviour, IGridView
     {
-        [SerializeField] private int _perRow = 5;
+        [SerializeField] private int _perRow = 7;
         [SerializeField] private List<GameObject> _cellViewGameObjects;
         private MergeGrid _lastGrid;
         
@@ -79,6 +79,7 @@ namespace RobotCastle.Merging
                     row.cells.Add(newCell);
                     _grid[x, y] = _cellViewGameObjects[linearIndex].GetComponent<ICellView>();
                     _grid[x, y].cell = newCell;
+                    // CLog.LogYellow($"{x}, {y}  {_cellViewGameObjects[linearIndex].name}. Index {linearIndex}");
                     linearIndex++;
                 }
                 grid.rows.Add(row);                
@@ -160,31 +161,24 @@ namespace RobotCastle.Merging
         [ContextMenu("E_SetSpawnPositions")]
         public void E_SetSpawnPositions()
         {
-            var rowInd = 0;
+            var rowNum = 1;
             var cellNum = 1;
             foreach (var cell in _cellViewGameObjects)
             {
-                cellNum++;
-                if (cellNum >= 7)
-                {
-                    cellNum = 0;
-                    rowInd++;
-                }
-                CLog.Log($"Cell num {cellNum}. Row {rowInd}");
+                CLog.Log($"{cell.name} Cell num {cellNum}. Row {rowNum}");
                 if (cell.transform.childCount < 3)
                 {
-                    CLog.Log("SKIPPED");
+                    CLog.Log("SKIPPED. Reason: cell.transform.childCount < 3");
                     continue;
                 }
-                
                 var tr = cell.transform.GetChild(2);
                 var pos = tr.localPosition;
                 var eulers = new Vector3();
-                
-                if (rowInd < 2)
+                if (rowNum <= 2)
                 {
                     pos.z = 0f;
                     eulers = new Vector3(0f, 180f, 0f);
+                    CLog.LogBlue($"{cell.name} Cell num {cellNum}. Row {rowNum}");
                 }
                 else
                 {
@@ -193,6 +187,12 @@ namespace RobotCastle.Merging
                 }
                 tr.localPosition = pos;
                 tr.localEulerAngles = eulers;
+                cellNum++;
+                if (cellNum > 7)
+                {
+                    cellNum = 1;
+                    rowNum++;
+                }
                 UnityEditor.EditorUtility.SetDirty(tr);
             }
         }

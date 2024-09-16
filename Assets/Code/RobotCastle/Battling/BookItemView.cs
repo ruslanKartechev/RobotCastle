@@ -2,6 +2,7 @@
 using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -43,6 +44,16 @@ namespace RobotCastle.Battling
         public void OnDroppedBack() { }
 
         public void OnMerged() { }
+
+        public void Rotate(Quaternion rotation, float time)
+        {
+            transform.rotation = rotation;
+        }
+
+        public void MoveToPoint(Transform endPoint, float time)
+        {
+            transform.CopyPosRot(endPoint);
+        }
 
         public string GetIdForUI() => UIConstants.DescriptionItemLong;
 

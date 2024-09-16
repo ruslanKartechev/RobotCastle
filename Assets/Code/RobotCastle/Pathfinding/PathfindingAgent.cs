@@ -12,7 +12,7 @@ namespace Bomber
         [SerializeField] private float _rotationSpeed;
         [SerializeField] private Transform _movable;
         [SerializeField] private Rigidbody _rb;
-        [SerializeField] private GameObject _IPathfindingAgentAnimatorGO;
+        [SerializeField] private GameObject PathfindingAgentAnimatorGO;
 
         private IPathfindingAgentAnimator _pathfindingAgentAnimator;
         private PathfinderAStar _pathfinder;
@@ -35,10 +35,21 @@ namespace Bomber
             set => _rb = value;
         }
 
-        public GameObject iPathfindingAgentAnimatorGo
+        public GameObject PathfindingAgentAnimatorGo
         {
-            get => _IPathfindingAgentAnimatorGO;
-            set => _IPathfindingAgentAnimatorGO = value;
+            get => PathfindingAgentAnimatorGO;
+            set
+            {
+                PathfindingAgentAnimatorGO = value;
+                if (PathfindingAgentAnimatorGO != null)
+                    _pathfindingAgentAnimator = PathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
+            }
+        }
+        
+        public IPathfindingAgentAnimator PathfindingAgentAnimator
+        {
+            get => _pathfindingAgentAnimator;
+            set => _pathfindingAgentAnimator = value;
         }
         
         public IFloatGetter SpeedGetter { get; set; }
@@ -66,9 +77,9 @@ namespace Bomber
             
             _map = map;
             _pathfinder = new PathfinderAStar(map, new DistanceHeuristic());
-            if (_IPathfindingAgentAnimatorGO != null && _pathfindingAgentAnimator == null)
+            if (PathfindingAgentAnimatorGO != null && _pathfindingAgentAnimator == null)
             {
-                _pathfindingAgentAnimator = _IPathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
+                _pathfindingAgentAnimator = PathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
             }
         }
 

@@ -15,6 +15,9 @@ namespace RobotCastle.Merging
         void OnPut();
         void OnDroppedBack();
         void OnMerged();
+
+        void Rotate(Quaternion rotation, float time);
+        void MoveToPoint(Transform endPoint, float time);
     }
     
 }

@@ -71,7 +71,7 @@
                                 MergeFunctions.ClearCell(gridView, itemViewTaken);
                                 MergeFunctions.ClearCell(gridView, itemViewInto);
                                 
-                                var spawner = ServiceLocator.Get<IGridItemsSpawner>();
+                                var spawner = ServiceLocator.Get<IMergeItemsFactory>();
                                 var cell = gridView.Grid[itemInto.pivotX, itemInto.pivotY];
                                 spawner.SpawnItemOnCell(cell, mergedItem);
                                 break;
@@ -246,7 +246,7 @@
                                         allItems[indOne] = null;
                                         allItems[indTwo] = null;
                                         data1.level++;
-                                        allItems[indOne] = ServiceLocator.Get<IGridItemsSpawner>().SpawnItemOnCell(cellOne, new ItemData(data1));
+                                        allItems[indOne] = ServiceLocator.Get<IMergeItemsFactory>().SpawnItemOnCell(cellOne, new ItemData(data1));
                                         return true;
                                 }
                             }

@@ -67,7 +67,7 @@ namespace RobotCastle.Testing
             
             uc.UpdateMap();
             
-            var mover = unit.gameObject.GetComponent<UnitMover>();
+            var mover = unit.gameObject.GetComponent<HeroMovementManager>();
             mover.MoveToCell(pos.x, pos.y);
         }
 #endif

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RobotCastle.Data;
+using UnityEngine;
 
 namespace RobotCastle.Merging
 {
@@ -52,6 +53,6 @@ namespace RobotCastle.Merging
 
         public bool IsEmpty() => core.level < 0;
         
-        public string GetStr() => core.ItemDataStr();
+        public string GetStr() => core.AsStr();
     }
 }

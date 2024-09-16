@@ -1,4 +1,5 @@
-﻿using RobotCastle.Merging;
+﻿using RobotCastle.Data;
+using RobotCastle.Merging;
 
 namespace RobotCastle.Battling
 {

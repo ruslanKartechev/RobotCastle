@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8795855019495986585}
   - component: {fileID: 5356807780595161456}
   - component: {fileID: 3323465988767487165}
+  - component: {fileID: 2121574087058885397}
   m_Layer: 0
   m_Name: 'game boot '
   m_TagString: Untagged
@@ -81,7 +82,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2789777916044e0f9b2bb12225354fb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _longClockTime: 0.15
   _raycastWorldButtons: 1
   _worldButtonsLayer:
     serializedVersion: 2
     m_Bits: 23
+--- !u!114 &2121574087058885397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715592485936151961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef9a4adfac7b4807ad8d961a685990e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _reloadKey: 114
+  _pauseKey: 32

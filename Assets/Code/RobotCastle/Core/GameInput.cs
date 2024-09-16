@@ -5,13 +5,17 @@ using UnityEngine;
 
 namespace RobotCastle.Core
 {
-    
     public class GameInput : MonoBehaviour
     {
-        
+        [SerializeField] private float _longClockTime = .2f;
+        private Vector3 _clickPos;
         public event Action<Vector3> OnDownIgnoreUI;
         public event Action<Vector3> OnUpIgnoreUI;
+
         
+        public event Action<Vector3> OnDownLongClick;
+        public event Action<Vector3> OnShortClick;
+
         public event Action<Vector3> OnDownMain;
         public event Action<Vector3> OnUpMain;
         public event Action<Vector3> OnDownSecond;
@@ -21,12 +25,19 @@ namespace RobotCastle.Core
 
         [SerializeField] private bool _raycastWorldButtons;
         [SerializeField] private LayerMask _worldButtonsLayer;
+        private Coroutine _longClickWaiting;
         private IWorldButton _currentWorldButton;
         private InputBtn _inputBtn;
         private bool _mainDown;
         private bool _secondDown;
+        private float _mainClickTime;
         
         public bool InputAllowed { get; set; } = true;
+        
+        public Vector3 MainMousePosition
+        {
+            get => Input.mousePosition;
+        }
         
         public void Init()
         {
@@ -49,10 +60,7 @@ namespace RobotCastle.Core
                         case 0:
                             if (!_mainDown)
                             {
-                                _mainDown = true;
-                                // CLog.Log("[Input] Main Touch Down");
-                                WorldButtons(true, touch.position);
-                                OnDownMain?.Invoke(touch.position);
+                                DownMain();
                             }
                             break;
                         case 1:
@@ -68,12 +76,67 @@ namespace RobotCastle.Core
             }
             else
             {
-                _mainDown = true;
-                WorldButtons(true, Input.mousePosition);
-                OnDownMain?.Invoke(Input.mousePosition);
+                DownMain();
             }
         }
+        
+        private void CheckInputFingersUp()
+        {
+            if (Input.touchCount > 0)
+            {
+                foreach (var touch in Input.touches)
+                {
+                    if (touch.phase is TouchPhase.Canceled or TouchPhase.Ended)
+                    {
+                        switch (touch.fingerId)
+                        {
+                            case 0:
+                                UpMain();
+                                break;
+                            case 1:
+                                _secondDown = false;
+                                // CLog.Log("[Input] Seconds Touch Up");
+                                OnUpSecond?.Invoke(touch.position);
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (Input.GetMouseButtonUp(0))
+                {
+                    UpMain();
+                }
+            }
+        }
+        
+        private void DownMain()
+        {
+            _mainClickTime = Time.time;
+            _clickPos = MainMousePosition;
+            if(_longClickWaiting != null)
+                StopCoroutine(_longClickWaiting);
+            _longClickWaiting = StartCoroutine(LongClickChecking());
+            _mainDown = true;
+            WorldButtons(true, _clickPos);
+            OnDownMain?.Invoke(_clickPos);
+        }
 
+        private void UpMain()
+        {
+            _mainDown = false;
+            WorldButtons(false, MainMousePosition);
+            if(_longClickWaiting != null)
+                StopCoroutine(_longClickWaiting);
+            if ((Time.time - _mainClickTime) < _longClockTime)
+            {
+                // CLog.LogRed("[Input] Short click call!");
+                OnShortClick?.Invoke(MainMousePosition);
+            }
+            OnUpMain?.Invoke(MainMousePosition);
+        }
+        
         private void WorldButtons(bool down, Vector3 screenPos)
         {
             if (!_raycastWorldButtons) return;
@@ -96,42 +159,6 @@ namespace RobotCastle.Core
             }
         }
 
-        private void CheckInputFingersUp()
-        {
-            if (Input.touchCount > 0)
-            {
-                foreach (var touch in Input.touches)
-                {
-                    if (touch.phase is TouchPhase.Canceled or TouchPhase.Ended)
-                    {
-                        switch (touch.fingerId)
-                        {
-                            case 0:
-                                _mainDown = false;
-                                // CLog.Log("[Input] Main Touch Up");
-                                WorldButtons(false, touch.position);
-                                OnUpMain?.Invoke(touch.position);
-                                break;
-                            case 1:
-                                _secondDown = false;
-                                // CLog.Log("[Input] Seconds Touch Up");
-                                OnUpSecond?.Invoke(touch.position);
-                                break;
-                        }
-                    }
-                    
-                }
-            }
-            else
-            {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    _mainDown = false;
-                    WorldButtons(false, Input.mousePosition);
-                    OnUpMain?.Invoke(Input.mousePosition);
-                }
-            }
-        }
 
         private void CheckZoom()
         {
@@ -144,20 +171,33 @@ namespace RobotCastle.Core
                 
             }
         }
-        
+
+        private IEnumerator LongClickChecking()
+        {
+            var elapsed = 0f;
+            while (elapsed < _longClockTime)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            // CLog.LogRed($"[Input] Down long lick after {_longClockTime} sec.");
+            OnDownLongClick?.Invoke(_clickPos);
+        }
+
         private IEnumerator Working()
         {
             while (true)
             {
                 while (!InputAllowed)
                     yield return null;
+                
                 if (Input.GetMouseButtonDown(0))
                 {
-                    OnDownIgnoreUI?.Invoke(Input.mousePosition);
+                    OnDownIgnoreUI?.Invoke(MainMousePosition);
                 }
                 else if(Input.GetMouseButtonUp(0))
                 {
-                    OnUpIgnoreUI?.Invoke(Input.mousePosition);
+                    OnUpIgnoreUI?.Invoke(MainMousePosition);
                 }
                 
                 CheckInputFingersUp();

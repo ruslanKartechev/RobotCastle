@@ -27,7 +27,7 @@ namespace RobotCastle.Saving
             }
             saver.LoadSave<SavePlayerData>(new SavePlayerData(_initialSaves.PlayerData));
             saver.LoadSave<SaveLevelsProgress>(new SaveLevelsProgress(_initialSaves.LevelsProgress));
-            saver.LoadSave<SavePlayerHeroes>(_initialSaves.PlayerHeroes);
+            saver.LoadSave<SavePlayerHeroes>(new SavePlayerHeroes(_initialSaves.PlayerHeroes));
             if (_useCheat)
                 _cheatManager.ApplyStartCheat();
         }

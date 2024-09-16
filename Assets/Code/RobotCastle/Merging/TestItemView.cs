@@ -30,6 +30,13 @@ namespace RobotCastle.Merging
         public void OnDroppedBack() { }
 
         public void OnMerged() { }
+        public void Rotate(Quaternion rotation, float time)
+        { }
+
+        public void MoveToPoint(Transform endPoint, float time)
+        {
+            transform.CopyPosRot(endPoint);
+        }
 
         public void InitView(ItemData data)
         {

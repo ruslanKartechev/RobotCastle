@@ -99,7 +99,7 @@ namespace RobotCastle.Merging
                 var y = standing.itemData.pivotY;
                 MergeFunctions.ClearCellAndHideItem(_gridView, standing);
                 anotherData.level++;
-                ServiceLocator.Get<IGridItemsSpawner>().SpawnItemOnCell(_gridView.GetCell(x, y), new ItemData(anotherData));      
+                ServiceLocator.Get<IMergeItemsFactory>().SpawnItemOnCell(_gridView.GetCell(x, y), new ItemData(anotherData));      
                 MergeFunctions.ClearCellAndHideItem(_gridView, taken);
             }
         }

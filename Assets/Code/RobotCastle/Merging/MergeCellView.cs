@@ -38,6 +38,7 @@ namespace RobotCastle.Merging
         }
 
         public Transform ItemPoint => _itemPoint;
+        public Vector3 WorldPosition => transform.position;
 
         public void OnPicked()
         { }
@@ -55,10 +56,10 @@ namespace RobotCastle.Merging
                 switch (type)
                 {
                     case 1:
-                        _highlight = ServiceLocator.Get<IMergeCellHighlightPool>().GetOneType1();
+                        _highlight = ServiceLocator.Get<ISimplePoolsManager>().GetOne("merge_slow") as CellHighlight;
                         break;
                     case 2:
-                        _highlight = ServiceLocator.Get<IMergeCellHighlightPool>().GetOneType2();
+                        _highlight = ServiceLocator.Get<ISimplePoolsManager>().GetOne("merge_fast") as CellHighlight;;
                         break;
                 }
                 _highlight.HighlightType = type;
@@ -66,25 +67,10 @@ namespace RobotCastle.Merging
             }
             else if (!on && _highlight != null)
             {
-                _highlight.Hide();
-                switch (_highlight.HighlightType)
-                {
-                    case 1:
-                        ServiceLocator.Get<IMergeCellHighlightPool>().ReturnType1(_highlight);
-                        break;
-                    case 2:
-                        ServiceLocator.Get<IMergeCellHighlightPool>().ReturnType2(_highlight);
-                        break;
-                }
+                ServiceLocator.Get<ISimplePoolsManager>().ReturnOne(_highlight);
                 _highlight = null;
             }
         }
 
-        public void SetHighlightForAttack(bool on)
-        {
-            var db = ServiceLocator.Get<MergeGridViewDataBase>();
-            var mat = on ? db.cellHighlightedForAttackMaterial : db.cellDefaultMaterial;
-            _meshRenderer.sharedMaterial = mat;
-        }
     }
 }

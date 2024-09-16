@@ -11,6 +11,5 @@ namespace RobotCastle.Core
 
         public const int MaxUnitsItemsCount = 3;
 
-
     }
 }

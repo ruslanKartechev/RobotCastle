@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using SleepDev;
 
 namespace RobotCastle.Merging
@@ -92,7 +93,7 @@ namespace RobotCastle.Merging
         public void ConfirmChosenItems(List<CoreItemData> chosen, List<CoreItemData> left)
         {
             _unitStanding.Transform.GetComponent<IUnitsItemsContainer>().UpdateItems(chosen);
-            var spawner = ServiceLocator.Get<IGridItemsSpawner>();
+            var spawner = ServiceLocator.Get<IMergeItemsFactory>();
             var cellPicker = ServiceLocator.Get<IGridSectionsController>();
             foreach (var coreData in left)
             {

@@ -6,8 +6,20 @@ namespace RobotCastle.Core
     [System.Serializable]
     public class SavePlayerHeroes
     {
-        public List<HeroSave> heroSaves = new List<HeroSave>(100);
-        private Dictionary<string, int> _idIndexMap = new Dictionary<string, int>(100);
+        public SavePlayerHeroes(){}
+
+        public SavePlayerHeroes(SavePlayerHeroes other)
+        {
+            var count = other.heroSaves.Count;
+            heroSaves = new List<HeroSave>(count);
+            for (var i = 0; i < count; i++)
+            {
+                heroSaves.Add(new HeroSave(other.heroSaves[i]));
+            }
+        }
+        
+        public List<HeroSave> heroSaves = new(100);
+        private Dictionary<string, int> _idIndexMap = new(100);
 
         public void Init()
         {

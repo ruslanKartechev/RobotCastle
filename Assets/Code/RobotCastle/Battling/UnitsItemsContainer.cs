@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
@@ -43,7 +44,7 @@ namespace RobotCastle.Battling
         
         public void ReplaceWithMergedItem(int indexAt, CoreItemData newItem)
         {
-            CLog.LogGreen($"ReplaceWithMergedItem. {indexAt}. {newItem.ItemDataStr()}");
+            CLog.LogGreen($"ReplaceWithMergedItem. {indexAt}. {newItem.AsStr()}");
             if (indexAt >= _items.Count)
             {
                 _items.Add(newItem);
@@ -59,7 +60,7 @@ namespace RobotCastle.Battling
 
         public void AddNewItem(CoreItemData newItem)
         {
-            CLog.LogGreen($"AddNewItem. {newItem.ItemDataStr()}");
+            CLog.LogGreen($"AddNewItem. {newItem.AsStr()}");
             _items.Add(newItem);
             _view.ShowLastAddedItem(_items);
             _view.Animate();

@@ -27,12 +27,12 @@ namespace RobotCastle.Merging
             var ui = ServiceLocator.Get<GameInput>();
             if (active)
             {
-                ui.OnDownMain += OnDown;
+                ui.OnDownLongClick += OnDown;
                 ui.OnUpMain += OnUp;
             }
             else
             {
-                ui.OnDownMain -= OnDown;
+                ui.OnDownLongClick -= OnDown;
                 ui.OnUpMain -= OnUp;
                 _mergeController.OnUp(Input.mousePosition);
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using SleepDev;
 
 namespace RobotCastle.Merging
@@ -136,7 +137,7 @@ namespace RobotCastle.Merging
                 MergeFunctions.ClearCellAndHideItem(_gridView, _itemView);
                 MergeFunctions.PutItemToCell(_unitView, targetCell);
             }
-            var spawner = ServiceLocator.Get<IGridItemsSpawner>();
+            var spawner = ServiceLocator.Get<IMergeItemsFactory>();
             var cellPicker = ServiceLocator.Get<IGridSectionsController>();
             foreach (var coreData in left)
             {

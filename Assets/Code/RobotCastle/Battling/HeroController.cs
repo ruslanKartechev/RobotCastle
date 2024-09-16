@@ -11,20 +11,22 @@ namespace RobotCastle.Battling
         private HeroStatsContainer _stats;
         private IUnitBehaviour _currentBehaviour;
         private IUnitsItemsContainer _itemsContainer;
-        private bool _didInit;
+        private bool _didSetMap;
+
+        public HeroView HeroView => _unitView;
         
         private void AddHeroComponents()
         {
             _itemsContainer = gameObject.GetComponent<IUnitsItemsContainer>();
             _stats = gameObject.AddComponent<HeroStatsContainer>();
             var pathfinder = gameObject.AddComponent<PathfindingAgent>();
-            var unitMover = gameObject.AddComponent<UnitMover>();
+            var unitMover = gameObject.AddComponent<HeroMovementManager>();
             unitMover.UnitView = _unitView;
             pathfinder.rb = _unitView.rb;
             pathfinder.movable = transform;
-            pathfinder.iPathfindingAgentAnimatorGo = gameObject;
+            pathfinder.PathfindingAgentAnimatorGo = gameObject;
             _unitView.agent = pathfinder;
-            _unitView.unitMover = unitMover;
+            _unitView.unitMovementManager = unitMover;
             _unitView.Stats = _stats;
         }
 
@@ -33,23 +35,24 @@ namespace RobotCastle.Battling
             AddHeroComponents();
             _stats.Init(id, heroLevel, mergeLevel);
         }
-        
-        public void UpdateMap(bool force = false)
+
+        public void InitAsEnemyHero(string id, int heroLevel, int mergeLevel)
         {
-            if (_didInit && !force)
-                return;
-            _didInit = true;
-            _unitView.agent.InitAgent(ServiceLocator.Get<IMap>());
+            AddHeroComponents();
+            _stats.Init(id, heroLevel, mergeLevel);
         }
 
-        public void SetHeroLevel(string id, int charLvl, int mergeTier)
+        public void UpdateMap(bool force = false)
         {
-            _stats.Init(id, charLvl, mergeTier);
+            if (_didSetMap && !force)
+                return;
+            _didSetMap = true;
+            _unitView.agent.InitAgent(ServiceLocator.Get<IMap>());
         }
 
         public void PrepareForBattle()
         {
-            _unitView.unitMover.SetupAgent();
+            _unitView.unitMovementManager.SetupAgent();
         }
     }
 }

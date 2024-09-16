@@ -14,13 +14,22 @@ namespace RobotCastle.Battling
             EU.Space();
             if (EU.BtnMidWide2("CreateForEveryId", EU.Gold))
             {
-                me.CreateForEveryId();
+                me.CreateForEveryPlayerId();
             }
             if (EU.BtnMidWide3("CreateForEveryId Forces", EU.Gold))
             {
-                me.CreateForEveryIdForced();
+                me.CreateForEveryPlayerIdForced();
             }
+            EU.Space();
 
+            if (EU.BtnMidWide2("CreateForEveryId", EU.Plum))
+            {
+                me.CreateForEveryEnemyId();
+            }
+            if (EU.BtnMidWide3("CreateForEveryId Forces", EU.Plum))
+            {
+                me.CreateForEveryEnemyIdForced();
+            }
         }
     }
 }

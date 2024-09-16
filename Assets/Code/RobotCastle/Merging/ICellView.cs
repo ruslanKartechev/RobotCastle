@@ -12,5 +12,6 @@ namespace RobotCastle.Merging
         void SetHighlightForMerge(bool on, int type);
         void HighlightAsUnderCell(bool on);
         Transform ItemPoint { get; }        
+        Vector3 WorldPosition { get; }
     }
 }

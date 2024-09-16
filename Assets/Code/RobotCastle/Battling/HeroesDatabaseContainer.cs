@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using SleepDev;
 using UnityEngine;
@@ -11,11 +10,18 @@ namespace RobotCastle.Battling
     [CreateAssetMenu(menuName = "SO/Heroes Database Container", fileName = "Heroes Database Container", order = 0)]
     public class HeroesDatabaseContainer : ScriptableObject
     {
+        [SerializeField] private string pathToHeroes;
+        [SerializeField] private string pathToEnemies;
+        [Space(8)]
         [SerializeField] private List<string> _heroIdsForFiles;
-        
+        [SerializeField] private List<string> _enemiesIdsForFiles;
+
         #if UNITY_EDITOR
+        [Space(12)]
         [SerializeField, Tooltip("Editor only. Use to copy")] private HeroInfo _dbgHero;
-        #endif
+        [Space(8)]
+        [SerializeField, Tooltip("Editor only. Use to copy")] private HeroInfo _dbgEnemy;
+#endif
         private HeroesDatabase _dataBase;
 
         public HeroesDatabase DataBase => _dataBase;
@@ -23,10 +29,9 @@ namespace RobotCastle.Battling
         public void Load()
         {
             var data = new HeroesDatabase();
-            
             foreach (var id in _heroIdsForFiles)
             {
-                var text = UnityEngine.Resources.Load<TextAsset>($"heroes/{id}");
+                var text = UnityEngine.Resources.Load<TextAsset>($"{pathToHeroes}/{id}");
                 if (text == null)
                 {
                     CLog.LogError($"Failed to find file {id}.json");
@@ -35,17 +40,19 @@ namespace RobotCastle.Battling
                 var info = JsonConvert.DeserializeObject<HeroInfo>(text.text);
                 data.info.Add(id, info);
             }
-            
+            foreach (var id in _enemiesIdsForFiles)
+            {
+                var text = UnityEngine.Resources.Load<TextAsset>($"{pathToEnemies}/{id}");
+                if (text == null)
+                {
+                    CLog.LogError($"Failed to find file {id}.json");
+                    continue;
+                }
+                var info = JsonConvert.DeserializeObject<HeroInfo>(text.text);
+                data.info.Add(id, info);
+            }
+
             _dataBase = data;
-// #if UNITY_EDITOR
-//             try
-//             {
-//                 _dbgHero = data.info.First().Value;
-//             }
-//             catch (System.Exception ex) {
-//                 CLog.LogError(ex.Message);
-//             }
-//             #endif
         }
         
         
@@ -59,45 +66,82 @@ namespace RobotCastle.Battling
             return path;
         }
 
-        public void CreateForEveryId()
+        public void CreateForEveryEnemyId()
         {
-            foreach (var id in _heroIdsForFiles)
+            foreach (var id in _enemiesIdsForFiles)
             {
-                var fileName = $"{GetPathToFile(id)}";
+                var fileName = GetPathFor(id, pathToEnemies);
                 var exists = File.Exists(fileName);
                 if (exists)
                 {
                     CLog.LogRed($"File {fileName} Already exists will SKIP");
                     continue;
                 }
-                CreateFile(id);
+                CreateFile(id, pathToEnemies, _dbgEnemy);
             }
         }
 
-        public void CreateForEveryIdForced()
+        public void CreateForEveryEnemyIdForced()
         {
-            foreach (var id in _heroIdsForFiles)
+            foreach (var id in _enemiesIdsForFiles)
             {
-                var fileName = $"{GetPathToFile(id)}";
+                var fileName = GetPathFor(id, pathToEnemies);
                 var exists = File.Exists(fileName);
                 if (exists)
                     CLog.LogWhite($"File {fileName} Already exists. WILL OVERRIDE");
-                CreateFile(id);
+                CreateFile(id, pathToEnemies, _dbgEnemy);
+            }
+        }
+        
+        public void CreateForEveryPlayerId()
+        {
+            
+            foreach (var id in _heroIdsForFiles)
+            {
+                var fileName = GetPathFor(id, pathToHeroes);
+                var exists = File.Exists(fileName);
+                if (exists)
+                {
+                    CLog.LogRed($"File {fileName} Already exists will SKIP");
+                    continue;
+                }
+                CreateFile(id, pathToHeroes, _dbgHero);
             }
         }
 
-        private void CreateFile(string id)
+        public void CreateForEveryPlayerIdForced()
         {
-            var heroInfo = new HeroInfo(_dbgHero);
-            var vName = id;
+            
+            foreach (var id in _heroIdsForFiles)
+            {
+                var fileName = GetPathFor(id, pathToHeroes);
+                var exists = File.Exists(fileName);
+                if (exists)
+                    CLog.LogWhite($"File {fileName} Already exists. WILL OVERRIDE");
+                CreateFile(id, pathToHeroes, _dbgHero);
+            }
+        }
+
+        private void CreateFile(string id, string folderPath, HeroInfo preset)
+        {
+            var heroInfo = new HeroInfo(preset);
+            var vName = new string(id);
             heroInfo.viewInfo.name = string.Concat(vName[0].ToString().ToUpper(), vName.Substring(1));
             heroInfo.viewInfo.iconId = $"hero_icon_{id}";
             var str = JsonConvert.SerializeObject(heroInfo, Formatting.Indented);
-            File.WriteAllText(GetPathToFile(id),str);
+            File.WriteAllText(GetPathFor(id, folderPath),str);
+        }
+
+        private static string GetPathFor(string id, string folder)
+        {
+            var path = Application.streamingAssetsPath;
+            path = path.Replace("StreamingAssets", "Resources");
+            path += $"/{folder}/{id}.json";
+            return path;
         }
 
         [ContextMenu("Create New File")]
-        public void CreateNewFile()
+        public void CreateNewPlayerConfigFile()
         {
            var id = "aramis";
            var stats = new HeroStats()

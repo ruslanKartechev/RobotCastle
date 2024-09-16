@@ -7,6 +7,7 @@ namespace RobotCastle.Battling
     {
         string BehaviourID { get; }
         void Activate(GameObject target, Action<IUnitBehaviour> endCallback);
-        
+        void Activate(HeroController hero, Action<IUnitBehaviour> endCallback);
+
     }
 }

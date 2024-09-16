@@ -2,6 +2,7 @@
 using System.Globalization;
 using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Merging;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,14 +23,15 @@ namespace RobotCastle.UI
         [SerializeField] private SpellDescriptionUI _spellDescription;
         [SerializeField] private Image _heroIcon;
         [SerializeField] private List<ItemDescriptionShortUI> _itemsUI;
+        [SerializeField] private float _addedWidth = 533.6f;
         private GameObject _src;
+        private MergeUnitRangeHighlighter _rangeHighlighter;
         
         public override void Show(GameObject source)
         {
             _src = source;
             
             var provider = source.GetComponent<HeroDescriptionProvider>();
-            _rectToScreenFitter.SetScreenPos(Camera.main.WorldToScreenPoint(provider.WorldPosition));
             
             var stats = provider.HeroView.Stats;
             var info = ServiceLocator.Get<HeroesDatabase>().GetHeroViewInfo(stats.HeroId);
@@ -42,6 +44,7 @@ namespace RobotCastle.UI
             Show(stats, info, spell);
 
             var items = source.GetComponent<IUnitsItemsContainer>();
+            var hasItems = false;
             if (items != null)
             {
                 var count = items.ItemsCount;
@@ -52,9 +55,25 @@ namespace RobotCastle.UI
                     _itemsUI[i].gameObject.SetActive(true);
                     var itemData = items.Items[i];
                     _itemsUI[i].ShowCore(itemData);
+                    hasItems = true;
                 }
             }
+
+            var addedWidth = hasItems ? _addedWidth : 0;
+            _rectToScreenFitter.SetScreenPos(Camera.main.WorldToScreenPoint(provider.WorldPosition), addedWidth);
+
             _animator.FadeIn();
+            ShowRange(_src);
+        }
+
+        public void ShowRange(GameObject heroGo)
+        {
+            var range = new MergeUnitRangeHighlighter(heroGo, ServiceLocator.Get<IGridView>());
+            var unit = heroGo.GetComponent<IItemView>();
+            var center = new Vector2Int(unit.itemData.pivotX, unit.itemData.pivotY);
+            range.UpdateForUnderCell(center);
+            range.ShowUnderCell(center);
+            _rangeHighlighter = range;
         }
         
         public void Show(HeroStatsContainer stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
@@ -75,6 +94,8 @@ namespace RobotCastle.UI
         public override void Hide()
         {
             _animator.FadeOut();
+            _rangeHighlighter?.Clear();
+            _rangeHighlighter = null;
         }
         
     }

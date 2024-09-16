@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using RobotCastle.Core;
+using UnityEngine;
 
 namespace RobotCastle.Merging
 {
-    public class CellHighlight : MonoBehaviour
+    public class CellHighlight : MonoBehaviour, IPoolObject
     {
         public int HighlightType { get; set; }
         
@@ -12,9 +13,10 @@ namespace RobotCastle.Merging
             gameObject.SetActive(true);
         }
 
-        public void Hide()
-        {
-            gameObject.SetActive(false);
-        }
+
+        public string PoolId { get; set; }
+        public GameObject GetGameObject() => gameObject;
+        public void PoolHide() => gameObject.SetActive(false);
+        public void PoolShow() => gameObject.SetActive(true);
     }
 }
