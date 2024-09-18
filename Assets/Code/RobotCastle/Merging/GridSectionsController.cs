@@ -12,20 +12,42 @@ namespace RobotCastle.Merging
         [SerializeField] private int _minYIndex = 2;
         [SerializeField] private int _maxCount = 3;
         private IGridView _gridView;
+        private MergeGrid _grid;
         private int _currentCount = 0;
 
-        public int MaxCount => _maxCount;
+        public List<T> GetItemsInActiveArea<T>(MiscUtils.Condition<T> conditionDelegate)
+        {
+            var units = new List<T>(_maxCount);
+            for (var y = _minYIndex; y < _grid.RowsCount; y++)
+            {
+                var row = _grid.rows[y];
+                for (var x = 0; x < row.Count; x++)
+                {
+                    // CLog.Log($"Checking {x}, {y}");
+                    var cell = _gridView.GetCell(x, y);
+                    if (cell.itemView != null)
+                    {
+                        // CLog.LogBlue($"{x}, {y} Has itemView");
+                        var obj = cell.itemView.Transform.GetComponent<T>();
+                        if(obj != null && conditionDelegate.Invoke(obj))
+                            units.Add(obj);
+                    }
+                }
+            }
+            return units;
+        }
 
-        public void Init(IGridView gridView)
+        public void SetGridView(IGridView gridView)
         {
             _gridView = gridView;
+            _grid = gridView.BuiltGrid;
         }
 
         public void SetMaxCount(int maxCount)
         {
             _maxCount = maxCount;
-            if (ServiceLocator.GetIfContains(out ITroopsCountView troopsCountView))
-                troopsCountView.UpdateCount(_currentCount, _maxCount);
+            if (ServiceLocator.GetIfContains(out ITroopsCountView view))
+                view.UpdateCount(_currentCount, _maxCount);
             else
                 CLog.Log("ITroopsCountView not setup yet!");
         }
@@ -37,9 +59,7 @@ namespace RobotCastle.Merging
             if (item.pivotY >= _minYIndex && y >= _minYIndex) // already in the upper region and moving to upper region
                 return true;
             if (item.core.type != MergeConstants.TypeUnits && y >= _minYIndex) // moving non-unit to upper zone
-            {
                 return false;
-            }
             
             var allowed = _currentCount < _maxCount;
             if (promptUser && !allowed)
@@ -50,11 +70,11 @@ namespace RobotCastle.Merging
             return _currentCount < _maxCount;
         }
 
-        public void OnGridUpdated(MergeGrid grid)
+        public void OnGridUpdated()
         {
             var count = 0;
-            for (var y = _minYIndex; y < grid.rows.Count; y++)
-                count += grid.rows[y].CalculateItemsCount();
+            for (var y = _minYIndex; y < _grid.rows.Count; y++)
+                count += _grid.rows[y].CalculateItemsCount();
             if (count != _currentCount)
             {
                 _currentCount = count;
@@ -65,7 +85,7 @@ namespace RobotCastle.Merging
 
         public void OnItemPut(ItemData item)
         {
-            OnGridUpdated(_gridView.BuiltGrid);
+            OnGridUpdated();
             var cell = _gridView.GetCell(item.pivotX, item.pivotY);
             if (!cell.cell.isOccupied)
                 return;
@@ -82,20 +102,54 @@ namespace RobotCastle.Merging
 
         public bool GetFreeCell(MergeGrid grid, out Vector2Int coordinates)
         {
-            for (var y = _minYIndex-1; y >= 0; y--)
+            if (_currentCount < _maxCount)
             {
-                var row = grid.rows[y].cells;
-                for (var x = 0; x < row.Count; x++)
+                for (var y = _minYIndex; y < _grid.RowsCount; y++)
                 {
-                    if (row[x].isUnlocked && row[x].isOccupied == false)
+                    var (res, x) = SearchRow(grid.rows[y].cells);
+                    if (res)
                     {
-                        coordinates = new Vector2Int(x, y);
+                        coordinates = new Vector2Int(x,y);
                         return true;
                     }
                 }
             }
-            coordinates = new Vector2Int();
+            
+            for (var y = _minYIndex - 1; y >= 0; y--)
+            {
+                var (res, x) = SearchRow(grid.rows[y].cells);
+                if (res)
+                {
+                    coordinates = new Vector2Int(x,y);
+                    return true;
+                }
+            }
+            
+            coordinates = new Vector2Int(-1,-1);
             return false;
+
+            (bool, int) SearchRow(IList<Cell> row)
+            {
+                var count = row.Count;
+                var num = 0;
+                var center = count / 2;
+                for (var x = center; num < count;)
+                {
+                    if (row[x].isUnlocked && row[x].isOccupied == false)
+                        return (true, x);
+                    x++;
+                    if (x >= count)
+                        x = 0;
+                    num++;
+                }
+                return (false, -1);
+            }   
+        }
+
+        public bool IsCellFree(MergeGrid grid, ItemData itemData, Vector2Int coordinated)
+        {
+            var cell = grid.rows[coordinated.y].cells[coordinated.x];
+            return cell.isUnlocked && !cell.isOccupied;
         }
 
         public int GetFreeCellsCount(MergeGrid grid)

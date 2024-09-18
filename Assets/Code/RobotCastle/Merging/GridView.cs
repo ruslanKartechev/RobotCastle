@@ -171,7 +171,7 @@ namespace RobotCastle.Merging
                     CLog.Log("SKIPPED. Reason: cell.transform.childCount < 3");
                     continue;
                 }
-                var tr = cell.transform.GetChild(2);
+                var tr = cell.transform.GetChild(0);
                 var pos = tr.localPosition;
                 var eulers = new Vector3();
                 if (rowNum <= 2)
@@ -231,8 +231,72 @@ namespace RobotCastle.Merging
             }
         }
         
-        [ContextMenu("E_SetMaterials")]
-        public void E_SetMaterials()
+        [ContextMenu("E_SetMaterialToSelected")]
+        public void E_SetMaterialToSelected()
+        {
+            var matInd = 0;
+            foreach (var tr in e_transforms)
+            {
+                for (var i = 0; i < tr.childCount; i++)
+                {
+                    var child = tr.GetChild(i).gameObject;
+                    if (child.name.Contains(e_mat_holder_id))
+                    {
+                        SetMat(child);
+                        break;
+                    }
+                }
+            }
+
+            void SetMat(GameObject go)
+            {
+                var rend = go.GetComponent<MeshRenderer>();
+                rend.sharedMaterial = e_materials[matInd];
+                matInd++;
+                if (matInd >= e_materials.Count)
+                    matInd = 0;
+                UnityEditor.EditorUtility.SetDirty(rend);
+            }
+        }
+        
+        [ContextMenu("E_SetSelectedHidden")]
+        public void E_SetSelectedHidden()
+        {
+            E_SetSelectedState(false);
+        }
+        
+              
+        [ContextMenu("E_SetSelectedHidden")]
+        public void E_SetSelectedShown()
+        {
+            E_SetSelectedState(true);
+        }
+        
+              
+        public void E_SetSelectedState(bool state)
+        {
+            foreach (var tr in e_transforms)
+            {
+                for (var i = 0; i < tr.childCount; i++)
+                {
+                    var child = tr.GetChild(i).gameObject;
+                    if (child.name.Contains(e_mat_holder_id))
+                    {
+                        child.gameObject.SetActive(state);
+                        var coll = tr.GetComponent<Collider>();
+                        if (coll != null)
+                            coll.enabled = state;
+                        UnityEditor.EditorUtility.SetDirty(child.gameObject);
+                        break;
+                    }
+                }
+            }
+        }
+        
+
+        
+        [ContextMenu("E_SetMaterialsToAll")]
+        public void E_SetMaterialsToAll()
         {
             var matInd = 0;
             foreach (var go in _cellViewGameObjects)
@@ -243,7 +307,7 @@ namespace RobotCastle.Merging
                     if (child.name.Contains(e_mat_holder_id))
                     {
                         SetMat(child);
-                        continue;
+                        break;
                     }
                 }
             }

@@ -19,7 +19,14 @@ namespace RobotCastle.Battling
 
         public void SpawnPreset(string presetPath)
         {
-            var presetStr = Resources.Load<TextAsset>($"enemy_presets/{presetPath}").text;
+            var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
+            if (asset == null)
+            {
+                CLog.LogError($"{presetPath} DIDN'T find the preset!");
+                _spawnedEnemies = null;
+                return;
+            }
+            var presetStr = asset.text;
             var preset = Newtonsoft.Json.JsonConvert.DeserializeObject<EnemyPackPreset>(presetStr);
             if (preset == null)
             {
@@ -38,9 +45,9 @@ namespace RobotCastle.Battling
                 var enemy = SpawnOne(enemyPreset);
                 enemy.transform.position = cellView.WorldPosition;
                 enemy.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                enemy.InitComponents(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level);
+                enemy.GetComponent<IItemView>().UpdateViewToData(new ItemData(enemyPreset.enemy));
                 _spawnedEnemies.Add(enemy);
-                
-                enemy.InitAsEnemyHero(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level);
             }
         }
 

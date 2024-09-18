@@ -41,6 +41,7 @@ namespace RobotCastle.Core
 
         public void Init()
         {
+            DontDestroyOnLoad(gameObject);
             NamingDataLoader.Load();
             ServiceLocator.Create();
             var dataSaver = DataSaver.Create();

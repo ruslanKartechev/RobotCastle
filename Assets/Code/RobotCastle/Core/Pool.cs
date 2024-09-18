@@ -11,6 +11,16 @@ namespace RobotCastle.Core
         [SerializeField] private int _startCount;
         [SerializeField] private Transform _parent;
         private readonly List<IPoolObject> _objects = new (10); 
+        
+        public Pool(){}
+
+        public Pool(string id, string prefabPath, int startCount)
+        {
+            this._id = id;
+            this._prefabPath = prefabPath;
+            this._startCount = startCount;
+            _parent = new GameObject($"pool_{id}").transform;
+        }
 
         public string id => _id;
 
@@ -53,5 +63,6 @@ namespace RobotCastle.Core
                 _objects.Add(inst);
             }
         }
+        
     }
 }

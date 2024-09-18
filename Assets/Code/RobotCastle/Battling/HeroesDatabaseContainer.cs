@@ -140,6 +140,27 @@ namespace RobotCastle.Battling
             return path;
         }
 
+        [ContextMenu("FillDbgHero")]
+        public void FillDbgHero()
+        {
+            _dbgHero.stats.physicalResist = new(20);
+            _dbgHero.stats.magicalResist = new(20);
+
+            var val = .010f;
+            for (var i = 0; i < 20; i++)
+            {
+                _dbgHero.stats.physicalResist.Add(val);
+                val += .010f;
+            }
+            val = .01f;
+            for (var i = 0; i < 20; i++)
+            {
+                _dbgHero.stats.magicalResist.Add(val);
+                val += .010f;
+            }
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+
         [ContextMenu("Create New File")]
         public void CreateNewPlayerConfigFile()
         {

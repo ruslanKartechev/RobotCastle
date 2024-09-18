@@ -7,6 +7,7 @@ namespace RobotCastle.Merging
         IPoolObject GetOne(string type);
         void ReturnOne(IPoolObject obj);
         bool HasPool(string id);
+        void AddPoolIfNot(string id, string prefabPath, int startCount);
 
     }
 }

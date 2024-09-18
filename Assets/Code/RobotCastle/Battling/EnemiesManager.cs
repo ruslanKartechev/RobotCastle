@@ -36,5 +36,10 @@ namespace RobotCastle.Battling
         {
             _enemiesFactory.SpawnPreset(preset);
         }
+
+        public void SpawnNewEnemy(SpawnMergeItemArgs args)
+        {
+            
+        }
     }
 }

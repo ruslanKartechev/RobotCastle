@@ -1,15 +1,20 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Merging;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
     public class AttackRangeSquare : IAttackRange
     {
+        private readonly int halfWidth;
+        private readonly int halfHight;
         private readonly List<Vector2Int> _cellsMask;
 
         public AttackRangeSquare(int halfWidth, int halfHeight)
         {
+            this.halfWidth = halfWidth;
+            this.halfHight = halfHeight;
             _cellsMask = new List<Vector2Int>(halfWidth * halfHeight * 4);
             for (var x = -halfWidth; x <= halfWidth; x++)
             {
@@ -101,5 +106,21 @@ namespace RobotCastle.Battling
             }
             return result;
         }
+        
+        public Vector2Int GetClosestCell(Vector2Int fromPoint, Vector2Int toPoint)
+        {
+            var xDiff = toPoint.x - fromPoint.x;
+            var yDiff = toPoint.y - fromPoint.y;
+            var signX = (int)Mathf.Sign(xDiff);
+            var signY = (int)Mathf.Sign(yDiff);
+            var xDiffMagn = xDiff * signX;
+            var yDiffMagn = yDiff * signY;
+            var stepsX = signX * (xDiffMagn - halfWidth);
+            var stepsY = signY * (yDiffMagn - halfHight);
+            var pos = fromPoint + new Vector2Int(stepsX, stepsY);
+            CLog.Log($"From: {fromPoint}. To {toPoint}. StepsX {stepsX}. StepsY {stepsY}");
+            return pos;
+        }
+        
     }
 }

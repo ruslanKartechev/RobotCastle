@@ -4,7 +4,8 @@ namespace RobotCastle.Battling
 {
     public class HeroesConfig
     {
-        public const float SpeedStatMultiplier = 1 / 40f;
+        public const float SpeedStatFactor = 1f / 400;
+        public const float SpeedStatToAnimationFactor = 1f / 150;
         
         public const string AnimId_Move = "Run";
         public const string AnimId_Idle = "Idle";

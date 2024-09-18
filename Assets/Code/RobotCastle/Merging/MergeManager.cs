@@ -1,3 +1,4 @@
+using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using SleepDev;
@@ -11,9 +12,9 @@ namespace RobotCastle.Merging
         [SerializeField] private bool _autoInit;
         [SerializeField] private bool _allowInputOnStart;
         [SerializeField] private GameObject _gridViewGo;
-        [SerializeField] private GridSectionsController _sectionsController;
         [SerializeField] private MergeGridHighlighter _highlighter;
         [SerializeField] private SimplePoolsManager _mergeCellHighlight;
+        private IGridSectionsController _sectionsController;
         private IGridView _gridView;
         private IMergeProcessor _mergeProcessor;
         private MergeController _mergeController;
@@ -33,19 +34,18 @@ namespace RobotCastle.Merging
             _gridView = _gridViewGo.GetComponent<IGridView>();
             _grid = _gridView.BuildGridFromView();
             _itemsSpawner = gameObject.GetComponent<IMergeItemsFactory>();
+            _sectionsController = gameObject.GetComponent<IGridSectionsController>();
             _mergeInput = gameObject.GetComponent<MergeInput>();
             _mergeProcessor = new ClassBasedMergeProcessor();
             _mergeController = new MergeController(_grid, _mergeProcessor,_itemsSpawner, _sectionsController, _gridView);
             _mergeInput.Init(_mergeController);
-            _sectionsController.Init(_gridView);
+            _sectionsController.SetGridView(_gridView);
             _mergeCellHighlight.Init();
             _highlighter.Init(_gridView, _mergeProcessor);
             _mergeController.OnPutItem += OnItemPut;
             _mergeController.OnItemPicked += OnItemPicked;
-            // Change this!
-            const int maxCount = 3;
-            _sectionsController.SetMaxCount(maxCount);
-            //
+            CLog.Log($"Troops size: {ServiceLocator.Get<Battle>().troopSize}");
+            _sectionsController.SetMaxCount(ServiceLocator.Get<Battle>().troopSize);
             ServiceLocator.Bind<IGridSectionsController>(_sectionsController);
             ServiceLocator.Bind<IMergeItemsFactory>(_itemsSpawner);
             ServiceLocator.Bind<MergeController>(_mergeController);
@@ -53,11 +53,9 @@ namespace RobotCastle.Merging
             ServiceLocator.Bind<ISimplePoolsManager>(_mergeCellHighlight);
             ServiceLocator.Bind<IGridView>(_gridView);
             ServiceLocator.Bind<MergeManager>(this);
-            
             if(_allowInputOnStart)
                 _mergeInput.SetActive(true);
         }
-
         
         public void AllowInput(bool active) => _mergeInput.SetActive(active);
 
@@ -75,12 +73,31 @@ namespace RobotCastle.Merging
             return false;
         }
 
+        public bool SpawnOnMergeGrid(CoreItemData coreData, Vector2Int preferredCoordinate, out IItemView itemView)
+        {
+            var itemData = new ItemData(coreData.level, coreData.id, coreData.type);
+            if (_sectionsController.IsCellFree(_grid, itemData, preferredCoordinate))
+            {
+                if (_sectionsController.IsCellAllowed(preferredCoordinate.x, preferredCoordinate.y, itemData, true))
+                {
+                    var spawner = ServiceLocator.Get<IMergeItemsFactory>();
+                    var cellView = _gridView.GetCell(preferredCoordinate.x, preferredCoordinate.y);
+                    itemView = spawner.SpawnItemOnCell(cellView, new ItemData(coreData.level, coreData.id, coreData.type));
+                    _sectionsController.OnItemPut(itemView.itemData);
+                    HighlightMergeOptions();
+                    return true;
+                }
+            }
+
+            return SpawnOnMergeGrid(coreData, out itemView);
+        }
+        
         public bool SpawnOnMergeGrid(CoreItemData coreData, out IItemView itemView)
         {
-            if (_mergeController.GetFreeCellForNewHero(out var view))
+            if (_mergeController.GetFreeCellForNewHero(out var cellView))
             {
                 var spawner = ServiceLocator.Get<IMergeItemsFactory>();
-                itemView = spawner.SpawnItemOnCell(view, new ItemData(coreData.level, coreData.id, coreData.type));
+                itemView = spawner.SpawnItemOnCell(cellView, new ItemData(coreData.level, coreData.id, coreData.type));
                 _sectionsController.OnItemPut(itemView.itemData);
                 HighlightMergeOptions();
                 return true;

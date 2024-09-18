@@ -2454,8 +2454,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b175aa2d5d44e59888e27d367d024d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mergeManager: {fileID: 1256559892}
+  _doSpawnEnemies: 0
+  _enemiesPreset: 
   _battleManager: {fileID: 618037135}
+  _mergeManager: {fileID: 1256559892}
+  _enemiesManager: {fileID: 0}
   _mainCanvas: {fileID: 280246333}
 --- !u!1 &621667330
 GameObject:
@@ -8593,7 +8596,7 @@ GameObject:
   - component: {fileID: 2054970691}
   - component: {fileID: 2054970690}
   m_Layer: 0
-  m_Name: '*** TESTER *** SPAWNER ***'
+  m_Name: '*** Cheat ***'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

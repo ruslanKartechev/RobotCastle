@@ -31,7 +31,8 @@ namespace RobotCastle.UI
         
         private void Set()
         {
-            _text.text = _stat.Val.ToString(CultureInfo.InvariantCulture);
+            if(_text != null)
+                _text.text = _stat.Val.ToString(CultureInfo.InvariantCulture);
             var t = _stat.Val / _stat.BaseVal;
             _fillImage.fillAmount = t;
         }

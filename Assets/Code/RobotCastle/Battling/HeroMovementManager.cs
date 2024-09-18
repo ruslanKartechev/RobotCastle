@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Bomber;
 using UnityEngine;
 using SleepDev;
@@ -28,23 +29,78 @@ namespace RobotCastle.Battling
             _unitView.animator.SetBool(HeroesConfig.AnimId_Move, false);
         }
 
-        public async Task MoveToAttack(GameObject enemy)
+        public async Task MoveToCell(Vector2Int pos, CancellationToken token)
         {
             if (!_didSetup)
             {
-                CLog.LogRed("UnitMover NOT setup!!");
+                CLog.LogRed("Unit Mover NOT setup!!");
                 return;
             }
+            await _unitView.agent.MoveToCellAt(pos, token);
         }
         
-        public async Task MoveToCell(int x, int y)
+        public void MoveToCell(Vector2Int pos)
         {
             if (!_didSetup)
             {
-                CLog.LogRed("UnitMover NOT setup!!");
+                CLog.LogRed("Unit Mover NOT setup!!");
                 return;
             }
-            await _unitView.agent.MoveToCellAt(new Vector2Int(x, y));
+            _unitView.agent.MoveToCellAt(pos);
+        }
+        
+        public async Task<bool> RotateIfNecessary(Vector2Int cellPos, CancellationToken token)
+        {
+            var worldPos = _unitView.agent.Map.GetWorldFromCell(cellPos);
+            var rotation = Quaternion.LookRotation(worldPos - transform.position);
+            var startRot = transform.rotation;
+            var angle = Quaternion.Angle(startRot, rotation);
+            
+            if (Mathf.Abs(angle) <= 2)
+                return false;
+            var elapsed = 0f;
+            var time = angle / _unitView.agent.RotationSpeed;
+            while (elapsed < time && !token.IsCancellationRequested)
+            {
+                transform.rotation = Quaternion.Lerp(startRot, rotation, elapsed / time);
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
+            if (token.IsCancellationRequested)
+                return false;
+            transform.rotation = rotation;
+            return true;
+        }
+
+        public async Task<bool> RotateIfNecessary(Transform target, CancellationToken token)
+        {
+            var rotation = Quaternion.LookRotation(target.position - transform.position);
+            var startRot = transform.rotation;
+            var angle = Quaternion.Angle(startRot, rotation);
+            
+            if (Mathf.Abs(angle) <= 2)
+                return false;
+            var elapsed = 0f;
+            var time = angle / _unitView.agent.RotationSpeed;
+            while (elapsed < time && !token.IsCancellationRequested)
+            {
+                rotation = Quaternion.LookRotation(target.position - transform.position);
+                transform.rotation = Quaternion.Lerp(startRot, rotation, elapsed / time);
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
+            if (token.IsCancellationRequested)
+                return false;
+            transform.rotation = rotation;
+            return true;
+        }
+        
+        public Quaternion GetRotationToCell(Vector2Int pos)
+        {
+            var endPos = _unitView.agent.Map.GetWorldFromCell(pos);
+            _unitView.agent.Map.GetCellAtPosition(transform.position, out var cellPos, out var cell);
+            var startPos = cell.worldPosition;
+            return Quaternion.LookRotation(endPos - startPos);
         }
 
         public void Stop()
@@ -55,11 +111,24 @@ namespace RobotCastle.Battling
         public void SetupAgent()
         {
             _didSetup = true;
-            _unitView.rb.isKinematic = false;
+            _unitView.rb.isKinematic = true;
             _unitView.collider.isTrigger = false;
             _unitView.collider.enabled = true;
             _unitView.agent.RotationSpeed = 800;
             _unitView.agent.SpeedGetter = _unitView.Stats.MoveSpeed;
+        }
+
+        public void SetIdle()
+        {
+            _unitView.rb.isKinematic = true;
+            _unitView.collider.isTrigger = true;
+            _unitView.collider.enabled = true;
+            OnMovementStopped();
+        }
+
+        public void UpdateMoveSpeed()
+        {
+            
         }
     }
 }

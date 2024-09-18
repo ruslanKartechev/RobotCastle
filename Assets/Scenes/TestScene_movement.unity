@@ -4368,6 +4368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 965840093de949b0b2d83bbb6aeb2de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _preset: 
 --- !u!4 &618037136
 Transform:
   m_ObjectHideFlags: 0
@@ -4395,8 +4396,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b175aa2d5d44e59888e27d367d024d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mergeManager: {fileID: 1256559892}
+  _doAutoBegin: 1
+  _enemiesPreset: 
   _battleManager: {fileID: 618037135}
+  _mergeManager: {fileID: 1256559892}
+  _enemiesManager: {fileID: 0}
   _mainCanvas: {fileID: 0}
 --- !u!1 &621667330
 GameObject:
@@ -8784,7 +8788,6 @@ MonoBehaviour:
   _autoInit: 0
   _allowInputOnStart: 0
   _gridViewGo: {fileID: 1256559889}
-  _sectionsController: {fileID: 1256559896}
   _highlighter: {fileID: 1256559899}
   _mergeCellHighlight: {fileID: 1256559900}
 --- !u!4 &1256559893
@@ -8882,10 +8885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3e73f2cee5c40a9a2acaf03c023f077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startCount: 4
-  _addCount: 4
-  _prefabPath: prefabs/fx/fx_cell_highlight
-  _prefabPath2: prefabs/fx/fx_cell_highlight_fast
+  _pools: []
 --- !u!1001 &1279161679
 PrefabInstance:
   m_ObjectHideFlags: 0

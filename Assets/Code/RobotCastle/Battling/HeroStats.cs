@@ -9,7 +9,9 @@ namespace RobotCastle.Battling
         public List<float> spellPower; // per level
         public List<float> attack; // per level
         public List<float> mana; // per tier 
-        public List<float> attackSpeed; // per tier 
+        public List<float> attackSpeed; // per tier
+        public List<float> physicalResist; // per tier
+        public List<float> magicalResist; // per tier
         public List<float> moveSpeed; // const 
         public string rangeId;
 
@@ -23,6 +25,8 @@ namespace RobotCastle.Battling
             mana = new List<float>(other.mana);
             attackSpeed = new List<float>(other.attackSpeed);
             moveSpeed = new List<float>(other.moveSpeed);
+            physicalResist = new List<float>(other.physicalResist);
+            magicalResist = new List<float>(other.magicalResist);
             rangeId = other.rangeId;
         }
     }

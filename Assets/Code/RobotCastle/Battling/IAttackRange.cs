@@ -26,7 +26,7 @@ namespace RobotCastle.Battling
         /// Max Inclusive. Min Exclusive
         /// </summary>
         List<ICellView> ApplyMask(Vector2Int center, IGridView gridView, int minX, int minY);
-        
-        
+
+        Vector2Int GetClosestCell(Vector2Int fromPoint, Vector2Int toPoint);
     }
 }

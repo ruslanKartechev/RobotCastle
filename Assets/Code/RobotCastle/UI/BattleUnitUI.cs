@@ -1,4 +1,5 @@
-﻿using SleepDev;
+﻿using DG.Tweening;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.UI
@@ -7,9 +8,14 @@ namespace RobotCastle.UI
     {
         [SerializeField] private UnitUILayout _unitUILayout;
         [SerializeField] private StarsLevelView _levelView;
-
-        public StarsLevelView Level => _levelView;
+        [SerializeField] private BarTrackerUI _healthUI;
+        [SerializeField] private BarTrackerUI _manaUI;
+        [SerializeField] private CanvasGroup _canvasGroup;
         
+        public StarsLevelView Level => _levelView;
+        public BarTrackerUI HealthUI => _healthUI;
+        public BarTrackerUI ManaUI => _manaUI;
+
         public void SetMergeMode()
         {
             _unitUILayout.SetMerge();
@@ -19,5 +25,11 @@ namespace RobotCastle.UI
         {
             _unitUILayout.SetBattle();
         }
+
+        public void AnimateHide()
+        {
+            _canvasGroup.DOFade(0f, .2f);   
+        }
     }
+    
 }

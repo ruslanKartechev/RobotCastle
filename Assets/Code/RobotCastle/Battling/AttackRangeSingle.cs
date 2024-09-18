@@ -96,5 +96,22 @@ namespace RobotCastle.Battling
             }
             return result;
         }
+
+        public Vector2Int GetClosestCell(Vector2Int fromPoint, Vector2Int toPoint)
+        {
+            var shortest = int.MaxValue;
+            var output = fromPoint;
+            for (var i = 0; i < 4; i++)
+            {
+                var point = toPoint + _cellsMask[i];
+                var dist = (point - fromPoint).sqrMagnitude;
+                if (dist < shortest)
+                {
+                    shortest = dist;
+                    output = point;
+                }
+            }
+            return output;
+        }
     }
 }

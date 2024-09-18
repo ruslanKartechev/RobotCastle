@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using Bomber;
 using RobotCastle.Battling;
 using RobotCastle.Core;
@@ -37,7 +38,7 @@ namespace RobotCastle.Testing
                 {
                     if (_initedUnits.Contains(uc) == false)
                     {
-                        uc.InitAsPlayerHero("aramis", 1, 1);
+                        uc.InitComponents("aramis", 1, 1);
                         uc.PrepareForBattle();
                         _initedUnits.Add(uc);
                     }
@@ -60,7 +61,7 @@ namespace RobotCastle.Testing
             var uc = unit.gameObject.GetComponent<HeroController>();
             if (_initedUnits.Contains(uc) == false)
             {
-                uc.InitAsPlayerHero("aramis", 0, 0);
+                uc.InitComponents("aramis", 0, 0);
                 uc.PrepareForBattle();
                 _initedUnits.Add(uc);
             }
@@ -68,7 +69,8 @@ namespace RobotCastle.Testing
             uc.UpdateMap();
             
             var mover = unit.gameObject.GetComponent<HeroMovementManager>();
-            mover.MoveToCell(pos.x, pos.y);
+            var token = new CancellationTokenSource();
+            mover.MoveToCell(pos, token.Token);
         }
 #endif
     }

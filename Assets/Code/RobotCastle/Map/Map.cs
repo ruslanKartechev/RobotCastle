@@ -1,4 +1,4 @@
-﻿using SleepDev;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Bomber
@@ -7,6 +7,7 @@ namespace Bomber
     {
         private Vector2Int _size;
 
+        public List<IAgent> ActiveAgents { get; } = new(20);
         public Vector2Int Size => _size;
         public MapCell[,] Grid { get; private set;}
 
@@ -14,6 +15,19 @@ namespace Bomber
         public float CellSize { get; private set; }
         public Vector3 WorldOrigin { get; private set;}
 
+
+        public Vector2Int GetCellPositionFromWorld(Vector3 worldPosition)
+        {
+            var p = worldPosition - WorldOrigin;
+            var x = Mathf.RoundToInt(p.x);
+            var y = Mathf.RoundToInt(p.z);
+            return new Vector2Int(x, y);
+        }
+
+        public Vector3 GetWorldFromCell(Vector2Int cell)
+        {
+            return WorldOrigin + new Vector3(cell.x * CellSize, 0f, cell.y * CellSize);
+        }
 
         public Map(Vector2Int size, float cellSize, Vector3 worldOrigin)
         {
