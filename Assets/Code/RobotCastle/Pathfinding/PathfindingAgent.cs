@@ -1,5 +1,4 @@
 #define __DrawPathCells
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using SleepDev;
@@ -7,7 +6,6 @@ using UnityEngine;
 
 namespace Bomber
 {
-    
     public class PathfindingAgent : MonoBehaviour, IAgent
     {
         public enum AgentState { NotMoving, IsMoving, FailedToReach, IsWaitingToPass, Arrived }
@@ -215,12 +213,12 @@ namespace Bomber
                     continue;
                 if (ag.CurrentCell == cell)
                 {
-                    var msg = $"[{gameObject.name}] [{cell.ToString()}] Is Already occupied. ";
-                    if (ag.IsMoving)
-                        msg += "Other is moving, waiting";
-                    else
-                        msg += "Other is moving, waiting";
-                    CLog.LogWhite(msg);
+                    // var msg = $"[{gameObject.name}] [{cell.ToString()}] Is Already occupied. ";
+                    // if (ag.IsMoving)
+                    //     msg += "Other is moving, waiting";
+                    // else
+                    //     msg += "Other is moving, waiting";
+                    // CLog.LogWhite(msg);
                     if (ag.IsMoving)
                         return 1;
                     else
@@ -233,28 +231,26 @@ namespace Bomber
         
         private async Task MovingThroughPoints(Path path, CancellationToken token)
         {
-            // const float waitDelay = 1f;
-            // const float maxWaitTime = 5f;
+            const float waitDelay = .5f;
+            const float maxWaitTime = 5f;
             for (var i = 1; i < path.points.Count && !token.IsCancellationRequested; i++)
             {
                 var targetCell = path.points[i];
                 var cellState = CheckIfCellIsFree(targetCell);
-                // var totalTime = 0f;
-                // while (cellState == 1)
-                // {
-                //     State = AgentState.IsWaitingToPass;
-                //     totalTime += waitDelay;
-                //     await Task.Delay((int)(1000 * waitDelay), token);
-                //     cellState = CheckIfCellIsFree(targetCell);
-                //     if (totalTime >= maxWaitTime)
-                //         cellState = 2;
-                // }
-                if (cellState == 1)
+                var totalTime = 0f;
+                while (cellState == 1)
                 {
-                    CLog.LogRed("IS BLOCKED BY MOVING AGENT");
                     State = AgentState.IsWaitingToPass;
-                    return;
+                    totalTime += waitDelay;
+                    await Task.Delay((int)(1000 * waitDelay), token);
+                    cellState = CheckIfCellIsFree(targetCell);
+                    if (totalTime >= maxWaitTime)
+                    {
+                        CLog.LogRed("Timeout");
+                        cellState = 2;
+                    }
                 }
+
                 switch (cellState)
                 {
                     case 0:

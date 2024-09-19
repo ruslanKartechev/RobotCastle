@@ -2752,7 +2752,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _activateEnemies: 1
   _activatePlayers: 1
-  _preset: ep_test_1
 --- !u!4 &618037136
 Transform:
   m_ObjectHideFlags: 0
@@ -2781,13 +2780,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _doAutoBegin: 1
-  _enemiesPreset: ep_test_1
+  _presetsContainer: {fileID: 11400000, guid: aaccb1519d2b2274399588776aa12308, type: 2}
   _battleManager: {fileID: 618037135}
   _mergeManager: {fileID: 1256559892}
   _enemiesManager: {fileID: 974174049}
   _map: {fileID: 1136776795}
   _mainCanvas: {fileID: 280246333}
   _battleCamera: {fileID: 1752191778}
+  _cellsParent: {fileID: 752264609}
 --- !u!114 &618037138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2800,14 +2800,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d72a2ba2d4294934853e8649a99b42d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _doSpawnHero: 1
+  _doSpawnHero: 0
   _heroSpawnArgs:
     coreData:
       level: 1
       id: aramis
       type: unit
     preferredCoordinated: {x: 1, y: 4}
-    usePreferred: 1
+    usePreferredCoordinate: 0
+    additionalItems: []
+    useAdditionalItems: 0
   _addItems: 0
   _heroItems: []
   _doSpawnEnemy: 0
@@ -2817,7 +2819,9 @@ MonoBehaviour:
       id: 
       type: 
     preferredCoordinated: {x: 0, y: 0}
-    usePreferred: 0
+    usePreferredCoordinate: 0
+    additionalItems: []
+    useAdditionalItems: 0
 --- !u!1 &621667330
 GameObject:
   m_ObjectHideFlags: 0
@@ -4873,7 +4877,9 @@ MonoBehaviour:
       id: 
       type: 
     preferredCoordinated: {x: 0, y: 0}
-    usePreferred: 0
+    usePreferredCoordinate: 0
+    additionalItems: []
+    useAdditionalItems: 0
   _addItems: 0
   _heroItems: []
   _doSpawnEnemy: 0
@@ -4883,7 +4889,9 @@ MonoBehaviour:
       id: 
       type: 
     preferredCoordinated: {x: 0, y: 0}
-    usePreferred: 0
+    usePreferredCoordinate: 0
+    additionalItems: []
+    useAdditionalItems: 0
 --- !u!114 &974174048
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,11 +6,13 @@ using SleepDev;
 
 namespace RobotCastle.Battling
 {
-    public class HeroMovementManager : MonoBehaviour, IPathfindingAgentAnimator
+    public class HeroMovementManager : MonoBehaviour, IPathfindingAgentAnimator, IMovingUnit
     {
         [SerializeField] private HeroView _unitView;
         private bool _didSetup;
 
+        public Vector2Int TargetCell { get; set; }
+        
         public bool IdleOnStop { get; set; } = true;
 
         public HeroView UnitView
@@ -18,7 +20,9 @@ namespace RobotCastle.Battling
             get => _unitView;
             set => _unitView = value;
         }
-        
+
+        public void SetNullTargetCell() => TargetCell = new Vector2Int(-1, -1);
+
         public void OnMovementBegan()
         {
             _unitView.animator.SetBool(HeroesConfig.AnimId_Move, true);
@@ -126,9 +130,6 @@ namespace RobotCastle.Battling
             OnMovementStopped();
         }
 
-        public void UpdateMoveSpeed()
-        {
-            
-        }
+
     }
 }

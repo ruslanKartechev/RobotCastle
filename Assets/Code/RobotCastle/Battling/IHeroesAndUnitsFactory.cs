@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
-using RobotCastle.Data;
-using RobotCastle.Merging;
+﻿using RobotCastle.Merging;
 
 namespace RobotCastle.Battling
 {
     public interface IHeroesAndUnitsFactory
     {
-        bool SpawnHeroOrItem(SpawnMergeItemArgs args, out IItemView itemView);
+        bool SpawnHeroOrItem(SpawnMergeItemArgs args,
+            IGridView grid,
+            IGridSectionsController sectionsController,
+            out IItemView spawnedItem);
 
-        bool SpawnHeroWithItems(SpawnMergeItemArgs args, List<CoreItemData> items, out IItemView itemView);
+        void SpawnHeroOrItem(SpawnMergeItemArgs args, 
+            ICellView cellView, 
+            out IItemView spawnedItem);
     }
 }

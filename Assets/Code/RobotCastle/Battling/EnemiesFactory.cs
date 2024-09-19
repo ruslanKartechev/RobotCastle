@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
 using SleepDev;
@@ -38,11 +39,18 @@ namespace RobotCastle.Battling
         public void SpawnPreset(EnemyPackPreset packPreset)
         {
             _spawnedEnemies = new List<HeroController>(packPreset.enemies.Count);
-            
+            var factory = ServiceLocator.Get<IHeroesAndUnitsFactory>();
             foreach (var enemyPreset in packPreset.enemies)
             {
                 var cellView = GridView.GetCell(enemyPreset.gridPos.x, enemyPreset.gridPos.y);
-                var enemy = SpawnOne(enemyPreset);
+                var args = new SpawnMergeItemArgs(enemyPreset.enemy);
+                if (enemyPreset.items is { Count : > 0 })
+                {
+                    args.useAdditionalItems = true;
+                    args.additionalItems = enemyPreset.items;
+                }
+                factory.SpawnHeroOrItem(args, cellView, out var itemView);
+                var enemy = itemView.Transform.GetComponent<HeroController>();
                 enemy.transform.position = cellView.WorldPosition;
                 enemy.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
                 enemy.InitComponents(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level);
@@ -51,20 +59,31 @@ namespace RobotCastle.Battling
             }
         }
 
-        private HeroController SpawnOne(EnemyPreset preset)
+        public void SpawnNew(SpawnMergeItemArgs args)
         {
-            var prefab = Resources.Load<HeroController>($"prefabs/enemies/{preset.enemy.id}");
-            var instance = Instantiate(prefab);
-            if (preset.items.Count > 0)
+            ICellView cellView = null;
+            if (args.usePreferredCoordinate)
             {
-                var itemsContainer = instance.gameObject.GetComponent<IUnitsItemsContainer>();
-                itemsContainer.SetItems(preset.items);
+                var cell = GridView.GetCell(args.preferredCoordinated.x, args.preferredCoordinated.y);
+                if (cell.cell.isUnlocked == false || cell.cell.isOccupied)
+                    return;
+                cellView = cell;
             }
-            return instance;
+
+            foreach (var cell in GridView.Grid)
+            {
+                if (cell.cell.isUnlocked && cell.cell.isOccupied == false)
+                {
+                    cellView = cell;
+                    break;
+                }
+            }
+            var factory = ServiceLocator.Get<IHeroesAndUnitsFactory>();
+            factory.SpawnHeroOrItem(args, cellView, out var spawnedItem);
+
         }
-        
-        #if UNITY_EDITOR
-        
+
+#if UNITY_EDITOR
         [ContextMenu("E_CreateTestPreset")]
         public void E_CreateTestPreset()
         {

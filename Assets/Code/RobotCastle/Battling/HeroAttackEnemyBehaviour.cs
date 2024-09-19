@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Bomber;
@@ -30,16 +29,19 @@ namespace RobotCastle.Battling
             _callback = endCallback;
             if (_rangeCoverCheck == null)
                 _rangeCoverCheck = new HeroRangeCoverCheck(_hero);
+            _hero.Battle.AttackPositionCalculator.AddUnit(_hero.HeroView.movement);
             AttackClosest();
         }
 
         public void Stop()
         {
-            CLog.LogRed($"[{nameof(HeroAttackEnemyBehaviour)}] [Stop]");
+            CLog.Log($"[{nameof(HeroAttackEnemyBehaviour)}] [Stop]");
             if(_token != null)
                 _token.Cancel();
             _hero.HeroView.agent.SetCellMoveCheck(null);
             _hero.HeroView.AttackManager.Stop();
+            _hero.Battle.AttackPositionCalculator.RemoveUnit(_hero.HeroView.movement);
+            _hero.HeroView.movement.SetNullTargetCell();
         }
 
         private void AttackClosest()
@@ -131,9 +133,11 @@ namespace RobotCastle.Battling
         /// <returns>True if did move, false if didn't</returns>
         private async Task<bool> MovingToChosenEnemy(CancellationToken token)
         {
-            var shouldMove = BattleManager.GetPositionToAttack(_hero, _enemy, out var cellPos);
+            _hero.HeroView.movement.SetNullTargetCell();
+            var shouldMove = _hero.Battle.AttackPositionCalculator.GetPositionToAttack(_hero, _enemy, out var cellPos);
             if (shouldMove)
             {
+                _hero.HeroView.movement.TargetCell = cellPos;
                 Draw(_hero.transform.position, _enemy.transform.position, cellPos);
                 await _hero.HeroView.movement.MoveToCell(cellPos, token);
                 if (token.IsCancellationRequested)
@@ -146,8 +150,10 @@ namespace RobotCastle.Battling
                     return true;
                 }
             }
+            _hero.HeroView.movement.TargetCell = _hero.HeroView.agent.CurrentCell;
             return await _hero.HeroView.movement.RotateIfNecessary(_enemy.HeroView.agent.CurrentCell, token);
         }
+        
         
         private void Draw(Vector3 worldPos, Vector3 enemyPos, Vector2Int cell)
         {

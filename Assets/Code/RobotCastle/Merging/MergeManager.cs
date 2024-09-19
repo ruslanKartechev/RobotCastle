@@ -23,6 +23,9 @@ namespace RobotCastle.Merging
         private MergeGrid _grid;
         private bool _didInit;
 
+        public IGridView GridView => _gridView;
+        public IGridSectionsController SectionsController => _sectionsController;
+        
         public void Init()
         {
             if (_didInit)
@@ -59,52 +62,16 @@ namespace RobotCastle.Merging
         
         public void AllowInput(bool active) => _mergeInput.SetActive(active);
 
-        public bool SpawnOnMergeGrid(string id)
+        public bool SpawnNewMergeItem(SpawnMergeItemArgs args)
         {
-            var controller = ServiceLocator.Get<MergeController>();
-            if (controller.GetFreeCellForNewHero(out var view))
-            {
-                var spawner = ServiceLocator.Get<IMergeItemsFactory>();
-                var itemView = spawner.SpawnItemOnCell(view, id);
-                _sectionsController.OnItemPut(itemView.itemData);
-                HighlightMergeOptions();
-                return true;
-            }
-            return false;
-        }
-
-        public bool SpawnOnMergeGrid(CoreItemData coreData, Vector2Int preferredCoordinate, out IItemView itemView)
-        {
-            var itemData = new ItemData(coreData.level, coreData.id, coreData.type);
-            if (_sectionsController.IsCellFree(_grid, itemData, preferredCoordinate))
-            {
-                if (_sectionsController.IsCellAllowed(preferredCoordinate.x, preferredCoordinate.y, itemData, true))
-                {
-                    var spawner = ServiceLocator.Get<IMergeItemsFactory>();
-                    var cellView = _gridView.GetCell(preferredCoordinate.x, preferredCoordinate.y);
-                    itemView = spawner.SpawnItemOnCell(cellView, new ItemData(coreData.level, coreData.id, coreData.type));
-                    _sectionsController.OnItemPut(itemView.itemData);
-                    HighlightMergeOptions();
-                    return true;
-                }
-            }
-
-            return SpawnOnMergeGrid(coreData, out itemView);
+            var didSpawn = ServiceLocator.Get<IHeroesAndUnitsFactory>()
+                .SpawnHeroOrItem(args, _gridView, _sectionsController, out var view);
+            if (!didSpawn)
+                return false;
+            HighlightMergeOptions();
+            return true;
         }
         
-        public bool SpawnOnMergeGrid(CoreItemData coreData, out IItemView itemView)
-        {
-            if (_mergeController.GetFreeCellForNewHero(out var cellView))
-            {
-                var spawner = ServiceLocator.Get<IMergeItemsFactory>();
-                itemView = spawner.SpawnItemOnCell(cellView, new ItemData(coreData.level, coreData.id, coreData.type));
-                _sectionsController.OnItemPut(itemView.itemData);
-                HighlightMergeOptions();
-                return true;
-            }
-            itemView = null;
-            return false;
-        }
 
         [ContextMenu("LogGridState")]
         public void LogGridState()
@@ -131,7 +98,7 @@ namespace RobotCastle.Merging
             HighlightMergeOptions();
         }
 
-        private void HighlightMergeOptions()
+        public void HighlightMergeOptions()
         {
             CLog.LogWhite($"[{nameof(MergeManager)}] Highlight");
             var allItems = _sectionsController.GetAllItems();

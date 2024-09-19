@@ -9,11 +9,15 @@ namespace RobotCastle.Battling
     {
         public Action<int> WinCallback { get; set; }
         
+        public BattleState State { get; set; }
+        
         public int stageIndex = 0;
         public int troopSize = 3;
         public int playerHealthPoints = 3;
         public BattleTeam playerTeam;
         public BattleTeam enemyTeam;
+
+        public AttackPositionCalculator AttackPositionCalculator { get; set; } = new();
 
         private bool _completed;
         private List<HeroController> _enemies; // is not changed. All units set at startup
@@ -21,6 +25,11 @@ namespace RobotCastle.Battling
         
         private List<HeroController> _enemiesAlive;
         private List<HeroController> _playersAlive;
+
+        public List<HeroController> enemiesAlive => _enemiesAlive;
+
+        public List<HeroController> playersAlive => _playersAlive;
+
         public BattleTeam GetTeam(int num) => num == 0 ? playerTeam : enemyTeam;
         public BattleTeam GetEnemyTeam(int num) => num == 0 ? enemyTeam : playerTeam;
 

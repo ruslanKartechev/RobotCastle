@@ -2,6 +2,7 @@
 using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.Merging;
 using UnityEngine;
 
 namespace RobotCastle.Testing
@@ -22,11 +23,9 @@ namespace RobotCastle.Testing
         {
             if (_doSpawnHero)
             {
-                var spawner = ServiceLocator.Get<IHeroesAndUnitsFactory>();
-                if (_addItems)
-                    spawner.SpawnHeroWithItems(_heroSpawnArgs, _heroItems, out var view);
-                else
-                    spawner.SpawnHeroOrItem(_heroSpawnArgs, out var view);
+                var item = CheatHeroAndItemsSpawner.SpawnHeroOrItem(_heroSpawnArgs.coreData, _heroSpawnArgs.usePreferredCoordinate,
+                    _heroSpawnArgs.preferredCoordinated,
+                    (_heroSpawnArgs.useAdditionalItems ? _heroSpawnArgs.additionalItems : null));
             }
 
             if (_doSpawnEnemy)

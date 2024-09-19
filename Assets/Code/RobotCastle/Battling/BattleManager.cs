@@ -9,13 +9,6 @@ namespace RobotCastle.Battling
     [DefaultExecutionOrder(10)]
     public class BattleManager : MonoBehaviour
     {
-        [SerializeField] private bool _activateEnemies = true;
-        [SerializeField] private bool _activatePlayers = true;
-        [SerializeField] private string _preset;
-        private Battle _battle;
-        
-        public Battle battle => _battle;
-
         public static HeroController GetBestTargetForAttack(HeroController hero)
         {
             var map = hero.HeroView.agent.Map;
@@ -46,53 +39,38 @@ namespace RobotCastle.Battling
             return closest;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="hero">Your hero</param>
-        /// <param name="enemy">Enemy hero to get to</param>
-        /// <returns>True if should me. False if already on the cell. out targetPosition - position to move to</returns>
-        public static bool GetPositionToAttack(HeroController hero, HeroController enemy, out Vector2Int targetCell)
-        {
-            var map = hero.HeroView.agent.Map;
-            var myPos = map.GetCellPositionFromWorld(hero.transform.position);
-            var cellsMask = hero.HeroView.Stats.Range.GetCellsMask();
-            var coveredCells = new List<Vector2Int>(cellsMask.Count);
-            foreach (var val in cellsMask)
-                coveredCells.Add(myPos + val);
-            var enemyPos = map.GetCellPositionFromWorld(enemy.transform.position);
-            if (coveredCells.Contains(enemyPos))
-            {
-                targetCell = enemyPos;
-                return false; // don't move, just attack
-            }
-            targetCell = hero.HeroView.Stats.Range.GetClosestCell(myPos, enemyPos);
-            return true;
-        }
+        
+        [SerializeField] private bool _activateEnemies = true;
+        [SerializeField] private bool _activatePlayers = true;
+        private Battle _battle;
+        private PresetsContainer _presetsContainer;
+        
+        public Battle battle => _battle;
+        
+        public IBattleEndProcessor endProcessor { get; set; }
+        
+        public IBattleStartedProcessor startProcessor { get; set; }
+        
 
-        public static Vector2Int GetCellPos(Vector3 worldPos)
-        {
-            return new Vector2Int(Mathf.FloorToInt(worldPos.x), Mathf.FloorToInt(worldPos.z));
-        }
-
-
-        public void Init()
+        public void Init(PresetsContainer presetsContainer)
         {
             CLog.Log($"[{nameof(BattleManager)}] Init Created new battle data");
+            _presetsContainer = presetsContainer;
             _battle = Battle.GetDefault();
             ServiceLocator.Bind<Battle>(_battle);
+            _battle.State = BattleState.NotStarted;
         }
-
+        
         public bool BeginBattle()
         {
             _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>()
                 .GetItemsInActiveArea<HeroController>(_ => true);
             if (_battle.PlayerUnits.Count == 0)
             {
+                _battle.State = BattleState.NotStarted;
                 CLog.LogWhite($"No Player Units on active area!");
                 return false;
             }
-            ServiceLocator.Get<BattleCamera>().MoveToBattlePoint();
             _battle.WinCallback = OnTeamWin;
             foreach (var hero in _battle.Enemies)
             {
@@ -111,52 +89,41 @@ namespace RobotCastle.Battling
 
             if (_activatePlayers)
             {
-                foreach (var unit in _battle.PlayerUnits)
+                foreach (var unit in _battle.playersAlive)
                     unit.SetBehaviour(new HeroAttackEnemyBehaviour());
             }
             if (_activateEnemies)
             {
-                foreach (var unit in _battle.Enemies)
+                foreach (var unit in _battle.enemiesAlive)
                     unit.SetBehaviour(new HeroAttackEnemyBehaviour());
             }
+            _battle.State = BattleState.Going;
+            startProcessor?.OnBattleStarted(_battle);
             return true;
         }
-
-        private void OnTeamWin(int teamNum)
-        {
-            CLog.Log($"[{nameof(BattleManager)}] On Team win {teamNum}");
-            foreach (var unit in _battle.Enemies)
-            {
-                if(!unit.IsDead)
-                    unit.SetIdle();
-            }
-            foreach (var unit in _battle.PlayerUnits)
-            {
-                if(!unit.IsDead)
-                    unit.SetIdle();
-            }
-            switch (teamNum)
-            {
-                case 0:
-                    CLog.Log($"[{nameof(BattleManager)}] On Player team win");
-                    break;
-                case 1:
-                    CLog.Log($"[{nameof(BattleManager)}] On Enemy team win");
-                    break;
-            }
-        }
-
+        
         public void NextStage()
         {
+            _battle.stageIndex++;
+            SetStage(_battle.stageIndex);
+        }
+
+        public void ResetStage()
+        {
+            SetStage(_battle.stageIndex);
         }
 
         public void SetStage(int stageIndex)
         {
             _battle.stageIndex = stageIndex;
-            var enemies = ServiceLocator.Get<EnemiesManager>();
-            enemies.SpawnPreset(_preset);
-            _battle.Enemies = enemies.Enemies;
-            ServiceLocator.Get<MergeManager>().AllowInput(true);
+            foreach (var en in _battle.Enemies)
+                Destroy(en.gameObject);
+            _battle.Enemies.Clear();
+            _battle.enemiesAlive.Clear();
+            var preset = _presetsContainer.Presets[stageIndex];
+            var enemyManager = ServiceLocator.Get<EnemiesManager>();
+            enemyManager.SpawnPreset(preset);
+            _battle.Enemies = enemyManager.Enemies;
             // do something for merge reset
             _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>()
                 .GetItemsInActiveArea<HeroController>(_ => true);
@@ -194,6 +161,35 @@ namespace RobotCastle.Battling
             var msg = _battle.GetEnemiesAsStr();
             CLog.LogWhite(msg);
         }
+        
+        private void OnTeamWin(int teamNum)
+        {
+            CLog.Log($"[{nameof(BattleManager)}] On Team win {teamNum}");
+            foreach (var unit in _battle.Enemies)
+            {
+                if(!unit.IsDead)
+                    unit.SetIdle();
+            }
+            foreach (var unit in _battle.PlayerUnits)
+            {
+                if(!unit.IsDead)
+                    unit.SetIdle();
+            }
+            switch (teamNum)
+            {
+                case 0:
+                    CLog.Log($"[{nameof(BattleManager)}] On Player team win");
+                    _battle.State = BattleState.PlayerWin;
+                    endProcessor?.OnBattleEnded(_battle);
+                    break;
+                case 1:
+                    CLog.Log($"[{nameof(BattleManager)}] On Enemy team win");
+                    _battle.State = BattleState.EnemyWin;
+                    endProcessor?.OnBattleEnded(_battle);
+                    break;
+            }
+        }
+
         
         private void OnEnable()
         {

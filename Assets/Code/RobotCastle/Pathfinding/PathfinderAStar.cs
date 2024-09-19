@@ -1,4 +1,6 @@
-﻿#define __DRAW_STEP_BY_STEP
+﻿#define DRAW_STEP_BY_STEP
+#define DRAW_STEP_BY_STEP_DELAY__
+
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ namespace Bomber
         private HashSet<Vector2Int> _occupied;
         private ISet<Vector2Int> _excludedPos;
 
-        private int _stepsPerFrameMax = 25; 
+        private int _stepsPerFrameMax = 20; 
         
         public int StepsPerFrameMax
         {
@@ -143,7 +145,24 @@ namespace Bomber
                     if (closedList.Contains(nextPos)) 
                         continue;
                     if (_map.Grid[nextPos.x, nextPos.y].isPlayerWalkable == false)
+                    {
                         continue;
+                    }
+
+                    var otherAgentOccupied = false;
+                    foreach (var agent in _map.ActiveAgents)
+                    {
+                        if (agent.CurrentCell == nextPos)
+                        {
+                            otherAgentOccupied = true;
+                            break;
+                        }
+                    }
+                    if (otherAgentOccupied)
+                    {
+                        CLog.LogRed("otherAgentOccupied");
+                        continue;
+                    }
 #if DRAW_STEP_BY_STEP
                     var drawPos1 = _map.Grid[nextPos.x, nextPos.y].worldPosition;
                     var drawPos2 = drawPos1 + Vector3.up;
@@ -176,7 +195,7 @@ namespace Bomber
                     Debug.DrawLine(drawPos1, drawPos2, drawColor, drawTime);
 #endif
                 }
-#if DRAW_STEP_BY_STEP
+#if DRAW_STEP_BY_STEP && DRAW_STEP_BY_STEP_DELAY
                 var delaySec = .1f;
                 await Task.Delay(Mathf.RoundToInt(1000 * delaySec));
 #endif
@@ -193,44 +212,5 @@ namespace Bomber
             return false;
         }
 
-        // private void RemoveExtraPoints(IList<Vector2Int> path, IPathfindingGrid grid)
-        // {
-        //     if(path.Count < 3)
-        //         return;
-        //     var startIndex = path.Count-1;
-        //     var nextIndex = startIndex - 2;
-        //     while (nextIndex >= 0)
-        //     {
-        //         var walkable = _excludedPos.Contains(path[nextIndex]) ||
-        //                        CheckWalkable(path[startIndex], path[nextIndex]);
-        //         if (walkable)
-        //         {
-        //             path.RemoveAt(nextIndex + 1);
-        //             startIndex--;
-        //             nextIndex--;
-        //         }
-        //         else
-        //         {
-        //             startIndex = nextIndex + 1;
-        //             nextIndex = startIndex - 2;
-        //         }
-        //     }
-        //     
-        //     bool CheckWalkable(Vector2Int start, Vector2Int end)
-        //     {
-        //         var distance = Mathf.Floor((end - start).DistanceEstimate());
-        //         var step = 0.1f;
-        //         while (step <= distance)
-        //         {
-        //             var walkable = grid.GetWalkableBetween(start, end, step / distance);
-        //             if (!walkable)
-        //                 return false;
-        //             step += 1;
-        //         }
-        //         return true;
-        //     }
-        // }
-        
-        
     }
 }

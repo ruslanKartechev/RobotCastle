@@ -91,13 +91,12 @@ namespace RobotCastle.Testing
 #if UNITY_EDITOR
             if (Application.isPlaying == false)
             {
-                CLog.Log("[TestBattleGridSpawner]Not in play mode!");
+                CLog.Log("[TestBattleGridSpawner] Not in play mode!");
                 return;
             }
-            var battleGridSpawner = ServiceLocator.Get<IHeroesAndUnitsFactory>();
-            var did = battleGridSpawner.SpawnHeroOrItem(new SpawnMergeItemArgs(_oneItem), out var view);
-            if (!did)
-                CLog.LogRed("[TestBattleGridSpawner] Did not spawn hero!");
+            var view = SpawnMergeItem(new CoreItemData(_oneItem));
+            if (view == null)
+                CLog.Log("[TestBattleGridSpawner] SpawnOneItem failed!");
 #endif
         }
         
@@ -178,49 +177,40 @@ namespace RobotCastle.Testing
                 CLog.LogError("NO IBattleGridSpawner found!");
                 return;
             }
-            foreach (var itemData in list)
-                spawner.SpawnHeroOrItem(new SpawnMergeItemArgs(itemData), out var view);
+            foreach (var core in list)
+                SpawnMergeItem(core);
         }
-        
+
         public IItemView SpawnMergeItem(CoreItemData data, List<CoreItemData> items = null)
         {
-            var spawner = ServiceLocator.Get<IHeroesAndUnitsFactory>();
-            if (spawner == null)
-            {
-                CLog.LogError("NO IBattleGridSpawner found!");
-                return null;
-            }
-
-            var did = false;
-            IItemView view = null;
-            if (items == null)
-                did = spawner.SpawnHeroOrItem(new SpawnMergeItemArgs(data), out view);
-            else
-                did = spawner.SpawnHeroWithItems(new SpawnMergeItemArgs(data), items, out view);
-            if (!did)
-                CLog.LogRed("[CheatSpawner] Did not spawn hero!");
-            return view;
+            return SpawnHeroOrItem(data, false, default, items);
         }
-
-        public IItemView SpawnMergeItem(SpawnMergeItemArgs args, List<CoreItemData> items = null)
+        
+        public static IItemView SpawnHeroOrItem(CoreItemData data, bool useSpecificCoord, Vector2Int coord, List<CoreItemData> items = null)
         {
             var spawner = ServiceLocator.Get<IHeroesAndUnitsFactory>();
             if (spawner == null)
             {
-                CLog.LogError("NO IBattleGridSpawner found!");
+                CLog.LogError("No IBattleGridSpawner found!");
                 return null;
             }
-            var did = false;
+            var manager = ServiceLocator.Get<MergeManager>();
+            if (manager == null)
+            {
+                CLog.LogError("No MergeManager found!");
+                return null;
+            }
             IItemView view = null;
-            if (items == null)
-                did = spawner.SpawnHeroOrItem(args, out view);
-            else
-                did = spawner.SpawnHeroWithItems(args, items, out view);
-            if (!did)
-                CLog.LogRed("[CheatSpawner] Did not spawn hero!");
+            var args = new SpawnMergeItemArgs(data);
+            args.useAdditionalItems = (items is {Count: > 0});
+            args.additionalItems = items;
+            args.preferredCoordinated = coord;
+            args.usePreferredCoordinate = useSpecificCoord;
+            spawner.SpawnHeroOrItem(args, manager.GridView, manager.SectionsController, out view);
             return view;
         }
         
+
         private void CorrectIndexAndSetId()
         {
             if (_heroIds.Count > 0)

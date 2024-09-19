@@ -39,7 +39,7 @@ namespace RobotCastle.Battling
 
         public void SpawnNewEnemy(SpawnMergeItemArgs args)
         {
-            
+            _enemiesFactory.SpawnNew(args);
         }
     }
 }

@@ -1,11 +1,10 @@
-﻿using SleepDev;
+﻿using RobotCastle.Merging;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
     public class HeroMeleeAttackManager : MonoBehaviour, IHeroAttackManager
     {
-        private static readonly int AttackId = Animator.StringToHash("Attack");
         private IDamageReceiver _target;
         
         public HeroController Hero { get; set; }
@@ -17,14 +16,14 @@ namespace RobotCastle.Battling
             _target = target;
             Hero.HeroView.AnimationEventReceiver.OnAttackEvent -= OnAttack;
             Hero.HeroView.AnimationEventReceiver.OnAttackEvent += OnAttack;
-            Hero.HeroView.animator.SetBool(AttackId, true);
+            Hero.HeroView.animator.SetBool(HeroesConfig.Anim_Attack, true);
             
         }
 
         public void Stop()
         {
             Hero.HeroView.AnimationEventReceiver.OnAttackEvent -= OnAttack;
-            Hero.HeroView.animator.SetBool(AttackId, false);
+            Hero.HeroView.animator.SetBool(HeroesConfig.Anim_Attack, false);
         }
 
         private void OnAttack()

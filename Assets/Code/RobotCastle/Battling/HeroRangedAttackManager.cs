@@ -5,8 +5,6 @@ namespace RobotCastle.Battling
 {
     public class HeroRangedAttackManager : MonoBehaviour, IHeroAttackManager
     {
-        private static readonly int AttackId = Animator.StringToHash("Attack");
-        
         private IProjectileFactory _projectileFactory;
         private Transform _targetTransform;
         private IDamageReceiver _target;
@@ -28,12 +26,12 @@ namespace RobotCastle.Battling
             _targetTransform = targetTransform;
             Hero.HeroView.AnimationEventReceiver.OnAttackEvent -= OnAttack;
             Hero.HeroView.AnimationEventReceiver.OnAttackEvent += OnAttack;
-            Hero.HeroView.animator.SetBool(AttackId, true);
+            Hero.HeroView.animator.SetBool(HeroesConfig.Anim_Attack, true);
         }
 
         public void Stop()
         {
-            Hero.HeroView.animator.SetBool(AttackId, false);
+            Hero.HeroView.animator.SetBool(HeroesConfig.Anim_Attack, false);
             Hero.HeroView.AnimationEventReceiver.OnAttackEvent -= OnAttack;
         }
 
