@@ -9,12 +9,11 @@ namespace RobotCastle.UI
         [SerializeField] private TroopsCountUI _troopsCount;
         [SerializeField] private MoneyUI _money;
         [SerializeField] private MyButton _btnStart;
-        [SerializeField] private MyButton _btnExpand;
         [SerializeField] private MyButton _btnSpawn;
+        [SerializeField] private TroopSizePurchaseUI _troopSizePurchaseUI;
 
+        public TroopSizePurchaseUI TroopSizePurchaseUI => _troopSizePurchaseUI;
         public IButtonInput BtnStart => _btnStart;
-        
-        public IButtonInput BtnExpand => _btnExpand;
         
         public IButtonInput BtnSpawn => _btnSpawn;
         

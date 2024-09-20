@@ -4,7 +4,5 @@
     {
         void SetDamageable(bool damageable);
 
-        void Reset();
-        void SetFullHealth();
     }
 }

@@ -1,4 +1,6 @@
-﻿using SleepDev;
+﻿using RobotCastle.Core;
+using RobotCastle.UI;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -22,9 +24,13 @@ namespace RobotCastle.Battling
             }
             CLog.Log($"{gameObject.name} Damaged taken. {args.type}. Amount {amount}. Resist {_heroView.Stats.PhysicalResist.Val}");
             _heroView.Stats.HealthCurrent.Val -= amount;
+            var pos = transform.position + Vector3.up;
+            ServiceLocator.Get<IDamageDisplay>().ShowAt((int)amount, args.type, pos);
+            // var health = _heroView.Stats.HealthCurrent.Val;
+            // var t = health / _heroView.Stats.HealthMax.Val;
             if (_heroView.Stats.HealthCurrent.Val <= 0)
             {
-                CLog.Log($"{gameObject.name} Health < 0. Trying to die");
+                // CLog.Log($"{gameObject.name} Health < 0. Trying to die");
                 var killProcessor = gameObject.GetComponent<IKillProcessor>();
                 if(killProcessor != null)
                     killProcessor.OnKilled();
@@ -40,14 +46,6 @@ namespace RobotCastle.Battling
             _isDamageable = damageable;
         }
 
-        public void Reset()
-        {
-        }
-
-        public void SetFullHealth()
-        {
-            _heroView.Stats.HealthCurrent.Val -= _heroView.Stats.HealthMax.Val;
-        }
 
     }
 }

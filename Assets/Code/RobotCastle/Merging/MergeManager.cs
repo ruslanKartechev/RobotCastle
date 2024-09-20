@@ -47,7 +47,6 @@ namespace RobotCastle.Merging
             _highlighter.Init(_gridView, _mergeProcessor);
             _mergeController.OnPutItem += OnItemPut;
             _mergeController.OnItemPicked += OnItemPicked;
-            CLog.Log($"Troops size: {ServiceLocator.Get<Battle>().troopSize}");
             _sectionsController.SetMaxCount(ServiceLocator.Get<Battle>().troopSize);
             ServiceLocator.Bind<IGridSectionsController>(_sectionsController);
             ServiceLocator.Bind<IMergeItemsFactory>(_itemsSpawner);
@@ -64,7 +63,7 @@ namespace RobotCastle.Merging
 
         public bool SpawnNewMergeItem(SpawnMergeItemArgs args)
         {
-            var didSpawn = ServiceLocator.Get<IHeroesAndUnitsFactory>()
+            var didSpawn = ServiceLocator.Get<IHeroesAndItemsFactory>()
                 .SpawnHeroOrItem(args, _gridView, _sectionsController, out var view);
             if (!didSpawn)
                 return false;
@@ -98,11 +97,27 @@ namespace RobotCastle.Merging
             HighlightMergeOptions();
         }
 
+        public void ResetAllItemsPositions()
+        {
+            foreach (var cell in _gridView.Grid)
+            {
+                if (cell.itemView != null)
+                {
+                    MergeFunctions.SetItemGridAndWorldPosition(cell.itemView, cell);
+                }
+            }
+        }
+        
         public void HighlightMergeOptions()
         {
             CLog.LogWhite($"[{nameof(MergeManager)}] Highlight");
             var allItems = _sectionsController.GetAllItems();
             _highlighter.HighlightAllPotentialCombinations(allItems);
+        }
+
+        public void StopHighlight()
+        {
+            _highlighter.StopHighlight();
         }
         
         private void OnItemPicked(ItemData srcItem)

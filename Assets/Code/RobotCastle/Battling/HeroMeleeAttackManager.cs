@@ -1,10 +1,13 @@
-﻿using RobotCastle.Merging;
+﻿using System;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
     public class HeroMeleeAttackManager : MonoBehaviour, IHeroAttackManager
     {
+        public event Action OnAttackStep;
+
+        
         private IDamageReceiver _target;
         
         public HeroController Hero { get; set; }
@@ -32,6 +35,8 @@ namespace RobotCastle.Battling
             var damageArgs = new DamageArgs(amount, EDamageType.Physical);
             // CLog.Log($"Damage from: {gameObject.name}. {damageArgs.GetStr()}");
             _target.TakeDamage(damageArgs);
+            
+            OnAttackStep?.Invoke();
         }
     }
 }

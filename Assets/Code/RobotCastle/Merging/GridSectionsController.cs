@@ -132,7 +132,9 @@ namespace RobotCastle.Merging
             {
                 var count = row.Count;
                 var num = 0;
-                var center = count / 2;
+                var center = count / 2 - 1;
+                // if (center < 0)
+                    // center = 0;
                 for (var x = center; num < count;)
                 {
                     if (row[x].isUnlocked && row[x].isOccupied == false)
@@ -155,7 +157,7 @@ namespace RobotCastle.Merging
         public int GetFreeCellsCount(MergeGrid grid)
         {
             var count = 0;
-            for (var y = _minYIndex-1; y >= 0; y--)
+            for (var y = _minYIndex - 1; y >= 0; y--)
             {
                 var row = grid.rows[y].cells;
                 for (var x = 0; x < row.Count; x++)

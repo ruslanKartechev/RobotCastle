@@ -9,6 +9,15 @@ namespace RobotCastle.Battling
     [DefaultExecutionOrder(10)]
     public class BattleManager : MonoBehaviour
     {
+        public static void ResetHeroAfterBattle(HeroController hero)
+        {
+            hero.SetIdle(); 
+            hero.HeroView.Stats.ResetHealth();
+            hero.HeroView.Stats.ResetMana();
+            hero.Reset();
+            hero.UpdateStatsView();
+        }
+        
         public static HeroController GetBestTargetForAttack(HeroController hero)
         {
             var map = hero.HeroView.agent.Map;
@@ -21,9 +30,10 @@ namespace RobotCastle.Battling
             var closest = (HeroController)null;
             var minD2 = int.MaxValue;
             var d2 = minD2;
+            // CLog.LogGreen($"[GetBestTargetForAttack] Choosing from: {enemies.Count} enemies");
             foreach (var otherHero in enemies)
             {
-                var enemyPos = map.GetCellPositionFromWorld(otherHero.transform.position);
+                var enemyPos = otherHero.HeroView.agent.CurrentCell;
                 d2 = (enemyPos - myPos).sqrMagnitude;
                 if (d2 < minD2)
                 {
@@ -32,7 +42,7 @@ namespace RobotCastle.Battling
                 }
                 if (coveredCells.Contains(enemyPos))
                 {
-                    CLog.Log($"Found hero at: {enemyPos.ToString()}");
+                    // CLog.Log($"Found hero at: {enemyPos.ToString()}");
                     return otherHero;
                 }
             }
@@ -104,17 +114,24 @@ namespace RobotCastle.Battling
         
         public void NextStage()
         {
+            _battle.Reset();
             _battle.stageIndex++;
             SetStage(_battle.stageIndex);
         }
 
         public void ResetStage()
         {
+            _battle.Reset();
             SetStage(_battle.stageIndex);
         }
 
         public void SetStage(int stageIndex)
         {
+            if (_presetsContainer.Presets.Count <= stageIndex)
+            {
+                CLog.LogError($"[{nameof(BattleManager)}] Preset index out of range!");
+                return;
+            }
             _battle.stageIndex = stageIndex;
             foreach (var en in _battle.Enemies)
                 Destroy(en.gameObject);
@@ -200,6 +217,13 @@ namespace RobotCastle.Battling
         {
             ServiceLocator.Unbind<BattleManager>();
         }
-        
+
+        public void RecollectPlayerUnits()
+        {
+            var mergeManager = ServiceLocator.Get<MergeManager>();
+            foreach (var playerUnit in _battle.PlayerUnits)
+                ResetHeroAfterBattle(playerUnit);
+            mergeManager.ResetAllItemsPositions();
+        }
     }
 }

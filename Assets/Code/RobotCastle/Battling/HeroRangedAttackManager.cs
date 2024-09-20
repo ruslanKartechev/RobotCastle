@@ -1,10 +1,13 @@
-﻿using SleepDev;
+﻿using System;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
     public class HeroRangedAttackManager : MonoBehaviour, IHeroAttackManager
     {
+        public event Action OnAttackStep;
+        
         private IProjectileFactory _projectileFactory;
         private Transform _targetTransform;
         private IDamageReceiver _target;
@@ -38,8 +41,10 @@ namespace RobotCastle.Battling
         private void OnAttack()
         {
             var projectile = _projectileFactory.GetProjectile();
-            projectile.LaunchFrom( Hero.HeroView.projectileSpawnPoint, _targetTransform, Hero.HeroView.Stats.ProjectileSpeed, HitCallback, _target);
+            projectile.LaunchProjectile( Hero.HeroView.projectileSpawnPoint, _targetTransform, Hero.HeroView.Stats.ProjectileSpeed, HitCallback, _target);
             // CLog.LogGreen($"Attack event received");
+            
+            OnAttackStep?.Invoke();
         }
 
         private void HitCallback(object target)

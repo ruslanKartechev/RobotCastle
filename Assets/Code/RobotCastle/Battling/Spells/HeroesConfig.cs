@@ -7,6 +7,8 @@ namespace RobotCastle.Battling
     {
         public const float SpeedStatFactor = 1f / 40;
         public const float SpeedStatToAnimationFactor = 1f / 150;
+
+        public const float RotationSpeed = 500f;
         
         public const string AnimId_Move = "Run";
         public const string AnimId_Idle = "Idle";

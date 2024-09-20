@@ -1,5 +1,6 @@
 ﻿using Bomber;
 using RobotCastle.Core;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -60,23 +61,47 @@ namespace RobotCastle.Battling
         public void PrepareForBattle()
         {
             _view.movement.SetupAgent();
-            _view.heroUI.HealthUI.Set(_view.Stats.HealthCurrent, _view.Stats.ManaMax);
-            _view.heroUI.ManaUI.Set(_view.Stats.ManaCurrent, _view.Stats.ManaMax);
+            _view.heroUI.HealthUI.AssignStats(_view.Stats.HealthCurrent, _view.Stats.HealthMax);
+            _view.heroUI.ManaUI.AssignStats(_view.Stats.ManaCurrent, _view.Stats.ManaMax);
         }
 
+        public void UpdateStatsView()
+        {
+            _view.heroUI.HealthUI.DisplayStats(_view.Stats.HealthCurrent, _view.Stats.HealthMax);
+            _view.heroUI.ManaUI.DisplayStats(_view.Stats.ManaCurrent, _view.Stats.ManaMax);
+        }
+
+        /// <summary>
+        /// Set Hero in no action state. All values are reset.
+        /// </summary>
         public void SetIdle()
         {
             StopCurrentBehaviour();
             _view.movement.SetIdle();
-            // _view.animator.Play("Idle", 0, 0);
         }
 
         public void MarkDead()
         {
+            _view.movement.SetNullTargetCell();
             StopCurrentBehaviour();
             IsDead = true;
             Battle.RemoveDead(this);
         }
+        
+        /// <summary>
+        /// Use for returning to merge grid
+        /// </summary>
+        public void Reset()
+        {
+            IsDead = false;
+            if (gameObject.TryGetComponent<IHeroRestartProcessor>(out var restart))
+            {
+                restart.Restart();
+            }
+            else
+                CLog.LogRed($"[{gameObject.name}] IHeroRestartProcessor is null");
+        }
+  
 
         public void StopCurrentBehaviour()
         {

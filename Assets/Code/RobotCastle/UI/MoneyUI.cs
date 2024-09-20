@@ -30,8 +30,8 @@ namespace RobotCastle.UI
         {
             _text.text = $"{val}";
             _fadeImage.DOKill();
-            _fadeImage.SetAlpha(0f);
-            _fadeImage.DOFade(1f, .12f);
+            _fadeImage.SetAlpha(1f);
+            _fadeImage.DOFade(0f, .2f);
         }
 
         private void OnEnable()

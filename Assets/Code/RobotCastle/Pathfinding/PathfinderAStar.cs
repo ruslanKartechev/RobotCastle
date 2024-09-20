@@ -1,10 +1,9 @@
-﻿#define DRAW_STEP_BY_STEP
+﻿#define DRAW_STEP_BY_STEP__
 #define DRAW_STEP_BY_STEP_DELAY__
 
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
-using SleepDev;
 
 namespace Bomber
 {
@@ -145,9 +144,7 @@ namespace Bomber
                     if (closedList.Contains(nextPos)) 
                         continue;
                     if (_map.Grid[nextPos.x, nextPos.y].isPlayerWalkable == false)
-                    {
                         continue;
-                    }
 
                     var otherAgentOccupied = false;
                     foreach (var agent in _map.ActiveAgents)
@@ -159,10 +156,8 @@ namespace Bomber
                         }
                     }
                     if (otherAgentOccupied)
-                    {
-                        CLog.LogRed("otherAgentOccupied");
                         continue;
-                    }
+                    
 #if DRAW_STEP_BY_STEP
                     var drawPos1 = _map.Grid[nextPos.x, nextPos.y].worldPosition;
                     var drawPos2 = drawPos1 + Vector3.up;

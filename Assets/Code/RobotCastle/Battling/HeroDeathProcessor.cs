@@ -6,8 +6,6 @@ namespace RobotCastle.Battling
     {
         [SerializeField] private HeroView _heroView;
         
-        public HeroView HeroView { get; set; }
-        
         public void OnKilled()
         {
             _heroView.HealthManager.SetDamageable(false);
@@ -19,6 +17,5 @@ namespace RobotCastle.Battling
             _heroView.rb.isKinematic = true;
             _heroView.collider.enabled = false;
         }
-
     }
 }

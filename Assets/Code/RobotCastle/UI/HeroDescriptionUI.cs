@@ -3,6 +3,7 @@ using System.Globalization;
 using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Merging;
+using SleepDev;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -81,14 +82,16 @@ namespace RobotCastle.UI
             _attackText.text = (stats.Attack.Val).ToString(CultureInfo.InvariantCulture);
             _spellPowerText.text = (stats.SpellPower.Val).ToString(CultureInfo.InvariantCulture);
             _attackSpeedText.text = (stats.AttackSpeed.Val).ToString(CultureInfo.InvariantCulture);
-            _health.Set(stats.HealthCurrent, stats.HealthMax);
-            _mana.Set(stats.ManaCurrent, stats.ManaMax);
+            _health.AssignStats(stats.HealthCurrent, stats.HealthMax);
+            _mana.AssignStats(stats.ManaCurrent, stats.ManaMax);
             _lvlText.text = (stats.MergeTier + 1).ToString();
 
             _nameText.text = viewInfo.name;
             _heroIcon.sprite = HeroesDatabase.GetHeroSprite(viewInfo.iconId);
-            
-            _spellDescription.Show(spellProvider, _src);
+            if(spellProvider != null)
+                _spellDescription.Show(spellProvider, _src);
+            else
+                CLog.Log($"[{nameof(HeroDescriptionUI)}] spellProvider is null");
         }
         
         public override void Hide()

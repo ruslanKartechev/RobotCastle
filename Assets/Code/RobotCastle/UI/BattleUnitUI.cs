@@ -28,7 +28,14 @@ namespace RobotCastle.UI
 
         public void AnimateHide()
         {
-            _canvasGroup.DOFade(0f, .2f);   
+            gameObject.SetActive(false);
+            // _canvasGroup.DOFade(0f, .2f);   
+        }
+
+        public void Show()
+        {
+            _canvasGroup.alpha = 1f;
+            gameObject.SetActive(true);
         }
     }
     

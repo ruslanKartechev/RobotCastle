@@ -3,6 +3,7 @@ using RobotCastle.Battling;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using SleepDev;
 
 namespace RobotCastle.UI
 {
@@ -13,7 +14,15 @@ namespace RobotCastle.UI
         private Stat _stat;
         private Stat _statMax;
 
-        public void Set(Stat stat, Stat statMax)
+        public void DisplayStats(Stat stat, Stat statMax)
+        {
+            if(_text != null)
+                _text.text = stat.Val.ToString(CultureInfo.InvariantCulture);
+            var t = stat.Val / statMax.Val;
+            _fillImage.fillAmount = t;
+        }
+        
+        public void AssignStats(Stat stat, Stat statMax)
         {
             _stat = stat;
             _statMax = statMax;
@@ -29,17 +38,19 @@ namespace RobotCastle.UI
                 enabled = false;
         }
         
-        private void Set()
+        [ContextMenu("Debug")]
+        private void Debug()
         {
-            if(_text != null)
-                _text.text = _stat.Val.ToString(CultureInfo.InvariantCulture);
-            var t = _stat.Val / _stat.BaseVal;
-            _fillImage.fillAmount = t;
+            CLog.LogRed($"Enabled: {enabled}. Stat: {_stat.Val}. Max: {_statMax.Val}. T: {_stat.Val / _statMax.Val}");
         }
 
         private void Update()
         {
-            Set();
+            if(_text != null)
+                _text.text = _stat.Val.ToString(CultureInfo.InvariantCulture);
+            var t = _stat.Val / _statMax.Val;
+            _fillImage.fillAmount = t;
+            // CLog.Log($"Val {_stat.Val}. Max: {_statMax.Val}");
         }
     }
 }

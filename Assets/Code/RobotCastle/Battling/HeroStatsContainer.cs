@@ -57,6 +57,18 @@ namespace RobotCastle.Battling
             SetLevel(levelIndex, mergeLevel);
             _range = AttackRangeFactory.GetAttackRangeById(id);
         }
+
+        public void ResetHealth()
+        {
+            HealthMax.Val = HealthMax.BaseVal;
+            HealthCurrent.Val = HealthMax.Val;
+        }
+
+        public void ResetMana()
+        {
+            ManaMax.Val = ManaMax.BaseVal;
+            ManaCurrent.Val = ManaMax.Val;
+        }
         
         public void SetLevel(int levelIndex, int mergeLevel)
         {

@@ -7,6 +7,8 @@ namespace RobotCastle.Merging
 {
     public class MergeItemsFactory : MonoBehaviour, IMergeItemsFactory
     {
+        private const int NameMult = 1000;
+        private const string ReplaceString = "(Clone)";
         [SerializeField] private Transform _unitsParent;
         
         public void SpawnItemsForGrid(IGridView gridView, MergeGrid saves)
@@ -57,6 +59,7 @@ namespace RobotCastle.Merging
                     break;
             }
             instance = SleepDev.MiscUtils.Spawn(prefab, transform);
+            instance.gameObject.name = instance.gameObject.name.Replace(ReplaceString, $"{(int)(UnityEngine.Random.Range(0, 1f) * NameMult)}");
             var itemView = instance.GetComponent<IItemView>();
             itemView.InitView(itemData);
             MergeFunctions.PutItemToCell(itemView, pivotCell);

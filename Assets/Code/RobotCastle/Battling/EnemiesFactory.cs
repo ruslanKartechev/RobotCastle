@@ -39,7 +39,7 @@ namespace RobotCastle.Battling
         public void SpawnPreset(EnemyPackPreset packPreset)
         {
             _spawnedEnemies = new List<HeroController>(packPreset.enemies.Count);
-            var factory = ServiceLocator.Get<IHeroesAndUnitsFactory>();
+            var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
             foreach (var enemyPreset in packPreset.enemies)
             {
                 var cellView = GridView.GetCell(enemyPreset.gridPos.x, enemyPreset.gridPos.y);
@@ -78,7 +78,7 @@ namespace RobotCastle.Battling
                     break;
                 }
             }
-            var factory = ServiceLocator.Get<IHeroesAndUnitsFactory>();
+            var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
             factory.SpawnHeroOrItem(args, cellView, out var spawnedItem);
 
         }

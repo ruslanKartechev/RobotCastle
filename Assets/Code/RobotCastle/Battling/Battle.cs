@@ -32,6 +32,11 @@ namespace RobotCastle.Battling
 
         public BattleTeam GetTeam(int num) => num == 0 ? playerTeam : enemyTeam;
         public BattleTeam GetEnemyTeam(int num) => num == 0 ? enemyTeam : playerTeam;
+        
+        public void Reset()
+        {
+            _completed = false;
+        }
 
         public void RemoveDead(HeroController heroController)
         {
@@ -104,6 +109,8 @@ namespace RobotCastle.Battling
             _enemies = new ();
             playerTeam = new BattleTeam();
             enemyTeam = new BattleTeam();
+            _enemiesAlive = new ();
+            _playersAlive = new ();
         }
 
         public static Battle GetDefault()
@@ -123,7 +130,7 @@ namespace RobotCastle.Battling
 
         public string GetPlayerAsStr()
         {
-            var msg = $"Players count: {_players.Count}\n";
+            var msg = $"Players Total: {_players.Count}. Alive {_playersAlive.Count}\n";
             var num = 1;
             foreach (var hero in _players)
             {
@@ -134,7 +141,7 @@ namespace RobotCastle.Battling
 
         public string GetEnemiesAsStr()
         {
-            var msg = $"Enemies count: {_enemies.Count}\n";
+            var msg = $"Enemies total: {_enemies.Count}. Alive {_enemiesAlive.Count}\n";
             var num = 1;
             foreach (var hero in _enemies)
             {

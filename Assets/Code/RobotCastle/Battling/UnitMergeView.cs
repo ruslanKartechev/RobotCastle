@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
+
     public class UnitMergeView : MonoBehaviour, IItemView
     {
         [SerializeField] private HeroView _view;
@@ -23,7 +24,9 @@ namespace RobotCastle.Battling
 
         public void OnDroppedBack() { }
 
-        public void OnMerged() { }
+        public void OnMerged()
+        { }
+        
         public void Rotate(Quaternion rotation, float time)
         {
             transform.DOKill();
@@ -51,6 +54,8 @@ namespace RobotCastle.Battling
             _view.heroUI.Level.SetLevel(_data.core.level);
             _view.heroUI.Level.AnimateUpdated();     
             _view.Stats.SetMergeLevel(mergeLevel: _data.core.level);
+            if(gameObject.TryGetComponent<HeroController>(out HeroController hero))
+                hero.UpdateStatsView();
         }
 
         public void Hide()

@@ -19,10 +19,22 @@ namespace RobotCastle.Battling
             units.Remove(unit);
         }
 
-        public bool AnyEqual(Vector2Int cell)
+        public bool CheckIfAnyUnitAssignedWithCell(Vector2Int cell)
         {
             foreach (var unit in units)
             {
+                if (unit.TargetCell == cell)
+                    return true;
+            }
+            return false;
+        }
+        
+        public bool CheckIfAnyUnitAssignedWithCellExcept(Vector2Int cell, IMovingUnit exceptionUnit)
+        {
+            foreach (var unit in units)
+            {
+                if(unit == exceptionUnit)
+                    continue;
                 if (unit.TargetCell == cell)
                     return true;
             }
@@ -48,38 +60,47 @@ namespace RobotCastle.Battling
                 targetCell = enemyPos;
                 return false; // don't move, just attack
             }
-            // cells around the nemy now
+            // cells around the enemy
             coveredCells.Clear();
-            var otherUnits = new List<Vector2Int>(10);
+            var otherUnitsPositions = new List<Vector2Int>(10);
             foreach (var agent in map.ActiveAgents)
             {
                 if(agent != hero.HeroView.agent)
-                    otherUnits.Add(agent.CurrentCell);
+                    otherUnitsPositions.Add(agent.CurrentCell);
             }
-            foreach (var val in cellsMask)
+            foreach (var dir in cellsMask)
             {
-                var nc = enemyPos + val;
-                // if(AnyEqual(nc))
-                    // CLog.Log($"{nc.ToString()} is marked already");
-                // if(otherUnits.Contains(nc))
-                    // CLog.Log($"{nc.ToString()} occupied");
-                if (!otherUnits.Contains(nc) && !AnyEqual(nc))
-                {
-                    coveredCells.Add(nc);
-                }
+                var nextPos = enemyPos + dir;
+                if (nextPos.x < 0 || nextPos.y < 0 || nextPos.x >= map.Size.x || nextPos.y >= map.Size.y)
+                    continue;
+                if (!otherUnitsPositions.Contains(nextPos) && !CheckIfAnyUnitAssignedWithCellExcept(nextPos, hero.HeroView.movement))
+                    coveredCells.Add(nextPos);
+            }
+
+            if (coveredCells.Count == 0)
+            {
+                CLog.LogRed($"[{nameof(AttackPositionCalculator)}] Error. No suitable covered cells");
+                targetCell = myPos;
+                return true;
             }
             targetCell = myPos;
-            var minD = int.MaxValue;
-            var d = minD;
+            var minDist = int.MaxValue;
+            var dist = minDist;
+            var options = new List<Vector2Int>(4);
             foreach (var cell in coveredCells)
             {
-                d = (cell - myPos).sqrMagnitude;
-                if (d < minD)
+                dist = (cell - myPos).sqrMagnitude;
+                if (dist == minDist)
                 {
-                    minD = d;
-                    targetCell = cell;
+                    options.Add(cell);
+                }
+                else if (dist < minDist)
+                {
+                    minDist = dist;
+                    options.Add(cell);
                 }
             }
+            targetCell = options.Random();
             return true;
         }
         

@@ -5,6 +5,6 @@ namespace RobotCastle.Battling
 {
     public interface IProjectile
     {
-        void LaunchFrom(Transform startPoint, Transform endPoint, float speed, Action<object> hitCallback, object target);
+        void LaunchProjectile(Transform startPoint, Transform endPoint, float speed, Action<object> hitCallback, object target);
     }
 }

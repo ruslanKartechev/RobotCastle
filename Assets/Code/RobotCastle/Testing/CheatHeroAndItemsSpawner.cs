@@ -171,7 +171,7 @@ namespace RobotCastle.Testing
                 CLog.Log("Preset list is empty");
                 return;
             }
-            var spawner = ServiceLocator.Get<IHeroesAndUnitsFactory>();
+            var spawner = ServiceLocator.Get<IHeroesAndItemsFactory>();
             if (spawner == null)
             {
                 CLog.LogError("NO IBattleGridSpawner found!");
@@ -188,7 +188,7 @@ namespace RobotCastle.Testing
         
         public static IItemView SpawnHeroOrItem(CoreItemData data, bool useSpecificCoord, Vector2Int coord, List<CoreItemData> items = null)
         {
-            var spawner = ServiceLocator.Get<IHeroesAndUnitsFactory>();
+            var spawner = ServiceLocator.Get<IHeroesAndItemsFactory>();
             if (spawner == null)
             {
                 CLog.LogError("No IBattleGridSpawner found!");
@@ -207,6 +207,7 @@ namespace RobotCastle.Testing
             args.preferredCoordinated = coord;
             args.usePreferredCoordinate = useSpecificCoord;
             spawner.SpawnHeroOrItem(args, manager.GridView, manager.SectionsController, out view);
+            manager.HighlightMergeOptions();
             return view;
         }
         

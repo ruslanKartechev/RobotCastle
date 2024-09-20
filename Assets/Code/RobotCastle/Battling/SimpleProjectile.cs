@@ -12,7 +12,7 @@ namespace RobotCastle.Battling
         private Action<object> _hitCallback;
         private object _target;
         
-        public void LaunchFrom(Transform startPoint, Transform endPoint, float speed, Action<object> hitCallback, object target)
+        public void LaunchProjectile(Transform startPoint, Transform endPoint, float speed, Action<object> hitCallback, object target)
         {
             _hitCallback = hitCallback;
             _target = target;
@@ -29,15 +29,20 @@ namespace RobotCastle.Battling
         private IEnumerator Moving(Transform startPoint, Transform endPoint, float speed)
         {
             var elapsed = 0f;
-            var distance = (endPoint.position - startPoint.position).magnitude / speed;
+            var endPos = endPoint.position;
+            endPos.y = startPoint.position.y;
+            
+            var distance = (endPos - startPoint.position).magnitude / speed;
             var time = distance / speed;
             while (elapsed <= time)
             {
-                transform.position = Vector3.Lerp(startPoint.position, endPoint.position, elapsed / time);
+                endPos = endPoint.position;
+                endPos.y = startPoint.position.y;
+                transform.position = Vector3.Lerp(startPoint.position, endPos, elapsed / time);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
-            transform.position = endPoint.position;
+            transform.position = endPos;
             if (_hitParticles != null)
             {
                 _hitParticles.transform.parent = transform.parent;
