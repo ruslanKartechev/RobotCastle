@@ -21,14 +21,14 @@ namespace RobotCastle.Battling
         [SerializeField] private MapBuilder _map;
         [SerializeField] private Canvas _mainCanvas;
         [SerializeField] private BattleCamera _battleCamera;
-        [SerializeField] private GameObject _cellsParent;
+        [SerializeField] private BattleGridSwitch _gridSwitch;
         private IPlayerMergeItemPurchaser _itemPurchaser;
         private ITroopSizeManager _troopSizeManager;
         
         public void OnBattleStarted(Battle battle)
         {
             AllowPlayerUIInput(false);
-            _cellsParent.gameObject.SetActive(false);
+            _gridSwitch.SetBattleMode();
             _mergeManager.AllowInput(false);
             _battleCamera.MoveToBattlePoint();
             ServiceLocator.Get<MergeManager>().StopHighlight();
@@ -114,7 +114,7 @@ namespace RobotCastle.Battling
         private IEnumerator DelayedBattleEnd(Battle battle)
         {
             yield return new WaitForSeconds(_endDelay / 2f);
-            _cellsParent.gameObject.SetActive(true);
+            _gridSwitch.SetMergeMode();
             _battleManager.RecollectPlayerUnits();
             if (battle.State == BattleState.EnemyWin)
                 _battleManager.ResetStage();
