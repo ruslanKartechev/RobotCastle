@@ -1,10 +1,24 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Data;
+using UnityEngine;
 
 namespace RobotCastle.Merging
 {
     public static class MergeFunctions
     {
+        public static ICellView RaycastUnderItem(GameObject item)
+        {
+            var ray = new Ray(item.transform.position + Vector3.up, Vector3.down);
+            var casts = Physics.RaycastAll(ray, 10);
+            ICellView cell = null;
+            foreach (var hit in casts)
+            {
+                if (hit.collider.gameObject.TryGetComponent<ICellView>(out cell))
+                    return cell;
+            }
+            return cell;
+        }
+        
         public static void PutItemToCell(IItemView itemView, ICellView targetCell)
         {
             targetCell.itemView = itemView;

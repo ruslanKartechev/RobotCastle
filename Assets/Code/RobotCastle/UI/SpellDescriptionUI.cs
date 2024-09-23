@@ -29,7 +29,13 @@ namespace RobotCastle.UI
             _descriptionText.text = spell.GetDescription(null);
             _spellIcon.sprite = ServiceLocator.Get<ViewDataBase>().GetSpellIcon(spell.GetId());
         }
-        
+
+
+        public void SetEmpty()
+        {
+            _descriptionText.text = _nameText.text = _tierText.text = "";
+            _spellIcon.sprite = null;
+        }
         
     }
 }

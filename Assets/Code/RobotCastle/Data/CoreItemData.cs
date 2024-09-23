@@ -3,6 +3,9 @@
     [System.Serializable]
     public class CoreItemData
     {
+        /// <summary>
+        /// Merge Level
+        /// </summary>
         public int level;
         public string id;
         public string type;

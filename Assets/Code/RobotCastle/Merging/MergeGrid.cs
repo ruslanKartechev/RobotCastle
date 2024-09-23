@@ -19,8 +19,9 @@ namespace RobotCastle.Merging
             }
 
         }
-        
-        
+
+        public Cell GetCell(int x, int y) => rows[y].cells[x];
+
         public int RowsCount => rows.Count;
 
         public int CalculateTotalCellsCount()

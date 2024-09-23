@@ -26,7 +26,7 @@ namespace RobotCastle.Battling
         public string HeroId { get; private set; }
         public int MergeTier { get; private set; }
         public int HeroLvl { get; private set; }
-        public float ProjectileSpeed { get; set; } = 10;
+        public float ProjectileSpeed { get; set; } = 5;
         
         public static float GetMaxHealth(HeroStats stats, int levelIndex, int mergeLevel) 
             => stats.health[levelIndex] * HeroesConfig.TierStatMultipliers[mergeLevel];

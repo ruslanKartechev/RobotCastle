@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Core;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
@@ -28,6 +29,7 @@ namespace RobotCastle.Battling
                 return;
             }
             _didInit = true;
+            ServiceLocator.Get<GridViewsContainer>().AddGridView(_gridView);
             _gridView.BuildGridFromView();
             _enemiesFactory.GridView = _gridView;
         }
@@ -37,9 +39,9 @@ namespace RobotCastle.Battling
             _enemiesFactory.SpawnPreset(preset);
         }
 
-        public void SpawnNewEnemy(SpawnMergeItemArgs args)
+        public void SpawnNewEnemy(SpawnMergeItemArgs args, int heroLvl = 0)
         {
-            _enemiesFactory.SpawnNew(args);
+            _enemiesFactory.SpawnNew(args, heroLvl);
         }
     }
 }

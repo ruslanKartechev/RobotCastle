@@ -25,7 +25,7 @@ namespace RobotCastle.Battling
         {
             _itemsContainer = gameObject.GetComponent<IUnitsItemsContainer>();
             _stats = gameObject.AddComponent<HeroStatsContainer>();
-            var pathfinder = gameObject.AddComponent<PathfindingAgent>();
+            var pathfinder = gameObject.AddComponent<Agent>();
             var unitMover = gameObject.AddComponent<HeroMovementManager>();
             unitMover.UnitView = _view;
             pathfinder.rb = _view.rb;

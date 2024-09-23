@@ -9,7 +9,8 @@ namespace RobotCastle.Merging
         [SerializeField] private Transform _itemPoint;
         private IItemView _item;
         private CellHighlight _highlight;
-        
+
+        public int GridId { get; set; }
         public Cell cell { get; set; }
         
         public IItemView itemView
@@ -39,6 +40,7 @@ namespace RobotCastle.Merging
 
         public Transform ItemPoint => _itemPoint;
         public Vector3 WorldPosition => transform.position;
+        public Quaternion WorldRotation => transform.rotation;
 
         public void OnPicked()
         { }

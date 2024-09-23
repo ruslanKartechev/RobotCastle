@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using RobotCastle.Core;
+using RobotCastle.Merging;
+using UnityEngine;
 
 namespace RobotCastle.Battling
 {
@@ -12,10 +14,13 @@ namespace RobotCastle.Battling
             _heroView.agent.Stop();
             var hero = gameObject.GetComponent<HeroController>();
             hero.MarkDead();
-            _heroView.animator.Play("Dead", 0, 0f);
-            _heroView.heroUI.AnimateHide();
+            hero.Battle.AttackPositionCalculator.RemoveUnit(_heroView.movement);
+            _heroView.movement.SetNullTargetCell();
             _heroView.rb.isKinematic = true;
             _heroView.collider.enabled = false;
+            gameObject.SetActive(false);
+            var particles = ServiceLocator.Get<ISimplePoolsManager>().GetOne("death_particles") as DeathParticles;
+            particles.Show(transform.position);
         }
     }
 }

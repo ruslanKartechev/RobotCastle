@@ -6,7 +6,7 @@ namespace Bomber
     public class PathfindingTester : MonoBehaviour
     {
 #if UNITY_EDITOR
-        [SerializeField] private PathfindingAgent _agent;
+        [SerializeField] private Agent _agent;
         [SerializeField] private MapBuilder _mapBuilder;
         [SerializeField] private IntegerGridPlacer _p1;
         [SerializeField] private IntegerGridPlacer _p2;

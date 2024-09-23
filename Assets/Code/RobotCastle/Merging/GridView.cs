@@ -6,9 +6,12 @@ namespace RobotCastle.Merging
 {
     public class GridView : MonoBehaviour, IGridView
     {
+        [SerializeField] private int _gridId;
         [SerializeField] private int _perRow = 7;
         [SerializeField] private List<GameObject> _cellViewGameObjects;
         private MergeGrid _lastGrid;
+
+        public int GridId => _gridId;
         
         public int PerRowCount
         {
@@ -47,9 +50,10 @@ namespace RobotCastle.Merging
                 }
                 var go = _cellViewGameObjects[i].gameObject;
                 // CLog.Log($"{x}_{y}    {go.name}");
-                var view = go.GetComponent<ICellView>();
-                _grid[x, y] = view;
-                view.cell = gridData.rows[y].cells[x];
+                var cellView = go.GetComponent<ICellView>();
+                cellView.GridId = _gridId;
+                _grid[x, y] = cellView;
+                cellView.cell = gridData.rows[y].cells[x];
                 x++;
             }
         }
@@ -79,7 +83,7 @@ namespace RobotCastle.Merging
                     row.cells.Add(newCell);
                     _grid[x, y] = _cellViewGameObjects[linearIndex].GetComponent<ICellView>();
                     _grid[x, y].cell = newCell;
-                    // CLog.LogYellow($"{x}, {y}  {_cellViewGameObjects[linearIndex].name}. Index {linearIndex}");
+                    _grid[x, y].GridId = _gridId;
                     linearIndex++;
                 }
                 grid.rows.Add(row);                
@@ -88,33 +92,7 @@ namespace RobotCastle.Merging
             return grid;
         }
 
-
-        public void GetGrid()
-        {
-            var count = _cellViewGameObjects.Count;
-            var x = 0;
-            var y = 0;
-            var xCount = _perRow;
-            var yCount = count / _perRow;
-            if (count % _perRow != 0)
-            {
-                CLog.LogRed("count % _perRow != 0. NOT A RECTANGLE!!");
-                return;
-            }
-            _grid = new ICellView[xCount, yCount];
-            for (var i = 0; i < count; i++)
-            {
-                if (x >= xCount)
-                {
-                    y++;
-                    x = 0;
-                }
-                var go = _cellViewGameObjects[i].gameObject;
-                var view = go.GetComponent<ICellView>();
-                _grid[x, y] = view;
-            }
-        }
-        
+      
         
 #if UNITY_EDITOR
         [Space(20)]
@@ -122,8 +100,9 @@ namespace RobotCastle.Merging
         public float e_posZ;
         public List<Material> e_materials;
         public string e_mat_holder_id = "cube outer";
+        public Vector3 e_spawnPointRotation;
 
-        [ContextMenu("E_GetViews")]
+        [ContextMenu("Get Views")]
         public void E_GetViews()
         {
             var parent = transform;
@@ -158,7 +137,18 @@ namespace RobotCastle.Merging
             }
         }
 
-        [ContextMenu("E_SetSpawnPositions")]
+        [ContextMenu("Set Rotation")]
+        public void E_SetRotation()
+        {
+            foreach (var cell in _cellViewGameObjects)
+            {
+                var spawnPoint = cell.transform.GetChild(0);
+                spawnPoint.rotation = Quaternion.Euler(e_spawnPointRotation);
+                UnityEditor.EditorUtility.SetDirty(spawnPoint);
+            }
+        }
+
+        [ContextMenu("Set Spawn Positions")]
         public void E_SetSpawnPositions()
         {
             var rowNum = 1;
@@ -198,7 +188,7 @@ namespace RobotCastle.Merging
         }
         
 
-        [ContextMenu("E_SetFrontPos")]
+        [ContextMenu("Set FrontPos")]
         public void E_SetFrontPos()
         {
             foreach (var cell in e_transforms)
@@ -212,7 +202,7 @@ namespace RobotCastle.Merging
             }
         }
         
-        [ContextMenu("E_SetBackPos")]
+        [ContextMenu("Set BackPos")]
         public void E_SetBackPos()
         {
             var half = e_transforms.Count / 2;
@@ -231,7 +221,7 @@ namespace RobotCastle.Merging
             }
         }
         
-        [ContextMenu("E_SetMaterialToSelected")]
+        [ContextMenu("Set Material To Selected")]
         public void E_SetMaterialToSelected()
         {
             var matInd = 0;
@@ -259,14 +249,14 @@ namespace RobotCastle.Merging
             }
         }
         
-        [ContextMenu("E_SetSelectedHidden")]
+        [ContextMenu("Set Selected Hidden")]
         public void E_SetSelectedHidden()
         {
             E_SetSelectedState(false);
         }
         
               
-        [ContextMenu("E_SetSelectedHidden")]
+        [ContextMenu("Set Selected Shown")]
         public void E_SetSelectedShown()
         {
             E_SetSelectedState(true);

@@ -2,6 +2,7 @@
 {
     public interface IGridView
     {
+        int GridId { get;}
         ICellView[,] Grid { get; }
         ICellView GetCell(int x, int y);
         void BuildGrid(MergeGrid gridData);

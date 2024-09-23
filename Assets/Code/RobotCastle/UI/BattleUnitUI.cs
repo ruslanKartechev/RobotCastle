@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using SleepDev;
+﻿using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.UI

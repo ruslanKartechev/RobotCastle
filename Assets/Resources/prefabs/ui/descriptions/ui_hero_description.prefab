@@ -2383,6 +2383,7 @@ GameObject:
   - component: {fileID: 7554132422150378520}
   - component: {fileID: 3165520639659215168}
   - component: {fileID: 2539664909551896646}
+  - component: {fileID: 5489516947756981037}
   m_Layer: 5
   m_Name: ui_hero_description
   m_TagString: Untagged
@@ -2439,6 +2440,7 @@ MonoBehaviour:
   _health: {fileID: 6027646688143771259}
   _mana: {fileID: 7577564016117014734}
   _spellDescription: {fileID: 3987067819957310588}
+  _descriptionLayout: {fileID: 5489516947756981037}
   _heroIcon: {fileID: 6699018649676663293}
   _itemsUI:
   - {fileID: 580660314455583145}
@@ -2523,6 +2525,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rect: {fileID: 443117594351584616}
+--- !u!114 &5489516947756981037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8934309460517278386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f16ee84c0764273acee46758d2cd860, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sizeYLong: 800
+  _sizeYshort: 448.54
+  _parentRect: {fileID: 443117594351584616}
+  _spellBlock1: {fileID: 1348289978498490931}
+  _spellBlock2: {fileID: 5190208272464290924}
 --- !u!1 &9135485415360616215
 GameObject:
   m_ObjectHideFlags: 0

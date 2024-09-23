@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Battling;
 using RobotCastle.Core;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Merging
 {
     public class MergeUnitRangeHighlighter
     {
-        private const int MinY = 2;
-        private const int MaxX = 7;
-        private const int MaxY = 20;
+        private int MinY = 2;
+        private int MaxX = 7;
+        private int MaxY = 20;
 
         private readonly List<CellHighlight> _highlights = new (10);
         
@@ -23,10 +24,24 @@ namespace RobotCastle.Merging
         {
             _stats = unit.gameObject.GetComponent<HeroStatsContainer>();
             _grid = grid;
+            switch (grid.GridId)
+            {
+                case MergeConstants.PlayerGridId:
+                    MinY = 2;
+                    MaxY = 20;
+                    MaxX = 7;
+                    break;
+                case MergeConstants.EnemyGridId:
+                    MinY = -4;
+                    MaxY = 12;
+                    MaxX = 7;
+                    break;
+            }
         }
 
         public void ShowUnderCell(Vector2Int centerCoord)
         {
+            CLog.LogRed($"Settings center {centerCoord}");
             _currentPos = centerCoord;
             if (_underCell == null)
             {
@@ -58,14 +73,17 @@ namespace RobotCastle.Merging
                 _highlights[i].gameObject.SetActive(false);
 
             var worldCenter = _grid.GetCell(centerCoord.x, centerCoord.y).WorldPosition;
+            var rotation = _grid.GetCell(0, 0).WorldRotation;
+            CLog.LogRed($"Center Coord: {centerCoord}");
             for (var i = 0; i < mask.Count; i++)
             {
                 var dir = mask[i];
-                var cell = centerCoord + dir;
-                if (cell.x is < 0 or >= MaxX || cell.y is < MinY or >= MaxY)
+                var cellCoord = centerCoord + dir;
+                if (cellCoord.x < 0  || cellCoord.x >= MaxX || cellCoord.y < MinY || cellCoord.y >= MaxY)
                     continue;
-                var pos = worldCenter + new Vector3(dir.x, 0, dir.y);
-                _highlights[i].transform.position = pos;
+                var worldPos = worldCenter + rotation * new Vector3(dir.x, 0, dir.y);
+                CLog.Log($"Cell {cellCoord}. World {worldPos}");
+                _highlights[i].transform.position = worldPos;
                 _highlights[i].gameObject.SetActive(true);
             }
    

@@ -1,4 +1,5 @@
 using System.Collections;
+using RobotCastle.Battling;
 using RobotCastle.Core;
 using SleepDev;
 using UnityEngine;
@@ -40,6 +41,8 @@ namespace RobotCastle.Merging
 
         private void OnUp(Vector3 pos)
         {
+            if (ServiceLocator.GetIfContains<BattleCamera>(out var cam))
+                cam.SlideBlockers--;
             if(_positionChecking != null)
                 StopCoroutine(_positionChecking);
             _mergeController.OnUp(pos);
@@ -47,6 +50,8 @@ namespace RobotCastle.Merging
 
         private void OnDown(Vector3 pos)
         {
+            if (ServiceLocator.GetIfContains<BattleCamera>(out var cam))
+                cam.SlideBlockers++;
             _positionChecking = StartCoroutine(PositionChecking());
             _mergeController.OnDown(pos);
 

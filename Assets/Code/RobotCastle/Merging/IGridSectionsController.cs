@@ -8,22 +8,22 @@ namespace RobotCastle.Merging
     {
         void SetGridView(IGridView gridView);
         bool IsCellAllowed(int x, int y, ItemData item, bool promptUser = true);
-        void OnGridUpdated();
         void SetMaxCount(int maxCount);
-        
+        int GetMaxCount();
         /// <summary>
         /// Internally calls OnGridUpdated()
         /// </summary>
         void OnItemPut(ItemData item);
-        
         bool GetFreeCell(MergeGrid grid, out Vector2Int coordinates);
-        bool IsCellFree(MergeGrid grid, ItemData itemData, Vector2Int coordinated);        
         
-        int GetFreeCellsCount(MergeGrid grid);
+        int GetFreeCellsCount();
         List<ItemData> GetAllItems();
         List<ItemData> GetAllItemsInMergeArea();
         List<IItemView> GetAllItemViewsInMergeArea();
-        List<T> GetItemsInActiveArea<T>(MiscUtils.Condition<T> conditionDelegate);
+        List<T> GetItemsInActiveArea<T>(MiscUtils.Condition<T> condition);
+
+        bool CanPutMoreIntoActiveZone();
+        Vector2Int GetCoordinateForClosestCellInActiveZone(Vector2Int originalCell);
 
 
     }

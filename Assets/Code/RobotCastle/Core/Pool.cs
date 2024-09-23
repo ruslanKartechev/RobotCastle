@@ -10,7 +10,7 @@ namespace RobotCastle.Core
         [SerializeField] private string _prefabPath;
         [SerializeField] private int _startCount;
         [SerializeField] private Transform _parent;
-        private readonly List<IPoolObject> _objects = new (10); 
+        private readonly List<IPoolItem> _objects = new (10); 
         
         public Pool(){}
 
@@ -37,7 +37,7 @@ namespace RobotCastle.Core
             Spawn(_startCount);
         }
 
-        public IPoolObject GetOne()
+        public IPoolItem GetOne()
         {
             if (_objects.Count == 0)
                 Spawn(_startCount);
@@ -46,7 +46,7 @@ namespace RobotCastle.Core
             return val;
         }
 
-        public void Return(IPoolObject obj)
+        public void Return(IPoolItem obj)
         {
             obj.PoolHide();
             _objects.Add(obj);
@@ -57,7 +57,7 @@ namespace RobotCastle.Core
             for (var i = 0; i < count; i++)
             {
                 var prefab = Resources.Load<GameObject>(_prefabPath);
-                var inst = Object.Instantiate(prefab, _parent).GetComponent<IPoolObject>();
+                var inst = Object.Instantiate(prefab, _parent).GetComponent<IPoolItem>();
                 inst.PoolHide();
                 inst.PoolId = _id;
                 _objects.Add(inst);

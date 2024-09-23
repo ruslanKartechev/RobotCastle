@@ -4,8 +4,8 @@ namespace RobotCastle.Merging
 {
     public interface ISimplePoolsManager
     {
-        IPoolObject GetOne(string type);
-        void ReturnOne(IPoolObject obj);
+        IPoolItem GetOne(string type);
+        void ReturnOne(IPoolItem obj);
         bool HasPool(string id);
         void AddPoolIfNot(string id, string prefabPath, int startCount);
 

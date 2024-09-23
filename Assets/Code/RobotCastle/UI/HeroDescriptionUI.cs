@@ -22,6 +22,7 @@ namespace RobotCastle.UI
         [SerializeField] private BarTrackerUI _health;
         [SerializeField] private BarTrackerUI _mana;
         [SerializeField] private SpellDescriptionUI _spellDescription;
+        [SerializeField] private HeroDescriptionLayout _descriptionLayout;
         [SerializeField] private Image _heroIcon;
         [SerializeField] private List<ItemDescriptionShortUI> _itemsUI;
         [SerializeField] private float _addedWidth = 533.6f;
@@ -64,17 +65,26 @@ namespace RobotCastle.UI
             _rectToScreenFitter.SetScreenPos(Camera.main.WorldToScreenPoint(provider.WorldPosition), addedWidth);
 
             _animator.FadeIn();
-            ShowRange(_src);
+            var battle = ServiceLocator.Get<Battle>();
+            if(battle is { State: BattleState.NotStarted })
+                ShowRange(_src);
         }
 
         public void ShowRange(GameObject heroGo)
         {
-            var range = new MergeUnitRangeHighlighter(heroGo, ServiceLocator.Get<IGridView>());
+            var cell = MergeFunctions.RaycastUnderItem(heroGo);
+            if (cell == null)
+            {
+                CLog.Log($"[{nameof(HeroDescriptionUI)}] Something is wrong! Cannot find cell under {heroGo.name}");
+                return;
+            }
+            var grid = ServiceLocator.Get<GridViewsContainer>().GetGridView(cell.GridId);
+            var highlighter = new MergeUnitRangeHighlighter(heroGo, grid);
             var unit = heroGo.GetComponent<IItemView>();
             var center = new Vector2Int(unit.itemData.pivotX, unit.itemData.pivotY);
-            range.UpdateForUnderCell(center);
-            range.ShowUnderCell(center);
-            _rangeHighlighter = range;
+            highlighter.UpdateForUnderCell(center);
+            highlighter.ShowUnderCell(center);
+            _rangeHighlighter = highlighter;
         }
         
         public void Show(HeroStatsContainer stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
@@ -88,10 +98,17 @@ namespace RobotCastle.UI
 
             _nameText.text = viewInfo.name;
             _heroIcon.sprite = HeroesDatabase.GetHeroSprite(viewInfo.iconId);
-            if(spellProvider != null)
+            if (spellProvider != null)
+            {
+                _descriptionLayout.SetLong();
                 _spellDescription.Show(spellProvider, _src);
+            }
             else
-                CLog.Log($"[{nameof(HeroDescriptionUI)}] spellProvider is null");
+            {
+                CLog.Log($"[{nameof(HeroDescriptionUI)}] hero spellProvider is null");
+                _descriptionLayout.SetShort();
+                _spellDescription.SetEmpty();
+            }
         }
         
         public override void Hide()

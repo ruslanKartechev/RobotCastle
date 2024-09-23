@@ -42,8 +42,6 @@ namespace RobotCastle.Battling
         {
             var projectile = _projectileFactory.GetProjectile();
             projectile.LaunchProjectile( Hero.HeroView.projectileSpawnPoint, _targetTransform, Hero.HeroView.Stats.ProjectileSpeed, HitCallback, _target);
-            // CLog.LogGreen($"Attack event received");
-            
             OnAttackStep?.Invoke();
         }
 

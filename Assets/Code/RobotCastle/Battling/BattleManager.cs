@@ -9,6 +9,9 @@ namespace RobotCastle.Battling
     [DefaultExecutionOrder(10)]
     public class BattleManager : MonoBehaviour
     {
+        private static readonly List<Vector2Int> _coveredCells = new (20);
+        private static readonly List<HeroController> _heroesInRange = new (20);
+
         public static void ResetHeroAfterBattle(HeroController hero)
         {
             hero.SetIdle(); 
@@ -23,14 +26,14 @@ namespace RobotCastle.Battling
             var map = hero.HeroView.agent.Map;
             var myPos = map.GetCellPositionFromWorld(hero.transform.position);
             var cellsMask = hero.HeroView.Stats.Range.GetCellsMask();
-            var coveredCells = new List<Vector2Int>(cellsMask.Count);
+            _coveredCells.Clear();
+            _heroesInRange.Clear();
             foreach (var val in cellsMask)
-                coveredCells.Add(myPos + val);
+                _coveredCells.Add(myPos + val);
             var enemies = hero.Battle.GetTeam(hero.TeamNum).enemyUnits;
-            var closest = (HeroController)null;
+            var overallClosest = (HeroController)null;
             var minD2 = int.MaxValue;
             var d2 = minD2;
-            // CLog.LogGreen($"[GetBestTargetForAttack] Choosing from: {enemies.Count} enemies");
             foreach (var otherHero in enemies)
             {
                 var enemyPos = otherHero.HeroView.agent.CurrentCell;
@@ -38,15 +41,30 @@ namespace RobotCastle.Battling
                 if (d2 < minD2)
                 {
                     minD2 = d2;
-                    closest = otherHero;
+                    overallClosest = otherHero;
                 }
-                if (coveredCells.Contains(enemyPos))
-                {
-                    // CLog.Log($"Found hero at: {enemyPos.ToString()}");
-                    return otherHero;
-                }
+                if (_coveredCells.Contains(enemyPos))
+                    _heroesInRange.Add(otherHero);
             }
-            return closest;
+            switch (_heroesInRange.Count)
+            {
+                case 0:
+                    return overallClosest;
+                case 1:
+                    return _heroesInRange[0];
+                default:
+                    var minHealth = float.MaxValue;
+                    foreach (var enemy in _heroesInRange)
+                    {
+                        var h = enemy.HeroView.Stats.HealthCurrent.Val;
+                        if (h < minHealth)
+                        {
+                            minHealth = h;
+                            overallClosest = enemy;
+                        }
+                    }
+                    return overallClosest;
+            }
         }
 
         
@@ -81,6 +99,7 @@ namespace RobotCastle.Battling
                 CLog.LogWhite($"No Player Units on active area!");
                 return false;
             }
+            _battle.State = BattleState.Going;
             _battle.WinCallback = OnTeamWin;
             foreach (var hero in _battle.Enemies)
             {

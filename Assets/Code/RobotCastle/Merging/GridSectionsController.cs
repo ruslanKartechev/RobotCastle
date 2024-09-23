@@ -15,7 +15,7 @@ namespace RobotCastle.Merging
         private MergeGrid _grid;
         private int _currentCount = 0;
 
-        public List<T> GetItemsInActiveArea<T>(MiscUtils.Condition<T> conditionDelegate)
+        public List<T> GetItemsInActiveArea<T>(MiscUtils.Condition<T> condition)
         {
             var units = new List<T>(_maxCount);
             for (var y = _minYIndex; y < _grid.RowsCount; y++)
@@ -29,12 +29,49 @@ namespace RobotCastle.Merging
                     {
                         // CLog.LogBlue($"{x}, {y} Has itemView");
                         var obj = cell.itemView.Transform.GetComponent<T>();
-                        if(obj != null && conditionDelegate.Invoke(obj))
+                        if(obj != null && condition.Invoke(obj))
                             units.Add(obj);
                     }
                 }
             }
             return units;
+        }
+
+        public bool CanPutMoreIntoActiveZone() => _currentCount < _maxCount;
+
+        public Vector2Int GetCoordinateForClosestCellInActiveZone(Vector2Int originalCell)
+        {
+            if (originalCell.y >= _minYIndex)
+                return originalCell;
+            for (var y = _minYIndex; y < _grid.RowsCount; y++)
+            {
+                var cell = _grid.GetCell(originalCell.x, y);
+                if(cell.isUnlocked && !cell.isOccupied)
+                    return new Vector2Int(originalCell.x, y);
+            }
+
+            var xMax = _grid.rows[0].cells.Count;
+            var originalX = originalCell.x;
+            for (var x = originalX; x < xMax; x++)
+            {
+                for (var y = _minYIndex; y < _grid.RowsCount; y++)
+                {
+                    var cell = _grid.GetCell(x, y);
+                    if(cell.isUnlocked && !cell.isOccupied)
+                        return new Vector2Int(x, y);
+                }
+            }
+            
+            for (var x = originalX; x >= 0; x--)
+            {
+                for (var y = _minYIndex; y < _grid.RowsCount; y++)
+                {
+                    var cell = _grid.GetCell(x, y);
+                    if(cell.isUnlocked && !cell.isOccupied)
+                        return new Vector2Int(x, y);
+                }
+            }
+            return originalCell;
         }
 
         public void SetGridView(IGridView gridView)
@@ -51,7 +88,10 @@ namespace RobotCastle.Merging
             else
                 CLog.Log("ITroopsCountView not setup yet!");
         }
-        
+
+        public int GetMaxCount() => _maxCount;
+
+
         public bool IsCellAllowed(int x, int y, ItemData item, bool promptUser = true)
         {
             if (y < _minYIndex) // moving to lower region
@@ -154,12 +194,12 @@ namespace RobotCastle.Merging
             return cell.isUnlocked && !cell.isOccupied;
         }
 
-        public int GetFreeCellsCount(MergeGrid grid)
+        public int GetFreeCellsCount()
         {
             var count = 0;
             for (var y = _minYIndex - 1; y >= 0; y--)
             {
-                var row = grid.rows[y].cells;
+                var row = _grid.rows[y].cells;
                 for (var x = 0; x < row.Count; x++)
                 {
                     if (row[x].isUnlocked && row[x].isOccupied == false)

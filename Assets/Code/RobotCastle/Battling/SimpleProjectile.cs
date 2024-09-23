@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class SimpleProjectile : MonoBehaviour, IProjectile, IPoolObject
+    public class SimpleProjectile : MonoBehaviour, IProjectile, IPoolItem
     {
         [SerializeField] private ParticleSystem _hitParticles;
         private Action<object> _hitCallback;

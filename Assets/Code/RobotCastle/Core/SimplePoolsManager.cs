@@ -29,7 +29,7 @@ namespace RobotCastle.Core
         }
 
 
-        public IPoolObject GetOne(string id)
+        public IPoolItem GetOne(string id)
         {
             if (!_poolsMap.ContainsKey(id))
             {
@@ -40,7 +40,7 @@ namespace RobotCastle.Core
             return pool.GetOne();
         }
 
-        public void ReturnOne(IPoolObject obj)
+        public void ReturnOne(IPoolItem obj)
         {
             if (!_poolsMap.ContainsKey(obj.PoolId))
             {

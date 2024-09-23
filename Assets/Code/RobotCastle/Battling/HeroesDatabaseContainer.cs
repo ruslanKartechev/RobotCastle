@@ -57,13 +57,72 @@ namespace RobotCastle.Battling
         
         
 #if UNITY_EDITOR
-        
-        public static string GetPathToFile(string fileName)
+
+        public static string GetPathToFileHero(string fileName)
         {
             var path = Application.streamingAssetsPath;
             path = path.Replace("StreamingAssets", "Resources");
             path = Path.Join(path, "heroes",$"{fileName}.json");
             return path;
+        }
+        
+        [Space(15)] 
+        [SerializeField] public string e_id = "aramis";
+        [SerializeField] public string e_folder = "heroes";
+        [SerializeField] public float e_multiplier;
+        [SerializeField] public EStatType e_statType;
+
+        [ContextMenu("MultiplyStatForChosenId")]
+        public void MultiplyStatForChosenId()
+        {
+            var path = GetPathFor(e_id, e_folder);
+            if (File.Exists(path))
+            {
+                CLog.Log($"{path} File exists");
+                var text = UnityEngine.Resources.Load<TextAsset>($"{e_folder}/{e_id}");
+                if (text == null)
+                {
+                    CLog.LogError($"Failed to find file {e_id}.json");
+                    return;
+                }
+                var info = JsonConvert.DeserializeObject<HeroInfo>(text.text);
+                if (info == null)
+                {
+                    CLog.LogRed("Failed to deserialized");
+                    return;
+                }
+
+                var mult = e_multiplier;
+                switch (e_statType)
+                {
+                    case EStatType.Attack:
+                        for (var i = 0; i < info.stats.attack.Count; i++)
+                            info.stats.attack[i] *= mult;
+                        break;
+                    case EStatType.Health:
+                        for (var i = 0; i < info.stats.health.Count; i++)
+                            info.stats.health[i] *= mult;
+                        break;
+                    case EStatType.SpellPower:
+                        for (var i = 0; i < info.stats.spellPower.Count; i++)
+                            info.stats.spellPower[i] *= mult;
+                        break;
+                    case EStatType.AttackSpeed:
+                        for (var i = 0; i < info.stats.attackSpeed.Count; i++)
+                            info.stats.attackSpeed[i] *= mult;
+                        break;
+                    default:
+                        CLog.Log($"{e_statType.ToString()} is not supported");
+                        return;
+                }
+                var str = JsonConvert.SerializeObject(info, Formatting.Indented);
+                File.WriteAllText(GetPathFor(e_id, e_folder),str);
+            }
+            else
+            {
+                CLog.Log($"{path} File DOESN'T exists");
+                return;
+            }
         }
 
         public void CreateForEveryEnemyId()
@@ -95,7 +154,6 @@ namespace RobotCastle.Battling
         
         public void CreateForEveryPlayerId()
         {
-            
             foreach (var id in _heroIdsForFiles)
             {
                 var fileName = GetPathFor(id, pathToHeroes);
@@ -111,7 +169,6 @@ namespace RobotCastle.Battling
 
         public void CreateForEveryPlayerIdForced()
         {
-            
             foreach (var id in _heroIdsForFiles)
             {
                 var fileName = GetPathFor(id, pathToHeroes);
@@ -180,7 +237,7 @@ namespace RobotCastle.Battling
            heroInfo.viewInfo = new HeroViewInfo() {name = "Aramis", iconId = "hero_icon_aramis"};
            heroInfo.spellInfo = new HeroSpellInfo() {mainSpellId = "Headshot"};
            var str = JsonConvert.SerializeObject(heroInfo, Formatting.Indented);
-           File.WriteAllText(GetPathToFile(id),str);
+           File.WriteAllText(GetPathToFileHero(id),str);
         } 
    
 #endif

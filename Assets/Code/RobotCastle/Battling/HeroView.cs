@@ -14,7 +14,7 @@ namespace RobotCastle.Battling
         public Collider collider => _collider;
         public Rigidbody rb => _rb;
 
-        public PathfindingAgent agent { get; set; }
+        public Agent agent { get; set; }
 
         public HeroMovementManager movement { get; set; }
         
@@ -22,17 +22,17 @@ namespace RobotCastle.Battling
         public HeroAnimationEventReceiver AnimationEventReceiver => _heroAnimationEvent;
 
         public IItemView MergeItemView => _mergeView;
-        
         public IHeroAttackManager AttackManager { get; set; }
         public IHeroHealthManager HealthManager { get; set; }
         public IDamageReceiver DamageReceiver { get; set; }
+        public HeroAttackInfoContainer AttackInfo { get; set; } = new ();
         
         [SerializeField] private BattleUnitUI _heroUI;
         [SerializeField] private Collider _collider;
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Animator _animator;
         [SerializeField] private Ragdoll _ragdoll;
-        [SerializeField] private UnitMergeView _mergeView;
+        [SerializeField] private MergeView_Hero _mergeView;
         [SerializeField] private HeroAnimationEventReceiver _heroAnimationEvent;
         [Space(10)]
         [SerializeField] private Transform _projectileSpawnPoint;

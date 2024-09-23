@@ -5,10 +5,12 @@ namespace RobotCastle.Battling
 {
     public class HeroesConfig
     {
+        public const int DuelMaxDistance = 3;
+        
         public const float SpeedStatFactor = 1f / 40;
         public const float SpeedStatToAnimationFactor = 1f / 150;
 
-        public const float RotationSpeed = 500f;
+        public const float RotationSpeed = 800f;
         
         public const string AnimId_Move = "Run";
         public const string AnimId_Idle = "Idle";

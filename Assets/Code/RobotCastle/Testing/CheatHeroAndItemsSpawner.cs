@@ -225,6 +225,8 @@ namespace RobotCastle.Testing
 
         private void OnValidate()
         {
+            if(_heroIds == null)
+                _heroIds = new List<string>(5);
             CorrectIndexAndSetId();    
         }
 

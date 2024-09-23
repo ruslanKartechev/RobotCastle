@@ -12,6 +12,8 @@ namespace RobotCastle.Battling
             _heroView.animator.WriteDefaultValues();
             _heroView.animator.Play("Idle", 0, 0);
             _heroView.heroUI.Show();
+            _heroView.AttackInfo.Reset();
+            gameObject.SetActive(true);
         }
     }
 }

@@ -4,9 +4,4 @@
     {
         void OnKilled();
     }
-
-    public interface IHeroRestartProcessor
-    {
-        void Restart();
-    }
 }

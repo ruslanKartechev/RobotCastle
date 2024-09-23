@@ -19,16 +19,6 @@ namespace RobotCastle.Battling
             units.Remove(unit);
         }
 
-        public bool CheckIfAnyUnitAssignedWithCell(Vector2Int cell)
-        {
-            foreach (var unit in units)
-            {
-                if (unit.TargetCell == cell)
-                    return true;
-            }
-            return false;
-        }
-        
         public bool CheckIfAnyUnitAssignedWithCellExcept(Vector2Int cell, IMovingUnit exceptionUnit)
         {
             foreach (var unit in units)
@@ -46,7 +36,7 @@ namespace RobotCastle.Battling
         /// <param name="hero">Your hero</param>
         /// <param name="enemy">Enemy hero to get to</param>
         /// <returns>True if should me. False if already on the cell. out targetPosition - position to move to</returns>
-        public bool GetPositionToAttack(HeroController hero, HeroController enemy, out Vector2Int targetCell)
+        public bool GetPositionToAttack(HeroController hero, HeroController enemy, out Vector2Int targetCell, out int distance)
         {
             var map = hero.HeroView.agent.Map;
             var myPos = map.GetCellPositionFromWorld(hero.transform.position);
@@ -58,16 +48,17 @@ namespace RobotCastle.Battling
             if (coveredCells.Contains(enemyPos))
             {
                 targetCell = enemyPos;
+                distance = (enemyPos - myPos).sqrMagnitude;
                 return false; // don't move, just attack
             }
             // cells around the enemy
-            coveredCells.Clear();
             var otherUnitsPositions = new List<Vector2Int>(10);
             foreach (var agent in map.ActiveAgents)
             {
                 if(agent != hero.HeroView.agent)
                     otherUnitsPositions.Add(agent.CurrentCell);
             }
+            coveredCells.Clear();
             foreach (var dir in cellsMask)
             {
                 var nextPos = enemyPos + dir;
@@ -81,6 +72,7 @@ namespace RobotCastle.Battling
             {
                 CLog.LogRed($"[{nameof(AttackPositionCalculator)}] Error. No suitable covered cells");
                 targetCell = myPos;
+                distance = 0;
                 return true;
             }
             targetCell = myPos;
@@ -98,11 +90,13 @@ namespace RobotCastle.Battling
                 {
                     minDist = dist;
                     options.Add(cell);
+                    targetCell = cell;
                 }
             }
-            targetCell = options.Random();
+            // targetCell = options.Random();
+            distance = (targetCell - myPos).sqrMagnitude;
             return true;
         }
-        
+
     }
 }

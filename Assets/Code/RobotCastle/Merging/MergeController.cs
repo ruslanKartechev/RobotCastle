@@ -26,7 +26,6 @@ namespace RobotCastle.Merging
         private ICellView _lastPutCell;
         private bool _isProcessingPut;
         
-        
         public MergeController(MergeGrid grid,
             IMergeProcessor processor, 
             IMergeItemsFactory itemsSpawner,
@@ -55,6 +54,8 @@ namespace RobotCastle.Merging
                 PutDown();
                 return;
             }
+            if (cell.GridId != _gridView.GridId)
+                return;
             if (!cell.cell.isOccupied)
             {
                 PutDown();
@@ -69,7 +70,7 @@ namespace RobotCastle.Merging
             // CLog.Log($"Raycast: {cell.cell.x}, {cell.cell.y}. Picked {item.Data.GetStr()}");
         }
 
-        public void OnUp(Vector3 screenPosition)
+        public void OnUp(Vector3 _)
         {
             // CLog.Log($"[{nameof(MergeController)}] On Up");
             if (_draggedItem == null)
@@ -162,18 +163,6 @@ namespace RobotCastle.Merging
             return resultCell;
         }
         
-        public bool GetFreeCellForNewHero(out ICellView cellView)
-        {
-            var hasFree = _sectionsController.GetFreeCell(_grid, out var coord);
-            if (!hasFree)
-            {
-                cellView = null;
-                return false;
-            }
-            cellView = _gridView.GetCell(coord.x, coord.y);
-            return true;
-        }
-        
         private void MergeCallback(EMergeResult mergeResult, bool oneIntoTwo)
         {
             CLog.LogBlue($"MergeCallback {mergeResult}");
@@ -181,7 +170,9 @@ namespace RobotCastle.Merging
             switch (mergeResult)
             {
                 case EMergeResult.NoMerge:
-                    if(!TrySwap(_draggedItem.originalCellView, _lastPutCell))
+                    if (TrySwap(_draggedItem.originalCellView, _lastPutCell))
+                        _sectionsController.OnItemPut(_draggedItem.originalCellView.itemView.itemData);
+                    else
                         _draggedItem.PutBack();
                     putResult = MergePutResult.MergeFailed;
                     break;
@@ -232,23 +223,5 @@ namespace RobotCastle.Merging
             return null;
         }
         
-        private (bool, ICellView) TryHitCellToPut(Vector3 screenPosition)
-        {
-            var didHitCell = false;
-            var scrPos = _camera.WorldToScreenPoint(_draggedItem.itemView.Transform.position);
-            var cellView = RaycastForCellView(scrPos);
-            if (cellView == null)
-            {
-                cellView = RaycastForCellView(screenPosition);
-                if (cellView == null)
-                    _draggedItem.PutBack();             
-                else
-                    didHitCell = true;
-            }
-            else
-                didHitCell = true;
-
-            return (didHitCell, cellView);
-        }
     }
 }

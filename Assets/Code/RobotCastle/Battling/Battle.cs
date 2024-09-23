@@ -36,6 +36,7 @@ namespace RobotCastle.Battling
         public void Reset()
         {
             _completed = false;
+            State = BattleState.NotStarted;
         }
 
         public void RemoveDead(HeroController heroController)

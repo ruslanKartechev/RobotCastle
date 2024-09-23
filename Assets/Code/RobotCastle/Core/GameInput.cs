@@ -125,6 +125,7 @@ namespace RobotCastle.Core
 
         private void UpMain()
         {
+            ResetSlide();
             _mainDown = false;
             WorldButtons(false, MainMousePosition);
             if(_longClickWaiting != null)
@@ -164,14 +165,16 @@ namespace RobotCastle.Core
         {
         }
 
-        private void CheckSlide()
-        {
-            if (_mainDown)
-            {
-                
-            }
-        }
+        private bool _didSlide;
+        private Vector3 _slide;
+        private float _slideMinD2 = 30f * 30f;
 
+        private void ResetSlide()
+        {
+            _didSlide = false;
+            _slide = Vector3.zero;
+        }
+        
         private IEnumerator LongClickChecking()
         {
             var elapsed = 0f;
@@ -186,11 +189,13 @@ namespace RobotCastle.Core
 
         private IEnumerator Working()
         {
+            var oldMainPos = Input.mousePosition;
             while (true)
             {
                 while (!InputAllowed)
                     yield return null;
-                
+
+                var mainPos = MainMousePosition;
                 if (Input.GetMouseButtonDown(0))
                 {
                     OnDownIgnoreUI?.Invoke(MainMousePosition);
@@ -199,11 +204,19 @@ namespace RobotCastle.Core
                 {
                     OnUpIgnoreUI?.Invoke(MainMousePosition);
                 }
-                
+                else if (_mainDown && !_didSlide)
+                {
+                    var delta = mainPos - oldMainPos;
+                    _slide += delta;
+                    if (_slide.sqrMagnitude >= _slideMinD2)
+                    {
+                        _didSlide = true;
+                        OnSlideMain?.Invoke(_slide);
+                    }
+                }
                 CheckInputFingersUp();
-                CheckSlide();
                 CheckZoom();
-                
+                oldMainPos = mainPos;
                 yield return null;
             }
         }

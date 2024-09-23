@@ -1,6 +1,5 @@
 using RobotCastle.Battling;
 using RobotCastle.Core;
-using RobotCastle.Data;
 using SleepDev;
 using UnityEngine;
 
@@ -48,19 +47,29 @@ namespace RobotCastle.Merging
             _mergeController.OnPutItem += OnItemPut;
             _mergeController.OnItemPicked += OnItemPicked;
             _sectionsController.SetMaxCount(ServiceLocator.Get<Battle>().troopSize);
+            var gridViewContainer = new GridViewsContainer();
+            gridViewContainer.AddGridView(_gridView);
             ServiceLocator.Bind<IGridSectionsController>(_sectionsController);
             ServiceLocator.Bind<IMergeItemsFactory>(_itemsSpawner);
             ServiceLocator.Bind<MergeController>(_mergeController);
             ServiceLocator.Bind<SimplePoolsManager>(_mergeCellHighlight);
             ServiceLocator.Bind<ISimplePoolsManager>(_mergeCellHighlight);
-            ServiceLocator.Bind<IGridView>(_gridView);
             ServiceLocator.Bind<MergeManager>(this);
+            ServiceLocator.Bind<GridViewsContainer>(gridViewContainer);
+            
+            
             if(_allowInputOnStart)
                 _mergeInput.SetActive(true);
         }
         
         public void AllowInput(bool active) => _mergeInput.SetActive(active);
 
+        public void FillActiveArea()
+        {
+            var filler = new MergeActiveAreaFiller(_gridView, _sectionsController);
+            filler.Fill();
+        }
+        
         public bool SpawnNewMergeItem(SpawnMergeItemArgs args)
         {
             var didSpawn = ServiceLocator.Get<IHeroesAndItemsFactory>()

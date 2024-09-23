@@ -11,7 +11,7 @@ namespace RobotCastle.Battling
     [DefaultExecutionOrder(35)]
     public class BattleLevel : MonoBehaviour, IBattleStartedProcessor, IBattleEndProcessor
     {
-        [SerializeField] private float _startDelay = 1f;
+        [SerializeField] private bool _fillActiveAreaBeforeStart = true;
         [SerializeField] private float _endDelay = 2f;
         [SerializeField] private bool _doAutoBegin = true;
         [SerializeField] private PresetsContainer _presetsContainer;
@@ -41,7 +41,6 @@ namespace RobotCastle.Battling
         
         private void Start()
         {
-       
             StartCoroutine(Init());
         }
 
@@ -66,7 +65,15 @@ namespace RobotCastle.Battling
             yield return null;
             if (_doAutoBegin)
                 _battleManager.SetStage(0);
+            yield return null;
+            _battleCamera.AllowPlayerInput(false);
+            _battleCamera.SetBattlePoint();
+            var config = ServiceLocator.Get<GlobalConfig>();
+            yield return new WaitForSeconds(config.BattleStartEnemyShowTime);
+            _battleCamera.MoveToMergePoint();
+            yield return new WaitForSeconds(config.BattleStartInputDelay);
             _mergeManager.AllowInput(true);
+            _battleCamera.AllowPlayerInput(true);
         }
         
         private void InitUI()
@@ -93,6 +100,9 @@ namespace RobotCastle.Battling
         
         private void StartBattle()
         {
+            _battleCamera.AllowPlayerInput(false);
+            if(_fillActiveAreaBeforeStart)
+                _mergeManager.FillActiveArea();
             _battleManager.BeginBattle();
         }
 
@@ -117,6 +127,7 @@ namespace RobotCastle.Battling
             _battleCamera.MoveToMergePoint();
             _mergeManager.AllowInput(true);
             AllowPlayerUIInput(true);
+            _battleCamera.AllowPlayerInput(true);
         }
         
     }

@@ -4,6 +4,7 @@ namespace RobotCastle.Merging
 {
     public interface ICellView
     {
+        int GridId { get; set; }
         Cell cell { get; set; }
         IItemView itemView { get; set; }
         void OnPicked();
@@ -13,5 +14,6 @@ namespace RobotCastle.Merging
         void HighlightAsUnderCell(bool on);
         Transform ItemPoint { get; }        
         Vector3 WorldPosition { get; }
+        Quaternion WorldRotation { get; }
     }
 }

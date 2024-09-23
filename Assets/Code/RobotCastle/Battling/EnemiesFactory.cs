@@ -39,27 +39,19 @@ namespace RobotCastle.Battling
         public void SpawnPreset(EnemyPackPreset packPreset)
         {
             _spawnedEnemies = new List<HeroController>(packPreset.enemies.Count);
-            var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
+            var factory = ServiceLocator.Get<IMergeItemsFactory>();
             foreach (var enemyPreset in packPreset.enemies)
             {
                 var cellView = GridView.GetCell(enemyPreset.gridPos.x, enemyPreset.gridPos.y);
-                var args = new SpawnMergeItemArgs(enemyPreset.enemy);
-                if (enemyPreset.items is { Count : > 0 })
-                {
-                    args.useAdditionalItems = true;
-                    args.additionalItems = enemyPreset.items;
-                }
-                factory.SpawnHeroOrItem(args, cellView, out var itemView);
-                var enemy = itemView.Transform.GetComponent<HeroController>();
-                enemy.transform.position = cellView.WorldPosition;
-                enemy.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-                enemy.InitComponents(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level);
-                enemy.GetComponent<IItemView>().UpdateViewToData(new ItemData(enemyPreset.enemy));
-                _spawnedEnemies.Add(enemy);
+                var itemView = factory.SpawnItemOnCell(cellView, new ItemData(enemyPreset.enemy));
+                var hero = itemView.Transform.GetComponent<HeroController>();
+                hero.InitComponents(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level);
+                hero.UpdateStatsView();
+                _spawnedEnemies.Add(hero);
             }
         }
 
-        public void SpawnNew(SpawnMergeItemArgs args)
+        public void SpawnNew(SpawnMergeItemArgs args, int heroLvl = 0)
         {
             ICellView cellView = null;
             if (args.usePreferredCoordinate)
@@ -78,9 +70,12 @@ namespace RobotCastle.Battling
                     break;
                 }
             }
-            var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
-            factory.SpawnHeroOrItem(args, cellView, out var spawnedItem);
-
+            var factory = ServiceLocator.Get<IMergeItemsFactory>();
+            var itemView = factory.SpawnItemOnCell(cellView, new ItemData(args.coreData));
+            var hero = itemView.Transform.GetComponent<HeroController>();
+            hero.InitComponents(args.coreData.id, heroLvl, args.coreData.level);
+            hero.UpdateStatsView();
+            _spawnedEnemies.Add(hero);
         }
 
 #if UNITY_EDITOR

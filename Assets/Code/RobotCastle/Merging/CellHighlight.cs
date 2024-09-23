@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RobotCastle.Merging
 {
-    public class CellHighlight : MonoBehaviour, IPoolObject
+    public class CellHighlight : MonoBehaviour, IPoolItem
     {
         public int HighlightType { get; set; }
         
