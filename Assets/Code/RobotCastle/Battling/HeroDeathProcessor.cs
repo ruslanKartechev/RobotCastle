@@ -19,8 +19,13 @@ namespace RobotCastle.Battling
             _heroView.rb.isKinematic = true;
             _heroView.collider.enabled = false;
             gameObject.SetActive(false);
-            var particles = ServiceLocator.Get<ISimplePoolsManager>().GetOne("death_particles") as DeathParticles;
-            particles.Show(transform.position);
+            if (ServiceLocator.GetIfContains<ISimplePoolsManager>(out var pool))
+            {
+                var particles = pool.GetOne("death_particles") as DeathParticles;
+                particles.Show(transform.position);
+            }
+            
         }
+
     }
 }

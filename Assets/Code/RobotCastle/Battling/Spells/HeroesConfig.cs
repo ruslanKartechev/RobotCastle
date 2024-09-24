@@ -5,6 +5,10 @@ namespace RobotCastle.Battling
 {
     public class HeroesConfig
     {
+        public const int PlayerHealthStart = 3;
+        public const int PlayerTroopsStart = 3;
+        
+        
         public const int DuelMaxDistance = 3;
         
         public const float SpeedStatFactor = 1f / 40;

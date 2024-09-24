@@ -22,8 +22,10 @@ namespace RobotCastle.Battling
         [SerializeField] private Canvas _mainCanvas;
         [SerializeField] private BattleCamera _battleCamera;
         [SerializeField] private BattleGridSwitch _gridSwitch;
+        [SerializeField] private CastleHealthView _playerHealthView;
         private IPlayerMergeItemPurchaser _itemPurchaser;
         private ITroopSizeManager _troopSizeManager;
+        private BattleMergeUI _mainUI;
         
         public void OnBattleStarted(Battle battle)
         {
@@ -36,6 +38,7 @@ namespace RobotCastle.Battling
 
         public void OnBattleEnded(Battle battle)
         {
+            _battleManager.BattleRewardCalculator.AddRewardForStage();
             StartCoroutine(DelayedBattleEnd(battle));
         }
         
@@ -51,26 +54,26 @@ namespace RobotCastle.Battling
             ServiceLocator.Bind<BattleCamera>(_battleCamera);
             ServiceLocator.Get<IUIManager>().ParentCanvas = _mainCanvas;
             ServiceLocator.Bind<EnemiesManager>(_enemiesManager);
+            ServiceLocator.Bind<CastleHealthView>(_playerHealthView);
             
             _itemPurchaser = gameObject.GetComponent<IPlayerMergeItemPurchaser>();
-            _battleManager.Init(_presetsContainer);
             _battleManager.startProcessor = this;
             _battleManager.endProcessor = this;
-            _troopSizeManager = new BattleTroopSizeManager(_battleManager.battle);
+            var battle = _battleManager.Init(_presetsContainer);
+            _troopSizeManager = new BattleTroopSizeManager(battle);
             ServiceLocator.Bind<ITroopSizeManager>(_troopSizeManager);
-            InitUI();
-            yield return null;
             _mergeManager.Init();
             _enemiesManager.Init();
+            _playerHealthView.SetHealth(battle.playerHealthPoints);
             yield return null;
             if (_doAutoBegin)
                 _battleManager.SetStage(0);
-            yield return null;
             _battleCamera.AllowPlayerInput(false);
             _battleCamera.SetBattlePoint();
             var config = ServiceLocator.Get<GlobalConfig>();
             yield return new WaitForSeconds(config.BattleStartEnemyShowTime);
             _battleCamera.MoveToMergePoint();
+            InitUI();
             yield return new WaitForSeconds(config.BattleStartInputDelay);
             _mergeManager.AllowInput(true);
             _battleCamera.AllowPlayerInput(true);
@@ -78,24 +81,24 @@ namespace RobotCastle.Battling
         
         private void InitUI()
         {
-            var ui = ServiceLocator.Get<IUIManager>();
-            ui.Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {}).ShowIdle();
-            var dam = ui.Show<BattleDamagePanelUI>("ui_damage", () => { });
+            var mergeInfoUI = ServiceLocator.Get<IUIManager>();
+            mergeInfoUI.Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {}).ShowIdle();
+            var dam = mergeInfoUI.Show<BattleDamagePanelUI>("ui_damage", () => { });
             dam.gameObject.SetActive(true);
             
-            var mergeUI = ui.Show<BattleMergeUI>(UIConstants.UIBattleMerge, () => { });
-            mergeUI.BtnSpawn.AddMainCallback(BuyNewItem);
-            mergeUI.BtnStart.AddMainCallback(StartBattle);
-            mergeUI.TroopSizePurchaseUI.Init(_troopSizeManager);
-            mergeUI.TroopSizePurchaseUI.SetInteractable(true);
+            _mainUI = mergeInfoUI.Show<BattleMergeUI>(UIConstants.UIBattleMerge, () => { });
+            _mainUI.BtnSpawn.AddMainCallback(BuyNewItem);
+            _mainUI.BtnStart.AddMainCallback(StartBattle);
+            _mainUI.TroopSizePurchaseUI.Init(_troopSizeManager);
+            _mainUI.TroopSizePurchaseUI.SetInteractable(true);
+            _mainUI.Level.SetLevel(_battleManager.battle.stageIndex, false);
             AllowPlayerUIInput(true);
         }
 
         private void AllowPlayerUIInput(bool allow)
         {
-            var ui = ServiceLocator.Get<IUIManager>().Show<BattleMergeUI>(UIConstants.UIBattleMerge, () => { });
-            ui.BtnSpawn.SetInteractable(allow);
-            ui.BtnStart.SetInteractable(allow);
+            _mainUI.BtnSpawn.SetInteractable(allow);
+            _mainUI.BtnStart.SetInteractable(allow);
         }
         
         private void StartBattle()
@@ -110,25 +113,46 @@ namespace RobotCastle.Battling
         {
             _itemPurchaser.TryPurchaseItem();
         }
+
+        private void ShowFailedScreen()
+        {
+            
+        }
         
         private IEnumerator DelayedBattleEnd(Battle battle)
         {
             yield return new WaitForSeconds(_endDelay / 2f);
             _gridSwitch.SetMergeMode();
             _battleManager.RecollectPlayerUnits();
-            if (battle.State == BattleState.EnemyWin)
-                _battleManager.ResetStage();
-            else if (battle.State == BattleState.PlayerWin)
-                _battleManager.NextStage();
-            else
-                CLog.LogRed($"[{nameof(BattleLevel)}] Error!");
-            
+            switch (battle.State)
+            {
+                case BattleState.EnemyWin:
+                    var health = --_battleManager.battle.playerHealthPoints;
+                    if (health <= 0)
+                        health = 0;
+                    _playerHealthView.MinusHealth(health);
+                    if (health == 0)
+                    {
+                        CLog.LogRed($"[{nameof(BattleLevel)}] Player LOST");
+                        ShowFailedScreen();
+                        yield break;
+                    }
+                    _battleManager.ResetStage();
+                    break;
+                case BattleState.PlayerWin:
+                    _battleManager.NextStage();
+                    _mainUI.Level.SetLevel(_battleManager.battle.stageIndex, false);
+                    break;
+                default:
+                    CLog.LogRed($"[{nameof(BattleLevel)}] Error!");
+                    break;
+            }
             yield return new WaitForSeconds(_endDelay / 2f);
             _battleCamera.MoveToMergePoint();
             _mergeManager.AllowInput(true);
             AllowPlayerUIInput(true);
             _battleCamera.AllowPlayerInput(true);
         }
-        
     }
+    
 }

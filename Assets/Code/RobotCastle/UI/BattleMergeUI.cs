@@ -11,7 +11,9 @@ namespace RobotCastle.UI
         [SerializeField] private MyButton _btnStart;
         [SerializeField] private MyButton _btnSpawn;
         [SerializeField] private TroopSizePurchaseUI _troopSizePurchaseUI;
-
+        [SerializeField] private LevelUI _levelUI;
+        
+        public LevelUI Level => _levelUI;
         public TroopSizePurchaseUI TroopSizePurchaseUI => _troopSizePurchaseUI;
         public IButtonInput BtnStart => _btnStart;
         
@@ -27,7 +29,5 @@ namespace RobotCastle.UI
         {
             ServiceLocator.Unbind<ITroopsCountView>();
         }
-        
-        
     }
 }

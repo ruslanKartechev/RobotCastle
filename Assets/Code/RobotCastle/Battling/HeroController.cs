@@ -61,12 +61,14 @@ namespace RobotCastle.Battling
         public void PrepareForBattle()
         {
             _view.movement.SetupAgent();
+            _view.Stats.ManaCurrent.SetBaseAndCurrent(0);
             _view.heroUI.HealthUI.AssignStats(_view.Stats.HealthCurrent, _view.Stats.HealthMax);
             _view.heroUI.ManaUI.AssignStats(_view.Stats.ManaCurrent, _view.Stats.ManaMax);
         }
 
         public void UpdateStatsView()
         {
+            _view.Stats.ManaCurrent.SetBaseAndCurrent(0);
             _view.heroUI.HealthUI.DisplayStats(_view.Stats.HealthCurrent, _view.Stats.HealthMax);
             _view.heroUI.ManaUI.DisplayStats(_view.Stats.ManaCurrent, _view.Stats.ManaMax);
         }
@@ -85,7 +87,7 @@ namespace RobotCastle.Battling
             _view.movement.SetNullTargetCell();
             StopCurrentBehaviour();
             IsDead = true;
-            Battle.RemoveDead(this);
+            Battle.OnKilled(this);
         }
         
         /// <summary>
