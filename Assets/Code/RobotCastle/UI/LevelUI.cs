@@ -9,7 +9,7 @@ namespace RobotCastle.UI
         
         public void SetLevel(int levelIndex, bool animated)
         {
-            _levelNumText.text = $"Level {levelIndex + 1}";
+            _levelNumText.text = $"Magic Forest | Wave {levelIndex + 1}";
         }
         
     }

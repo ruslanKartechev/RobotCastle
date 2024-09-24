@@ -28,6 +28,9 @@ namespace RobotCastle.Battling
             return _price;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns>0 if success. 1 if not enough money</returns>
         public int TryPurchase()
         {
             var money = ServiceLocator.Get<GameMoney>().Money;

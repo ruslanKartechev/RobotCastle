@@ -39,6 +39,7 @@ namespace RobotCastle.UI
         }
 
         [SerializeField] private float _splashTime = .15f;
+        [SerializeField] private float _splashAlphaMax = .5f;
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _fadeImage;
         [SerializeField] private AddedMoneyAnimator _addedMoneyAnimator;
@@ -61,7 +62,7 @@ namespace RobotCastle.UI
         {
             _text.text = $"{val}";
             _fadeImage.DOKill();
-            _fadeImage.SetAlpha(1f);
+            _fadeImage.SetAlpha(_splashAlphaMax);
             _fadeImage.DOFade(0f, _splashTime);
         }
 

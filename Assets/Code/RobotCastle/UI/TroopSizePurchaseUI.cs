@@ -1,5 +1,6 @@
 ﻿using System;
 using RobotCastle.Battling;
+using SleepDev;
 using TMPro;
 using UnityEngine;
 
@@ -22,10 +23,13 @@ namespace RobotCastle.UI
 
         private void OnBtn()
         {
-            _troopSizeManager.TryPurchase();
+            var res = _troopSizeManager.TryPurchase();
             _priceText.text = $"{_troopSizeManager.GetCost()}";
+            if (res == 1)
+            {
+                CLog.Log("Not enough money");
+            }
         }
-        
 
         private void OnEnable()
         {
