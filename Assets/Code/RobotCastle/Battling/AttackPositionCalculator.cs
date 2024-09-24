@@ -35,7 +35,7 @@ namespace RobotCastle.Battling
         /// </summary>
         /// <param name="hero">Your hero</param>
         /// <param name="enemy">Enemy hero to get to</param>
-        /// <returns>True if should me. False if already on the cell. out targetPosition - position to move to</returns>
+        /// <returns>True if should move. False if already on the cell. out targetPosition - position to move to</returns>
         public bool GetPositionToAttack(IHeroController hero, IHeroController enemy, out Vector2Int targetCell, out int distance)
         {
             var map = hero.View.agent.Map;

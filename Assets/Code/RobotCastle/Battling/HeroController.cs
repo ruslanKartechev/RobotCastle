@@ -8,10 +8,8 @@ namespace RobotCastle.Battling
     public class HeroController : MonoBehaviour, IHeroController
     {
         [SerializeField] private HeroView _view;
-        [SerializeField] private HeroSpellsContainer _spellsContainer;
         private HeroStatsContainer _stats;
         private IHeroBehaviour _currentBehaviour;
-        private IUnitsItemsContainer _itemsContainer;
         private bool _didSetMap;
         
         public bool IsDead { get; private set; }
@@ -23,7 +21,6 @@ namespace RobotCastle.Battling
         
         private void AddHeroComponents()
         {
-            _itemsContainer = gameObject.GetComponent<IUnitsItemsContainer>();
             _stats = gameObject.AddComponent<HeroStatsContainer>();
             var pathfinder = gameObject.AddComponent<Agent>();
             var unitMover = gameObject.AddComponent<HeroMovementManager>();

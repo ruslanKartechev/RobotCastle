@@ -216,6 +216,7 @@ namespace RobotCastle.Battling
                     break;
                 case EPathMovementResult.FailedToBuild:
                     CLog.LogRed($"[{_hero.gameObject.name}] FailedToBuild moving to {targetCell.ToString()}");
+                    _hero.View.movement.OnMovementStopped();
                     await Task.Delay(waitTime, token);
                     DecideNextStep(_mainToken.Token);
                     break;
