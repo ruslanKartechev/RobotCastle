@@ -15,7 +15,11 @@ namespace RobotCastle.Core
         }
         
         public event Action<int> OnMoneyUpdated;
-        
+        /// <summary>
+        /// Pass the added amount. Used for animated money added calls
+        /// </summary>
+        public event Action<int> OnMoneyAdded;
+
         
         
         public int Money
@@ -38,6 +42,7 @@ namespace RobotCastle.Core
             var data = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>();
             data.money += added;
             OnMoneyUpdated?.Invoke(data.money);
+            OnMoneyAdded?.Invoke(added);
             return data.money;
         }
         

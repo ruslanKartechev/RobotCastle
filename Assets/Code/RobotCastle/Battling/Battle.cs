@@ -12,12 +12,18 @@ namespace RobotCastle.Battling
         public BattleState State { get; set; }
         
         public int stageIndex = 0;
-        public int troopSize = 3;
-        public int playerHealthPoints = 3;
+        public int troopSize = HeroesConfig.PlayerTroopsStart;
+        public int playerHealthPoints = HeroesConfig.PlayerHealthStart;
         public BattleTeam playerTeam;
         public BattleTeam enemyTeam;
 
+        public List<HeroController> enemiesAlive => _enemiesAlive;
+
+        public List<HeroController> playersAlive => _playersAlive;
+        
         public AttackPositionCalculator AttackPositionCalculator { get; set; } = new();
+        
+        public BattleRewardCalculator RewardCalculator { get; set; }
 
         private bool _completed;
         private List<HeroController> _enemies; // is not changed. All units set at startup
@@ -25,11 +31,7 @@ namespace RobotCastle.Battling
         
         private List<HeroController> _enemiesAlive;
         private List<HeroController> _playersAlive;
-
-        public List<HeroController> enemiesAlive => _enemiesAlive;
-
-        public List<HeroController> playersAlive => _playersAlive;
-
+        
         public BattleTeam GetTeam(int num) => num == 0 ? playerTeam : enemyTeam;
         public BattleTeam GetEnemyTeam(int num) => num == 0 ? enemyTeam : playerTeam;
         
@@ -39,12 +41,12 @@ namespace RobotCastle.Battling
             State = BattleState.NotStarted;
         }
 
-        public void RemoveDead(HeroController heroController)
+        public void OnKilled(HeroController hero)
         {
-            switch (heroController.TeamNum)
+            switch (hero.TeamNum)
             {
                 case 0:
-                    _playersAlive.Remove(heroController);
+                    _playersAlive.Remove(hero);
                     if (!_completed && _playersAlive.Count == 0)
                     {
                         _completed = true;
@@ -53,7 +55,8 @@ namespace RobotCastle.Battling
                     }
                     break;
                 default:
-                    _enemiesAlive.Remove(heroController);
+                    RewardCalculator.AddRewardForKill(hero);
+                    _enemiesAlive.Remove(hero);
                     if (!_completed && _enemiesAlive.Count == 0)
                     {
                         CLog.LogGreen("Calling win on PLAYER");
@@ -75,7 +78,6 @@ namespace RobotCastle.Battling
             _players.Add(hero);
             _playersAlive.Add(hero);
         }
-        
 
         public List<HeroController> Enemies
         {
@@ -100,7 +102,6 @@ namespace RobotCastle.Battling
                 enemyTeam.enemyUnits = _playersAlive;
             }
         }
-
 
         public Battle()
         {
