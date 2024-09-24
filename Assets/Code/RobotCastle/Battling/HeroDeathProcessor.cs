@@ -12,7 +12,7 @@ namespace RobotCastle.Battling
         {
             _heroView.HealthManager.SetDamageable(false);
             _heroView.agent.Stop();
-            var hero = gameObject.GetComponent<HeroController>();
+            var hero = gameObject.GetComponent<IHeroController>();
             hero.MarkDead();
             hero.Battle.AttackPositionCalculator.RemoveUnit(_heroView.movement);
             _heroView.movement.SetNullTargetCell();

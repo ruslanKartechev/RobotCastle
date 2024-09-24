@@ -27,21 +27,21 @@ namespace RobotCastle.Battling
         {
             _target = target;
             _targetTransform = targetTransform;
-            Hero.HeroView.AnimationEventReceiver.OnAttackEvent -= OnAttack;
-            Hero.HeroView.AnimationEventReceiver.OnAttackEvent += OnAttack;
-            Hero.HeroView.animator.SetBool(HeroesConfig.Anim_Attack, true);
+            Hero.View.AnimationEventReceiver.OnAttackEvent -= OnAttack;
+            Hero.View.AnimationEventReceiver.OnAttackEvent += OnAttack;
+            Hero.View.animator.SetBool(HeroesConfig.Anim_Attack, true);
         }
 
         public void Stop()
         {
-            Hero.HeroView.animator.SetBool(HeroesConfig.Anim_Attack, false);
-            Hero.HeroView.AnimationEventReceiver.OnAttackEvent -= OnAttack;
+            Hero.View.animator.SetBool(HeroesConfig.Anim_Attack, false);
+            Hero.View.AnimationEventReceiver.OnAttackEvent -= OnAttack;
         }
 
         private void OnAttack()
         {
             var projectile = _projectileFactory.GetProjectile();
-            projectile.LaunchProjectile( Hero.HeroView.projectileSpawnPoint, _targetTransform, Hero.HeroView.Stats.ProjectileSpeed, HitCallback, _target);
+            projectile.LaunchProjectile( Hero.View.projectileSpawnPoint, _targetTransform, Hero.View.Stats.ProjectileSpeed, HitCallback, _target);
             OnAttackStep?.Invoke();
         }
 
@@ -50,10 +50,10 @@ namespace RobotCastle.Battling
             var dm = (IDamageReceiver)target;
             if (dm != null)
             {
-                var amount = Hero.HeroView.Stats.Attack.Val;
+                var amount = Hero.View.Stats.Attack.Val;
                 var damageArgs = new DamageArgs(amount, EDamageType.Physical);
-                // CLog.Log($"Damage from: {gameObject.name}. {damageArgs.GetStr()}");
                 _target.TakeDamage(damageArgs);
+                Hero.View.Stats.AddMana(amount * HeroesConfig.ManaGainDamageMultiplier);
             }
         }
     }

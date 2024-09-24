@@ -22,7 +22,7 @@ namespace RobotCastle.Battling
             {
                 return;
             }
-            CLog.Log($"{gameObject.name} Damaged taken. {args.type}. Amount {amount}. Resist {_heroView.Stats.PhysicalResist.Val}");
+            // CLog.Log($"{gameObject.name} Damaged taken. {args.type}. Amount {amount}. Resist {_heroView.Stats.PhysicalResist.Val}");
             _heroView.Stats.HealthCurrent.Val -= amount;
             var pos = transform.position + Vector3.up;
             ServiceLocator.Get<IDamageDisplay>().ShowAt((int)amount, args.type, pos);

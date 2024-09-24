@@ -1,4 +1,5 @@
-﻿using Bomber;
+﻿using System.Collections.Generic;
+using Bomber;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev.Ragdoll;
@@ -26,7 +27,10 @@ namespace RobotCastle.Battling
         public IHeroHealthManager HealthManager { get; set; }
         public IDamageReceiver DamageReceiver { get; set; }
         public HeroAttackInfoContainer AttackInfo { get; set; } = new ();
+        public HeroSpellsContainer SpellsContainer => _spellsContainer;
         
+        
+        [SerializeField] private HeroSpellsContainer _spellsContainer;
         [SerializeField] private BattleUnitUI _heroUI;
         [SerializeField] private Collider _collider;
         [SerializeField] private Rigidbody _rb;

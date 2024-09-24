@@ -38,7 +38,7 @@ namespace RobotCastle.Testing
                 {
                     if (_initedUnits.Contains(uc) == false)
                     {
-                        uc.InitComponents("aramis", 1, 1);
+                        uc.InitHero("aramis", 1, 1);
                         uc.PrepareForBattle();
                         _initedUnits.Add(uc);
                     }
@@ -61,7 +61,7 @@ namespace RobotCastle.Testing
             var uc = unit.gameObject.GetComponent<HeroController>();
             if (_initedUnits.Contains(uc) == false)
             {
-                uc.InitComponents("aramis", 0, 0);
+                uc.InitHero("aramis", 0, 0);
                 uc.PrepareForBattle();
                 _initedUnits.Add(uc);
             }

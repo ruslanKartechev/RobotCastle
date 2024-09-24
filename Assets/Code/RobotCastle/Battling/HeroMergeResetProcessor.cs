@@ -2,15 +2,18 @@
 
 namespace RobotCastle.Battling
 {
-    public class HeroRestartProcessor : MonoBehaviour, IHeroRestartProcessor
+    public class HeroMergeResetProcessor : MonoBehaviour, IHeroMergeResetProcessor
     {
         [SerializeField] private HeroView _heroView;
 
-        public void Restart()
+        public void ResetForMerge()
         {
+            _heroView.Stats.HealthReset.Reset(_heroView);
+            _heroView.Stats.ManaReset.Reset(_heroView);
+            _heroView.heroUI.UpdateStatsView(_heroView);
+            
             _heroView.HealthManager.SetDamageable(true);
             _heroView.animator.WriteDefaultValues();
-            _heroView.animator.Play("Idle", 0, 0);
             _heroView.heroUI.Show();
             _heroView.AttackInfo.Reset();
             gameObject.SetActive(true);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Battling;
+using RobotCastle.Core;
 using SleepDev;
 using UnityEngine;
 
@@ -74,11 +75,11 @@ namespace RobotCastle.Testing
                     instance.transform.position = root.TransformPoint(currentGridPos);
                 else
                     instance.transform.position = currentGridPos;
-                
+                var map = ServiceLocator.Get<Bomber.IMap>();
                 if (instance.TryGetComponent<HeroController>(out var hero))
                 {
-                    hero.InitComponents(id, pack.heroLevel,pack.mergeLevel);          
-                    hero.UpdateStatsView();
+                    hero.InitHero(id, pack.heroLevel,pack.mergeLevel);          
+                    hero.View.agent.UpdateMap(map);
                     allSpawned.Add(hero);
                 }
             }

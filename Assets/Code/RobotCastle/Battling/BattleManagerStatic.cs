@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NSubstitute.Core;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -6,33 +7,30 @@ namespace RobotCastle.Battling
     public partial class BattleManager
     {
         private static readonly List<Vector2Int> _coveredCells = new(20);
-        private static readonly List<HeroController> _heroesInRange = new(20);
+        private static readonly List<IHeroController> _heroesInRange = new(20);
         
-        public static void ResetHeroAfterBattle(HeroController hero)
+        public static void ResetHeroAfterBattle(IHeroController hero)
         {
             hero.SetIdle();
-            hero.HeroView.Stats.ResetHealth();
-            hero.HeroView.Stats.ResetMana();
-            hero.Reset();
-            hero.UpdateStatsView();
+            hero.ResetForMerge();
         }
 
-        public static HeroController GetBestTargetForAttack(HeroController hero)
+        public static IHeroController GetBestTargetForAttack(IHeroController hero)
         {
-            var map = hero.HeroView.agent.Map;
-            var myPos = map.GetCellPositionFromWorld(hero.transform.position);
-            var cellsMask = hero.HeroView.Stats.Range.GetCellsMask();
+            var map = hero.View.agent.Map;
+            var myPos = map.GetCellPositionFromWorld(hero.View.transform.position);
+            var cellsMask = hero.View.Stats.Range.GetCellsMask();
             _coveredCells.Clear();
             _heroesInRange.Clear();
             foreach (var val in cellsMask)
                 _coveredCells.Add(myPos + val);
             var enemies = hero.Battle.GetTeam(hero.TeamNum).enemyUnits;
-            var overallClosest = (HeroController)null;
+            var overallClosest = (IHeroController)null;
             var minD2 = int.MaxValue;
             var d2 = minD2;
             foreach (var otherHero in enemies)
             {
-                var enemyPos = otherHero.HeroView.agent.CurrentCell;
+                var enemyPos = otherHero.View.agent.CurrentCell;
                 d2 = (enemyPos - myPos).sqrMagnitude;
                 if (d2 < minD2)
                 {
@@ -54,7 +52,7 @@ namespace RobotCastle.Battling
                     var minHealth = float.MaxValue;
                     foreach (var enemy in _heroesInRange)
                     {
-                        var h = enemy.HeroView.Stats.HealthCurrent.Val;
+                        var h = enemy.View.Stats.HealthCurrent.Val;
                         if (h < minHealth)
                         {
                             minHealth = h;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Bomber;
 using RobotCastle.Core;
 using RobotCastle.Merging;
 using SleepDev;
@@ -37,7 +38,7 @@ namespace RobotCastle.Battling
         public bool BeginBattle()
         {
             _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>()
-                .GetItemsInActiveArea<HeroController>(_ => true);
+                .GetItemsInActiveArea<IHeroController>(_ => true);
             if (_battle.PlayerUnits.Count == 0)
             {
                 _battle.State = BattleState.NotStarted;
@@ -46,19 +47,20 @@ namespace RobotCastle.Battling
             }
             _battle.State = BattleState.Going;
             _battle.WinCallback = OnTeamWin;
+            var map = ServiceLocator.Get<Bomber.IMap>();
             foreach (var hero in _battle.Enemies)
             {
                 hero.TeamNum = 1;
                 hero.Battle = _battle;
                 hero.PrepareForBattle();
-                hero.UpdateMap(true);
+                hero.View.agent.UpdateMap(map);
             }
             foreach (var hero in _battle.PlayerUnits)
             {
                 hero.TeamNum = 0;
                 hero.Battle = _battle;
                 hero.PrepareForBattle();
-                hero.UpdateMap(true);
+                hero.View.agent.UpdateMap(map);
             }
 
             if (_activatePlayers)
@@ -98,7 +100,7 @@ namespace RobotCastle.Battling
             }
             _battle.stageIndex = stageIndex;
             foreach (var en in _battle.Enemies)
-                Destroy(en.gameObject);
+                Destroy(en.View.gameObject);
             _battle.Enemies.Clear();
             _battle.enemiesAlive.Clear();
             var preset = _presetsContainer.Presets[stageIndex];
@@ -107,7 +109,7 @@ namespace RobotCastle.Battling
             _battle.Enemies = enemyManager.Enemies;
             // do something for merge reset
             _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>()
-                .GetItemsInActiveArea<HeroController>(_ => true);
+                .GetItemsInActiveArea<IHeroController>(_ => true);
         }
 
         public void PrintState()

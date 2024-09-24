@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NSubstitute.Core;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
@@ -58,7 +59,7 @@ namespace RobotCastle.Battling
                 var hero = spawnedItem.Transform.GetComponent<HeroController>();
                 var heroSave = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerHeroes>().GetSave(args.coreData.id);
                 heroSave.isUnlocked = true;
-                hero.InitComponents(args.coreData.id, heroSave.level, args.coreData.level);
+                hero.InitHero(args.coreData.id, heroSave.level, args.coreData.level);
                 if (args.useAdditionalItems)
                 {
                     var mergedItems = MergeFunctions.TryMergeAll(args.additionalItems, MergeConstants.MaxItemLevel);
@@ -66,7 +67,7 @@ namespace RobotCastle.Battling
                     itemsContainer.SetItems(mergedItems);
                 }
                 hero.SetIdle();
-                hero.UpdateStatsView();
+                hero.View.heroUI.UpdateStatsView(hero.View);
             }
         }        
         

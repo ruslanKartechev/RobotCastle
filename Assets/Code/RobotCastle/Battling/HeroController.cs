@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class HeroController : MonoBehaviour
+    public class HeroController : MonoBehaviour, IHeroController
     {
         [SerializeField] private HeroView _view;
         [SerializeField] private HeroSpellsContainer _spellsContainer;
@@ -15,7 +15,7 @@ namespace RobotCastle.Battling
         private bool _didSetMap;
         
         public bool IsDead { get; private set; }
-        public HeroView HeroView => _view;
+        public HeroView View => _view;
         
         public Battle Battle { get; set; }
         
@@ -42,9 +42,12 @@ namespace RobotCastle.Battling
             _view.DamageReceiver = damage;
             _view.HealthManager = health;
             _view.AttackManager = attack;
-        }
 
-        public void InitComponents(string id, int heroLevel, int mergeLevel)
+            SetupStatsListeners();
+        }
+        
+        
+        public void InitHero(string id, int heroLevel, int mergeLevel)
         {
             AddHeroComponents();
             _stats.Init(id, heroLevel, mergeLevel);
@@ -62,15 +65,7 @@ namespace RobotCastle.Battling
         {
             _view.movement.SetupAgent();
             _view.Stats.ManaCurrent.SetBaseAndCurrent(0);
-            _view.heroUI.HealthUI.AssignStats(_view.Stats.HealthCurrent, _view.Stats.HealthMax);
-            _view.heroUI.ManaUI.AssignStats(_view.Stats.ManaCurrent, _view.Stats.ManaMax);
-        }
-
-        public void UpdateStatsView()
-        {
-            _view.Stats.ManaCurrent.SetBaseAndCurrent(0);
-            _view.heroUI.HealthUI.DisplayStats(_view.Stats.HealthCurrent, _view.Stats.HealthMax);
-            _view.heroUI.ManaUI.DisplayStats(_view.Stats.ManaCurrent, _view.Stats.ManaMax);
+            _view.heroUI.AssignStatsTracking(_view);
         }
 
         /// <summary>
@@ -93,17 +88,16 @@ namespace RobotCastle.Battling
         /// <summary>
         /// Use for returning to merge grid
         /// </summary>
-        public void Reset()
+        public void ResetForMerge()
         {
             IsDead = false;
-            if (gameObject.TryGetComponent<IHeroRestartProcessor>(out var restart))
+            if (gameObject.TryGetComponent<IHeroMergeResetProcessor>(out var restart))
             {
-                restart.Restart();
+                restart.ResetForMerge();
             }
             else
                 CLog.LogRed($"[{gameObject.name}] IHeroRestartProcessor is null");
         }
-  
 
         public void StopCurrentBehaviour()
         {
@@ -127,6 +121,20 @@ namespace RobotCastle.Battling
         private void OnDisable()
         {
             _currentBehaviour?.Stop();
+        }
+        
+        private void SetupStatsListeners()
+        {
+            foreach (var mod in _view.SpellsContainer.modifiers)
+            {
+                mod.AddTo(gameObject);
+            }
+            if (_view.Stats.FullManaListener == null)
+                _view.Stats.FullManaListener = new DefaultFullManaAction();
+            if (_view.Stats.HealthReset == null)
+                _view.Stats.HealthReset = new HealthResetFull();
+            if (_view.Stats.ManaReset == null)
+                _view.Stats.ManaReset = new ManaResetZero();
         }
     }
 }

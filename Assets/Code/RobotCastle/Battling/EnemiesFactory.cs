@@ -12,9 +12,9 @@ namespace RobotCastle.Battling
     public class EnemiesFactory : MonoBehaviour
     {
         [SerializeField] private string _presetsDirectory;
-        private List<HeroController> _spawnedEnemies;
+        private List<IHeroController> _spawnedEnemies;
         
-        public List<HeroController> SpawnedEnemies => _spawnedEnemies;
+        public List<IHeroController> SpawnedEnemies => _spawnedEnemies;
         
         public IGridView GridView { get; set; }
 
@@ -38,15 +38,15 @@ namespace RobotCastle.Battling
 
         public void SpawnPreset(EnemyPackPreset packPreset)
         {
-            _spawnedEnemies = new List<HeroController>(packPreset.enemies.Count);
+            _spawnedEnemies = new List<IHeroController>(packPreset.enemies.Count);
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
             foreach (var enemyPreset in packPreset.enemies)
             {
                 var cellView = GridView.GetCell(enemyPreset.gridPos.x, enemyPreset.gridPos.y);
                 var itemView = factory.SpawnItemOnCell(cellView, new ItemData(enemyPreset.enemy));
                 var hero = itemView.Transform.GetComponent<HeroController>();
-                hero.InitComponents(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level);
-                hero.UpdateStatsView();
+                hero.InitHero(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level);
+                hero.View.heroUI.UpdateStatsView(hero.View);
                 _spawnedEnemies.Add(hero);
             }
         }
@@ -73,8 +73,8 @@ namespace RobotCastle.Battling
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
             var itemView = factory.SpawnItemOnCell(cellView, new ItemData(args.coreData));
             var hero = itemView.Transform.GetComponent<HeroController>();
-            hero.InitComponents(args.coreData.id, heroLvl, args.coreData.level);
-            hero.UpdateStatsView();
+            hero.InitHero(args.coreData.id, heroLvl, args.coreData.level);
+            hero.View.heroUI.UpdateStatsView(hero.View);
             _spawnedEnemies.Add(hero);
         }
 

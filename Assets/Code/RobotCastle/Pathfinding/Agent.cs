@@ -1,10 +1,8 @@
 #define __DrawPathCells
 #define __DrawCurrentCell
 
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NUnit.Framework;
 using SleepDev;
 using UnityEngine;
 
@@ -83,6 +81,17 @@ namespace Bomber
         {
             get => _rotationSpeed;
             set => _rotationSpeed = value;
+        }
+
+        public void UpdateMap(IMap map)
+        {
+            if (!_didInit)
+            {
+                InitAgent(map);
+                return;
+            }
+            _map = map;
+            SetCurrentCellFromWorldPosition();
         }
         
         public void InitAgent(IMap map)

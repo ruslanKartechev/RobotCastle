@@ -2,7 +2,7 @@
 {
     public class HeroAttackInfoContainer
     {
-        public HeroController CurrentEnemy;
+        public IHeroController CurrentEnemy;
         /// <summary>
         /// In case two heroes attack each other, one should move, while another is waiting for the other to take position.  
         /// </summary>

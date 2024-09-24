@@ -17,20 +17,20 @@ namespace RobotCastle.Battling
         public BattleTeam playerTeam;
         public BattleTeam enemyTeam;
 
-        public List<HeroController> enemiesAlive => _enemiesAlive;
+        public List<IHeroController> enemiesAlive => _enemiesAlive;
 
-        public List<HeroController> playersAlive => _playersAlive;
+        public List<IHeroController> playersAlive => _playersAlive;
         
         public AttackPositionCalculator AttackPositionCalculator { get; set; } = new();
         
         public BattleRewardCalculator RewardCalculator { get; set; }
 
         private bool _completed;
-        private List<HeroController> _enemies; // is not changed. All units set at startup
-        private List<HeroController> _players; // is not changed. All units set at startup
+        private List<IHeroController> _enemies; // is not changed. All units set at startup
+        private List<IHeroController> _players; // is not changed. All units set at startup
         
-        private List<HeroController> _enemiesAlive;
-        private List<HeroController> _playersAlive;
+        private List<IHeroController> _enemiesAlive;
+        private List<IHeroController> _playersAlive;
         
         public BattleTeam GetTeam(int num) => num == 0 ? playerTeam : enemyTeam;
         public BattleTeam GetEnemyTeam(int num) => num == 0 ? enemyTeam : playerTeam;
@@ -79,25 +79,25 @@ namespace RobotCastle.Battling
             _playersAlive.Add(hero);
         }
 
-        public List<HeroController> Enemies
+        public List<IHeroController> Enemies
         {
             get => _enemies;
             set
             {
                 _enemies = value;
-                _enemiesAlive = new List<HeroController>(value);
+                _enemiesAlive = new List<IHeroController>(value);
                 enemyTeam.ourUnits = _enemiesAlive;
                 playerTeam.enemyUnits = _enemiesAlive;
             }
         }
         
-        public List<HeroController> PlayerUnits
+        public List<IHeroController> PlayerUnits
         {
             get => _players;
             set
             {
                 _players = value;
-                _playersAlive = new List<HeroController>(value);
+                _playersAlive = new List<IHeroController>(value);
                 playerTeam.ourUnits = _playersAlive;
                 enemyTeam.enemyUnits = _playersAlive;
             }
@@ -136,7 +136,7 @@ namespace RobotCastle.Battling
             var num = 1;
             foreach (var hero in _players)
             {
-                msg += $"{num} {hero.HeroView.Stats.HeroId}\n";
+                msg += $"{num} {hero.View.Stats.HeroId}\n";
             }
             return msg;
         }
@@ -147,7 +147,7 @@ namespace RobotCastle.Battling
             var num = 1;
             foreach (var hero in _enemies)
             {
-                msg += $"{num} {hero.HeroView.Stats.HeroId}\n";
+                msg += $"{num} {hero.View.Stats.HeroId}\n";
             }
             return msg;
         }

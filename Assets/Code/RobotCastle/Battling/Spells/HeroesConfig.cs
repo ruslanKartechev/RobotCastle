@@ -7,7 +7,7 @@ namespace RobotCastle.Battling
     {
         public const int PlayerHealthStart = 3;
         public const int PlayerTroopsStart = 3;
-        
+        public const float ManaGainDamageMultiplier = .2f;
         
         public const int DuelMaxDistance = 3;
         

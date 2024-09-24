@@ -13,7 +13,7 @@ namespace RobotCastle.Battling
         [SerializeField] private GridView _gridView;
         private bool _didInit;
 
-        public List<HeroController> Enemies => _enemiesFactory.SpawnedEnemies;
+        public List<IHeroController> Enemies => _enemiesFactory.SpawnedEnemies;
 
         private void Start()
         {
