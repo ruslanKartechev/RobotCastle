@@ -9,37 +9,36 @@ namespace RobotCastle.Battling
 {
     public class HeroMovementManager : MonoBehaviour, IPathfindingAgentAnimator, IMovingUnit
     {
-        private const float AngleThreshold = 2;
-
-        [SerializeField] private HeroView _unitView;
-        private bool _didSetup;
-
         public Vector2Int TargetCell { get; set; }
         
-        public bool IdleOnStop { get; set; } = true;
-
         public HeroView UnitView
         {
             get => _unitView;
             set => _unitView = value;
         }
+        
+        private const float AngleThreshold = 2;
+        [SerializeField] private HeroView _unitView;
+        private bool _didSetup;
 
         public void SetNullTargetCell() => TargetCell = new Vector2Int(-1, -1);
 
         public void OnMovementBegan()
         {
             // CLog.Log($"{gameObject.name} On Began");
-            _unitView.animator.SetBool(HeroesConfig.AnimId_Move, true);
+            CLog.LogYellow($"{gameObject.name} MOVEMENT BEGAN");
+            _unitView.animator.SetBool(HeroesConfig.Anim_Move, true);
         }
 
         public void OnMovementStopped()
         {
             // CLog.Log($"{gameObject.name} On Stopped");
-            _unitView.animator.SetBool(HeroesConfig.AnimId_Move, false);
+            _unitView.animator.SetBool(HeroesConfig.Anim_Move, false);
         }
    
         public async Task<EPathMovementResult> MoveToCell(Vector2Int pos, CancellationToken token)
         {
+            CLog.LogYellow($"{gameObject.name} Move call to {pos}. Frame {Time.frameCount}");
             if (!_didSetup)
             {
                 CLog.LogRed("Unit Mover NOT setup!!");
@@ -126,15 +125,6 @@ namespace RobotCastle.Battling
             _unitView.agent.RotationSpeed = HeroesConfig.RotationSpeed;
             _unitView.agent.SpeedGetter = _unitView.Stats.MoveSpeed;
         }
-
-        public void SetIdle()
-        {
-            _unitView.rb.isKinematic = true;
-            _unitView.collider.isTrigger = true;
-            _unitView.collider.enabled = true;
-            OnMovementStopped();
-        }
-
 
     }
 }

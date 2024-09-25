@@ -1,83 +1,21 @@
-﻿using RobotCastle.Core;
+﻿using System.Collections.Generic;
+using RobotCastle.Core;
 using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public interface IHealthReset
-    {
-        void Reset(HeroView heroView);
-    }
-
-    public interface IManaReset
-    {
-        void Reset(HeroView heroView);
-    }
-
-    public class HealthResetFull : IHealthReset
-    {
-        public void Reset(HeroView heroView)
-        {
-            heroView.Stats.HealthCurrent.SetBaseAndCurrent(heroView.Stats.HealthMax.Val);
-        }
-    }
-
-    public class ManaResetFull : IManaReset
-    {
-        public void Reset(HeroView heroView)
-        {
-            heroView.Stats.ManaCurrent.SetBaseAndCurrent(heroView.Stats.ManaMax.Val);
-        }
-    }
-    
-    public class ManaResetZero : IManaReset
-    {
-        public void Reset(HeroView heroView)
-        {
-            heroView.Stats.ManaCurrent.SetBaseAndCurrent(0);
-        }
-    }
-
-    public class DefaultFullManaAction : IFullManaListener
-    {
-        public void OnFullMana(GameObject heroGo)
-        {
-            var stats = heroGo.GetComponent<HeroStatsContainer>();
-            stats.ManaCurrent.SetBaseAndCurrent(0);
-        }
-    }
-
-    public interface IFullManaListener
-    {
-        void OnFullMana(GameObject heroGo);
-    }
-    
-    public class TestSpellActivator : IFullManaListener
-    {
-        public void OnFullMana(GameObject heroGo)
-        {
-            var hero = heroGo.GetComponent<IHeroController>();
-            
-        }
-    }
-    
     // All stats have a list of "static modifiers"
     // I.e. modifiers that come from boosting items (swords, armor, etc.)
     // Health and mana reset is through interface. Default - health resets to full, mana resets to zero
-    public class HeroStatsContainer : MonoBehaviour
+    public class HeroStatsManager : MonoBehaviour
     {
-        
+        #region Static
         public static float GetMaxHealth(HeroStats stats, int levelIndex, int mergeLevel) 
             => stats.health[levelIndex] * HeroesConfig.TierStatMultipliers[mergeLevel];
 
-        public static float GetMana(HeroStats stats, int levelIndex, int mergeLevel) 
-            => stats.mana[mergeLevel];
-
         public static float GetAttack(HeroStats stats, int levelIndex, int mergeLevel) 
             => stats.attack[levelIndex] * HeroesConfig.TierStatMultipliers[mergeLevel];
-
-        public static float GetSpellPower(HeroStats stats, int levelIndex, int mergeLevel) 
-            => stats.spellPower[levelIndex] * HeroesConfig.TierStatMultipliers[mergeLevel];
 
         public static float GetAttackSpeed(HeroStats stats, int levelIndex, int mergeLevel) 
             => stats.attackSpeed[mergeLevel];
@@ -87,9 +25,8 @@ namespace RobotCastle.Battling
 
         public static float GetMagicalResist(HeroStats stats, int levelIndex, int mergeLevel) 
             => stats.magicalResist[levelIndex] * HeroesConfig.TierStatMultipliers[mergeLevel];
-        
-        
- 
+        #endregion
+
         public IAttackRange Range => _range;
         
         public IHealthReset HealthReset
@@ -109,9 +46,9 @@ namespace RobotCastle.Battling
             get => _fullManaListener;
             set => _fullManaListener = value;
         }
-        
-        
-        public Stat SpellPower {get; set;} = new Stat();
+
+        public ISpellPowerGetter SpellPowerGetter { get; set; } = null;
+        public List<IStatDecorator> SpellPowerDecorators = new (2);
         public Stat Attack {get; set;} = new Stat();
         public Stat AttackSpeed {get; set;} = new Stat();
         public Stat MoveSpeed {get; set;} = new Stat();
@@ -135,51 +72,30 @@ namespace RobotCastle.Battling
         private IHealthReset _healthReset;
         private IManaReset _manaReset;
         private IFullManaListener _fullManaListener;
-        
 
-        public void Init(string id, int levelIndex, int mergeLevel)
+
+        public void LoadAndSetHeroStats(string id, int levelIndex, int mergeLevel)
         {
             HeroId = id;
             var db = ServiceLocator.Get<HeroesDatabase>();
             _stats = db.GetStatsForHero(id);
-            SetLevel(levelIndex, mergeLevel);
             _range = AttackRangeFactory.GetAttackRangeById(id);
-        }
-
-        public void ResetHealth()
-        {
-            HealthMax.Val = HealthMax.BaseVal;
-            HealthCurrent.Val = HealthMax.Val;
-        }
-
-        public void ResetMana()
-        {
-            ManaMax.Val = ManaMax.BaseVal;
-            ManaCurrent.Val = ManaMax.Val;
-        }
-        
-        public void SetLevel(int levelIndex, int mergeLevel)
-        {
             MergeTier = mergeLevel;
             HeroLvl = levelIndex;
-            UpdateStats();
+            SetStatsToTable();
         }
-        
+
         public void SetMergeLevel(int mergeLevel)
         {
             MergeTier = mergeLevel;
-            UpdateStats();
+            SetStatsToTable();
         }
 
-        public void UpdateStats()
+        public void SetStatsToTable()
         {
             HealthMax.SetBaseAndCurrent(GetMaxHealth(_stats, HeroLvl, MergeTier));
             HealthCurrent.SetBaseAndCurrent(HealthMax.Val);
             
-            ManaMax.SetBaseAndCurrent(GetMana(_stats, HeroLvl, MergeTier));
-            ManaCurrent.SetBaseAndCurrent(ManaMax.Val);
-            
-            SpellPower.SetBaseAndCurrent(GetSpellPower(_stats, HeroLvl, MergeTier));
             Attack.SetBaseAndCurrent(GetAttack(_stats, HeroLvl, MergeTier));
             AttackSpeed.SetBaseAndCurrent(GetAttackSpeed(_stats, HeroLvl, MergeTier));
             MoveSpeed.SetBaseAndCurrent(_stats.moveSpeed[0] * HeroesConfig.SpeedStatFactor);
@@ -191,10 +107,55 @@ namespace RobotCastle.Battling
         public void AddMana(float added)
         {
             ManaCurrent.Val += added;
+            CheckManaFull();
+        }
+
+        public void CheckManaFull()
+        {
             if (ManaCurrent.Val >= ManaMax.Val)
-            {
                 _fullManaListener.OnFullMana(gameObject);
+        }
+
+        public void ClearDecorators()
+        {
+            Log($"Clear All Decorators");
+            SpellPowerDecorators.Clear();
+            HealthMax.ClearDecorators();
+            HealthCurrent.ClearDecorators();
+            MoveSpeed.ClearDecorators();
+            Attack.ClearDecorators();
+            AttackSpeed.ClearDecorators();
+            ManaMax.ClearDecorators();
+            ManaCurrent.ClearDecorators();
+            PhysicalResist.ClearDecorators();
+            MagicalResist.ClearDecorators();
+        }
+
+        [ContextMenu("LogAllDecorators")]
+        public void LogAllDecorators()
+        {
+            var msg = "";
+            Add("Attack", Attack.Decorators);
+            Add("SpellPower", SpellPowerDecorators);
+            Add("Attack Speed", AttackSpeed.Decorators);            
+            Add("Move Speed", MoveSpeed.Decorators);            
+            Add("Health", HealthCurrent.Decorators);            
+            Add("Health_max", HealthMax.Decorators);
+            Add("Phys DEF", PhysicalResist.Decorators);
+            Add("Magic DEF", MagicalResist.Decorators);
+            
+            Log(msg);
+            void Add(string statName, List<IStatDecorator> decorators)
+            {
+                msg += $"{statName} has {decorators.Count}: ";
+                foreach (var dec in decorators)
+                    msg += $"{dec.name} ";
+                msg += "\n";
             }
         }
+        
+
+        private void Log(string msg) => CLog.LogWhite($"[Stats] [{gameObject.name}] {msg}");
+        
     }
 }

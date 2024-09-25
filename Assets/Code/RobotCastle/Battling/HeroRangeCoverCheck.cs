@@ -5,11 +5,11 @@ namespace RobotCastle.Battling
 {
     public class HeroRangeCoverCheck
     {
-        private HeroController _hero;
+        private IHeroController _hero;
         private Vector2Int _center;
         private List<Vector2Int> _coveredCells;
 
-        public HeroRangeCoverCheck(HeroController hero)
+        public HeroRangeCoverCheck(IHeroController hero)
         {
             _hero = hero;
             _coveredCells = new(20);
@@ -51,7 +51,7 @@ namespace RobotCastle.Battling
         public void RecalculateCovered()
         {
             var map = _hero.View.agent.Map;
-            var myPos = map.GetCellPositionFromWorld(_hero.transform.position);
+            var myPos = map.GetCellPositionFromWorld(_hero.View.transform.position);
             var cellsMask = _hero.View.Stats.Range.GetCellsMask();
             _coveredCells.Clear();
             foreach (var val in cellsMask)

@@ -12,6 +12,7 @@ namespace RobotCastle.Core
         [SerializeField] private LevelsDataBase _levelsDb;
         [SerializeField] private ViewDataBaseContainer _viewDb;
         [SerializeField] private HeroesDatabaseContainer _heroesDb;
+        [SerializeField] private ModifiersDataBase _modifiersDataBase;
         
         public void Load()
         {
@@ -20,7 +21,8 @@ namespace RobotCastle.Core
             ServiceLocator.Bind<MergeGridViewDataBase>(_mergeGridView);
             ServiceLocator.Bind<HeroesDatabaseContainer>(_heroesDb);
             ServiceLocator.Bind<ViewDataBaseContainer>(_viewDb);
-            
+            ServiceLocator.Bind<ModifiersDataBase>(_modifiersDataBase);
+            _modifiersDataBase.Init();
             _viewDb.Load();
             _heroesDb.Load();
             ServiceLocator.Bind<ViewDataBase>(_viewDb.viewDb);

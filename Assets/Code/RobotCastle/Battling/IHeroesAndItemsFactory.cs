@@ -9,7 +9,7 @@ namespace RobotCastle.Battling
             IGridSectionsController sectionsController,
             out IItemView spawnedItem);
 
-        void SpawnHeroOrItem(SpawnMergeItemArgs args, 
+        void SpawnOnCell(SpawnMergeItemArgs args, 
             ICellView cellView, 
             out IItemView spawnedItem);
     }

@@ -37,17 +37,18 @@ namespace RobotCastle.Merging
 
         public void Process()
         {
-            var itemContainerInto = _unitView.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
+            var itemContainerInto = _unitView.Transform.gameObject.GetComponent<IHeroItemsContainer>();
             if (itemContainerInto == null)
             {
                 CLog.LogRed($"NO <IUnitsItemsContainer> on {_unitView.Transform.gameObject.name}");
                 return;
             }
             var currentItems = itemContainerInto.Items;
-            var newItem = _itemView.itemData.core;
+            // var newItem = _itemView.itemData.core;
+            var newItem = new HeroItemData(_itemView.Transform.gameObject);
             var didMerge = false;
             var replaceIndex = 0;
-            var replaceItem = (CoreItemData)null;
+            var mergedItem = (HeroItemData)null;
             for (var i = 0; i < currentItems.Count; i++)
             {
                 var item = currentItems[i];
@@ -55,16 +56,18 @@ namespace RobotCastle.Merging
                     item.level == newItem.level &&
                     item.level < MergeConstants.MaxItemLevel)
                 {
-                    replaceItem = new CoreItemData(){
+                    var core = new CoreItemData(){
                         id = newItem.id,
                         level = newItem.level + 1,
                         type = newItem.type };
-                    currentItems[i] = replaceItem;
+                    mergedItem = new HeroItemData(core, newItem.modifierIds);
+                    mergedItem.modifierIds.AddRange(item.modifierIds);
+                    
+                    currentItems[i] = mergedItem;
                     replaceIndex = i;
                     MergeFunctions.ClearCellAndHideItem(_gridView, _itemView);
                     didMerge = true;
                     break;
-                
                 }
             }
 
@@ -73,13 +76,9 @@ namespace RobotCastle.Merging
                 var count = currentItems.Count;
                 var mergedItems = MergeFunctions.TryMergeAll(currentItems, MergeConstants.MaxItemLevel);
                 if (mergedItems.Count == count) // nothing changed
-                {
-                    itemContainerInto.ReplaceWithMergedItem(replaceIndex, replaceItem);
-                }
+                    itemContainerInto.ReplaceWithMergedItem(replaceIndex, mergedItem);
                 else // merged with other items
-                {
                     itemContainerInto.UpdateItems(mergedItems);
-                }
                 ProcessItemsPositions();
                 Complete();
                 return;
@@ -92,7 +91,7 @@ namespace RobotCastle.Merging
                 Complete();
                 return;
             }
-            var allItems = new List<CoreItemData>(MergeConstants.MaxItemsCount * 2);
+            var allItems = new List<HeroItemData>(MergeConstants.MaxItemsCount * 2);
             allItems.AddRange(currentItems);
             allItems.Add(newItem);
             _offer = new ChooseItemsOffer(MergeConstants.MaxItemsCount, this);
@@ -115,23 +114,21 @@ namespace RobotCastle.Merging
             }
         }
         
-        public void ConfirmChosenItems(List<CoreItemData> chosen, List<CoreItemData> left)
+        public void ConfirmChosenItems(List<HeroItemData> allItems, List<int> chosen, List<int> left)
         {
-            // foreach (var it in chosen)
-            //         CLog.LogGreen($"Chosen: {it.ItemDataStr()}");
-            // foreach (var it in left)
-            //     CLog.LogBlue($"Left: {it.ItemDataStr()}");
-                
+            var chosenItems = new List<HeroItemData>(allItems.Count);
+            foreach (var ind in chosen)
+                chosenItems.Add(allItems[ind]);
             if (_oneIntoTwo) // dragged into standing. Unit is standing
             {
-                var container = _unitView.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
-                container.SetItems(chosen);
+                var container = _unitView.Transform.gameObject.GetComponent<IHeroItemsContainer>();
+                container.SetItems(chosenItems);
                 MergeFunctions.ClearCellAndHideItem(_gridView, _itemView);
             }
             else // standing into dragged. Unit is dragged
             {
-                var container = _unitView.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
-                container.SetItems(chosen);
+                var container = _unitView.Transform.gameObject.GetComponent<IHeroItemsContainer>();
+                container.SetItems(chosenItems);
                 MergeFunctions.ClearCell(_gridView, _unitView);
                 var targetCell = _gridView.GetCell(_itemView.itemData.pivotX, _itemView.itemData.pivotY);
                 MergeFunctions.ClearCellAndHideItem(_gridView, _itemView);
@@ -139,16 +136,17 @@ namespace RobotCastle.Merging
             }
             var spawner = ServiceLocator.Get<IMergeItemsFactory>();
             var cellPicker = ServiceLocator.Get<IGridSectionsController>();
-            foreach (var coreData in left)
+            foreach (var ind in left)
             {
-                var hasCell = cellPicker.GetFreeCell(_gridView.BuiltGrid, out var coords);
+                var itemData = new ItemData(allItems[ind].core);
+                var hasCell = cellPicker.GetFreeAllowedCell(_gridView.BuiltGrid, itemData, out var coords);
                 if (!hasCell)
                 {
-                    CLog.LogRed($"[{nameof(ClassBasedMergeProcessor)}] No more free cells to put items");
+                    CLog.Log($"[{nameof(ClassBasedMergeProcessor)}] No more free cells to put items");
                     break;
                 }
                 var cell = _gridView.GetCell(coords.x, coords.y);
-                spawner.SpawnItemOnCell(cell, new ItemData(coreData));
+                spawner.SpawnItemOnCell(cell, itemData); // possible MODIFY THIS !!
             }
             Complete();
         }

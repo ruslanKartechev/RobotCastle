@@ -5,14 +5,9 @@ namespace RobotCastle.Battling
 {
     public class ModifiersContainer : MonoBehaviour
     {
-        [SerializeField] private List<ModifierProvider> _modifiers;
+        [SerializeField] private List<string> _modifierIds;
 
-        public List<ModifierProvider> Modifiers => _modifiers;
-
-        public void ApplyToSelfGamObject()
-        {
-            
-        }
+        public List<string> ModifierIds => _modifierIds;
 
     }
 }

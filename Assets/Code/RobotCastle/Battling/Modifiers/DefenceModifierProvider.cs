@@ -14,6 +14,11 @@ namespace RobotCastle.Battling
         public override void AddTo(GameObject target)
         { }
 
+        public override void AddToHero(HeroView view)
+        {
+            
+        }
+
         public override string GetDescription(GameObject target)
         {
             var db = ServiceLocator.Get<DescriptionsDataBase>();

@@ -38,8 +38,8 @@ namespace RobotCastle.Testing
                 {
                     if (_initedUnits.Contains(uc) == false)
                     {
-                        uc.InitHero("aramis", 1, 1);
-                        uc.PrepareForBattle();
+                        uc.InitHero("aramis", 1, 1, new List<ModifierProvider>());
+                        BattleManager.PrepareForBattle(uc);
                         _initedUnits.Add(uc);
                     }
                     uc.UpdateMap();
@@ -61,8 +61,8 @@ namespace RobotCastle.Testing
             var uc = unit.gameObject.GetComponent<HeroController>();
             if (_initedUnits.Contains(uc) == false)
             {
-                uc.InitHero("aramis", 0, 0);
-                uc.PrepareForBattle();
+                uc.InitHero("aramis", 0, 0, new List<ModifierProvider>());
+                BattleManager.PrepareForBattle(uc);
                 _initedUnits.Add(uc);
             }
             

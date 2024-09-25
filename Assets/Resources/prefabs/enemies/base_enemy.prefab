@@ -248,9 +248,6 @@ PrefabInstance:
       addedObject: {fileID: 8901051233423639369}
     - targetCorrespondingSourceObject: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7063580940634940707}
-    - targetCorrespondingSourceObject: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2638813951738618399}
     - targetCorrespondingSourceObject: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
       insertIndex: -1
@@ -267,15 +264,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 399253288194402373}
-    - targetCorrespondingSourceObject: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4087661003497689646}
-    - targetCorrespondingSourceObject: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6839302196308792862}
-    - targetCorrespondingSourceObject: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8841010046892006724}
   m_SourcePrefab: {fileID: 100100000, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
 --- !u!1 &2378445773442730016 stripped
 GameObject:
@@ -294,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67dc47aaa984549911dfb3aa810befc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spellsContainer: {fileID: 7063580940634940707}
+  _heroItemsContainer: {fileID: 3218766728784948633}
   _heroUI: {fileID: 6502812427258204125}
   _collider: {fileID: 4240275110036406292}
   _rb: {fileID: 6170466105492436850}
@@ -304,19 +292,6 @@ MonoBehaviour:
   _heroAnimationEvent: {fileID: 0}
   _projectileSpawnPoint: {fileID: 0}
   _shootParticles: {fileID: 0}
---- !u!114 &7063580940634940707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2378445773442730016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3fefc6a4e8846729048be21bdb5774b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _modifiers: []
 --- !u!114 &2638813951738618399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,7 +305,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 8901051233423639369}
-  _spellsContainer: {fileID: 7063580940634940707}
 --- !u!114 &603998819876389739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,45 +391,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b097b747995f4443834df52b92dfaecc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _heroView: {fileID: 8901051233423639369}
---- !u!114 &4087661003497689646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2378445773442730016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 211ccf5cb28043b2b80791c6408db97b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _heroView: {fileID: 8901051233423639369}
---- !u!114 &6839302196308792862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2378445773442730016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f137e96b9104424b19c48d259d23850, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _heroView: {fileID: 8901051233423639369}
---- !u!114 &8841010046892006724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2378445773442730016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2142270a0ac74a9c934d62907d92a888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _heroView: {fileID: 8901051233423639369}

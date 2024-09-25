@@ -1,6 +1,6 @@
 ﻿namespace RobotCastle.Battling
 {
-    public interface IHeroMergeResetProcessor
+    public interface IHeroAfterBattleResetProcessor
     {
         void ResetForMerge();
     }

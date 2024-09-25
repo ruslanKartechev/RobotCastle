@@ -41,14 +41,15 @@ namespace RobotCastle.UI
         public void AssignStatsTracking(HeroView view)
         {
             view.heroUI.HealthUI.AssignStats(view.Stats.HealthCurrent, view.Stats.HealthMax);
-            view.heroUI.ManaUI.AssignStats(view.Stats.ManaCurrent, view.Stats.ManaMax);
+            if(view.Stats.ManaMax.Val > 0)
+                view.heroUI.ManaUI.AssignStats(view.Stats.ManaCurrent, view.Stats.ManaMax);
         }
 
         public void UpdateStatsView(HeroView view)
         {
-            view.Stats.ManaCurrent.SetBaseAndCurrent(0);
             view.heroUI.HealthUI.DisplayStats(view.Stats.HealthCurrent, view.Stats.HealthMax);
-            view.heroUI.ManaUI.DisplayStats(view.Stats.ManaCurrent, view.Stats.ManaMax);
+            if(view.Stats.ManaMax.Val > 0)
+                view.heroUI.ManaUI.DisplayStats(view.Stats.ManaCurrent, view.Stats.ManaMax);
         }
         
     }

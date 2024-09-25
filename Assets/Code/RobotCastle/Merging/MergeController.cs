@@ -67,7 +67,6 @@ namespace RobotCastle.Merging
             item.OnPicked();
             _draggedItem.SetUnderCell(cell);
             OnItemPicked?.Invoke(item.itemData);
-            // CLog.Log($"Raycast: {cell.cell.x}, {cell.cell.y}. Picked {item.Data.GetStr()}");
         }
 
         public void OnUp(Vector3 _)
@@ -76,13 +75,9 @@ namespace RobotCastle.Merging
             if (_draggedItem == null)
                 return;
             if (_isProcessingPut)
-            {
-                CLog.LogRed("_isProcessingPut !!!!!!!!!!!");
                 return;
-            }
             _isProcessingPut = true;
             var putResult = MergePutResult.MissedCell;
-            // var (didHitCell, cellView) = TryHitCellToPut(screenPosition);
             var cellView = _draggedItem.underCell;
             if (cellView == null)
                 cellView = GetClosestCellTo(_draggedItem.itemView.Transform.position);
@@ -96,7 +91,7 @@ namespace RobotCastle.Merging
                 }
                 else if (!cellView.cell.isOccupied) // cell is free
                 {
-                    if (!_sectionsController.IsCellAllowed(cellView.cell.x, cellView.cell.y, _draggedItem.itemView.itemData))
+                    if (!_sectionsController.IsCellAllowed(new Vector2Int(cellView.cell.x, cellView.cell.y), _draggedItem.itemView.itemData))
                     {
                         putResult = MergePutResult.CellNotAllowed;
                         _draggedItem.PutBack();

@@ -4,8 +4,11 @@ namespace RobotCastle.Battling
 {
     public interface IModifiersContainer
     {
-        List<ModifierProvider> modifiers { get; }
         ModifierProvider defaultSpell { get; }
-        ModifierProvider currentSpell { get; }
+        ModifierProvider GetCurrentSpell();
+        void AddModifierProvider(ModifierProvider modifierProvider);
+        void AddModifierProviders(List<ModifierProvider> modifierProviders);
+        void ClearModifiers();
+        void ApplyAllModifiers(HeroView view);
     }
 }

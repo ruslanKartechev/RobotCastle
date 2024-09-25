@@ -23,8 +23,8 @@ namespace RobotCastle.Core
 
         public void Init()
         {
-            _idIndexMap.Clear();
             CLog.Log($"[HeroSaves] Init with {heroSaves.Count} hero saves");
+            _idIndexMap.Clear();
             for (var i = 0; i < heroSaves.Count; i++)
             {
                 var save = heroSaves[i];

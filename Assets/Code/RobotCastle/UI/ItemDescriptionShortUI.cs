@@ -2,8 +2,6 @@
 using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Data;
-using RobotCastle.Merging;
-using SleepDev;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,20 +28,18 @@ namespace RobotCastle.UI
         {
             var src = source.GetComponent<IHeroItemDescriptionProvider>();
             ShowCore(src.GetInfo(), src.GetItemIcon());
-            var modifiers = source.gameObject.GetComponent<ModifiersContainer>().Modifiers;
+            var modifiers = source.gameObject.GetComponent<ModifiersContainer>().ModifierIds;
             if(_dontShowSpell)
                 _additionalBonusBlock.SetActive(false);
-            else
-            {
-                if (src.CoreData.level < 2)
-                    _additionalBonusBlock.SetActive(false);
-                else
-                    _additionalBonusBlock.SetActive(true);                
-            }
             ShowStats(modifiers, source);
-            
             _rectToScreenFitter.SetScreenPos(Camera.main.WorldToScreenPoint(src.WorldPosition));
             _animator.FadeIn();
+        }
+
+        public void ShowItemOnHero(HeroItemData heroItemData)
+        {
+            ShowCore(heroItemData.core);
+            ShowStats(heroItemData.modifierIds);
         }
 
         public void ShowCore(DescriptionInfo info, Sprite icon)
@@ -61,20 +57,22 @@ namespace RobotCastle.UI
             _heroIcon.sprite = DataHelpers.GetItemIcon(itemData);
         }
 
-        public void ShowStats(List<ModifierProvider> modifiers, GameObject source = null)
+        public void ShowStats(List<string> modifierIds, GameObject source = null)
         {
             var didFindStat = false;
             var didFindBonus = false;
             var viewDb = ServiceLocator.Get<ViewDataBase>();
-            foreach (var mod in modifiers)
+            var modDb = ServiceLocator.Get<ModifiersDataBase>();
+            foreach (var modId in modifierIds)
             {
+                var mod = modDb.GetModifier(modId);
                 if (mod is StatsModifierProvider statMod)
                 {
                     if (didFindStat)
                         continue;
                     didFindStat = true;
                     _statsIcon.sprite = viewDb.GetStatIcon(statMod.StatType);
-                    _statsText.text = statMod.GetDescription(source);
+                    _statsText.text = $"{Mathf.RoundToInt(statMod.AddedPercent * 100f)}";
                     if (_dontShowSpell)
                         break;
                 }
@@ -82,10 +80,13 @@ namespace RobotCastle.UI
                 {
                     didFindBonus = true;
                     _bonusText.text = mod.GetDescription(source);
+                    _additionalBonusBlock.SetActive(true);
                 }
                 if (didFindBonus && didFindStat)
                     break;
             }
+            if(!didFindBonus)
+                _additionalBonusBlock.SetActive(false);
         }
 
         public override void Hide()

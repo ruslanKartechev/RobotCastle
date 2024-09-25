@@ -30,8 +30,8 @@ namespace RobotCastle.Merging
 
         public void Process()
         {
-            var cont1 = _unitStanding.Transform.GetComponent<IUnitsItemsContainer>();
-            var cont2 = _unitMoving.Transform.GetComponent<IUnitsItemsContainer>();
+            var cont1 = _unitStanding.Transform.GetComponent<IHeroItemsContainer>();
+            var cont2 = _unitMoving.Transform.GetComponent<IHeroItemsContainer>();
             if (cont1.ItemsCount + cont2.ItemsCount == 0)
             {
                 SetPositions();
@@ -39,7 +39,7 @@ namespace RobotCastle.Merging
                 return;
             }
             
-            var allItems = new List<CoreItemData>(6);
+            var allItems = new List<HeroItemData>(6);
             allItems.AddRange(cont1.Items);
             allItems.AddRange(cont2.Items);
             var it = 0;
@@ -47,6 +47,11 @@ namespace RobotCastle.Merging
             while (it < itMax && TryAdd())
             {
                 it++;
+            }
+
+            if (it >= itMax)
+            {
+                CLog.LogError($"It >= itMax ({itMax}). ERROR adding items!");
             }
  
             allItems.RemoveNulls();
@@ -71,15 +76,15 @@ namespace RobotCastle.Merging
                         continue;
                     if (allItems[indOne].level >= MaxItemLevel)
                         continue;
-                    var itemOne = allItems[indOne];
+                    var item1 = allItems[indOne];
                     for (var indTwo = indOne - 1; indTwo >= 0; indTwo--)
                     {
                         if (allItems[indTwo] == null)
                             continue;
-                        var itemTwo = allItems[indTwo];
-                        if (itemOne == itemTwo)
+                        var item2 = allItems[indTwo];
+                        if (item1 == item2)
                         {
-                            itemOne.level++;
+                            item1.core.level++;
                             // CLog.Log($"Merge: {itemOne.ItemDataStr()} INTO {itemTwo.ItemDataStr()}");
                             allItems[indTwo] = null;
                             return true;
@@ -90,18 +95,22 @@ namespace RobotCastle.Merging
             }
         }
         
-        public void ConfirmChosenItems(List<CoreItemData> chosen, List<CoreItemData> left)
+        public void ConfirmChosenItems(List<HeroItemData> allItems, List<int> chosenIndices, List<int> leftIndices)
         {
-            _unitStanding.Transform.GetComponent<IUnitsItemsContainer>().UpdateItems(chosen);
+            var chosen = new List<HeroItemData>(chosenIndices.Count);
+            foreach (var ind in chosenIndices)
+                allItems.Add(allItems[ind]);   
+            _unitStanding.Transform.GetComponent<IHeroItemsContainer>().UpdateItems(chosen);
             var spawner = ServiceLocator.Get<IMergeItemsFactory>();
             var cellPicker = ServiceLocator.Get<IGridSectionsController>();
-            foreach (var coreData in left)
+            foreach (var ind in leftIndices)
             {
-                var hasCell = cellPicker.GetFreeCell(_gridView.BuiltGrid, out var coords);
+                var itemData = new ItemData(allItems[ind].core);
+                var hasCell = cellPicker.GetFreeAllowedCell(_gridView.BuiltGrid, itemData, out var coords);
                 if (!hasCell)
                     break;
                 var cell = _gridView.GetCell(coords.x, coords.y);
-                spawner.SpawnItemOnCell(cell, new ItemData(coreData));
+                spawner.SpawnItemOnCell(cell, itemData);
             }
             SetPositions();
             Complete();

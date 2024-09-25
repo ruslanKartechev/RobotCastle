@@ -14,7 +14,7 @@ namespace RobotCastle.Battling
             Waiting, Moving, Rotating, Attacking
         }
         
-        private HeroController _hero;
+        private IHeroController _hero;
 
         private CancellationTokenSource _mainToken;
         private CancellationTokenSource _subToken;
@@ -25,19 +25,14 @@ namespace RobotCastle.Battling
         
         private IHeroController enemy
         {
-            get => _hero.View.AttackInfo.CurrentEnemy;
-            set => _hero.View.AttackInfo.CurrentEnemy = value;
+            get => _hero.View.AttackData.CurrentEnemy;
+            set => _hero.View.AttackData.CurrentEnemy = value;
         }
         
         public string BehaviourID => "hero_attack";
         
-        public void Activate(GameObject target, Action<IHeroBehaviour> endCallback)
-        {
-            var hero = target.GetComponent<HeroController>();
-            Activate(hero, endCallback);
-        }
 
-        public void Activate(HeroController hero, Action<IHeroBehaviour> endCallback)
+        public void Activate(IHeroController hero, Action<IHeroBehaviour> endCallback)
         {
             if (_isActivated)
             {
@@ -51,10 +46,8 @@ namespace RobotCastle.Battling
                 _rangeCoverCheck = new HeroRangeCoverCheck(_hero);
             _hero.Battle.AttackPositionCalculator.AddUnit(_hero.View.movement);
             _hero.View.AttackManager.OnAttackStep += OnAttackCallback;
-            
-            if(_mainToken != null)
-                _mainToken.Cancel();
             _mainToken = new CancellationTokenSource();
+            _hero.View.Stats.CheckManaFull();
             SearchAndAttack(_mainToken.Token);
         }
 
@@ -79,19 +72,19 @@ namespace RobotCastle.Battling
         // while going  - check position
         private async void SearchAndAttack(CancellationToken token)
         {
-            _hero.View.AttackInfo.IsMovingForDuel = false;
-            _rangeCoverCheck.Update(_hero.transform.position, true);
+            _hero.View.AttackData.IsMovingForDuel = false;
+            _rangeCoverCheck.Update(_hero.View.transform.position, true);
             enemy = BattleManager.GetBestTargetForAttack(_hero);
             while (enemy == null && !token.IsCancellationRequested)
             {
-                const float delay = 1f;
-                CLog.Log($"[{_hero.gameObject.name}] Closest enemy is null. Waiting {delay} sec.");
-                await Task.Delay((int)(delay * 1000f), token);
+                const float waitTimeSec = 1f;
+                CLog.Log($"[{_hero.View.gameObject.name}] Closest enemy is null. Waiting {waitTimeSec} sec.");
+                await Task.Delay((int)(waitTimeSec * 1000f), token);
                 enemy = BattleManager.GetBestTargetForAttack(_hero);
             }
             if (token.IsCancellationRequested)
                 return;
-            _rangeCoverCheck.Update(_hero.transform.position, false);
+            _rangeCoverCheck.Update(_hero.View.transform.position, false);
             await Task.Yield();
             if (token.IsCancellationRequested)
                 return;
@@ -105,7 +98,7 @@ namespace RobotCastle.Battling
             {
                 // CLog.LogRed($"[{_hero.gameObject.name}] New enemy Set!");
                 enemy = bestTarget;
-                _hero.View.AttackInfo.IsMovingForDuel = false;
+                _hero.View.AttackData.IsMovingForDuel = false;
             }
             if (enemy.IsDead)
             {
@@ -151,9 +144,9 @@ namespace RobotCastle.Battling
                         return;
                     }
                     
-                    if (distance <= HeroesConfig.DuelMaxDistance && enemy.View.AttackInfo.CurrentEnemy == _hero)
+                    if (distance <= HeroesConfig.DuelMaxDistance && enemy.View.AttackData.CurrentEnemy == _hero)
                     {
-                        if (enemy.View.AttackInfo.IsMovingForDuel)
+                        if (enemy.View.AttackData.IsMovingForDuel)
                         {
                             for(var i = 0; i < 3; i++)
                                 await Task.Yield();
@@ -163,7 +156,7 @@ namespace RobotCastle.Battling
                             return;
                         }
                         else
-                            _hero.View.AttackInfo.IsMovingForDuel = true;
+                            _hero.View.AttackData.IsMovingForDuel = true;
                     }
                     _state = AttackBehaviourState.Moving;
                     _hero.View.movement.TargetCell = enemyCell;
@@ -205,19 +198,19 @@ namespace RobotCastle.Battling
 
         private async void WaitingForMovement(Vector2Int targetCell, CancellationToken token)
         {
-            const int waitTime = (int)(1000 * .5f);
+            const int waitTimeMs = (int)(1000 * .25f);
             var result = await _hero.View.movement.MoveToCell(targetCell, token);
             switch (result)
             {
                 case EPathMovementResult.IsBlockedOnTheWay:
                     // CLog.LogRed($"[{_hero.gameObject.name}] IsBlockedOnTheWay moving to {targetCell.ToString()}");
-                    await Task.Delay(waitTime, token);
+                    await Task.Delay(waitTimeMs, token);
                     DecideNextStep(_mainToken.Token);
                     break;
                 case EPathMovementResult.FailedToBuild:
-                    CLog.LogRed($"[{_hero.gameObject.name}] FailedToBuild moving to {targetCell.ToString()}");
+                    CLog.LogRed($"[{_hero.View.gameObject.name}] FailedToBuild moving to {targetCell.ToString()}");
                     _hero.View.movement.OnMovementStopped();
-                    await Task.Delay(waitTime, token);
+                    await Task.Delay(waitTimeMs, token);
                     DecideNextStep(_mainToken.Token);
                     break;
             }
@@ -228,7 +221,7 @@ namespace RobotCastle.Battling
         /// <returns>0 - can attack. 1 - need to move, 2 - need to rotate </returns>
         private int CheckIfShallMove(IHeroController otherHero)
         {
-            _rangeCoverCheck.Update(_hero.transform.position, true);
+            _rangeCoverCheck.Update(_hero.View.transform.position, true);
             var isWithin = _rangeCoverCheck.IsHeroWithinRange(otherHero);
             if (!isWithin)
                 return 1;

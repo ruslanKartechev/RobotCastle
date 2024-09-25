@@ -44,8 +44,9 @@ namespace RobotCastle.Battling
             {
                 var cellView = GridView.GetCell(enemyPreset.gridPos.x, enemyPreset.gridPos.y);
                 var itemView = factory.SpawnItemOnCell(cellView, new ItemData(enemyPreset.enemy));
-                var hero = itemView.Transform.GetComponent<HeroController>();
-                hero.InitHero(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level);
+                var hero = itemView.Transform.GetComponent<IHeroController>();
+                var modifiers = HeroesHelper.GetModifiers(enemyPreset.modifiers);
+                hero.InitHero(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
                 hero.View.heroUI.UpdateStatsView(hero.View);
                 _spawnedEnemies.Add(hero);
             }
@@ -73,7 +74,7 @@ namespace RobotCastle.Battling
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
             var itemView = factory.SpawnItemOnCell(cellView, new ItemData(args.coreData));
             var hero = itemView.Transform.GetComponent<HeroController>();
-            hero.InitHero(args.coreData.id, heroLvl, args.coreData.level);
+            hero.InitHero(args.coreData.id, heroLvl, args.coreData.level, new List<ModifierProvider>());
             hero.View.heroUI.UpdateStatsView(hero.View);
             _spawnedEnemies.Add(hero);
         }

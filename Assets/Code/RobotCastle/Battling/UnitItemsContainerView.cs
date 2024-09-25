@@ -13,7 +13,7 @@ namespace RobotCastle.Battling
         [SerializeField] private GameObject _viewBlock;
         [SerializeField] private List<Image> _icons;
 
-        public void ShowItems(List<CoreItemData> items)
+        public void ShowItems(List<HeroItemData> items)
         {
             On();
             var db = ServiceLocator.Get<ViewDataBase>();
@@ -21,33 +21,33 @@ namespace RobotCastle.Battling
             for (var ind = 0; ind < itemsCount; ind++)
             {
                 _icons[ind].gameObject.SetActive(true);
-                _icons[ind].sprite = db.GetUnitItemSpriteAtLevel(items[ind].id, items[ind].level);
+                _icons[ind].sprite = db.GetUnitItemSpriteAtLevel(items[ind].core.id, items[ind].core.level);
             }
             for (var i = itemsCount; i < _icons.Count; i++)
                 _icons[i].gameObject.SetActive(false);
         }
 
-        public void UpdateMergedItem(List<CoreItemData> items, int index)
+        public void UpdateMergedItem(List<HeroItemData> items, int index)
         {
             On();
             var db = ServiceLocator.Get<ViewDataBase>();
-            _icons[index].sprite = db.GetUnitItemSpriteAtLevel(items[index].id, items[index].level);
+            _icons[index].sprite = db.GetUnitItemSpriteAtLevel(items[index].core.id, items[index].core.level);
             
             ShowOnlyUsedGameobjects(items);
         }
 
-        public void ShowLastAddedItem(List<CoreItemData> items)
+        public void ShowLastAddedItem(List<HeroItemData> items)
         {
             On();
             var db = ServiceLocator.Get<ViewDataBase>();
             var lastInd = items.Count - 1;
-            _icons[lastInd].sprite = db.GetUnitItemSpriteAtLevel(items[lastInd].id, items[lastInd].level);
+            _icons[lastInd].sprite = db.GetUnitItemSpriteAtLevel(items[lastInd].core.id, items[lastInd].core.level);
 
             ShowOnlyUsedGameobjects(items);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void ShowOnlyUsedGameobjects(List<CoreItemData> items)
+        private void ShowOnlyUsedGameobjects(List<HeroItemData> items)
         {
             var itemsCount = items.Count;
             for (var ind = 0; ind < itemsCount; ind++)

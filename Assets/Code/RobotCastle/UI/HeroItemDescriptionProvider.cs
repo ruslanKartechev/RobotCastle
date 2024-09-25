@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RobotCastle.UI
 {
-    public class UnitItemDescriptionProvider : MonoBehaviour, IHeroItemDescriptionProvider
+    public class HeroItemDescriptionProvider : MonoBehaviour, IHeroItemDescriptionProvider
     {
         private IItemView _mergeView;
 
@@ -23,10 +23,9 @@ namespace RobotCastle.UI
 
         public string GetIdForUI()
         {
-            if (_mergeView.itemData.core.level < 3)
-                return UIConstants.DescriptionItemShort;
-            else
+            if (_mergeView.itemData.core.level >= 3)
                 return UIConstants.DescriptionItemLong;
+            return UIConstants.DescriptionItemShort;
         }
         
         public GameObject GetGameObject() => gameObject;

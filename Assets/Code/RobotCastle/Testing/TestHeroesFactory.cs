@@ -78,7 +78,7 @@ namespace RobotCastle.Testing
                 var map = ServiceLocator.Get<Bomber.IMap>();
                 if (instance.TryGetComponent<HeroController>(out var hero))
                 {
-                    hero.InitHero(id, pack.heroLevel,pack.mergeLevel);          
+                    hero.InitHero(id, pack.heroLevel,pack.mergeLevel, new List<ModifierProvider>());          
                     hero.View.agent.UpdateMap(map);
                     allSpawned.Add(hero);
                 }

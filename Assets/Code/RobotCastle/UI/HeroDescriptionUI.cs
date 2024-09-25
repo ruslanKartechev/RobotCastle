@@ -32,31 +32,28 @@ namespace RobotCastle.UI
         public override void Show(GameObject source)
         {
             _src = source;
-            
             var provider = source.GetComponent<HeroDescriptionProvider>();
-            
             var stats = provider.HeroView.Stats;
             var info = ServiceLocator.Get<HeroesDatabase>().GetHeroViewInfo(stats.HeroId);
-            SpellProvider spell = null;
             var spells = source.GetComponent<IModifiersContainer>();
-            if ((SpellProvider)spells.currentSpell != null)
-                spell = (SpellProvider)spells.currentSpell;
-            else
-                spell = (SpellProvider)spells.defaultSpell;
+            var spell = (SpellProvider)spells.GetCurrentSpell();
+            if (spell == null)
+            {
+                CLog.LogError($"[{source}] does not have a spell!");
+            }
             Show(stats, info, spell);
 
-            var items = source.GetComponent<IUnitsItemsContainer>();
+            var heroItems = source.GetComponent<IHeroItemsContainer>();
             var hasItems = false;
-            if (items != null)
+            if (heroItems != null)
             {
-                var count = items.ItemsCount;
+                var count = heroItems.ItemsCount;
                 for(var i = count; i < _itemsUI.Count; i++)
                     _itemsUI[i].gameObject.SetActive(false);
                 for (var i = 0; i < count; i++)
                 {
                     _itemsUI[i].gameObject.SetActive(true);
-                    var itemData = items.Items[i];
-                    _itemsUI[i].ShowCore(itemData);
+                    _itemsUI[i].ShowItemOnHero(heroItems.Items[i]);
                     hasItems = true;
                 }
             }
@@ -87,11 +84,69 @@ namespace RobotCastle.UI
             _rangeHighlighter = highlighter;
         }
         
-        public void Show(HeroStatsContainer stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
+        
+        
+        public void Show(HeroStatsManager stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
         {
-            _attackText.text = (stats.Attack.Val).ToString(CultureInfo.InvariantCulture);
-            _spellPowerText.text = (stats.SpellPower.Val).ToString(CultureInfo.InvariantCulture);
-            _attackSpeedText.text = (stats.AttackSpeed.Val).ToString(CultureInfo.InvariantCulture);
+            const string Color = "#FFFF11";
+            var atkTxt = (stats.Attack.Val).ToString(CultureInfo.InvariantCulture);
+            var atkSpTxt = (stats.AttackSpeed.Val).ToString(CultureInfo.InvariantCulture);
+            string spTxt;
+            if (stats.SpellPowerGetter != null)
+                spTxt = (stats.SpellPowerGetter.BaseSpellPower).ToString(CultureInfo.InvariantCulture);
+            else
+                spTxt = "0";
+            
+            var items = stats.gameObject.GetComponent<HeroItemsContainer>();
+            if (items.Items.Count > 0)
+            {
+                var db = ServiceLocator.Get<ModifiersDataBase>();
+                var addedAtk = 0f;
+                var addedSp = 0f;
+                var addedAtkSpeed = 0f;
+                foreach (var itemData in items.Items)
+                {
+                    foreach (var id in itemData.modifierIds)
+                    {
+                        var dd = db.GetModifier(id);
+                        if (dd is StatsModifierProvider statMod)
+                        {
+                            switch (statMod.StatType)
+                            {
+                                case EStatType.Attack:
+                                    addedAtk += statMod.AddedPercent;
+                                    break;
+                                case EStatType.SpellPower:
+                                    addedSp += statMod.AddedPercent;
+                                    break;
+                                case EStatType.AttackSpeed:
+                                    addedAtkSpeed += statMod.AddedPercent;
+                                    break;
+                            }
+                        }
+                    }
+                }
+                if (addedAtk > 0)
+                {
+                    var addedVal = Mathf.RoundToInt(addedAtk * stats.Attack.Val);
+                    atkTxt += $"+<color={Color}>{addedVal}</color>";
+                    // atkTxt += $"+{addedVal}";
+                }
+                if (addedSp > 0 && stats.SpellPowerGetter != null)
+                {
+                    var addedVal = Mathf.RoundToInt(addedSp * stats.SpellPowerGetter.BaseSpellPower);
+                    spTxt += $"+<color={Color}>{addedVal}</color>";
+                }
+                if (addedAtkSpeed > 0)
+                {
+                    var addedVal = Mathf.RoundToInt(addedAtkSpeed * stats.AttackSpeed.Val);
+                    atkSpTxt += $"+<color={Color}>{addedVal}</color>";
+                }
+            }
+            
+            _attackText.text = atkTxt;
+            _spellPowerText.text = spTxt;
+            _attackSpeedText.text = atkSpTxt;
             _health.AssignStats(stats.HealthCurrent, stats.HealthMax);
             _mana.AssignStats(stats.ManaCurrent, stats.ManaMax);
             _lvlText.text = (stats.MergeTier + 1).ToString();
@@ -117,6 +172,6 @@ namespace RobotCastle.UI
             _rangeHighlighter?.Clear();
             _rangeHighlighter = null;
         }
-        
     }
+
 }

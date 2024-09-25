@@ -119,49 +119,7 @@
                 }
                 return EMergeResult.NoMerge;
             }
-
-            private bool TryAddItemsFromOneToAnother(IItemView itemTaken, IItemView itemInto)
-            {
-                var itemContainerInto = itemInto.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
-                var itemContainerTaken = itemTaken.Transform.gameObject.GetComponent<IUnitsItemsContainer>();
-                var newItemsList = MergeItemsList(itemContainerInto.Items, itemContainerTaken.Items);
-                var result = false;
-                if (newItemsList.Count > itemContainerInto.MaxCount)
-                {
-                    // OfferChooseItems(newItemsList);
-                }
-                else
-                    result = true;
-                itemContainerInto.SetItems(newItemsList);
-                return result;
-            }
-
-            public List<Vector2Int> GetCellsForPotentialMerge(MergeGrid grid, ItemData srcItem)
-            {
-                var db = ServiceLocator.Get<ViewDataBase>();
-                var maxLvl = db.GetMaxMergeLevel(srcItem.core.id);
-                if (srcItem.core.level >= maxLvl)
-                    return null;
-                var list = new List<Vector2Int>(3);
-                for (var y = 0; y < grid.rows.Count; y++)
-                {
-                    var row = grid.rows[y].cells;
-                    for (var x = 0; x < row.Count; x++)
-                    {
-                        var cell = row[x];
-                        if (!cell.isOccupied)
-                            continue;
-                        if (cell.currentItem == srcItem)
-                            continue;
-                        if (cell.currentItem.core == srcItem.core)
-                        {
-                            list.Add(new Vector2Int(cell.x, cell.y));   
-                        }
-                    }   
-                }
-                return list;
-            }
-
+            
             public List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem)
             {
                 var db = ServiceLocator.Get<ViewDataBase>();
@@ -221,8 +179,8 @@
                                 switch (data1.type)
                                 {
                                     case MergeConstants.TypeUnits:
-                                        var itemsCont1 = allItems[indOne].Transform.gameObject.GetComponent<IUnitsItemsContainer>();
-                                        var itemsCont2 = allItems[indTwo].Transform.gameObject.GetComponent<IUnitsItemsContainer>();
+                                        var itemsCont1 = allItems[indOne].Transform.gameObject.GetComponent<IHeroItemsContainer>();
+                                        var itemsCont2 = allItems[indTwo].Transform.gameObject.GetComponent<IHeroItemsContainer>();
                                         if (itemsCont1.ItemsCount + itemsCont2.ItemsCount > 0)
                                         {
                                             var merged = MergeItemsList(itemsCont1.Items, itemsCont2.Items);
@@ -302,13 +260,13 @@
                 return result;
             }
             
-            public List<CoreItemData> MergeItemsList(List<CoreItemData> items1, List<CoreItemData> items2)
+            public List<HeroItemData> MergeItemsList(List<HeroItemData> items1, List<HeroItemData> items2)
             {
                 var totalCount = items1.Count + items2.Count;
                 if (totalCount == 0)
-                    return new List<CoreItemData>();
+                    return new List<HeroItemData>();
 
-                var result = new List<CoreItemData>(totalCount);
+                var result = new List<HeroItemData>(totalCount);
                 result.AddRange(items1);
                 result.AddRange(items2);
                 var db = ServiceLocator.Get<ViewDataBase>();
@@ -322,16 +280,17 @@
                         var item2 = result[k];
                         if (item1 == item2)
                         {
-                            if (item1.level < db.GetMaxMergeLevel(item1.id))
+                            if (item1.core.level < db.GetMaxMergeLevel(item1.core.id))
                             {
-                                item1.level++;
+                                item1.core.level++;
+                                item1.modifierIds.AddRange(item2.modifierIds);
                                 result[k] = null;
                                 break;
                             }
                         }
                     }                
                 }
-                var cleanResult = new List<CoreItemData>(result.Count); // only contains non-null values
+                var cleanResult = new List<HeroItemData>(result.Count); // only contains non-null values
                 for (var i = result.Count - 1; i >= 0; i--)
                 {
                     if (result[i] != null)

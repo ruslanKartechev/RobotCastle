@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Battling;
+using RobotCastle.Core;
 using RobotCastle.Data;
+using SleepDev;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +30,7 @@ namespace RobotCastle.UI
                     ShowCore(info, icon);
                     break;
                 case EItemDescriptionMode.Modifier:
-                    var modifiers = source.gameObject.GetComponent<ModifiersContainer>().Modifiers;
+                    var modifiers = source.gameObject.GetComponent<ModifiersContainer>().ModifierIds;
                     ShowCoreAndModifiers(info, icon, modifiers, src.GetGameObject());
                     break;
             }
@@ -45,20 +47,34 @@ namespace RobotCastle.UI
             _heroIcon.sprite = icon;
         }
         
-        public void ShowCoreAndModifiers(DescriptionInfo info, Sprite icon, List<ModifierProvider> modifiers, GameObject target)
+        public void ShowCoreAndModifiers(DescriptionInfo info, Sprite icon, List<string> modifiers, GameObject target)
         {
             _lvlText.text = info.parts[1];
             _nameText.text = info.parts[0];
             _heroIcon.sprite = icon;
             _descriptionText.text = "";
-            foreach (var mod in modifiers)
+            var modDb = ServiceLocator.Get<ModifiersDataBase>();
+            // foreach (var mm in modifiers)
+            //     CLog.LogGreen($"Modifier !!!! {mm}");
+
+            var statsMod = (StatsModifierProvider)null;
+            var foundNonStat = false;
+            foreach (var modId in modifiers)
             {
-                if (mod is not StatsModifierProvider statMod)
+                var mod = modDb.GetModifier(modId);
+                if (mod is StatsModifierProvider ms) //
+                {
+                    statsMod = ms;
+                }                
+                if (mod is not StatsModifierProvider) // maybe add mode exceptions here ..
                 {
                     _descriptionText.text = mod.GetDescription(target);
+                    foundNonStat = true;
                     break;
                 }
             }
+            if(!foundNonStat && statsMod != null)
+                _descriptionText.text = statsMod.GetDescription(target);
         }
 
         public override void Hide()

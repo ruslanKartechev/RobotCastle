@@ -16,11 +16,9 @@ namespace RobotCastle.Battling
         [SerializeField] private List<string> _heroIdsForFiles;
         [SerializeField] private List<string> _enemiesIdsForFiles;
 
-        #if UNITY_EDITOR
-        [Space(12)]
-        [SerializeField, Tooltip("Editor only. Use to copy")] private HeroInfo _dbgHero;
-        [Space(8)]
-        [SerializeField, Tooltip("Editor only. Use to copy")] private HeroInfo _dbgEnemy;
+#if UNITY_EDITOR
+        [Space(5)] [SerializeField, Tooltip("Editor only. Use to copy")] private HeroInfo _dbgHero;
+        [Space(5)] [SerializeField, Tooltip("Editor only. Use to copy")] private HeroInfo _dbgEnemy;
 #endif
         private HeroesDatabase _dataBase;
 
@@ -51,7 +49,6 @@ namespace RobotCastle.Battling
                 var info = JsonConvert.DeserializeObject<HeroInfo>(text.text);
                 data.info.Add(id, info);
             }
-
             _dataBase = data;
         }
         
@@ -102,10 +99,6 @@ namespace RobotCastle.Battling
                     case EStatType.Health:
                         for (var i = 0; i < info.stats.health.Count; i++)
                             info.stats.health[i] *= mult;
-                        break;
-                    case EStatType.SpellPower:
-                        for (var i = 0; i < info.stats.spellPower.Count; i++)
-                            info.stats.spellPower[i] *= mult;
                         break;
                     case EStatType.AttackSpeed:
                         for (var i = 0; i < info.stats.attackSpeed.Count; i++)
@@ -225,7 +218,6 @@ namespace RobotCastle.Battling
            var stats = new HeroStats()
            {
                 health = new List<float>() { 150, 180, 210, 285, 315, 345, 375, 450, 480, 510, 540, 570, 600, 630, 660, 705, 750, 795, 840, 885 },
-                spellPower = new List<float>() { 70, 84, 98, 133, 147, 161, 175, 210, 224, 238, 252, 266, 280, 294, 308, 329, 350, 371, 392, 413 },
                 attack = new List<float>() { 45, 54, 63, 86, 95, 104, 113, 135, 144, 153, 162, 171, 180, 189, 198, 212, 225, 239, 252, 266 },
                 mana = new List<float>() {70, 80, 90, 100, 110, 120, 130},
                 attackSpeed = new List<float>() { 67f, 74f, 80f, 87f, 94f, 101f, 107f },

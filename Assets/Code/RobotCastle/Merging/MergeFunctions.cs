@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Battling;
 using RobotCastle.Data;
 using UnityEngine;
 
@@ -59,27 +60,29 @@ namespace RobotCastle.Merging
             grid.rows[item.pivotY].cells[item.pivotX].isOccupied = false;
         }
 
-        public static List<CoreItemData> TryMergeAll(List<CoreItemData> items, int maxLvl)
+        public static List<HeroItemData> TryMergeAll(List<HeroItemData> items, int maxLvl)
         {
-            var result = new List<CoreItemData>(items);
+            var result = new List<HeroItemData>(items);
             var can = true;
             while (can)
                 can = TryMergeInList(result, maxLvl);
             return result;
         }
 
-        public static bool TryMergeInList(List<CoreItemData> items, int maxLvl)
+        public static bool TryMergeInList(List<HeroItemData> items, int maxLvl)
         {
             for (var i = items.Count - 1; i >= 1; i--)
             {
-                var item = items[i];
-                if (item.level >= maxLvl)
+                var item1 = items[i];
+                if (item1.level >= maxLvl)
                     continue;
                 for (var k = i - 1; k >= 0; k--)
                 {
-                    if (item == items[k])
+                    var item2 = items[k];
+                    if (item1.core == item2.core)
                     {
-                        item.level++;
+                        item1.core.level++;
+                        item1.modifierIds.AddRange(item2.modifierIds);
                         items.RemoveAt(k);
                         return true;
                     }

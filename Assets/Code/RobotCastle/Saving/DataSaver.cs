@@ -38,9 +38,9 @@ namespace RobotCastle.Saving
             }
         }
 
-        public void LoadSave<T>(T defaultObject)
+        public T LoadSave<T>(T defaultObject)
         {
-            Load<T>(defaultObject);
+            return Load<T>(defaultObject);
         }
 
         protected T Load<T>(T defaultObject = default) 

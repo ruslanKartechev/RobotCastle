@@ -35,7 +35,7 @@ namespace RobotCastle.Merging
             }
             if (cellsForMerge.Count == 0)
             {
-                CLog.Log($"[{nameof(MergeGridHighlighter)}] No cells to highlight");
+                // CLog.Log($"[{nameof(MergeGridHighlighter)}] No cells to highlight");
                 return;
             }
             foreach (var cell in cellsForMerge)

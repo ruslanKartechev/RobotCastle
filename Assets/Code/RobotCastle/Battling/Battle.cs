@@ -41,7 +41,7 @@ namespace RobotCastle.Battling
             State = BattleState.NotStarted;
         }
 
-        public void OnKilled(HeroController hero)
+        public void OnKilled(IHeroController hero)
         {
             switch (hero.TeamNum)
             {
@@ -50,7 +50,6 @@ namespace RobotCastle.Battling
                     if (!_completed && _playersAlive.Count == 0)
                     {
                         _completed = true;
-                        CLog.LogGreen("Calling win on enemies");
                         WinCallback?.Invoke(1); // enemies won
                     }
                     break;
@@ -59,7 +58,6 @@ namespace RobotCastle.Battling
                     _enemiesAlive.Remove(hero);
                     if (!_completed && _enemiesAlive.Count == 0)
                     {
-                        CLog.LogGreen("Calling win on PLAYER");
                         _completed = true;
                         WinCallback?.Invoke(0); // player won
                     }
@@ -67,13 +65,13 @@ namespace RobotCastle.Battling
             }
         }
 
-        public void AddEnemy(HeroController hero)
+        public void AddEnemy(IHeroController hero)
         {
             _enemies.Add(hero);
             _enemiesAlive.Add(hero);
         }
         
-        public void AddPlayer(HeroController hero)
+        public void AddPlayer(IHeroController hero)
         {
             _players.Add(hero);
             _playersAlive.Add(hero);

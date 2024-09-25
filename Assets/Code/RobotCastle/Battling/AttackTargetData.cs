@@ -1,6 +1,6 @@
 ﻿namespace RobotCastle.Battling
 {
-    public class HeroAttackInfoContainer
+    public class AttackTargetData
     {
         public IHeroController CurrentEnemy;
         /// <summary>

@@ -1,22 +1,24 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Data;
-using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
     public abstract class SpellProvider : ModifierProvider
     {
+        
+        public abstract float manaMax { get; }
+        public abstract float manaStart { get; }
+
         public override string GetDescription(GameObject target)
         {
             var db = ServiceLocator.Get<DescriptionsDataBase>();
             return db.GetDescription(_id).parts[1];
         }
 
-        public virtual int GetTier(GameObject hero)
+        public virtual ESpellTier GetTier(GameObject hero)
         {
-            var merge = hero.GetComponent<HeroStatsContainer>().MergeTier;
-            return HeroesConfig.GetSpellTier(hero.GetComponent<HeroStatsContainer>().MergeTier);
+            return HeroesConfig.GetSpellTier(hero.GetComponent<HeroStatsManager>().MergeTier);
         }
 
         public virtual string GetName()

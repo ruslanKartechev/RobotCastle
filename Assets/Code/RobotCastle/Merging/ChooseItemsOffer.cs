@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.UI;
@@ -17,7 +18,7 @@ namespace RobotCastle.Merging
             _listener = listener;
         }
             
-        public void OfferChooseItems(List<CoreItemData> items)
+        public void OfferChooseItems(List<HeroItemData> items)
         {
             CLog.Log($"[ChooseItemsOffer] All items (total: {items.Count}) won't fit");
             var ui = ServiceLocator.Get<IUIManager>().Show<ChooseUnitItemsUI>(UIConstants.UIPickUnitItems, () => {});

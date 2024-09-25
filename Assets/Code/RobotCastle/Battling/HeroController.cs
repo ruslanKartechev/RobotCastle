@@ -1,53 +1,32 @@
-﻿using Bomber;
+﻿using System.Collections.Generic;
+using Bomber;
 using RobotCastle.Core;
-using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
     public class HeroController : MonoBehaviour, IHeroController
     {
-        [SerializeField] private HeroView _view;
-        private HeroStatsContainer _stats;
-        private IHeroBehaviour _currentBehaviour;
-        private bool _didSetMap;
-        
-        public bool IsDead { get; private set; }
+        public bool IsDead { get; set; }
         public HeroView View => _view;
         
         public Battle Battle { get; set; }
         
         public int TeamNum { get; set; }
         
-        private void AddHeroComponents()
-        {
-            _stats = gameObject.AddComponent<HeroStatsContainer>();
-            var pathfinder = gameObject.AddComponent<Agent>();
-            var unitMover = gameObject.AddComponent<HeroMovementManager>();
-            unitMover.UnitView = _view;
-            pathfinder.rb = _view.rb;
-            pathfinder.movable = transform;
-            pathfinder.PathfindingAgentAnimatorGO = gameObject;
-            _view.agent = pathfinder;
-            _view.movement = unitMover;
-            _view.Stats = _stats;
+        [SerializeField] private HeroView _view;
+        private HeroStatsManager _stats;
+        private IHeroBehaviour _currentBehaviour;
+        private bool _didSetMap;
 
-            var damage = gameObject.GetComponent<IHeroIDamageReceiver>();
-            var health = gameObject.GetComponent<IHeroHealthManager>();
-            var attack = gameObject.GetComponent<IHeroAttackManager>();
-            attack.Hero = this;
-            _view.DamageReceiver = damage;
-            _view.HealthManager = health;
-            _view.AttackManager = attack;
 
-            SetupStatsListeners();
-        }
-        
-        
-        public void InitHero(string id, int heroLevel, int mergeLevel)
+        public void InitHero(string id, int heroLevel, int mergeLevel, List<ModifierProvider> spells)
         {
             AddHeroComponents();
-            _stats.Init(id, heroLevel, mergeLevel);
+            _stats.LoadAndSetHeroStats(id, heroLevel, mergeLevel);
+            _view.SpellsContainer.AddModifierProviders(spells);
+            _view.SpellsContainer.ApplyAllModifiers(_view);
+            SetupStatsListeners();
         }
 
         public void UpdateMap(bool force = false)
@@ -58,21 +37,6 @@ namespace RobotCastle.Battling
             _view.agent.InitAgent(ServiceLocator.Get<IMap>());
         }
 
-        public void PrepareForBattle()
-        {
-            _view.movement.SetupAgent();
-            _view.Stats.ManaCurrent.SetBaseAndCurrent(0);
-            _view.heroUI.AssignStatsTracking(_view);
-        }
-
-        /// <summary>
-        /// Set Hero in no action state. All values are reset.
-        /// </summary>
-        public void SetIdle()
-        {
-            StopCurrentBehaviour();
-            _view.movement.SetIdle();
-        }
 
         public void MarkDead()
         {
@@ -82,27 +46,13 @@ namespace RobotCastle.Battling
             Battle.OnKilled(this);
         }
         
-        /// <summary>
-        /// Use for returning to merge grid
-        /// </summary>
-        public void ResetForMerge()
-        {
-            IsDead = false;
-            if (gameObject.TryGetComponent<IHeroMergeResetProcessor>(out var restart))
-            {
-                restart.ResetForMerge();
-            }
-            else
-                CLog.LogRed($"[{gameObject.name}] IHeroRestartProcessor is null");
-        }
-
         public void StopCurrentBehaviour()
         {
             if (_currentBehaviour != null)
                 _currentBehaviour.Stop();
             _currentBehaviour = null;
         }
-        
+
         public void SetBehaviour(IHeroBehaviour behaviour)
         {
             if (_currentBehaviour != null)
@@ -122,16 +72,36 @@ namespace RobotCastle.Battling
         
         private void SetupStatsListeners()
         {
-            foreach (var mod in _view.SpellsContainer.modifiers)
-            {
-                mod.AddTo(gameObject);
-            }
             if (_view.Stats.FullManaListener == null)
                 _view.Stats.FullManaListener = new DefaultFullManaAction();
             if (_view.Stats.HealthReset == null)
                 _view.Stats.HealthReset = new HealthResetFull();
             if (_view.Stats.ManaReset == null)
                 _view.Stats.ManaReset = new ManaResetZero();
+        }
+        
+        private void AddHeroComponents()
+        {
+            _stats = gameObject.AddComponent<HeroStatsManager>();
+            var health = new HeroHealthManager(_view);
+            var pathfinder = gameObject.AddComponent<Agent>();
+            var unitMover = gameObject.AddComponent<HeroMovementManager>();
+            unitMover.UnitView = _view;
+            pathfinder.rb = _view.rb;
+            pathfinder.movable = transform;
+            pathfinder.PathfindingAgentAnimatorGO = gameObject;
+            _view.agent = pathfinder;
+            _view.movement = unitMover;
+            _view.Stats = _stats;
+            _view.KillProcessor = new HeroDeathProcessor(_view);
+            _view.SpellsContainer = new HeroSpellsContainer();
+
+            var attack = gameObject.GetComponent<IHeroAttackManager>();
+            attack.Hero = this;
+            _view.DamageReceiver = health;
+            _view.HealthManager = health;
+            _view.AttackManager = attack;
+
         }
     }
 }

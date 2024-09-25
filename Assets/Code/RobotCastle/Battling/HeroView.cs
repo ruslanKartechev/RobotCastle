@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Bomber;
+﻿using Bomber;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev.Ragdoll;
@@ -14,23 +13,24 @@ namespace RobotCastle.Battling
         public Ragdoll ragdoll => _ragdoll;
         public Collider collider => _collider;
         public Rigidbody rb => _rb;
-
         public Agent agent { get; set; }
-
         public HeroMovementManager movement { get; set; }
-        
-        public HeroStatsContainer Stats { get; set; }
+        public HeroStatsManager Stats { get; set; }
         public HeroAnimationEventReceiver AnimationEventReceiver => _heroAnimationEvent;
-
-        public IItemView MergeItemView => _mergeView;
+        public HeroItemsContainer HeroItemsContainer => _heroItemsContainer;
         public IHeroAttackManager AttackManager { get; set; }
         public IHeroHealthManager HealthManager { get; set; }
         public IDamageReceiver DamageReceiver { get; set; }
-        public HeroAttackInfoContainer AttackInfo { get; set; } = new ();
-        public HeroSpellsContainer SpellsContainer => _spellsContainer;
+        public IKillProcessor KillProcessor { get; set; }
+        public AttackTargetData AttackData { get; set; } = new ();
+        public HeroSpellsContainer SpellsContainer { get; set;}
+        public HeroDamageSource DamageSource { get; set; }
+        public Transform projectileSpawnPoint => _projectileSpawnPoint;
+        public ParticleSystem ShootParticles => _shootParticles;
+        public IItemView MergeItemView => _mergeView;
         
         
-        [SerializeField] private HeroSpellsContainer _spellsContainer;
+        [SerializeField] private HeroItemsContainer _heroItemsContainer;
         [SerializeField] private BattleUnitUI _heroUI;
         [SerializeField] private Collider _collider;
         [SerializeField] private Rigidbody _rb;
@@ -42,7 +42,6 @@ namespace RobotCastle.Battling
         [SerializeField] private Transform _projectileSpawnPoint;
         [SerializeField] private ParticleSystem _shootParticles;
 
-        public Transform projectileSpawnPoint => _projectileSpawnPoint;
-        public ParticleSystem ShootParticles => _shootParticles;
+
     }
 }

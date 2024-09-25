@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using NSubstitute.Core;
-using RobotCastle.Core;
-using RobotCastle.Data;
+﻿using RobotCastle.Core;
 using RobotCastle.Merging;
-using RobotCastle.Saving;
 using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
@@ -21,13 +17,20 @@ namespace RobotCastle.Battling
             out IItemView spawnedItem)
         {
             Vector2Int coord = default;
+            args.ItemData = new ItemData(args.coreData);
             if (args.usePreferredCoordinate)
             {
                 coord = args.preferredCoordinated;
+                if (!sectionsController.IsCellAllowed(coord, args.ItemData))
+                {
+                    CLog.Log($"Cell {coord} is not allowed");
+                    spawnedItem = null;
+                    return false;
+                }
             }
             else
             {
-                var hasFree = sectionsController.GetFreeCell(grid.BuiltGrid, out coord);
+                var hasFree = sectionsController.GetFreeAllowedCell(grid.BuiltGrid, args.ItemData, out coord);
                 if (!hasFree)
                 {
                     CLog.Log($"[{nameof(HeroesAndItemsFactory)}] No available cell!");
@@ -39,34 +42,30 @@ namespace RobotCastle.Battling
                 }
             }
             var cell = grid.GetCell(coord.x, coord.y);
-            args.ItemData = new ItemData(args.coreData);
-            if (sectionsController.IsCellAllowed(coord.x, coord.y, args.ItemData))
-            {
-                SpawnHeroOrItem(args, cell, out spawnedItem);
-                sectionsController.OnItemPut(spawnedItem.itemData);
-                return true;
-            }
-            spawnedItem = null;
-            return false;
+            SpawnOnCell(args, cell, out spawnedItem);
+            sectionsController.OnItemPut(spawnedItem.itemData);
+            return true;
         }        
         
-        public void SpawnHeroOrItem(SpawnMergeItemArgs args, ICellView cellView, out IItemView spawnedItem)
+        public void SpawnOnCell(SpawnMergeItemArgs args, ICellView cellView, out IItemView spawnedItem)
         {
             var spawner = ServiceLocator.Get<IMergeItemsFactory>();
             spawnedItem = spawner.SpawnItemOnCell(cellView, args.ItemData);
             if (args.coreData.type is MergeConstants.TypeUnits)
             {
-                var hero = spawnedItem.Transform.GetComponent<HeroController>();
-                var heroSave = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerHeroes>().GetSave(args.coreData.id);
-                heroSave.isUnlocked = true;
-                hero.InitHero(args.coreData.id, heroSave.level, args.coreData.level);
+                var instanceGO = spawnedItem.Transform.gameObject;
+                var hero = instanceGO.GetComponent<IHeroController>();
+                var id = args.coreData.id;
+                // heroSave.isUnlocked = true;
+                var modifiers = HeroesHelper.GetModifiersForHero(id);
+                hero.InitHero(id, HeroesHelper.GetHeroLevel(id), args.coreData.level, modifiers);
                 if (args.useAdditionalItems)
                 {
-                    var mergedItems = MergeFunctions.TryMergeAll(args.additionalItems, MergeConstants.MaxItemLevel);
-                    var itemsContainer = hero.gameObject.GetComponent<IUnitsItemsContainer>();
+                    var mergedItems = MergeFunctions.TryMergeAll(HeroItemData.GetDataWithDefaultModifiers(args.additionalItems), MergeConstants.MaxItemLevel);
+                    var itemsContainer = instanceGO.GetComponent<IHeroItemsContainer>();
                     itemsContainer.SetItems(mergedItems);
                 }
-                hero.SetIdle();
+                hero.SetBehaviour(new HeroIdleBehaviour());
                 hero.View.heroUI.UpdateStatsView(hero.View);
             }
         }        
@@ -85,5 +84,4 @@ namespace RobotCastle.Battling
         }
 
     }
-
 }

@@ -28,7 +28,7 @@ namespace RobotCastle.Battling
         private int _perKill = 5;
         private int _perStageCompletion = 5;
         
-        public void AddRewardForKill(HeroController hero)
+        public void AddRewardForKill(IHeroController hero)
         {
             CLog.Log($"Adding reward: {_perKill}");
             var gm = ServiceLocator.Get<GameMoney>();

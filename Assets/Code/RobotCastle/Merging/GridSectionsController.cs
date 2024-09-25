@@ -92,13 +92,13 @@ namespace RobotCastle.Merging
         public int GetMaxCount() => _maxCount;
 
 
-        public bool IsCellAllowed(int x, int y, ItemData item, bool promptUser = true)
+        public bool IsCellAllowed(Vector2Int coord, ItemData item, bool promptUser = true)
         {
-            if (y < _minYIndex) // moving to lower region
+            if (coord.y < _minYIndex) // moving to lower region
                 return true;
-            if (item.pivotY >= _minYIndex && y >= _minYIndex) // already in the upper region and moving to upper region
+            if (item.pivotY >= _minYIndex && coord.y >= _minYIndex) // already in the upper region and moving to upper region
                 return true;
-            if (item.core.type != MergeConstants.TypeUnits && y >= _minYIndex) // moving non-unit to upper zone
+            if (item.core.type != MergeConstants.TypeUnits && coord.y >= _minYIndex) // moving non-unit to upper zone
                 return false;
             
             var allowed = _currentCount < _maxCount;
@@ -108,6 +108,23 @@ namespace RobotCastle.Merging
                 ui.ShowNotEnoughTroopSize(_currentCount, _maxCount);
             }
             return _currentCount < _maxCount;
+        }
+
+        public bool GetFreeAllowedCell(MergeGrid grid, ItemData itemData, out Vector2Int coordinates)
+        {
+            if (itemData.core.type == MergeConstants.TypeUnits)
+                return GetFreeCell(grid, out coordinates);
+            for (var y = _minYIndex - 1; y >= 0; y--)
+            {
+                var (res, x) = SearchRow(grid.rows[y].cells);
+                if (res)
+                {
+                    coordinates = new Vector2Int(x,y);
+                    return true;
+                }
+            }
+            coordinates = default;
+            return false;
         }
 
         public void OnGridUpdated()
@@ -167,26 +184,26 @@ namespace RobotCastle.Merging
             
             coordinates = new Vector2Int(-1,-1);
             return false;
-
-            (bool, int) SearchRow(IList<Cell> row)
-            {
-                var count = row.Count;
-                var num = 0;
-                var center = count / 2 - 1;
-                // if (center < 0)
-                    // center = 0;
-                for (var x = center; num < count;)
-                {
-                    if (row[x].isUnlocked && row[x].isOccupied == false)
-                        return (true, x);
-                    x++;
-                    if (x >= count)
-                        x = 0;
-                    num++;
-                }
-                return (false, -1);
-            }   
         }
+        
+       private (bool, int) SearchRow(IList<Cell> row)
+        {
+            var count = row.Count;
+            var num = 0;
+            var center = count / 2 - 1;
+            // if (center < 0)
+            // center = 0;
+            for (var x = center; num < count;)
+            {
+                if (row[x].isUnlocked && row[x].isOccupied == false)
+                    return (true, x);
+                x++;
+                if (x >= count)
+                    x = 0;
+                num++;
+            }
+            return (false, -1);
+        }   
 
         public bool IsCellFree(MergeGrid grid, ItemData itemData, Vector2Int coordinated)
         {

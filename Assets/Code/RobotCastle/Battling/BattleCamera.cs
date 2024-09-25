@@ -1,18 +1,12 @@
 ﻿using System;
 using DG.Tweening;
 using RobotCastle.Core;
-using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
     public class BattleCamera : MonoBehaviour
     {
-        [SerializeField] private float _moveTime;
-        [SerializeField] private Transform _mergePoint;
-        [SerializeField] private Transform _battlePoint;
-
-        private int _slideBlockers;
         public int SlideBlockers
         {
             get => _slideBlockers;
@@ -23,6 +17,12 @@ namespace RobotCastle.Battling
                     _slideBlockers = 0;
             } 
         }
+        
+        [SerializeField] private float _moveTime;
+        [SerializeField] private Transform _mergePoint;
+        [SerializeField] private Transform _battlePoint;
+        private int _slideBlockers;
+    
 
         public void AllowPlayerInput(bool allowed)
         {
@@ -36,7 +36,6 @@ namespace RobotCastle.Battling
         {
             if (SlideBlockers > 0)
                 return;
-            CLog.LogRed($"SLIDE: {vec}");
             if (Mathf.Abs(vec.y) > Math.Abs(vec.x))
             {
                 if (vec.y < 0)

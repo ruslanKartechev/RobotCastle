@@ -367,7 +367,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +20% crit spell damage
+  m_text: Bonus Description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b741db7ac3d1c423aad5b49a9780ca2d, type: 2}
   m_sharedMaterial: {fileID: 5568139486216784236, guid: b741db7ac3d1c423aad5b49a9780ca2d, type: 2}
@@ -691,8 +691,8 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 350}
-  m_Pivot: {x: 0, y: 0}
+  m_SizeDelta: {x: 600, y: 338}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &3754944432674080922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -705,6 +705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514d4e91e1674285a383d884e95eaacc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dontShowSpell: 0
   _rectToScreenFitter: {fileID: 5279970605383286125}
   _animator: {fileID: 2195266004505342641}
   _lvlText: {fileID: 4400980860107822813}

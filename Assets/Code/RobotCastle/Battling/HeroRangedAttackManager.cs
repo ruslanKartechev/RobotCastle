@@ -7,12 +7,12 @@ namespace RobotCastle.Battling
     public class HeroRangedAttackManager : MonoBehaviour, IHeroAttackManager
     {
         public event Action OnAttackStep;
+
+        public IHeroController Hero { get; set; }
         
         private IProjectileFactory _projectileFactory;
         private Transform _targetTransform;
         private IDamageReceiver _target;
-
-        public HeroController Hero { get; set; }
 
         private void Awake()
         {
@@ -50,10 +50,9 @@ namespace RobotCastle.Battling
             var dm = (IDamageReceiver)target;
             if (dm != null)
             {
-                var amount = Hero.View.Stats.Attack.Val;
-                var damageArgs = new DamageArgs(amount, EDamageType.Physical);
-                _target.TakeDamage(damageArgs);
-                Hero.View.Stats.AddMana(amount * HeroesConfig.ManaGainDamageMultiplier);
+                var damage = Hero.View.DamageSource.GetDamage();
+                Hero.View.Stats.AddMana(damage.physDamage * HeroesConfig.ManaGainDamageMultiplier);
+                _target.TakeDamage(damage);
             }
         }
     }

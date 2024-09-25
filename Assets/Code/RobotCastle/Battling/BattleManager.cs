@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Bomber;
-using RobotCastle.Core;
+﻿using RobotCastle.Core;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
@@ -52,17 +50,17 @@ namespace RobotCastle.Battling
             {
                 hero.TeamNum = 1;
                 hero.Battle = _battle;
-                hero.PrepareForBattle();
                 hero.View.agent.UpdateMap(map);
             }
             foreach (var hero in _battle.PlayerUnits)
             {
                 hero.TeamNum = 0;
                 hero.Battle = _battle;
-                hero.PrepareForBattle();
                 hero.View.agent.UpdateMap(map);
             }
-
+            PrepareForBattle(_battle.PlayerUnits);
+            PrepareForBattle(_battle.Enemies);
+            
             if (_activatePlayers)
             {
                 foreach (var unit in _battle.playersAlive)
@@ -145,24 +143,21 @@ namespace RobotCastle.Battling
             CLog.LogWhite(msg);
         }
 
-        public void OnHeroKilled(HeroController heroController)
+        public void RecollectPlayerUnits()
         {
-            
+            var mergeManager = ServiceLocator.Get<MergeManager>();
+            foreach (var playerUnit in _battle.PlayerUnits)
+                ResetHeroAfterBattle(playerUnit);
+            mergeManager.ResetAllItemsPositions();
         }
         
         private void OnTeamWin(int teamNum)
         {
             CLog.Log($"[{nameof(BattleManager)}] On Team win {teamNum}");
-            foreach (var unit in _battle.Enemies)
-            {
-                if(!unit.IsDead)
-                    unit.SetIdle();
-            }
-            foreach (var unit in _battle.PlayerUnits)
-            {
-                if(!unit.IsDead)
-                    unit.SetIdle();
-            }
+            foreach (var unit in _battle.enemiesAlive)
+                unit.SetBehaviour(new HeroIdleBehaviour());
+            foreach (var unit in _battle.playersAlive)
+                unit.SetBehaviour(new HeroIdleBehaviour());
             switch (teamNum)
             {
                 case 0:
@@ -189,12 +184,6 @@ namespace RobotCastle.Battling
             ServiceLocator.Unbind<BattleManager>();
         }
 
-        public void RecollectPlayerUnits()
-        {
-            var mergeManager = ServiceLocator.Get<MergeManager>();
-            foreach (var playerUnit in _battle.PlayerUnits)
-                ResetHeroAfterBattle(playerUnit);
-            mergeManager.ResetAllItemsPositions();
-        }
+  
     }
 }

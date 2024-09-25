@@ -5,39 +5,49 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class HeroHealthManager : MonoBehaviour, IHeroHealthManager, IHeroIDamageReceiver
+    public class HeroHealthManager : IHeroHealthManager, IHeroIDamageReceiver
     {
-        [SerializeField] private HeroView _heroView;
-        private bool _isDamageable = true;
-
+        public HeroHealthManager(HeroView heroView)
+        {
+            _view = heroView;
+            
+        }
+        
         public bool IsDamageable => _isDamageable;
+        
+        private HeroView _view;
+        private bool _isDamageable = true;
         
         public void TakeDamage(DamageArgs args)
         {
             if (!_isDamageable)
                 return;
-            var amount = args.amount;
-            amount *= (1f - _heroView.Stats.PhysicalResist.Val);
-            if (amount < 0)
+            args.physDamage -= _view.Stats.PhysicalResist.Val;
+            args.magicDamage -= _view.Stats.MagicalResist.Val;
+            if (args.physDamage <= 0)
             {
-                return;
+                args.physDamage = 0;
             }
-            // CLog.Log($"{gameObject.name} Damaged taken. {args.type}. Amount {amount}. Resist {_heroView.Stats.PhysicalResist.Val}");
-            _heroView.Stats.HealthCurrent.Val -= amount;
-            var pos = transform.position + Vector3.up;
-            ServiceLocator.Get<IDamageDisplay>().ShowAt((int)amount, args.type, pos);
-            // var health = _heroView.Stats.HealthCurrent.Val;
-            // var t = health / _heroView.Stats.HealthMax.Val;
-            if (_heroView.Stats.HealthCurrent.Val <= 0)
+            else
             {
-                // CLog.Log($"{gameObject.name} Health < 0. Trying to die");
-                var killProcessor = gameObject.GetComponent<IKillProcessor>();
-                if(killProcessor != null)
-                    killProcessor.OnKilled();
+                _view.Stats.HealthCurrent.Val -= args.physDamage;
+                ServiceLocator.Get<IDamageDisplay>().ShowAt((int)args.physDamage, EDamageType.Physical, _view.transform.position + Vector3.up);
+            }
+            if (args.magicDamage <= 0)
+            {
+                args.magicDamage = 0;
+            }
+            else
+            {
+                ServiceLocator.Get<IDamageDisplay>().ShowAt((int)args.magicDamage, EDamageType.Magical, _view.transform.position + Vector3.up);
+            }
+            // CLog.Log($"[{_view.gameObject.name}] Damaged. Phys: {args.physDamage}. Magic: {args.magicDamage}");
+            if (_view.Stats.HealthCurrent.Val <= 0)
+            {
+                if(_view.KillProcessor != null)
+                    _view.KillProcessor.OnKilled();
                 else
-                {
-                    CLog.LogRed($"[{nameof(HeroHealthManager)}] IKillProcessor is null {gameObject.name}");
-                }
+                    CLog.LogRed($"[{nameof(HeroHealthManager)}] IKillProcessor is null {_view.name}");
             }
         }
 

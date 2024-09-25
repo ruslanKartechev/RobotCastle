@@ -7,12 +7,9 @@ namespace RobotCastle.Core
 {
     public class GameInput : MonoBehaviour
     {
-        [SerializeField] private float _longClockTime = .2f;
-        private Vector3 _clickPos;
         public event Action<Vector3> OnDownIgnoreUI;
         public event Action<Vector3> OnUpIgnoreUI;
 
-        
         public event Action<Vector3> OnDownLongClick;
         public event Action<Vector3> OnShortClick;
 
@@ -23,14 +20,19 @@ namespace RobotCastle.Core
         public event Action<Vector3> OnSlideMain;
         public event Action<Vector3> OnZoom;
 
+        [SerializeField] private float _longClockTime = .2f;
         [SerializeField] private bool _raycastWorldButtons;
         [SerializeField] private LayerMask _worldButtonsLayer;
+        private Vector3 _clickPos;
         private Coroutine _longClickWaiting;
         private IWorldButton _currentWorldButton;
         private InputBtn _inputBtn;
         private bool _mainDown;
         private bool _secondDown;
         private float _mainClickTime;
+        private bool _didSlide;
+        private Vector3 _slide;
+        private float _slideMinD2 = 100f * 100f;
         
         public bool InputAllowed { get; set; } = true;
         
@@ -162,12 +164,7 @@ namespace RobotCastle.Core
 
 
         private void CheckZoom()
-        {
-        }
-
-        private bool _didSlide;
-        private Vector3 _slide;
-        private float _slideMinD2 = 30f * 30f;
+        { }
 
         private void ResetSlide()
         {

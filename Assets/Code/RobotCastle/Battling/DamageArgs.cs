@@ -2,18 +2,18 @@
 {
     public struct DamageArgs
     {
-        public EDamageType type;
-        public float amount;
-
-        public DamageArgs(float amount, EDamageType type)
+        public float physDamage;
+        public float magicDamage;
+        
+        public DamageArgs(float physDamage, float magicDamage)
         {
-            this.amount = amount;
-            this.type = type;
+            this.physDamage = physDamage;
+            this.magicDamage = magicDamage;
         }
 
         public string GetStr()
         {
-            var msg = $"Damage. {type.ToString()}. Amount: {amount}";
+            var msg = $"Damage. Phys: {physDamage}. Mag: {magicDamage}";
             return msg;
         }
     }

@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d99ca6eafc5f43548395ba54723a2b9a, type: 3}
-  m_Name: spell_iron_will
+  m_Script: {fileID: 11500000, guid: 3b2ed9b43430485c9985b84e9d50aa3d, type: 3}
+  m_Name: crescent_slash
   m_EditorClassIdentifier: 
-  _id: iron_will
-  _spellPower: 0
+  _id: crescent_slash
+  _config:
+    manaMax: 50
+    manaStart: 50
+    widthPerTier: 
+    spellDamage: []

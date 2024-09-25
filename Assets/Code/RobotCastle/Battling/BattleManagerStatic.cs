@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NSubstitute.Core;
+using RobotCastle.Core;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -11,8 +11,58 @@ namespace RobotCastle.Battling
         
         public static void ResetHeroAfterBattle(IHeroController hero)
         {
-            hero.SetIdle();
-            hero.ResetForMerge();
+            hero.IsDead = false;
+            var view = hero.View;
+            view.Stats.ClearDecorators();
+            
+            view.Stats.HealthReset.Reset(view);
+            view.Stats.ManaReset.Reset(view);
+            view.heroUI.UpdateStatsView(view);
+            
+            view.HealthManager.SetDamageable(false);
+            view.AttackData.Reset();
+            view.gameObject.SetActive(true);
+            view.heroUI.Show();
+            hero.SetBehaviour(new HeroIdleBehaviour());
+        }
+
+        public static void PrepareForBattle(List<IHeroController> heroes)
+        {
+            var modsDb = ServiceLocator.Get<ModifiersDataBase>();
+            foreach (var hero in heroes)
+            {
+                var view = hero.View;
+                view.movement.SetupAgent();
+                view.Stats.ManaReset.Reset(view);
+                view.heroUI.AssignStatsTracking(view);
+                view.HealthManager.SetDamageable(true);
+                foreach (var itemData in view.HeroItemsContainer.Items)
+                {
+                    foreach (var id in itemData.modifierIds)
+                    {
+                        var mod = modsDb.GetModifier(id);
+                        mod.AddToHero(view);
+                    }
+                }
+            }
+        }
+        
+        public static void PrepareForBattle(IHeroController hero)
+        {
+            var mods = ServiceLocator.Get<ModifiersDataBase>();
+            var view = hero.View;
+            view.movement.SetupAgent();
+            view.Stats.ManaReset.Reset(view);
+            view.heroUI.AssignStatsTracking(view);
+            view.HealthManager.SetDamageable(true);
+            foreach (var itemData in view.HeroItemsContainer.Items)
+            {
+                foreach (var id in itemData.modifierIds)
+                {
+                    var mod = mods.GetModifier(id);
+                    mod.AddToHero(view);
+                }
+            }
         }
 
         public static IHeroController GetBestTargetForAttack(IHeroController hero)
@@ -59,10 +109,10 @@ namespace RobotCastle.Battling
                             overallClosest = enemy;
                         }
                     }
-
                     return overallClosest;
             }
         }
 
+    
     }
 }

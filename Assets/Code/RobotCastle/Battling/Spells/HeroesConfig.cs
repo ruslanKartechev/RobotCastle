@@ -3,11 +3,12 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
+    public enum ESpellTier {Tier1, Tier2, Tier3, Tier4}
     public class HeroesConfig
     {
         public const int PlayerHealthStart = 3;
         public const int PlayerTroopsStart = 3;
-        public const float ManaGainDamageMultiplier = .2f;
+        public const float ManaGainDamageMultiplier = .33f;
         
         public const int DuelMaxDistance = 3;
         
@@ -22,23 +23,22 @@ namespace RobotCastle.Battling
         
         public static readonly int Anim_Attack = Animator.StringToHash(AnimId_Attack);
         public static readonly int Anim_Idle = Animator.StringToHash(AnimId_Idle);
+        public static readonly int Anim_Move = Animator.StringToHash(AnimId_Move);
 
         public readonly static List<float> TierStatMultipliers = new() { 1f, 1.6f, 2.6f, 3.6f, 4.8f, 6.0f, 7.0f };
         
         // Tier 1 - (0, 1), Tier 2 - (2, 3), Tier 3 - (4-5), Tier 4 - (6)
         public static readonly List<int> SpellTiersByMergeLevel = new() {0, 2, 4, 6};
 
-        public static int GetSpellTier(int mergeLevel)
+        public static ESpellTier GetSpellTier(int mergeLevel)
         {
             for (var i = SpellTiersByMergeLevel.Count - 1; i >= 0; i--)
             {
                 if (mergeLevel >= SpellTiersByMergeLevel[i])
-                    return i;
+                    return (ESpellTier)i;
             }
-            return 0;
+            return (ESpellTier)0;
         }
-        
-        
 
     }
 }

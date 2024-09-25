@@ -111,15 +111,13 @@ namespace RobotCastle.Merging
             foreach (var cell in _gridView.Grid)
             {
                 if (cell.itemView != null)
-                {
                     MergeFunctions.SetItemGridAndWorldPosition(cell.itemView, cell);
-                }
             }
         }
         
         public void HighlightMergeOptions()
         {
-            CLog.LogWhite($"[{nameof(MergeManager)}] Highlight");
+            CLog.Log($"[{nameof(MergeManager)}] Highlight potential merge");
             var allItems = _sectionsController.GetAllItems();
             _highlighter.HighlightAllPotentialCombinations(allItems);
         }

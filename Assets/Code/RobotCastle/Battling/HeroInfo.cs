@@ -14,7 +14,6 @@
             stats = new HeroStats(other.stats);
             spellInfo = new HeroSpellInfo(other.spellInfo);
             viewInfo = new HeroViewInfo(other.viewInfo);
-
         }
     }
 }

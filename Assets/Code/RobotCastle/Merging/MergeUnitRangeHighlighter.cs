@@ -15,14 +15,14 @@ namespace RobotCastle.Merging
         private readonly List<CellHighlight> _highlights = new (10);
         
         private IGridView _grid;
-        private HeroStatsContainer _stats;
+        private HeroStatsManager _stats;
         private CellHighlight _underCell;
         private Vector2Int _currentPos;
         
         
         public MergeUnitRangeHighlighter(GameObject unit, IGridView grid)
         {
-            _stats = unit.gameObject.GetComponent<HeroStatsContainer>();
+            _stats = unit.gameObject.GetComponent<HeroStatsManager>();
             _grid = grid;
             switch (grid.GridId)
             {
@@ -41,7 +41,6 @@ namespace RobotCastle.Merging
 
         public void ShowUnderCell(Vector2Int centerCoord)
         {
-            CLog.LogRed($"Settings center {centerCoord}");
             _currentPos = centerCoord;
             if (_underCell == null)
             {

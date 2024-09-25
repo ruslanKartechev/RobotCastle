@@ -17,13 +17,13 @@ namespace RobotCastle.UI
         [SerializeField] private TextMeshProUGUI _textCount;
         [SerializeField] private Button _confirmButton;
         private List<ChoosableUnitItemUI> _activeUI;
-        private List<CoreItemData> _items;
+        private List<HeroItemData> _items;
         private IItemsChoiceListener _listener;
         private int _max;
         private int _count;
         private bool _takeInput;
 
-        public void PickMaximum(List<CoreItemData> items, int max, IItemsChoiceListener listener)
+        public void PickMaximum(List<HeroItemData> items, int max, IItemsChoiceListener listener)
         {
             _listener = listener;
             _count = 0;
@@ -93,17 +93,17 @@ namespace RobotCastle.UI
             if (!_takeInput) return;
             if (_count == _max)
             {
-                var chosenItems = new List<CoreItemData>(_max);
-                var leftItems = new List<CoreItemData>(_max);
+                var chosenItems = new List<int>(_max);
+                var leftItems = new List<int>(_max);
                 
-                foreach (var active in _activeUI)
+                foreach (var uiPiece in _activeUI)
                 {
-                    if(active.IsChosen)
-                        chosenItems.Add(_items[active.Index]);
+                    if(uiPiece.IsChosen)
+                        chosenItems.Add(uiPiece.Index);
                     else
-                        leftItems.Add(_items[active.Index]);
+                        leftItems.Add(uiPiece.Index);
                 }
-                _listener.ConfirmChosenItems(chosenItems, leftItems);
+                _listener.ConfirmChosenItems(_items, chosenItems, leftItems);
                 _takeInput = false;
                 _confirmButton.interactable = false;
                 gameObject.SetActive(false);

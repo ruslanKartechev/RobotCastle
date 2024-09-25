@@ -14,5 +14,6 @@ namespace RobotCastle.Battling
         public CoreItemData enemy;
         public Vector2Int gridPos;
         public List<CoreItemData> items;
+        public List<string> modifiers;
     }
 }
