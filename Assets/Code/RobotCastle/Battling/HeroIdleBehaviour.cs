@@ -9,7 +9,6 @@ namespace RobotCastle.Battling
 
         public void Activate(IHeroController hero, Action<IHeroBehaviour> endCallback)
         {
-            CLog.LogRed($"{hero.View.gameObject.name} HERO IDLE BEHAVIOUR SET !!!!!!");
             var view = hero.View;
             view.movement.Stop();
             view.AttackManager.Stop();

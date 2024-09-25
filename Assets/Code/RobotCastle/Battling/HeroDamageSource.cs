@@ -6,11 +6,17 @@ namespace RobotCastle.Battling
     public class HeroDamageSource
     {
         private HeroView _view;
-        private List<IDamageDecorator> _decorators = new(10);
+        private List<IDamageDecorator> _decorators;
 
+        public HeroDamageSource(HeroView view)
+        {
+            _view = view;
+            _decorators = new(10);
+        }
+        
         public void AddDecorator(IDamageDecorator decorator)
         {
-            CLog.Log($"");
+            CLog.Log($"[{_view.gameObject.name}] Added decorator: {decorator.id}");
             _decorators.Add(decorator);
         }
 

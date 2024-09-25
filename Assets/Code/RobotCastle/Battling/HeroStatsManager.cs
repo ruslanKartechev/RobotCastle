@@ -49,6 +49,7 @@ namespace RobotCastle.Battling
 
         public ISpellPowerGetter SpellPowerGetter { get; set; } = null;
         public List<IStatDecorator> SpellPowerDecorators = new (2);
+        
         public Stat Attack {get; set;} = new Stat();
         public Stat AttackSpeed {get; set;} = new Stat();
         public Stat MoveSpeed {get; set;} = new Stat();

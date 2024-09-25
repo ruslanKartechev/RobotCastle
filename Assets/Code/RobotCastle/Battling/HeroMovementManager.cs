@@ -25,8 +25,7 @@ namespace RobotCastle.Battling
 
         public void OnMovementBegan()
         {
-            // CLog.Log($"{gameObject.name} On Began");
-            CLog.LogYellow($"{gameObject.name} MOVEMENT BEGAN");
+            // CLog.LogYellow($"{gameObject.name} MOVEMENT BEGAN");
             _unitView.animator.SetBool(HeroesConfig.Anim_Move, true);
         }
 
@@ -38,7 +37,7 @@ namespace RobotCastle.Battling
    
         public async Task<EPathMovementResult> MoveToCell(Vector2Int pos, CancellationToken token)
         {
-            CLog.LogYellow($"{gameObject.name} Move call to {pos}. Frame {Time.frameCount}");
+            // CLog.LogYellow($"{gameObject.name} Move call to {pos}. Frame {Time.frameCount}");
             if (!_didSetup)
             {
                 CLog.LogRed("Unit Mover NOT setup!!");

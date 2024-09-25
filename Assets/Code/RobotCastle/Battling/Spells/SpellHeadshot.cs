@@ -10,6 +10,8 @@ namespace RobotCastle.Battling
         private HeroView _view;
         private DamageDecoratorPlusDamage _decorator;
         private DamageDecoratorPlusDamage _decoratorPhys;
+        private bool _isActive;
+        // ADD IGNORE MANA ADD DECORATOR FOR DAMAGE !
 
         public SpellHeadshot(HeroView heroView, SpellConfigHeadshot config)
         {
@@ -42,8 +44,10 @@ namespace RobotCastle.Battling
 
         private void Execute()
         {
+            if (_isActive)
+                return;
+            _isActive = true;
             CLog.LogGreen($"[{_view.gameObject.name}] Spell headshot executed");
-            _view.Stats.ManaReset.Reset(_view);
             _view.DamageSource.AddDecorator(_decorator);
             _view.DamageSource.AddDecorator(_decoratorPhys);
             _view.AttackManager.OnAttackStep -= OnAttack;
@@ -55,6 +59,8 @@ namespace RobotCastle.Battling
             _view.DamageSource.RemoveDecorator(_decorator);
             _view.DamageSource.RemoveDecorator(_decoratorPhys);
             _view.AttackManager.OnAttackStep -= OnAttack;
+            _view.Stats.ManaReset.Reset(_view);
+            _isActive = false;
         }
     }
 }

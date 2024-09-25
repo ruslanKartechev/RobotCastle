@@ -73,7 +73,7 @@ namespace RobotCastle.Merging
 
             var worldCenter = _grid.GetCell(centerCoord.x, centerCoord.y).WorldPosition;
             var rotation = _grid.GetCell(0, 0).WorldRotation;
-            CLog.LogRed($"Center Coord: {centerCoord}");
+            // CLog.LogRed($"Center Coord: {centerCoord}");
             for (var i = 0; i < mask.Count; i++)
             {
                 var dir = mask[i];
@@ -81,7 +81,7 @@ namespace RobotCastle.Merging
                 if (cellCoord.x < 0  || cellCoord.x >= MaxX || cellCoord.y < MinY || cellCoord.y >= MaxY)
                     continue;
                 var worldPos = worldCenter + rotation * new Vector3(dir.x, 0, dir.y);
-                CLog.Log($"Cell {cellCoord}. World {worldPos}");
+                // CLog.Log($"Cell {cellCoord}. World {worldPos}");
                 _highlights[i].transform.position = worldPos;
                 _highlights[i].gameObject.SetActive(true);
             }

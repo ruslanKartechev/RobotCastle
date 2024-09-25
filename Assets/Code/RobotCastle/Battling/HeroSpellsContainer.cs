@@ -5,7 +5,7 @@ namespace RobotCastle.Battling
 {
     public class HeroSpellsContainer : IModifiersContainer
     {
-        private List<ModifierProvider> _modifiers;
+        private List<ModifierProvider> _modifiers = new (5);
         private ModifierProvider _current;
         
         public List<ModifierProvider> modifiers => _modifiers;
