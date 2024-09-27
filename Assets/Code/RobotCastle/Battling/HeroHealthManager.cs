@@ -22,30 +22,23 @@ namespace RobotCastle.Battling
         {
             if (!_isDamageable)
                 return;
-            args.physDamage -= _view.Stats.PhysicalResist.Val;
-            args.magicDamage -= _view.Stats.MagicalResist.Val;
-            if (args.physDamage <= 0)
+            args.physDamage = HeroesHelper.ReduceDamageByDef(args.physDamage, _view.stats.PhysicalResist.Val);
+            args.magicDamage = HeroesHelper.ReduceDamageByDef(args.magicDamage, _view.stats.MagicalResist.Val);
+            if(args.physDamage > 0)
             {
-                args.physDamage = 0;
-            }
-            else
-            {
-                _view.Stats.HealthCurrent.Val -= args.physDamage;
+                _view.stats.HealthCurrent.Val -= args.physDamage;
                 ServiceLocator.Get<IDamageDisplay>().ShowAt((int)args.physDamage, EDamageType.Physical, _view.transform.position + Vector3.up);
             }
-            if (args.magicDamage <= 0)
+            if(args.magicDamage > 0)
             {
-                args.magicDamage = 0;
-            }
-            else
-            {
+                _view.stats.HealthCurrent.Val -= args.magicDamage;
                 ServiceLocator.Get<IDamageDisplay>().ShowAt((int)args.magicDamage, EDamageType.Magical, _view.transform.position + Vector3.up);
             }
             // CLog.Log($"[{_view.gameObject.name}] Damaged. Phys: {args.physDamage}. Magic: {args.magicDamage}");
-            if (_view.Stats.HealthCurrent.Val <= 0)
+            if (_view.stats.HealthCurrent.Val <= 0)
             {
-                if(_view.KillProcessor != null)
-                    _view.KillProcessor.OnKilled();
+                if(_view.killProcessor != null)
+                    _view.killProcessor.OnKilled();
                 else
                     CLog.LogRed($"[{nameof(HeroHealthManager)}] IKillProcessor is null {_view.name}");
             }

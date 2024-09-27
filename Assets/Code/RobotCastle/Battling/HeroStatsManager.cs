@@ -35,12 +35,14 @@ namespace RobotCastle.Battling
             set => _healthReset = value;
         }
         
-        public IManaReset ManaReset
+        public IManaReset ManaResetAfterBattle
         {
-            get => _manaReset;
-            set => _manaReset = value;
+            get => _manaResetAfterBattle;
+            set => _manaResetAfterBattle = value;
         }
-
+        
+        public IManaReset ManaResetAfterFull { get; set; }
+        
         public IFullManaListener FullManaListener
         {
             get => _fullManaListener;
@@ -49,6 +51,7 @@ namespace RobotCastle.Battling
 
         public ISpellPowerGetter SpellPowerGetter { get; set; } = null;
         public List<IStatDecorator> SpellPowerDecorators = new (2);
+        public IManaAdder ManaAdder { get; set; }
         
         public Stat Attack {get; set;} = new Stat();
         public Stat AttackSpeed {get; set;} = new Stat();
@@ -71,9 +74,9 @@ namespace RobotCastle.Battling
         private HeroStats _stats;
         private IAttackRange _range;
         private IHealthReset _healthReset;
-        private IManaReset _manaReset;
+        private IManaReset _manaResetAfterBattle;
         private IFullManaListener _fullManaListener;
-
+    
 
         public void LoadAndSetHeroStats(string id, int levelIndex, int mergeLevel)
         {
@@ -103,12 +106,6 @@ namespace RobotCastle.Battling
 
             PhysicalResist.SetBaseAndCurrent(GetPhysicalResist(_stats, HeroLvl, MergeTier));
             MagicalResist.SetBaseAndCurrent(GetMagicalResist(_stats, HeroLvl, MergeTier));
-        }
-
-        public void AddMana(float added)
-        {
-            ManaCurrent.Val += added;
-            CheckManaFull();
         }
 
         public void CheckManaFull()

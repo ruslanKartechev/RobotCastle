@@ -13,16 +13,17 @@ namespace RobotCastle.Battling
         {
             hero.IsDead = false;
             var view = hero.View;
-            view.Stats.ClearDecorators();
+            view.stats.ClearDecorators();
             
-            view.Stats.HealthReset.Reset(view);
-            view.Stats.ManaReset.Reset(view);
+            view.stats.HealthReset.Reset(view);
+            view.stats.ManaResetAfterBattle.Reset(view);
             view.heroUI.UpdateStatsView(view);
             
-            view.HealthManager.SetDamageable(false);
-            view.AttackData.Reset();
+            view.healthManager.SetDamageable(false);
+            view.attackData.Reset();
             view.gameObject.SetActive(true);
             view.heroUI.Show();
+            view.processes.StopAll();
             hero.SetBehaviour(new HeroIdleBehaviour());
         }
 
@@ -33,10 +34,10 @@ namespace RobotCastle.Battling
             {
                 var view = hero.View;
                 view.movement.SetupAgent();
-                view.Stats.ManaReset.Reset(view);
+                view.stats.ManaResetAfterBattle.Reset(view);
                 view.heroUI.AssignStatsTracking(view);
-                view.HealthManager.SetDamageable(true);
-                foreach (var itemData in view.HeroItemsContainer.Items)
+                view.healthManager.SetDamageable(true);
+                foreach (var itemData in view.heroItemsContainer.Items)
                 {
                     foreach (var id in itemData.modifierIds)
                     {
@@ -52,10 +53,10 @@ namespace RobotCastle.Battling
             var mods = ServiceLocator.Get<ModifiersDataBase>();
             var view = hero.View;
             view.movement.SetupAgent();
-            view.Stats.ManaReset.Reset(view);
+            view.stats.ManaResetAfterBattle.Reset(view);
             view.heroUI.AssignStatsTracking(view);
-            view.HealthManager.SetDamageable(true);
-            foreach (var itemData in view.HeroItemsContainer.Items)
+            view.healthManager.SetDamageable(true);
+            foreach (var itemData in view.heroItemsContainer.Items)
             {
                 foreach (var id in itemData.modifierIds)
                 {
@@ -69,7 +70,7 @@ namespace RobotCastle.Battling
         {
             var map = hero.View.agent.Map;
             var myPos = map.GetCellPositionFromWorld(hero.View.transform.position);
-            var cellsMask = hero.View.Stats.Range.GetCellsMask();
+            var cellsMask = hero.View.stats.Range.GetCellsMask();
             _coveredCells.Clear();
             _heroesInRange.Clear();
             foreach (var val in cellsMask)
@@ -102,7 +103,7 @@ namespace RobotCastle.Battling
                     var minHealth = float.MaxValue;
                     foreach (var enemy in _heroesInRange)
                     {
-                        var h = enemy.View.Stats.HealthCurrent.Val;
+                        var h = enemy.View.stats.HealthCurrent.Val;
                         if (h < minHealth)
                         {
                             minHealth = h;

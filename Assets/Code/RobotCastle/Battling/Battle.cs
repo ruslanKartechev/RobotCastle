@@ -134,7 +134,7 @@ namespace RobotCastle.Battling
             var num = 1;
             foreach (var hero in _players)
             {
-                msg += $"{num} {hero.View.Stats.HeroId}\n";
+                msg += $"{num} {hero.View.stats.HeroId}\n";
             }
             return msg;
         }
@@ -145,7 +145,7 @@ namespace RobotCastle.Battling
             var num = 1;
             foreach (var hero in _enemies)
             {
-                msg += $"{num} {hero.View.Stats.HeroId}\n";
+                msg += $"{num} {hero.View.stats.HeroId}\n";
             }
             return msg;
         }

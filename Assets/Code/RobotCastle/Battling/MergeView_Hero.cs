@@ -52,7 +52,7 @@ namespace RobotCastle.Battling
                 _data = data;
             _view.heroUI.Level.SetLevel(_data.core.level);
             _view.heroUI.Level.AnimateUpdated();     
-            _view.Stats.SetMergeLevel(mergeLevel: _data.core.level);
+            _view.stats.SetMergeLevel(mergeLevel: _data.core.level);
             if(gameObject.TryGetComponent(out IHeroController hero))
                 hero.View.heroUI.UpdateStatsView(hero.View);
         }

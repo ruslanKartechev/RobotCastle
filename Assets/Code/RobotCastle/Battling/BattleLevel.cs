@@ -116,7 +116,8 @@ namespace RobotCastle.Battling
 
         private void ShowFailedScreen()
         {
-            
+            _mergeManager.AllowInput(false);
+            ServiceLocator.Get<IUIManager>().Show<LevelFailUI>(UIConstants.UILevelFail, () =>{});
         }
         
         private IEnumerator DelayedBattleEnd(Battle battle)
@@ -133,7 +134,7 @@ namespace RobotCastle.Battling
                     _playerHealthView.MinusHealth(health);
                     if (health == 0)
                     {
-                        CLog.LogRed($"[{nameof(BattleLevel)}] Player LOST");
+                        CLog.LogWhite($"[{nameof(BattleLevel)}] Player LOST");
                         ShowFailedScreen();
                         yield break;
                     }

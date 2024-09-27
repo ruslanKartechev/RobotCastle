@@ -28,7 +28,9 @@ namespace RobotCastle.Battling
                     return new AttackRangeRectangle(3, 3);
                 case "maiu":
                     return new AttackRangeRectangle(3, 3);
-    
+                case "alberon":
+                    return new AttackRangeRectangle(2, 2);
+                
                 case "mushroom_1":
                     return new AttackRangeRectangle(1, 1);
                 case "mushroom_2":

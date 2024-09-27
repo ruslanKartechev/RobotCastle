@@ -29,7 +29,7 @@ namespace RobotCastle.Battling
 
         public DamageArgs GetDamage()
         {
-            var amount = _view.Stats.Attack.Get();
+            var amount = _view.stats.Attack.Get();
             var damageArgs = new DamageArgs(amount, 0);
             return damageArgs;
         }

@@ -160,7 +160,7 @@ namespace RobotCastle.Merging
         
         private void MergeCallback(EMergeResult mergeResult, bool oneIntoTwo)
         {
-            CLog.LogBlue($"MergeCallback {mergeResult}");
+            // CLog.LogBlue($"MergeCallback {mergeResult}");
             var putResult = MergePutResult.Merged;
             switch (mergeResult)
             {

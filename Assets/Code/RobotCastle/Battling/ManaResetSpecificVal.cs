@@ -14,8 +14,8 @@
 
         public void Reset(HeroView heroView)
         {
-            heroView.Stats.ManaMax.SetBaseAndCurrent(_max);
-            heroView.Stats.ManaCurrent.SetBaseAndCurrent(_startVal);
+            heroView.stats.ManaMax.SetBaseAndCurrent(_max);
+            heroView.stats.ManaCurrent.SetBaseAndCurrent(_startVal);
         }
     }
 }

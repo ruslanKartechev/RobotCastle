@@ -6,7 +6,6 @@ namespace RobotCastle.Battling
 {
     public abstract class SpellProvider : ModifierProvider
     {
-        
         public abstract float manaMax { get; }
         public abstract float manaStart { get; }
 
@@ -18,7 +17,7 @@ namespace RobotCastle.Battling
 
         public virtual ESpellTier GetTier(GameObject hero)
         {
-            return HeroesConfig.GetSpellTier(hero.GetComponent<HeroStatsManager>().MergeTier);
+            return HeroesHelper.GetSpellTier(hero.GetComponent<HeroStatsManager>().MergeTier);
         }
 
         public virtual string GetName()

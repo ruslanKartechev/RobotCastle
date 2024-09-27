@@ -93,7 +93,7 @@ namespace RobotCastle.Testing
             var heroes = _heroesFactory.AllSpawned;
             foreach (var hero in heroes)
             {
-                if (hero.View.AttackManager == null)
+                if (hero.View.attackManager == null)
                 {
                     CLog.LogRed("hero.HeroView.AttackManager is null");
                     continue;
@@ -105,19 +105,19 @@ namespace RobotCastle.Testing
                 }
                 timer.enabled = true;
                 timer.DoLog = _logAttackDelays;
-                switch (hero.View.AttackManager)
+                switch (hero.View.attackManager)
                 {
                     case HeroRangedAttackManager:
                         var aimTarget = new GameObject($"attackTarget_{hero.gameObject.name}").transform;
                         aimTarget.position = hero.transform.TransformPoint(new Vector3(0, 1.25f, 2f));
-                        hero.View.AttackManager.BeginAttack(aimTarget, target);
+                        hero.View.attackManager.BeginAttack(aimTarget, target);
                         break;
                     case HeroMeleeAttackManager:
-                        hero.View.AttackManager.BeginAttack(transform, target);
+                        hero.View.attackManager.BeginAttack(transform, target);
                         break;
                     default:
                         CLog.Log("unknown attack manager type ");
-                        hero.View.AttackManager.BeginAttack(transform, target);
+                        hero.View.attackManager.BeginAttack(transform, target);
                         break;
                 }
             }

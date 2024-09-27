@@ -14,6 +14,11 @@ namespace RobotCastle.UI
         private Stat _stat;
         private Stat _statMax;
 
+        public void SetVal(float val)
+        {
+            _fillImage.fillAmount = val;
+        }
+
         public void DisplayStats(Stat stat, Stat statMax)
         {
             if(_text != null)

@@ -122,7 +122,7 @@ namespace RobotCastle.Battling
             _unitView.collider.isTrigger = false;
             _unitView.collider.enabled = true;
             _unitView.agent.RotationSpeed = HeroesConfig.RotationSpeed;
-            _unitView.agent.SpeedGetter = _unitView.Stats.MoveSpeed;
+            _unitView.agent.SpeedGetter = _unitView.stats.MoveSpeed;
         }
 
     }

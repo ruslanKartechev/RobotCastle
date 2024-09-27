@@ -14,7 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: crescent_slash
   _config:
-    manaMax: 50
-    manaStart: 0
-    widthPerTier: 
-    spellDamage: []
+    manaMax: 60
+    manaStart: 60
+    speed: 10
+    cellsMasksByTear:
+    - mask:
+      - {x: 0, y: 0}
+    - mask:
+      - {x: 0, y: 0}
+      - {x: 1, y: 0}
+      - {x: -1, y: 0}
+    - mask:
+      - {x: 0, y: 0}
+      - {x: 1, y: 0}
+      - {x: -1, y: 0}
+      - {x: 2, y: 0}
+      - {x: -2, y: 0}
+    - mask:
+      - {x: 0, y: 0}
+      - {x: 1, y: 0}
+      - {x: -1, y: 0}
+      - {x: 2, y: 0}
+      - {x: -2, y: 0}
+      - {x: 3, y: 0}
+      - {x: -3, y: 0}
+    spellDamage:
+    - 84
+    - 218
+    - 400
+    - 1000
+    physDamage: []

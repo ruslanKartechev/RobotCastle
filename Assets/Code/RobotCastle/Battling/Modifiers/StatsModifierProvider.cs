@@ -33,7 +33,7 @@ namespace RobotCastle.Battling
         
         public override void AddToHero(HeroView view)
         {
-            var stats = view.Stats;
+            var stats = view.stats;
             switch (_statType)
             {
                 case EStatType.Attack:

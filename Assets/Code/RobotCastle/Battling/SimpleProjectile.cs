@@ -8,6 +8,7 @@ namespace RobotCastle.Battling
 {
     public class SimpleProjectile : MonoBehaviour, IProjectile, IPoolItem
     {
+        [SerializeField] private bool _isPooled = true;
         [SerializeField] private ParticleSystem _hitParticles;
         private Action<object> _hitCallback;
         private object _target;
@@ -51,7 +52,10 @@ namespace RobotCastle.Battling
                 _hitParticles.Play();
             }
             _hitCallback?.Invoke(_target);
-            ServiceLocator.Get<ISimplePoolsManager>().ReturnOne(this);
+            if(_isPooled)
+                ServiceLocator.Get<ISimplePoolsManager>().ReturnOne(this);
+            else
+                gameObject.SetActive(false);
         }
     }
 }

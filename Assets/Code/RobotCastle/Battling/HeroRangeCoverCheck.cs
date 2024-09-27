@@ -52,7 +52,7 @@ namespace RobotCastle.Battling
         {
             var map = _hero.View.agent.Map;
             var myPos = map.GetCellPositionFromWorld(_hero.View.transform.position);
-            var cellsMask = _hero.View.Stats.Range.GetCellsMask();
+            var cellsMask = _hero.View.stats.Range.GetCellsMask();
             _coveredCells.Clear();
             foreach (var val in cellsMask)
                 _coveredCells.Add(myPos + val);

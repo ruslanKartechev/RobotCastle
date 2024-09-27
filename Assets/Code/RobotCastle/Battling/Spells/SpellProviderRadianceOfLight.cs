@@ -16,8 +16,8 @@ namespace RobotCastle.Battling
         
         public override void AddToHero(HeroView view)
         {
-            view.Stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            view.Stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
+            view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
+            view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
         }
     }
 }

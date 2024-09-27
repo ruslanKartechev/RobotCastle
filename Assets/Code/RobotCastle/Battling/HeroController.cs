@@ -9,9 +9,7 @@ namespace RobotCastle.Battling
     {
         public bool IsDead { get; set; }
         public HeroView View => _view;
-        
         public Battle Battle { get; set; }
-        
         public int TeamNum { get; set; }
         
         [SerializeField] private HeroView _view;
@@ -24,9 +22,9 @@ namespace RobotCastle.Battling
         {
             AddHeroComponents();
             _stats.LoadAndSetHeroStats(id, heroLevel, mergeLevel);
-            _view.SpellsContainer.AddModifierProviders(spells);
-            _view.SpellsContainer.ApplyAllModifiers(_view);
-            SetupStatsListeners();
+            _view.spellsContainer.AddModifierProviders(spells);
+            _view.spellsContainer.ApplyAllModifiers(_view);
+            SetStatsComponentsIfMissing();
         }
 
         public void UpdateMap(bool force = false)
@@ -36,7 +34,6 @@ namespace RobotCastle.Battling
             _didSetMap = true;
             _view.agent.InitAgent(ServiceLocator.Get<IMap>());
         }
-
 
         public void MarkDead()
         {
@@ -70,14 +67,20 @@ namespace RobotCastle.Battling
             _currentBehaviour?.Stop();
         }
         
-        private void SetupStatsListeners()
+        private void SetStatsComponentsIfMissing()
         {
-            if (_view.Stats.FullManaListener == null)
-                _view.Stats.FullManaListener = new DefaultFullManaAction();
-            if (_view.Stats.HealthReset == null)
-                _view.Stats.HealthReset = new HealthResetFull();
-            if (_view.Stats.ManaReset == null)
-                _view.Stats.ManaReset = new ManaResetZero();
+            var stats = _view.stats; 
+            if (stats.FullManaListener == null)
+                stats.FullManaListener = new DefaultFullManaAction();
+            if (stats.HealthReset == null)
+                stats.HealthReset = new HealthResetFull();
+            if (stats.ManaResetAfterBattle == null)
+                stats.ManaResetAfterBattle = new ManaResetZero();
+            if (stats.ManaResetAfterFull == null)
+                stats.ManaResetAfterFull = new ManaResetZero();
+            if (stats.ManaAdder == null)
+                stats.ManaAdder = new SimpleManaAdder(_view);
+
         }
         
         private void AddHeroComponents()
@@ -92,16 +95,16 @@ namespace RobotCastle.Battling
             pathfinder.PathfindingAgentAnimatorGO = gameObject;
             _view.agent = pathfinder;
             _view.movement = unitMover;
-            _view.Stats = _stats;
-            _view.KillProcessor = new HeroDeathProcessor(_view);
-            _view.SpellsContainer = new HeroSpellsContainer();
-            _view.DamageSource = new HeroDamageSource(_view);
+            _view.stats = _stats;
+            _view.killProcessor = new HeroDeathProcessor(_view);
+            _view.spellsContainer = new HeroSpellsContainer();
+            _view.damageSource = new HeroDamageSource(_view);
 
             var attack = gameObject.GetComponent<IHeroAttackManager>();
             attack.Hero = this;
-            _view.DamageReceiver = health;
-            _view.HealthManager = health;
-            _view.AttackManager = attack;
+            _view.damageReceiver = health;
+            _view.healthManager = health;
+            _view.attackManager = attack;
 
         }
     }

@@ -14,7 +14,7 @@ namespace RobotCastle.Battling
         
         public void OnKilled()
         {
-            _heroView.HealthManager.SetDamageable(false);
+            _heroView.healthManager.SetDamageable(false);
             _heroView.agent.Stop();
             var hero = _heroView.gameObject.GetComponent<IHeroController>();
             hero.MarkDead();
@@ -23,6 +23,7 @@ namespace RobotCastle.Battling
             _heroView.rb.isKinematic = true;
             _heroView.collider.enabled = false;
             _heroView.gameObject.SetActive(false);
+            _heroView.processes.StopAll();
             if (ServiceLocator.GetIfContains<ISimplePoolsManager>(out var pool))
             {
                 var particles = pool.GetOne("death_particles") as DeathParticles;

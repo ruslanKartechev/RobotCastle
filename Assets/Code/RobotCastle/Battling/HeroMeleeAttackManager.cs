@@ -19,8 +19,8 @@ namespace RobotCastle.Battling
             if (!_activated)
             {
                 _activated = true;
-                Hero.View.AnimationEventReceiver.OnAttackEvent -= OnAttack;
-                Hero.View.AnimationEventReceiver.OnAttackEvent += OnAttack;
+                Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
+                Hero.View.animationEventReceiver.OnAttackEvent += OnAttack;
             }
             Hero.View.animator.SetBool(HeroesConfig.Anim_Attack, true);
         }
@@ -30,7 +30,7 @@ namespace RobotCastle.Battling
             if (!_activated)
                 return;
             _activated = false;
-            Hero.View.AnimationEventReceiver.OnAttackEvent -= OnAttack;
+            Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
             Hero.View.animator.SetBool(HeroesConfig.Anim_Attack, false);
         }
 
@@ -38,10 +38,10 @@ namespace RobotCastle.Battling
         {
             if (!_activated)
                 return;
-            var damage = Hero.View.DamageSource.GetDamage();
+            var damage = Hero.View.damageSource.GetDamage();
             _target.TakeDamage(damage);
             OnAttackStep?.Invoke();
-            Hero.View.Stats.AddMana(damage.physDamage * HeroesConfig.ManaGainDamageMultiplier);
+            Hero.View.stats.ManaAdder.AddMana(damage.physDamage * HeroesConfig.ManaGainDamageMultiplier);
         }
     }
 }

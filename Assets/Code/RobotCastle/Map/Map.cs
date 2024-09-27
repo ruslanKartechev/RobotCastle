@@ -5,17 +5,25 @@ namespace Bomber
 {
     public class Map : IMap
     {
-        private Vector2Int _size;
-
         public List<IAgent> ActiveAgents { get; } = new(20);
+
         public Vector2Int Size => _size;
+        
         public MapCell[,] Grid { get; private set;}
 
-
         public float CellSize { get; private set; }
+        
         public Vector3 WorldOrigin { get; private set;}
 
-
+        private Vector2Int _size;
+        
+        public bool IsOutOfBounce(Vector2Int coord)
+        {
+            if (coord.x >= Size.x || coord.y >= Size.y || coord.x < 0 || coord.y < 0)
+                return true;
+            return false;
+        }
+        
         public Vector2Int GetCellPositionFromWorld(Vector3 worldPosition)
         {
             var p = worldPosition - WorldOrigin;

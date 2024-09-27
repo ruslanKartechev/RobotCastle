@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public enum ESpellTier {Tier1, Tier2, Tier3, Tier4}
+    public enum ESpellTier { Tier1, Tier2, Tier3, Tier4 }
     public class HeroesConfig
     {
         public const int PlayerHealthStart = 3;
         public const int PlayerTroopsStart = 3;
-        public const float ManaGainDamageMultiplier = .33f;
+        public const float ManaGainDamageMultiplier = .2f;
         
         public const int DuelMaxDistance = 3;
         
@@ -30,15 +30,9 @@ namespace RobotCastle.Battling
         // Tier 1 - (0, 1), Tier 2 - (2, 3), Tier 3 - (4-5), Tier 4 - (6)
         public static readonly List<int> SpellTiersByMergeLevel = new() {0, 2, 4, 6};
 
-        public static ESpellTier GetSpellTier(int mergeLevel)
-        {
-            for (var i = SpellTiersByMergeLevel.Count - 1; i >= 0; i--)
-            {
-                if (mergeLevel >= SpellTiersByMergeLevel[i])
-                    return (ESpellTier)i;
-            }
-            return (ESpellTier)0;
-        }
+        public const string SpellFXPrefab_JudgementOfLight = "prefabs/spells/judgement_of_light";
+        public const string SpellFXPrefab_CrescentSlash = "prefabs/spells/crescent_slash";
+        
 
     }
 }
