@@ -18,8 +18,8 @@ namespace RobotCastle.Battling
             _heroView.agent.Stop();
             var hero = _heroView.gameObject.GetComponent<IHeroController>();
             hero.MarkDead();
-            hero.Battle.AttackPositionCalculator.RemoveUnit(_heroView.movement);
-            _heroView.movement.SetNullTargetCell();
+            hero.Battle.AttackPositionCalculator.RemoveUnit(_heroView.state);
+            _heroView.state.SetTargetCellToSelf();
             _heroView.rb.isKinematic = true;
             _heroView.collider.enabled = false;
             _heroView.gameObject.SetActive(false);

@@ -1,6 +1,4 @@
-﻿using RobotCastle.Core;
-
-namespace RobotCastle.Merging
+﻿namespace RobotCastle.Core
 {
     public interface ISimplePoolsManager
     {
@@ -8,6 +6,5 @@ namespace RobotCastle.Merging
         void ReturnOne(IPoolItem obj);
         bool HasPool(string id);
         void AddPoolIfNot(string id, string prefabPath, int startCount);
-
     }
 }

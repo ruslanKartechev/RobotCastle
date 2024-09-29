@@ -24,9 +24,9 @@ namespace RobotCastle.Battling
         
         public static ESpellTier GetSpellTier(int mergeLevel)
         {
-            for (var i = HeroesConfig.SpellTiersByMergeLevel.Count - 1; i >= 0; i--)
+            for (var i = HeroesConstants.SpellTiersByMergeLevel.Count - 1; i >= 0; i--)
             {
-                if (mergeLevel >= HeroesConfig.SpellTiersByMergeLevel[i])
+                if (mergeLevel >= HeroesConstants.SpellTiersByMergeLevel[i])
                     return (ESpellTier)i;
             }
             return (ESpellTier)0;
@@ -77,7 +77,7 @@ namespace RobotCastle.Battling
             Vector3 worldCenter,
             IMap map,
             IList<IHeroController> allHeroes,
-            float cellRadius = 1f)
+            float cellRadius = .5f)
         {
             var center = map.GetCellPositionFromWorld(worldCenter);
             var affected = cellsMask.GetCellsAround(center, map);
@@ -85,10 +85,10 @@ namespace RobotCastle.Battling
             var result = new List<IHeroController>(allHeroes.Count);
             foreach (var cell in affected)
             {
-                var heroPos = map.GetWorldFromCell(cell);
+                var cellWorldPos = map.GetWorldFromCell(cell);
                 foreach (var hh in allHeroes)
                 {
-                    var d2 = (heroPos - hh.View.transform.position).sqrMagnitude;
+                    var d2 = (cellWorldPos - hh.View.transform.position).sqrMagnitude;
                     if (d2 <= rad2)
                         result.Add(hh);   
                 }
@@ -101,7 +101,7 @@ namespace RobotCastle.Battling
             Vector3 worldCenter,
             IMap map,
             IList<IHeroController> allHeroes,
-            float cellRadius = 1f)
+            float cellRadius = .5f)
         {
             var center = map.GetCellPositionFromWorld(worldCenter);
             var affected = cellsMask.GetCellsAround(center, map);
@@ -109,10 +109,10 @@ namespace RobotCastle.Battling
             var result = new List<IHeroController>(allHeroes.Count);
             foreach (var cell in affected)
             {
-                var heroPos = map.GetWorldFromCell(cell);
+                var cellWorldPos = map.GetWorldFromCell(cell);
                 foreach (var hh in allHeroes)
                 {
-                    var d2 = (heroPos - hh.View.transform.position).sqrMagnitude;
+                    var d2 = (cellWorldPos - hh.View.transform.position).sqrMagnitude;
                     if (d2 <= rad2)
                         result.Add(hh);   
                 }
@@ -120,29 +120,6 @@ namespace RobotCastle.Battling
             return result;
         }
 
-        
-        public static bool CheckIfAtLeastOneHeroInMask(
-            CellsMask cellsMask, 
-            Vector3 worldCenter,
-            IMap map,
-            IList<IHeroController> allHeroes,
-            float cellRadius = 1f)
-        {
-            var center = map.GetCellPositionFromWorld(worldCenter);
-            var affected = cellsMask.GetCellsAround(center, map);
-            var rad2 = cellRadius * cellRadius;
-            foreach (var cell in affected)
-            {
-                var heroPos = map.GetWorldFromCell(cell);
-                foreach (var hh in allHeroes)
-                {
-                    var d2 = (heroPos - hh.View.transform.position).sqrMagnitude;
-                    if (d2 <= rad2)
-                        return true;
-                }
-            }
-            return false;
-        }
         
         public static bool CheckIfAtLeastOneHeroInMask(
             CellsMask cellsMask, 

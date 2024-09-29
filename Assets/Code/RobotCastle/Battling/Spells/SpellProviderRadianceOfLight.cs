@@ -16,8 +16,7 @@ namespace RobotCastle.Battling
         
         public override void AddToHero(HeroView view)
         {
-            view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
+            view.stats.FullManaListener= new SpellRadianceOfLife(view, _config);
         }
     }
 }

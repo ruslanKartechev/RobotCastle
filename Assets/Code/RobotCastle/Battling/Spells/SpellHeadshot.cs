@@ -4,20 +4,16 @@ using UnityEngine;
 namespace RobotCastle.Battling
 {
     [System.Serializable]
-    public class SpellHeadshot : IFullManaListener, ISpellPowerGetter, IProjectileFactory
+    public class SpellHeadshot : IFullManaListener, IStatDecorator, IProjectileFactory
     {
-        public float BaseSpellPower => _config.spellDamage[_view.stats.MergeTier];
-
-        public float FullSpellPower
+        public float BaseSpellPower => _config.spellDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+        public string name => "spell";
+        public int priority => 10;
+        public float Decorate(float val)
         {
-            get
-            {
-                var v = BaseSpellPower * HeroesConfig.TierStatMultipliers[_view.stats.MergeTier];
-                foreach (var dec in _view.stats.SpellPowerDecorators)
-                    v = dec.Decorate(v);
-                return v;
-            }
+            return val + BaseSpellPower;
         }
+
         
         public SpellHeadshot(HeroView heroView, SpellConfigHeadshot config)
         {
@@ -29,7 +25,7 @@ namespace RobotCastle.Battling
             _view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
             _view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
             _view.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
-            _view.stats.ManaResetAfterFull = new ManaResetZero();
+            _view.stats.SpellPower.PermanentDecorators.Add(this);
         }
         
         private SpellConfigHeadshot _config;
@@ -42,6 +38,7 @@ namespace RobotCastle.Battling
 
         public void OnFullMana(GameObject heroGo)
         {
+            CLog.Log($"[{_view.gameObject.name}] [{nameof(SpellHeadshot)}]");
             Execute();
         }
 
@@ -52,8 +49,10 @@ namespace RobotCastle.Battling
             _isActive = true;
             CLog.LogWhite($"[{_view.gameObject.name}] Spell headshot executed");
             _manaAdder.CanAdd = false;
-            _view.damageSource.AddDecorator(_decorator);
-            _view.damageSource.AddDecorator(_decoratorPhys);
+            _decorator.val = _view.stats.SpellPower.Get();
+            _decoratorPhys.val = _config.physDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+            _view.stats.DamageCalculator.AddDecorator(_decorator);
+            _view.stats.DamageCalculator.AddDecorator(_decoratorPhys);
             _view.attackManager.OnAttackStep -= OnAttack;
             _view.attackManager.OnAttackStep += OnAttack;
             var atk = ((HeroRangedAttackManager)_view.attackManager);
@@ -63,8 +62,8 @@ namespace RobotCastle.Battling
 
         private void OnAttack()
         {
-            _view.damageSource.RemoveDecorator(_decorator);
-            _view.damageSource.RemoveDecorator(_decoratorPhys);
+            _view.stats.DamageCalculator.RemoveDecorator(_decorator);
+            _view.stats.DamageCalculator.RemoveDecorator(_decoratorPhys);
             _view.attackManager.OnAttackStep -= OnAttack;
             _view.stats.ManaResetAfterFull.Reset(_view);
             _isActive = false;

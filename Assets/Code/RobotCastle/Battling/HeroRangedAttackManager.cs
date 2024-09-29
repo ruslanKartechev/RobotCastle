@@ -9,6 +9,8 @@ namespace RobotCastle.Battling
         public event Action OnAttackStep;
 
         public IHeroController Hero { get; set; }
+        public IDamageReceiver LastTarget => _target;
+
         public IProjectileFactory ProjectileFactory
         {
             get => _projectileFactory;
@@ -30,18 +32,18 @@ namespace RobotCastle.Battling
             }
         }
 
-        public void BeginAttack(Transform targetTransform, IDamageReceiver target)
+        public void BeginAttack(IDamageReceiver target)
         {
             _target = target;
-            _targetTransform = targetTransform;
+            _targetTransform = target.GetGameObject().transform;
             Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
             Hero.View.animationEventReceiver.OnAttackEvent += OnAttack;
-            Hero.View.animator.SetBool(HeroesConfig.Anim_Attack, true);
+            Hero.View.animator.SetBool(HeroesConstants.Anim_Attack, true);
         }
 
         public void Stop()
         {
-            Hero.View.animator.SetBool(HeroesConfig.Anim_Attack, false);
+            Hero.View.animator.SetBool(HeroesConstants.Anim_Attack, false);
             Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
         }
 
@@ -57,8 +59,8 @@ namespace RobotCastle.Battling
             var dm = (IDamageReceiver)target;
             if (dm != null)
             {
-                var damage = Hero.View.damageSource.GetDamage();
-                Hero.View.stats.ManaAdder.AddMana(damage.physDamage * HeroesConfig.ManaGainDamageMultiplier);
+                var damage = Hero.View.stats.DamageCalculator.CalculateRegularAttackDamage();
+                Hero.View.stats.ManaAdder.AddMana(damage.physDamage * HeroesConstants.ManaGainDamageMultiplier);
                 _target.TakeDamage(damage);
             }
         }

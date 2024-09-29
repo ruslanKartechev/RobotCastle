@@ -22,8 +22,8 @@ namespace RobotCastle.UI
         public void DisplayStats(Stat stat, Stat statMax)
         {
             if(_text != null)
-                _text.text = stat.Val.ToString(CultureInfo.InvariantCulture);
-            var t = stat.Val / statMax.Val;
+                _text.text = stat.Get().ToString(CultureInfo.InvariantCulture);
+            var t = stat.Get() / statMax.Get();
             _fillImage.fillAmount = t;
         }
         
@@ -46,14 +46,14 @@ namespace RobotCastle.UI
         [ContextMenu("Debug")]
         private void Debug()
         {
-            CLog.LogRed($"Enabled: {enabled}. Stat: {_stat.Val}. Max: {_statMax.Val}. T: {_stat.Val / _statMax.Val}");
+            CLog.LogRed($"Enabled: {enabled}. Stat: {_stat.Get()}. Max: {_statMax.Get()}. T: {_stat.Get() / _statMax.Get()}");
         }
 
         private void Update()
         {
             if(_text != null)
-                _text.text = _stat.Val.ToString(CultureInfo.InvariantCulture);
-            var t = _stat.Val / _statMax.Val;
+                _text.text = _stat.Get().ToString(CultureInfo.InvariantCulture);
+            var t = _stat.Get() / _statMax.Get();
             _fillImage.fillAmount = t;
             // CLog.Log($"Val {_stat.Val}. Max: {_statMax.Val}");
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class JudgementOfLightView : MonoBehaviour
+    public class SpellParticleOnGridEffect : MonoBehaviour
     {
         [SerializeField] private List<GameObject> _particles;
         [SerializeField] private float _duration = 1.5f;
@@ -12,7 +12,7 @@ namespace RobotCastle.Battling
         public async void Show(List<Vector3> positions)
         {
             var count = positions.Count;
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < count && i < _particles.Count; i++)
             {
                 _particles[i].SetActive(true);
                 _particles[i].transform.position = positions[i];

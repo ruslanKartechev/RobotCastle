@@ -12,22 +12,23 @@ namespace RobotCastle.Battling
         
         public string BehaviourID => "hero_attack";
 
-        private enum AttackBehaviourState { Waiting, Moving, Rotating, Attacking }
+        private enum EAttackLogicStep { Waiting, Moving, Rotating, Attacking }
         
         private IHeroController _hero;
         private CancellationTokenSource _mainToken;
         private CancellationTokenSource _subToken;
         private HeroRangeCoverCheck _rangeCoverCheck;
-        private AttackBehaviourState _state;
+        private EAttackLogicStep _logicStep;
         private bool _isActivated;
+        private HeroStateData myState => _hero.View.state;
+        private HeroStateData enemyState => myState.attackData.CurrentEnemy.View.state;
         
         private IHeroController enemy
         {
-            get => _hero.View.attackData.CurrentEnemy;
-            set => _hero.View.attackData.CurrentEnemy = value;
+            get => _hero.View.state.attackData.CurrentEnemy;
+            set => _hero.View.state.attackData.CurrentEnemy = value;
         }
 
-        private AttackTargetData attackData => _hero.View.attackData;
         private HeroMovementManager movement => _hero.View.movement;
         
         
@@ -42,7 +43,7 @@ namespace RobotCastle.Battling
             _hero = hero;
             if (_rangeCoverCheck == null)
                 _rangeCoverCheck = new HeroRangeCoverCheck(_hero);
-            _hero.Battle.AttackPositionCalculator.AddUnit(_hero.View.movement);
+            _hero.Battle.AttackPositionCalculator.AddUnit(_hero.View.state);
             _hero.View.attackManager.OnAttackStep += OnAttackCallback;
             _mainToken = new CancellationTokenSource();
             _hero.View.stats.CheckManaFull();
@@ -52,16 +53,15 @@ namespace RobotCastle.Battling
         public void Stop()
         {
             _hero.View.attackManager.OnAttackStep -= OnAttackCallback;
-            _state = AttackBehaviourState.Waiting;
+            _logicStep = EAttackLogicStep.Waiting;
             // CLog.Log($"[{nameof(HeroAttackEnemyBehaviour)}] [Stop]");
             if(_mainToken != null)
                 _mainToken.Cancel();
             if (_subToken != null)
                 _subToken.Cancel();
-            _hero.View.agent.SetCellMoveCheck(null);
             _hero.View.attackManager.Stop();
-            _hero.Battle.AttackPositionCalculator.RemoveUnit(_hero.View.movement);
-            _hero.View.movement.SetNullTargetCell();
+            _hero.Battle.AttackPositionCalculator.RemoveUnit(_hero.View.state);
+            myState.SetTargetCellToSelf();
         }
 
         // 1 Choose target
@@ -70,8 +70,8 @@ namespace RobotCastle.Battling
         // while going  - check position
         private async void SearchAndAttack(CancellationToken token)
         {
-            attackData.IsMovingForDuel = false;
-            movement.SetNullTargetCell();
+            myState.attackData.IsMovingForDuel = false;
+            myState.SetTargetCellToSelf();
             _rangeCoverCheck.Update(_hero.View.transform.position, true);
             enemy = BattleManager.GetBestTargetForAttack(_hero);
             while (enemy == null && !token.IsCancellationRequested)
@@ -92,13 +92,13 @@ namespace RobotCastle.Battling
         
         private async void DecideNextStep(CancellationToken token)
         {
-            var bestTarget = BattleManager.GetBestTargetForAttack(_hero);
-            if (bestTarget != null && enemy != bestTarget)
-            {
-                // CLog.LogRed($"[{_hero.gameObject.name}] New enemy Set!");
-                enemy = bestTarget;
-                attackData.IsMovingForDuel = false;
-            }
+            // var bestTarget = BattleManager.GetBestTargetForAttack(_hero);
+            // if (bestTarget != null && enemy != bestTarget)
+            // {
+            //     // CLog.LogRed($"[{_hero.gameObject.name}] New enemy Set!");
+            //     enemy = bestTarget;
+            //     attackData.IsMovingForDuel = false;
+            // }
             if (enemy.IsDead)
             {
                 _mainToken.Cancel();
@@ -107,29 +107,32 @@ namespace RobotCastle.Battling
                 return;
             }
             if (token.IsCancellationRequested) return;
-            
-            _hero.View.agent.SetCellMoveCheck(OnMoveStepCallback);
-            var actionCall = CheckIfShallMove(enemy);
+            var actionCall = CheckNextAction(enemy);
+            if (_hero.View.gameObject.name.Contains("shelda"))
+            {
+                CLog.LogGreen($"action call: {actionCall}. State: {_logicStep.ToString()}");
+            }
             switch (actionCall)
             {
                 case 0: // should not move, straight to attack
-                    if (_state == AttackBehaviourState.Attacking)
+                    if (_logicStep == EAttackLogicStep.Attacking)
                         return;
-                    movement.OnMovementStopped();
                     StopSubProc();
-                    _state = AttackBehaviourState.Attacking;
+                    // movement.OnMovementStopped();
+                    _logicStep = EAttackLogicStep.Attacking;
                     BeginAttackAndCheckIfDead(_subToken.Token);
                     return;
                 case 1: // should move to target cell
-                    if (_state == AttackBehaviourState.Attacking)
+                    if (_logicStep == EAttackLogicStep.Attacking)
                     {
                         StopSubProc();
                         StopAttack();
                     }
-                    _state = AttackBehaviourState.Waiting;
-                    movement.SetNullTargetCell();
+                    _logicStep = EAttackLogicStep.Waiting;
+                    myState.SetTargetCellToSelf();
                     
-                    var shouldMove = _hero.Battle.AttackPositionCalculator.GetPositionToAttack(_hero, enemy, out var enemyCell, out var distance);
+                    var shouldMove = _hero.Battle.AttackPositionCalculator.GetPositionToAttack(
+                        _hero, enemy, out var attackCell, out var distance);
                     if (!shouldMove)
                     {
                         CLog.LogRed($"[DecideNextStep] Wierd case");
@@ -138,15 +141,16 @@ namespace RobotCastle.Battling
                         DecideNextStep(_mainToken.Token);
                         return;
                     }
-                    CLog.LogYellow($"[{_hero.View.gameObject.name}] DuelDistance {distance <= HeroesConfig.DuelMaxDistance} (dist: {distance}. max: {HeroesConfig.DuelMaxDistance}), Enemy is me: {enemy.View.attackData.CurrentEnemy == _hero}, Enemy is moving: {enemy.View.agent.IsMoving}");
-                    if (distance <= HeroesConfig.DuelMaxDistance 
-                        && enemy.View.attackData.CurrentEnemy == _hero 
-                        && enemy.View.agent.IsMoving)
+                    CLog.LogYellow($"[{_hero.View.gameObject.name}] DuelDistance {distance <= HeroesConstants.DuelMaxDistance} (dist: {distance}. max: {HeroesConstants.DuelMaxDistance})" +
+                                   $"\nEnemy is me: {enemyState.attackData.CurrentEnemy == _hero}, Enemy state: {enemyState.GetStr()}");
+                    if (distance <= HeroesConstants.DuelMaxDistance 
+                        && enemyState.attackData.CurrentEnemy == _hero 
+                        && enemyState.isMoving)
                     {
-                        CLog.LogGreen($"[{_hero.View.gameObject.name}] Enemy Moving ForDuel: {enemy.View.attackData.IsMovingForDuel}");
-                        if (enemy.View.attackData.IsMovingForDuel)
+                        CLog.LogGreen($"[{_hero.View.gameObject.name}] Duel case! Enemy: {enemyState.attackData.IsMovingForDuel}.");
+                        if (enemyState.attackData.IsMovingForDuel)
                         {
-                            attackData.IsMovingForDuel = false;
+                            myState.attackData.IsMovingForDuel = false;
                             for(var i = 0; i < 3; i++)
                                 await Task.Yield();
                             if (token.IsCancellationRequested)
@@ -155,18 +159,18 @@ namespace RobotCastle.Battling
                             return;
                         }
                         else
-                            attackData.IsMovingForDuel = true;
+                            myState.attackData.IsMovingForDuel = true;
                     }
-                    _state = AttackBehaviourState.Moving;
-                    movement.TargetCell = enemyCell;
+                    _logicStep = EAttackLogicStep.Moving;
+                    myState.TargetCell = attackCell;
                     StopSubProc();
-                    WaitingForMovement(enemyCell, _subToken.Token);
+                    WaitingForMovement(attackCell, _subToken.Token);
                     return;
                 case 2:
                     StopSubProc();
-                    if (_state == AttackBehaviourState.Attacking)
+                    if (_logicStep == EAttackLogicStep.Attacking)
                         StopAttack();
-                    _state = AttackBehaviourState.Rotating;
+                    _logicStep = EAttackLogicStep.Rotating;
                     _hero.View.movement.RotateIfNecessary(enemy.View.agent.CurrentCell, _subToken.Token, OnRotated);
                     return;
             }
@@ -183,12 +187,6 @@ namespace RobotCastle.Battling
             _subToken = new CancellationTokenSource();
         }
         
-        private bool OnMoveStepCallback(Vector2Int newCell)
-        {
-            DecideNextStep(_mainToken.Token);
-            return false;
-        }
-
         private void OnAttackCallback()
         {
             // CLog.Log($"[{_hero.gameObject.name}] OnAttackCallback");
@@ -204,21 +202,20 @@ namespace RobotCastle.Battling
                 case EPathMovementResult.IsBlockedOnTheWay:
                     // CLog.LogRed($"[{_hero.gameObject.name}] IsBlockedOnTheWay moving to {targetCell.ToString()}");
                     await Task.Delay(waitTimeMs, token);
-                    DecideNextStep(_mainToken.Token);
                     break;
                 case EPathMovementResult.FailedToBuild:
                     CLog.LogRed($"[{_hero.View.gameObject.name}] FailedToBuild moving to {targetCell.ToString()}");
                     _hero.View.movement.OnMovementStopped();
                     await Task.Delay(waitTimeMs, token);
-                    DecideNextStep(_mainToken.Token);
                     break;
             }
+            DecideNextStep(_mainToken.Token);
         }
         
         /// <summary>
         /// </summary>
         /// <returns>0 - can attack. 1 - need to move, 2 - need to rotate </returns>
-        private int CheckIfShallMove(IHeroController otherHero)
+        private int CheckNextAction(IHeroController otherHero)
         {
             _rangeCoverCheck.Update(_hero.View.transform.position, true);
             var isWithin = _rangeCoverCheck.IsHeroWithinRange(otherHero);
@@ -238,7 +235,7 @@ namespace RobotCastle.Battling
         
         private async Task BeginAttackAndCheckIfDead(CancellationToken token)
         {
-            _hero.View.attackManager.BeginAttack(enemy.View.transform, enemy.View.damageReceiver);
+            _hero.View.attackManager.BeginAttack(enemy.View.damageReceiver);
             var startEnemyCell = enemy.View.agent.CurrentCell;
             while (!token.IsCancellationRequested)
             {

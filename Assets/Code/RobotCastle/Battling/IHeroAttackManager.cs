@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace RobotCastle.Battling
 {
@@ -7,7 +6,8 @@ namespace RobotCastle.Battling
     {
         public event Action OnAttackStep;
         IHeroController Hero { get; set; }
-        void BeginAttack(Transform targetTransform, IDamageReceiver target);
+        public IDamageReceiver LastTarget { get; }
+        void BeginAttack(IDamageReceiver target);
         void Stop();
     }
 }

@@ -37,7 +37,6 @@ namespace RobotCastle.Battling
 
         public void MarkDead()
         {
-            _view.movement.SetNullTargetCell();
             StopCurrentBehaviour();
             IsDead = true;
             Battle.OnKilled(this);
@@ -52,6 +51,8 @@ namespace RobotCastle.Battling
 
         public void SetBehaviour(IHeroBehaviour behaviour)
         {
+            if (IsDead)
+                return;
             if (_currentBehaviour != null)
                 _currentBehaviour.Stop();
             _currentBehaviour = behaviour;
@@ -60,6 +61,9 @@ namespace RobotCastle.Battling
 
         private void OnBehaviourEnd(IHeroBehaviour behaviour)
         {
+            if (IsDead) return;
+            _currentBehaviour = new HeroAttackEnemyBehaviour();
+            _currentBehaviour.Activate(this, OnBehaviourEnd);
         }
 
         private void OnDisable()
@@ -76,11 +80,8 @@ namespace RobotCastle.Battling
                 stats.HealthReset = new HealthResetFull();
             if (stats.ManaResetAfterBattle == null)
                 stats.ManaResetAfterBattle = new ManaResetZero();
-            if (stats.ManaResetAfterFull == null)
-                stats.ManaResetAfterFull = new ManaResetZero();
             if (stats.ManaAdder == null)
                 stats.ManaAdder = new SimpleManaAdder(_view);
-
         }
         
         private void AddHeroComponents()
@@ -98,7 +99,7 @@ namespace RobotCastle.Battling
             _view.stats = _stats;
             _view.killProcessor = new HeroDeathProcessor(_view);
             _view.spellsContainer = new HeroSpellsContainer();
-            _view.damageSource = new HeroDamageSource(_view);
+            _view.stats.DamageCalculator = new DefaultDamageCalculator(_view.stats);
 
             var attack = gameObject.GetComponent<IHeroAttackManager>();
             attack.Hero = this;

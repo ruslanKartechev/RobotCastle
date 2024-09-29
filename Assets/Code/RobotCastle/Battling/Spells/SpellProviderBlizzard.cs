@@ -2,12 +2,6 @@
 
 namespace RobotCastle.Battling
 {
-    [System.Serializable]
-    public class SpellConfigBlizzard : BaseSpellConfig
-    {
-        
-    }
-    
     [CreateAssetMenu(menuName = "SO/Spells/SpellProviderBlizzard", fileName = "spell_blizzard", order = 0)]
     public class SpellProviderBlizzard : SpellProvider
     {
@@ -22,8 +16,7 @@ namespace RobotCastle.Battling
         
         public override void AddToHero(HeroView view)
         {
-            view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
+            view.stats.FullManaListener = new SpellBlizzard(view, _config);
         }
     }
 }

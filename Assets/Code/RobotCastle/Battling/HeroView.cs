@@ -23,15 +23,16 @@ namespace RobotCastle.Battling
         public IHeroHealthManager healthManager { get; set; }
         public IDamageReceiver damageReceiver { get; set; }
         public IKillProcessor killProcessor { get; set; }
-        public AttackTargetData attackData { get; set; } = new ();
         public HeroSpellsContainer spellsContainer { get; set;}
-        public HeroDamageSource damageSource { get; set; }
+        public HeroStateData state { get; set; } = new();
         
         public Transform projectileSpawnPoint => _projectileSpawnPoint;
         public ParticleSystem shootParticles => _shootParticles;
         public IItemView mergeItemView => _mergeView;
         public HeroProcessesContainer processes { get; } = new();
-
+        public float StunnedFxHeight => _stunnedFxHeight;
+        
+        [SerializeField] private float _stunnedFxHeight = 1.5f;
         [SerializeField] private HeroItemsContainer _heroItemsContainer;
         [SerializeField] private BattleUnitUI _heroUI;
         [SerializeField] private Collider _collider;

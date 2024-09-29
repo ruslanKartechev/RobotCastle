@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Battling;
 using RobotCastle.Merging;
 using UnityEngine;
 
@@ -7,11 +8,22 @@ namespace RobotCastle.Saving
     [CreateAssetMenu(menuName = "SO/EditorHelper", fileName = "EditorHelper", order = -110)]
     public class EditorHelper : ScriptableObject
     {
+        public Vector2Int range;
+        public List<Vector2Int> rangeCells;
         public Vector2Int gridSize;
         public int lockedBorders;
         [SerializeField] private SavesDataBase _savesDataBase;
-        
+
 #if UNITY_EDITOR
+
+        [ContextMenu("GenerateSquareRange")]
+        public void GenerateSquareRange()
+        {
+            var s = new AttackRangeRectangle(range.x, range.y);
+            rangeCells = s.GetCellsMask();
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+        
         [ContextMenu("SetupMergeGrid")]
         public void SetupMergeGrid()
         {

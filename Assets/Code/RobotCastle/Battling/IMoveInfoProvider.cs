@@ -2,7 +2,7 @@
 
 namespace RobotCastle.Battling
 {
-    public interface IMovingUnit
+    public interface IMoveInfoProvider
     {
         Vector2Int TargetCell { get; set; }
     }

@@ -156,12 +156,9 @@ namespace RobotCastle.Merging
             foreach (var cell in _cellViewGameObjects)
             {
                 CLog.Log($"{cell.name} Cell num {cellNum}. Row {rowNum}");
-                if (cell.transform.childCount < 3)
-                {
-                    CLog.Log("SKIPPED. Reason: cell.transform.childCount < 3");
-                    continue;
-                }
                 var tr = cell.transform.GetChild(0);
+                if (tr.name.Contains("item point") == false)
+                    continue;
                 var pos = tr.localPosition;
                 var eulers = new Vector3();
                 if (rowNum <= 2)
@@ -186,6 +183,30 @@ namespace RobotCastle.Merging
                 UnityEditor.EditorUtility.SetDirty(tr);
             }
         }
+        
+        [ContextMenu("SetSpawnPositionsForEnemies")]
+        public void E_SetSpawnPositionsForEnemies()
+        {
+            var rowNum = 1;
+            var cellNum = 1;
+            foreach (var cell in _cellViewGameObjects)
+            {
+                CLog.Log($"{cell.name} Cell num {cellNum}. Row {rowNum}");
+                var tr = cell.transform.GetChild(0);
+                if (tr.name.Contains("item point") == false)
+                    continue;
+                tr.localPosition = Vector3.zero;
+                tr.localEulerAngles = Vector3.zero;
+                cellNum++;
+                if (cellNum > 7)
+                {
+                    cellNum = 1;
+                    rowNum++;
+                }
+                UnityEditor.EditorUtility.SetDirty(tr);
+            }
+        }
+
         
 
         [ContextMenu("Set FrontPos")]

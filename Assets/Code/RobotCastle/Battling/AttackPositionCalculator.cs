@@ -6,20 +6,20 @@ namespace RobotCastle.Battling
 {
     public class AttackPositionCalculator
     {
-        public List<IMovingUnit> units = new(10);
+        public List<IMoveInfoProvider> units = new(10);
 
-        public void AddUnit(IMovingUnit unit)
+        public void AddUnit(IMoveInfoProvider unit)
         {
             if(units.Contains(unit) == false)
                 units.Add(unit);
         }
 
-        public void RemoveUnit(IMovingUnit unit)
+        public void RemoveUnit(IMoveInfoProvider unit)
         {
             units.Remove(unit);
         }
 
-        public bool CheckIfAnyUnitHasThisTargetPosition(Vector2Int cell, IMovingUnit exceptionUnit)
+        public bool CheckIfAnyUnitHasThisTargetPosition(Vector2Int cell, IMoveInfoProvider exceptionUnit)
         {
             foreach (var unit in units)
             {
@@ -66,7 +66,7 @@ namespace RobotCastle.Battling
                 var nextPos = enemyPos + dir;
                 if (nextPos.x < 0 || nextPos.y < 0 || nextPos.x >= map.Size.x || nextPos.y >= map.Size.y)
                     continue;
-                if (!otherUnitsPositions.Contains(nextPos) && !CheckIfAnyUnitHasThisTargetPosition(nextPos, hero.View.movement))
+                if (!otherUnitsPositions.Contains(nextPos) && !CheckIfAnyUnitHasThisTargetPosition(nextPos, hero.View.state))
                     coveredCells.Add(nextPos);
             }
 

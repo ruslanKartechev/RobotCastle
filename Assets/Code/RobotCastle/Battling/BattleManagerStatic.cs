@@ -20,7 +20,7 @@ namespace RobotCastle.Battling
             view.heroUI.UpdateStatsView(view);
             
             view.healthManager.SetDamageable(false);
-            view.attackData.Reset();
+            view.state.Reset();
             view.gameObject.SetActive(true);
             view.heroUI.Show();
             view.processes.StopAll();
@@ -103,7 +103,7 @@ namespace RobotCastle.Battling
                     var minHealth = float.MaxValue;
                     foreach (var enemy in _heroesInRange)
                     {
-                        var h = enemy.View.stats.HealthCurrent.Val;
+                        var h = enemy.View.stats.HealthCurrent.Get();
                         if (h < minHealth)
                         {
                             minHealth = h;

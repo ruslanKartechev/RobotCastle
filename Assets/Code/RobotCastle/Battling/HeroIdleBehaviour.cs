@@ -13,8 +13,8 @@ namespace RobotCastle.Battling
             view.movement.Stop();
             view.attackManager.Stop();
             view.agent.SetCellMoveCheck(null);
-            view.animator.SetBool(HeroesConfig.Anim_Attack, false);
-            view.animator.SetBool(HeroesConfig.Anim_Move, false);
+            view.animator.SetBool(HeroesConstants.Anim_Attack, false);
+            view.animator.SetBool(HeroesConstants.Anim_Move, false);
         }
 
         public void Stop()

@@ -5,19 +5,14 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class SpellJudgementOfLight : IFullManaListener, ISpellPowerGetter, IHeroProcess
+    public class SpellJudgementOfLight : IFullManaListener, IStatDecorator, IHeroProcess
     {
-        public float BaseSpellPower => _config.spellDamage[_view.stats.MergeTier];
-        
-        public float FullSpellPower
+        public float BaseSpellPower => _config.spellDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+        public string name => "spell";
+        public int priority => 10;
+        public float Decorate(float val)
         {
-            get
-            {
-                var v = BaseSpellPower * HeroesConfig.TierStatMultipliers[_view.stats.MergeTier];
-                foreach (var dec in _view.stats.SpellPowerDecorators)
-                    v = dec.Decorate(v);
-                return v;
-            }
+            return val + BaseSpellPower;
         }
 
         public SpellJudgementOfLight(HeroView view, SpellConfigJudgementOfLight config)
@@ -27,13 +22,13 @@ namespace RobotCastle.Battling
             view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
             view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
             _view.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
-            _view.stats.ManaResetAfterFull = new ManaResetZero();
             _view.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(view);
+            _view.stats.SpellPower.PermanentDecorators.Add(this);
         }
         
         private SpellConfigJudgementOfLight _config;
         private HeroView _view;
-        private JudgementOfLightView _fxView;
+        private SpellParticleOnGridEffect _fxView;
         private CancellationTokenSource _token;
         private ConditionedManaAdder _manaAdder;
         private bool _isActive;
@@ -65,9 +60,9 @@ namespace RobotCastle.Battling
                     var worldPositions = new List<Vector3>(cells.Count);
                     foreach (var c in cells)
                         worldPositions.Add(map.GetWorldFromCell(c));
-                    var effect = GetView();
+                    var effect = GetFxView();
                     effect.Show(worldPositions);
-                    var args = new DamageArgs(_config.physDamage[lvl], _config.spellDamage[lvl]);
+                    var args = new DamageArgs(_config.physDamage[lvl], _view.stats.SpellPower.Get());
                     for (var i = allEnemies.Count - 1; i >= 0; i--)
                         allEnemies[i].View.damageReceiver.TakeDamage(args);
                     _isActive = false;
@@ -80,11 +75,11 @@ namespace RobotCastle.Battling
             }
         }
 
-        private JudgementOfLightView GetView()
+        private SpellParticleOnGridEffect GetFxView()
         {
             if (_fxView != null) return _fxView;
-            var prefab = Resources.Load<GameObject>(HeroesConfig.SpellFXPrefab_JudgementOfLight);
-            var instance = Object.Instantiate(prefab).GetComponent<JudgementOfLightView>();
+            var prefab = Resources.Load<GameObject>(HeroesConstants.SpellFXPrefab_JudgementOfLight);
+            var instance = Object.Instantiate(prefab).GetComponent<SpellParticleOnGridEffect>();
             _fxView = instance;
             return instance;
         }

@@ -1,26 +1,20 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-
-    
-    public class SpellCrescentSlash : IFullManaListener, ISpellPowerGetter, IHeroProcess
+    public class SpellCrescentSlash : Spell, IFullManaListener, IStatDecorator, IHeroProcess
     {
         public const int MaxDistance = 10;
         
-        public float BaseSpellPower => _config.spellDamage[_view.stats.MergeTier];
-        
-        public float FullSpellPower
+        public float BaseSpellPower => _config.spellDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+        public string name => "spell";
+        public int priority => 10;
+        public float Decorate(float val)
         {
-            get
-            {
-                var v = BaseSpellPower * HeroesConfig.TierStatMultipliers[_view.stats.MergeTier];
-                foreach (var dec in _view.stats.SpellPowerDecorators)
-                    v = dec.Decorate(v);
-                return v;
-            }
+            return val + BaseSpellPower;
         }
         
         public SpellCrescentSlash(HeroView view, SpellConfigCrescentSlash config)
@@ -30,21 +24,20 @@ namespace RobotCastle.Battling
             _view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
             _view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
             _view.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
-            _view.stats.ManaResetAfterFull = new ManaResetZero();
             _view.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(view);
+            _view.stats.SpellPower.PermanentDecorators.Add(this);
         }
 
         private SpellConfigCrescentSlash _config;
-        private HeroView _view;
-        private CrescentSlashView _effect;
+        private CrescentSlashView _fxView;
         private ConditionedManaAdder _manaAdder;
         private CancellationTokenSource _token;
-        private bool _isActive;
 
         public void OnFullMana(GameObject heroGo)
         {
             if (_isActive)
                 return;
+            CLog.Log($"[{_view.gameObject.name}] [{nameof(SpellCrescentSlash)}]");
             _isActive = true;
             _manaAdder.CanAdd = false;
             _view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
@@ -53,6 +46,13 @@ namespace RobotCastle.Battling
             _view.processes.Add(this);
             CheckingPosition(_token.Token);
         }
+        
+        public void Stop()
+        {
+            _isActive = false;
+            _token?.Cancel();
+        }
+
 
         private void Launch()
         {
@@ -60,22 +60,21 @@ namespace RobotCastle.Battling
             _isActive = false;
             _view.processes.Remove(this);
             _view.stats.ManaResetAfterFull.Reset(_view);
-            if (_effect == null)
-            {
-                var prefab = Resources.Load<GameObject>(HeroesConfig.SpellFXPrefab_CrescentSlash);
-                _effect = Object.Instantiate(prefab).GetComponent<CrescentSlashView>();
-            }
+            var fx = GetFxView();
             var lvl = (int)HeroesHelper.GetSpellTier(_view.stats.MergeTier);
             var hero = _view.GetComponent<IHeroController>();
-            _effect.transform.SetPositionAndRotation(_view.transform.position, _view.transform.rotation);
-            _effect.Launch(_config.cellsMasksByTear[lvl], _config.spellDamage[lvl], 
+            fx.transform.SetPositionAndRotation(_view.transform.position, _view.transform.rotation);
+            fx.Launch(_config.cellsMasksByTear[lvl], _view.stats.SpellPower.Get(), 
                 _config.speed, hero.Battle.GetTeam(hero.TeamNum).enemyUnits);
         }
 
-        public void Stop()
+        private CrescentSlashView GetFxView()
         {
-            _isActive = false;
-            _token?.Cancel();
+            if (_fxView != null) return _fxView;
+            var prefab = Resources.Load<GameObject>(HeroesConstants.SpellFXPrefab_CrescentSlash);
+            var instance = Object.Instantiate(prefab).GetComponent<CrescentSlashView>();
+            _fxView = instance;
+            return instance;
         }
 
         private async void CheckingPosition(CancellationToken token)
@@ -110,6 +109,7 @@ namespace RobotCastle.Battling
                 await Task.Yield();
             }
         }
-        
+
+    
     }
 }

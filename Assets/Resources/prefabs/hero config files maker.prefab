@@ -1,0 +1,394 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2248311683457000155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3453398178343405413}
+  - component: {fileID: 3120755856651099938}
+  - component: {fileID: 195413007023003844}
+  m_Layer: 0
+  m_Name: hero config files maker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &3453398178343405413
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2248311683457000155}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3120755856651099938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2248311683457000155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f733357f2584c258a8e28b5c1ebedbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _overrideExisting: 0
+  _tableReader: {fileID: 195413007023003844}
+  _heroToGenerate: evan
+  _pathToHeroes: Assets/Resources/config_heroes
+  _heroTemplate:
+    stats:
+      health:
+      - 120
+      - 144
+      - 168
+      - 228
+      - 252
+      - 276
+      - 300
+      - 360
+      - 384
+      - 408
+      - 432
+      - 456
+      - 480
+      - 504
+      - 528
+      - 564
+      - 600
+      - 636
+      - 672
+      - 708
+      attack:
+      - 15
+      - 18
+      - 21
+      - 29
+      - 32
+      - 35
+      - 38
+      - 45
+      - 48
+      - 51
+      - 54
+      - 57
+      - 60
+      - 63
+      - 66
+      - 71
+      - 75
+      - 80
+      - 84
+      - 89
+      spellPower:
+      - 65
+      - 78
+      - 91
+      - 124
+      - 137
+      - 150
+      - 163
+      - 195
+      - 208
+      - 221
+      - 234
+      - 247
+      - 260
+      - 273
+      - 286
+      - 306
+      - 325
+      - 345
+      - 364
+      - 384
+      attackSpeed:
+      - 1
+      - 1.1
+      - 1.1999999
+      - 1.3
+      - 1.4
+      - 1.5
+      - 1.5999999
+      physicalResist:
+      - 0
+      magicalResist:
+      - 0
+      physicalCritChance:
+      - 0
+      magicalCritChance:
+      - 0
+      physicalCritDamage:
+      - 0.25
+      magicalCritDamage:
+      - 0.25
+      moveSpeed:
+      - 150
+      physHpDrain:
+      - 0
+      magicHpDrain:
+      - 0
+      evasion:
+      - 0
+      rangeId: 
+    spellInfo:
+      mainSpellId: crescent_slash
+      secondSpellId: crescent_slash_2
+      thirdSpellId: crescent_slash_3
+    viewInfo:
+      name: Evan
+      iconId: hero_icon_evan
+  _enemyToGenerate: mushroom_2
+  _pathToEnemies: Assets/Resources/config_enemies
+  _enemyTemplate:
+    stats:
+      health:
+      - 120
+      - 144
+      - 168
+      - 228
+      - 252
+      - 276
+      - 300
+      - 360
+      - 384
+      - 408
+      - 432
+      - 456
+      - 480
+      - 504
+      - 528
+      - 564
+      - 600
+      - 636
+      - 672
+      - 708
+      attack:
+      - 15
+      - 18
+      - 21
+      - 29
+      - 32
+      - 35
+      - 38
+      - 45
+      - 48
+      - 51
+      - 54
+      - 57
+      - 60
+      - 63
+      - 66
+      - 71
+      - 75
+      - 80
+      - 84
+      - 89
+      spellPower:
+      - 65
+      - 78
+      - 91
+      - 124
+      - 137
+      - 150
+      - 163
+      - 195
+      - 208
+      - 221
+      - 234
+      - 247
+      - 260
+      - 273
+      - 286
+      - 306
+      - 325
+      - 345
+      - 364
+      - 384
+      attackSpeed:
+      - 1
+      - 1.1
+      - 1.1999999
+      - 1.3
+      - 1.4
+      - 1.5
+      - 1.5999999
+      physicalResist:
+      - 0
+      magicalResist:
+      - 0
+      physicalCritChance:
+      - 0
+      magicalCritChance:
+      - 0
+      physicalCritDamage:
+      - 0.25
+      magicalCritDamage:
+      - 0.25
+      moveSpeed:
+      - 150
+      physHpDrain:
+      - 0
+      magicHpDrain:
+      - 0
+      evasion:
+      - 0
+      rangeId: 
+    spellInfo:
+      mainSpellId: crescent_slash
+      secondSpellId: crescent_slash_2
+      thirdSpellId: crescent_slash_3
+    viewInfo:
+      name: Evan
+      iconId: hero_icon_evan
+--- !u!114 &195413007023003844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2248311683457000155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0994b7defaa4ef9a3c2b978e89ed80a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _configFiles:
+  - {fileID: 4900000, guid: 6b561b3042374934990e9d178121b725, type: 3}
+  - {fileID: 4900000, guid: 82152927aeaf9be4986f0acac332ced6, type: 3}
+  - {fileID: 4900000, guid: cb1b3715a0dfdaf45b71526165aa870d, type: 3}
+  - {fileID: 4900000, guid: 816cb4e113ac15747bd96a3d8a85a428, type: 3}
+  - {fileID: 4900000, guid: 475327e0fd5722347a6dd162cdc44fd1, type: 3}
+  - {fileID: 4900000, guid: d614127873ff512409c0acac863756bb, type: 3}
+  - {fileID: 4900000, guid: 45d3732c018d5b944bf21291abacc9ab, type: 3}
+  - {fileID: 4900000, guid: 8894b3587a88dba48b5c411d8ea9df63, type: 3}
+  - {fileID: 4900000, guid: eb25b87ffcf98a943b76d3574fba5dbf, type: 3}
+  - {fileID: 4900000, guid: 17aebb69c3363f94cbf9fa6903dddeab, type: 3}
+  - {fileID: 4900000, guid: 059eb21bdd58616499b4e63a21fe00fd, type: 3}
+  - {fileID: 4900000, guid: 03932e6822aa10f4b9aa1dbdcebbfcad, type: 3}
+  - {fileID: 4900000, guid: 0c726991f4884a9479000f2d28a6d945, type: 3}
+  - {fileID: 4900000, guid: 7ec91615db634c54beb8fc3b3b14584a, type: 3}
+  - {fileID: 4900000, guid: 058d165d8a5e49cdb454b5ba5f5b74f2, type: 3}
+  - {fileID: 4900000, guid: e21bc43a4cdd446499bbc6ba0ee3a1af, type: 3}
+  - {fileID: 4900000, guid: 41e48f927f4746844a6a02df9b85b7db, type: 3}
+  - {fileID: 4900000, guid: 1d1c431500939e040998419fe1b49d2d, type: 3}
+  - {fileID: 4900000, guid: ba71ee2bb938fcb4c8dffea4443d2d82, type: 3}
+  - {fileID: 4900000, guid: 3852a592784843e2a4e1c2f85a51dac2, type: 3}
+  _tableFiles:
+  - heroes stats - priya
+  - heroes stats - evan
+  - heroes stats - asiaq
+  - heroes stats - leonhard
+  - heroes stats - alberon
+  - heroes stats - daniel
+  - heroes stats - shelda
+  - heroes stats - aramis
+  _folderPath: C:\Users\karte\Downloads
+  _fileName: heroes stats - priya
+  _attachFormat: 1
+  _format: tsv
+  _heroStats:
+    health:
+    - 120
+    - 144
+    - 168
+    - 228
+    - 252
+    - 276
+    - 300
+    - 360
+    - 384
+    - 408
+    - 432
+    - 456
+    - 480
+    - 504
+    - 528
+    - 564
+    - 600
+    - 636
+    - 672
+    - 708
+    attack:
+    - 15
+    - 18
+    - 21
+    - 29
+    - 32
+    - 35
+    - 38
+    - 45
+    - 48
+    - 51
+    - 54
+    - 57
+    - 60
+    - 63
+    - 66
+    - 71
+    - 75
+    - 80
+    - 84
+    - 89
+    spellPower:
+    - 65
+    - 78
+    - 91
+    - 124
+    - 137
+    - 150
+    - 163
+    - 195
+    - 208
+    - 221
+    - 234
+    - 247
+    - 260
+    - 273
+    - 286
+    - 306
+    - 325
+    - 345
+    - 364
+    - 384
+    attackSpeed:
+    - 1
+    - 1.1
+    - 1.1999999
+    - 1.3
+    - 1.4
+    - 1.5
+    - 1.5999999
+    physicalResist:
+    - 0
+    magicalResist:
+    - 0
+    physicalCritChance:
+    - 0
+    magicalCritChance:
+    - 0
+    physicalCritDamage:
+    - 0.25
+    magicalCritDamage:
+    - 0.25
+    moveSpeed:
+    - 150
+    physHpDrain:
+    - 0
+    magicHpDrain:
+    - 0
+    evasion:
+    - 0
+    rangeId: 

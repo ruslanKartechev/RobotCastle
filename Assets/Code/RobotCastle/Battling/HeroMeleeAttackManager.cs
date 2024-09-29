@@ -9,11 +9,12 @@ namespace RobotCastle.Battling
 
         public IHeroController Hero { get; set; }
         public IDamageReceiver CurrentTarget => _target;
+        public IDamageReceiver LastTarget => _target;
         
         private IDamageReceiver _target;
         private bool _activated;
-        
-        public void BeginAttack(Transform targetTransform, IDamageReceiver target)
+
+        public void BeginAttack(IDamageReceiver target)
         {
             _target = target;
             if (!_activated)
@@ -22,7 +23,8 @@ namespace RobotCastle.Battling
                 Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
                 Hero.View.animationEventReceiver.OnAttackEvent += OnAttack;
             }
-            Hero.View.animator.SetBool(HeroesConfig.Anim_Attack, true);
+            Hero.View.state.isAttacking = true;
+            Hero.View.animator.SetBool(HeroesConstants.Anim_Attack, true);
         }
 
         public void Stop()
@@ -31,17 +33,18 @@ namespace RobotCastle.Battling
                 return;
             _activated = false;
             Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
-            Hero.View.animator.SetBool(HeroesConfig.Anim_Attack, false);
+            Hero.View.animator.SetBool(HeroesConstants.Anim_Attack, false);
+            Hero.View.state.isAttacking = false;
         }
 
         private void OnAttack()
         {
             if (!_activated)
                 return;
-            var damage = Hero.View.damageSource.GetDamage();
+            var damage = Hero.View.stats.DamageCalculator.CalculateRegularAttackDamage();
             _target.TakeDamage(damage);
             OnAttackStep?.Invoke();
-            Hero.View.stats.ManaAdder.AddMana(damage.physDamage * HeroesConfig.ManaGainDamageMultiplier);
+            Hero.View.stats.ManaAdder.AddMana(damage.physDamage * HeroesConstants.ManaGainDamageMultiplier);
         }
     }
 }

@@ -12,8 +12,8 @@ namespace RobotCastle.Battling
         public BattleState State { get; set; }
         
         public int stageIndex = 0;
-        public int troopSize = HeroesConfig.PlayerTroopsStart;
-        public int playerHealthPoints = HeroesConfig.PlayerHealthStart;
+        public int troopSize = HeroesConstants.PlayerTroopsStart;
+        public int playerHealthPoints = HeroesConstants.PlayerHealthStart;
         public BattleTeam playerTeam;
         public BattleTeam enemyTeam;
 

@@ -1,8 +1,7 @@
 ﻿namespace RobotCastle.Battling
 {
-    public interface IDamageReceiver
+    public interface IDamageReceiver : IGameObjectComponent
     {
-        bool IsDamageable { get; }
         void TakeDamage(DamageArgs args);
     }
 }
