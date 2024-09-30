@@ -67,5 +67,6 @@ namespace RobotCastle.Battling
             }
             OnHit?.Invoke();
         }
+
     }
 }

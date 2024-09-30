@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using DG.Tweening;
+using RobotCastle.Core;
 using RobotCastle.Merging;
+using RobotCastle.UI;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -62,6 +64,7 @@ namespace RobotCastle.Battling
 
         public void Hide()
         {
+            _view.heroUI.GetComponent<UnitUIWrapper>().ReturnBack();
             gameObject.SetActive(false);
         }
     }

@@ -1,11 +1,9 @@
-﻿using RobotCastle.UI;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class UnitUITracker : MonoBehaviour
+    public class UIWorldPositionTracker : MonoBehaviour
     {
-        public BattleUnitUI ui;
         private Transform _target;
 
         public void SetTarget(Transform point)
@@ -13,7 +11,7 @@ namespace RobotCastle.Battling
             gameObject.SetActive(true);
             _target = point;
         }
-
+        
         private void Update()
         {
             if (_target != null)

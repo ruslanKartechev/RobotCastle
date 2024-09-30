@@ -55,8 +55,8 @@ namespace RobotCastle.Battling
             {
                 var heroGo = spawnedItem.Transform.gameObject;
                 var hero = heroGo.GetComponent<IHeroController>();
-                // var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
-                // barsPanel.AssignHeroUI(hero.View);
+                var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
+                barsPanel.AssignHeroUI(hero.View);
                 var id = args.coreData.id;
                 // heroSave.isUnlocked = true;
                 var modifiers = HeroesHelper.GetModifiersForHero(id);

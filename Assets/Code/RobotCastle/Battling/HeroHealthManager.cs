@@ -1,5 +1,4 @@
 ﻿using System;
-using NUnit.Framework;
 using RobotCastle.Core;
 using RobotCastle.UI;
 using SleepDev;
@@ -51,7 +50,7 @@ namespace RobotCastle.Battling
                 }
                 else
                     health -= args.physDamage;
-                ServiceLocator.Get<IDamageDisplay>().ShowAt((int)args.physDamage, EDamageType.Physical, _view.heroUI.DamagePoint.position);
+                ServiceLocator.Get<IDamageDisplay>().ShowAtScreenPos((int)args.physDamage, EDamageType.Physical, _view.heroUI.DamagePoint.position);
             }
             if(args.magicDamage > 0)
             {
@@ -67,7 +66,7 @@ namespace RobotCastle.Battling
                 }
                 else
                     health -= args.magicDamage;
-                ServiceLocator.Get<IDamageDisplay>().ShowAt((int)args.magicDamage, EDamageType.Magical, _view.heroUI.DamagePoint.position);
+                ServiceLocator.Get<IDamageDisplay>().ShowAtScreenPos((int)args.magicDamage, EDamageType.Magical, _view.heroUI.DamagePoint.position);
             }
             if(didDamageShield)
                 stats.Shield = shield;

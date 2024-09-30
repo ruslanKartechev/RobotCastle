@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RobotCastle.Core;
 using RobotCastle.Data;
@@ -19,7 +21,7 @@ namespace RobotCastle.Battling
         
         public IGridView GridView { get; set; }
 
-        public void SpawnPreset(string presetPath)
+        public async Task SpawnPreset(string presetPath, CancellationToken token)
         {
             var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
             if (asset == null)
@@ -34,25 +36,26 @@ namespace RobotCastle.Battling
             {
                 CLog.LogError($"[{nameof(EnemiesFactory)}] Cannot Deserialize preset at {presetPath}");
             }
-            SpawnPreset(preset);
+            await SpawnPreset(preset, token);
         }
 
-        public void SpawnPreset(EnemyPackPreset packPreset)
+        public async Task SpawnPreset(EnemyPackPreset packPreset, CancellationToken token)
         {
             _spawnedEnemies = new List<IHeroController>(packPreset.enemies.Count);
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
-            // var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
+            var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
             foreach (var enemyPreset in packPreset.enemies)
             {
                 var cellView = GridView.GetCell(enemyPreset.gridPos.x, enemyPreset.gridPos.y);
                 var itemView = factory.SpawnItemOnCell(cellView, new ItemData(enemyPreset.enemy));
                 var hero = itemView.Transform.GetComponent<IHeroController>();
-                // barsPanel.AssignEnemyUI(hero.View);
+                barsPanel.AssignEnemyUI(hero.View);
                 var modifiers = HeroesHelper.GetModifiers(enemyPreset.modifiers);
-                
                 hero.InitHero(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
                 hero.View.heroUI.UpdateStatsView(hero.View);
                 _spawnedEnemies.Add(hero);
+                await Task.Yield();
+                if (token.IsCancellationRequested) return;
             }
         }
 
@@ -75,9 +78,11 @@ namespace RobotCastle.Battling
                     break;
                 }
             }
+            var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
             var itemView = factory.SpawnItemOnCell(cellView, new ItemData(args.coreData));
             var hero = itemView.Transform.GetComponent<HeroController>();
+            barsPanel.AssignEnemyUI(hero.View);
             hero.InitHero(args.coreData.id, heroLvl, args.coreData.level, new List<ModifierProvider>());
             hero.View.heroUI.UpdateStatsView(hero.View);
             _spawnedEnemies.Add(hero);

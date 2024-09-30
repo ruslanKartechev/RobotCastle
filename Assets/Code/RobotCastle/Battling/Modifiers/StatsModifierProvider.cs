@@ -37,25 +37,25 @@ namespace RobotCastle.Battling
             switch (_statType)
             {
                 case EStatType.Attack:
-                    stats.Attack.Decorators.Add(_decorator);
+                    stats.Attack.AddDecorator(_decorator);
                     break;
                 case EStatType.AttackSpeed:
-                    stats.AttackSpeed.Decorators.Add(_decorator);
+                    stats.AttackSpeed.AddDecorator(_decorator);
                     break;
                 case EStatType.Health:
-                    stats.HealthMax.Decorators.Add(_decorator);
+                    stats.HealthMax.AddDecorator(_decorator);
                     break;
                 case EStatType.MoveSpeed:
-                    stats.MoveSpeed.Decorators.Add(_decorator);
+                    stats.MoveSpeed.AddDecorator(_decorator);
                     break;
                 case EStatType.PhysicalResist:
-                    stats.PhysicalResist.Decorators.Add(_decorator);
+                    stats.PhysicalResist.AddDecorator(_decorator);
                     break;
                 case EStatType.MagicResist:
-                    stats.MagicalResist.Decorators.Add(_decorator);
+                    stats.MagicalResist.AddDecorator(_decorator);
                     break;
                 case EStatType.SpellPower:
-                    stats.SpellPower.Decorators.Add(_decorator);
+                    stats.SpellPower.AddDecorator(_decorator);
                     break;
                 default:
                     CLog.LogError($"{_statType} cannot add");

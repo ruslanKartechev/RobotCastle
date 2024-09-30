@@ -50,24 +50,6 @@ namespace RobotCastle.Battling
             }
         }
         
-        public static void PrepareForBattle(IHeroController hero)
-        {
-            var mods = ServiceLocator.Get<ModifiersDataBase>();
-            var view = hero.View;
-            view.movement.SetupAgent();
-            view.stats.ManaResetAfterBattle.Reset(view);
-            view.heroUI.AssignStatsTracking(view);
-            view.healthManager.SetDamageable(true);
-            foreach (var itemData in view.heroItemsContainer.Items)
-            {
-                foreach (var id in itemData.modifierIds)
-                {
-                    var mod = mods.GetModifier(id);
-                    mod.AddToHero(view);
-                }
-            }
-        }
-
         public static IHeroController GetBestTargetForAttack(IHeroController hero)
         {
             var map = hero.View.agent.Map;

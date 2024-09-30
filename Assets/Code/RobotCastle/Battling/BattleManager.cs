@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
@@ -31,7 +33,7 @@ namespace RobotCastle.Battling
             _battle = Battle.GetDefault();
             ServiceLocator.Bind<Battle>(_battle);
             _battle.State = BattleState.NotStarted;
-            _rewardCalculator = _battle.RewardCalculator = new BattleRewardCalculator(3,5);
+            _rewardCalculator = _battle.RewardCalculator = new BattleRewardCalculator(0,0);
             return _battle;
         }
 
@@ -91,35 +93,49 @@ namespace RobotCastle.Battling
             startProcessor?.OnBattleStarted(_battle);
             return true;
         }
-        
-        public void NextStage()
+
+        public void SetNextStage()
         {
             _battle.Reset();
             _battle.stageIndex++;
-            SetStage(_battle.stageIndex);
+        }
+        
+        public async Task SetAndInitNextStage(CancellationToken token)
+        {
+            SetNextStage();
+            await SetStage(_battle.stageIndex, token);
         }
 
-        public void ResetStage()
+        public async Task ResetStage(CancellationToken token)
         {
             _battle.Reset();
-            SetStage(_battle.stageIndex);
+            await SetCurrentStage(token);
+        }
+        
+        public async Task SetCurrentStage(CancellationToken token)
+        {
+            await SetStage(_battle.stageIndex, token);
         }
 
-        public void SetStage(int stageIndex)
+        public async Task SetStage(int stageIndex, CancellationToken token)
         {
-            if (_roundData.Count <= stageIndex)
-            {
-                CLog.LogError($"[{nameof(BattleManager)}] Preset index out of range!");
-                return;
-            }
+            _rewardCalculator.RewardPerStageCompletion = _roundData[stageIndex].reward;
             _battle.stageIndex = stageIndex;
-            foreach (var en in _battle.Enemies)
-                Destroy(en.View.gameObject);
+            if (_battle.Enemies.Count > 0)
+            {
+                foreach (var en in _battle.Enemies)
+                    Destroy(en.View.gameObject);
+                await Task.Yield();
+                if (token.IsCancellationRequested) return;
+            }
+        
             _battle.Enemies.Clear();
             _battle.enemiesAlive.Clear();
             var preset = _roundData[stageIndex].enemyPreset;
             var enemyManager = ServiceLocator.Get<EnemiesManager>();
-            enemyManager.SpawnPreset(preset);
+            await enemyManager.SpawnPreset(preset, token);
+            if (token.IsCancellationRequested) return;
+
             _battle.Enemies = enemyManager.Enemies;
             // do something for merge reset
             _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>()

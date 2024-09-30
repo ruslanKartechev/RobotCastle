@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using RobotCastle.Core;
 using RobotCastle.Merging;
 using SleepDev;
@@ -34,9 +36,9 @@ namespace RobotCastle.Battling
             _enemiesFactory.GridView = _gridView;
         }
 
-        public void SpawnPreset(string preset)
+        public async Task SpawnPreset(string preset, CancellationToken token)
         {
-            _enemiesFactory.SpawnPreset(preset);
+            await _enemiesFactory.SpawnPreset(preset, token);
         }
 
         public void SpawnNewEnemy(SpawnMergeItemArgs args, int heroLvl = 0)

@@ -23,7 +23,7 @@ namespace RobotCastle.Battling
             view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
             _view.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
             _view.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(view);
-            _view.stats.SpellPower.PermanentDecorators.Add(this);
+            _view.stats.SpellPower.AddPermanentDecorator(this);
         }
         
         private SpellConfigJudgementOfLight _config;

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
-using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Bomber;
 using RobotCastle.Core;
 using RobotCastle.Data;
@@ -29,6 +30,7 @@ namespace RobotCastle.Battling
         private IPlayerMergeItemPurchaser _itemPurchaser;
         private ITroopSizeManager _troopSizeManager;
         private BattleMergeUI _mainUI;
+        private CancellationTokenSource _token;
         private InvasionLevelData levelData => _levelContainer.data;
         private InvasionRoundData roundData => levelData.levels[_battleManager.battle.stageIndex];
         
@@ -41,18 +43,18 @@ namespace RobotCastle.Battling
             ServiceLocator.Get<MergeManager>().StopHighlight();
         }
 
-        public void OnBattleEnded(Battle battle)
+        public async void OnBattleEnded(Battle battle)
         {
-            _battleManager.BattleRewardCalculator.AddRewardForStage();
-            StartCoroutine(DelayedBattleEnd(battle));
+            BattleCompletion(battle, _token.Token);
         }
         
         private void Start()
         {
-            StartCoroutine(Init());
+            _token = new CancellationTokenSource();
+            Init(_token.Token);
         }
 
-        private IEnumerator Init()
+        private async Task Init(CancellationToken token)
         {
             _map.InitRuntime();
             ServiceLocator.Bind<IMap>(_map.Map);
@@ -60,8 +62,8 @@ namespace RobotCastle.Battling
             ServiceLocator.Get<IUIManager>().ParentCanvas = _mainCanvas;
             ServiceLocator.Bind<EnemiesManager>(_enemiesManager);
             ServiceLocator.Bind<CastleHealthView>(_playerHealthView);
-            
-            _itemPurchaser = gameObject.GetComponent<IPlayerMergeItemPurchaser>();
+            ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
+
             _battleManager.startProcessor = this;
             _battleManager.endProcessor = this;
             var battle = _battleManager.Init(levelData.levels);
@@ -70,28 +72,27 @@ namespace RobotCastle.Battling
             _mergeManager.Init();
             _enemiesManager.Init();
             _playerHealthView.SetHealth(battle.playerHealthPoints);
-            yield return null;
-            if (_doAutoBegin)
-                _battleManager.SetStage(0);
+            _itemPurchaser = gameObject.GetComponent<IPlayerMergeItemPurchaser>();
+            await _battleManager.SetStage(0, token);
             _battleCamera.AllowPlayerInput(false);
             _battleCamera.SetBattlePoint();
             var config = ServiceLocator.Get<GlobalConfig>();
-            yield return new WaitForSeconds(config.BattleStartEnemyShowTime);
-            _battleCamera.MoveToMergePoint();
+            await Task.Delay((int)(config.BattleStartEnemyShowTime * 1000), token);
             InitUI();
-            yield return new WaitForSeconds(config.BattleStartInputDelay);
+            // await Task.Delay((int)(config.BattleStartInputDelay * 1000));
+            await _battleCamera.MoveToMergePoint();
             _mergeManager.AllowInput(true);
             _battleCamera.AllowPlayerInput(true);
         }
         
         private void InitUI()
         {
-            var mergeInfoUI = ServiceLocator.Get<IUIManager>();
-            mergeInfoUI.Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {}).ShowIdle();
-            var dam = mergeInfoUI.Show<BattleDamagePanelUI>("ui_damage", () => { });
+            var uiManager = ServiceLocator.Get<IUIManager>();
+            uiManager.Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {}).ShowIdle();
+            var dam = uiManager.Show<BattleDamagePanelUI>("ui_damage", () => { });
             dam.gameObject.SetActive(true);
             
-            _mainUI = mergeInfoUI.Show<BattleMergeUI>(UIConstants.UIBattleMerge, () => { });
+            _mainUI = uiManager.Show<BattleMergeUI>(UIConstants.UIBattleMerge, () => { });
             _mainUI.BtnSpawn.AddMainCallback(BuyNewItem);
             _mainUI.BtnStart.AddMainCallback(StartBattle);
             _mainUI.BtnStart2.AddMainCallback(StartBattle);
@@ -141,44 +142,41 @@ namespace RobotCastle.Battling
             ServiceLocator.Get<IUIManager>().Show<LevelFailUI>(UIConstants.UILevelFail, () =>{});
         }
         
-        private IEnumerator DelayedBattleEnd(Battle battle)
+        private async Task BattleCompletion(Battle battle, CancellationToken token)
         {
-            yield return new WaitForSeconds(_endDelay * .5f);
+            _battleManager.BattleRewardCalculator.AddRewardForStage();
+            await Task.Delay((int)(_endDelay * .5f * 1000), token);
             _gridSwitch.SetMergeMode();
             _battleManager.RecollectPlayerUnits();
             switch (battle.State)
             {
                 case BattleState.EnemyWin:
-                    if(RoundLost())
-                        yield break;
+                    if(CheckLevelLost())
+                        return;
+                    await _battleManager.ResetStage(token);
                     break;
                 case BattleState.PlayerWin:
-                       RoundWin();
+                    _battleManager.SetNextStage();
+                    _mainUI.UpdateForNextWave();
+                    _mainUI.Win();
+                    await _battleManager.SetCurrentStage(token);
                     break;
                 default:
                     CLog.LogRed($"[{nameof(BattleLevel)}] Error!");
                     break;
             }
-            yield return new WaitForSeconds(_endDelay * .5f);
-            _battleCamera.MoveToMergePoint();
+            await Task.Delay((int)(_endDelay * .5f * 1000), token);
+
             var battleUI = ServiceLocator.Get<IUIManager>().GetIfShown<BattleMergeUI>(UIConstants.UIBattleMerge);
             if(battleUI)
                 battleUI.SetMainAreaUpPos();
+            await _battleCamera.MoveToMergePoint();
             _mergeManager.AllowInput(true);
             AllowPlayerUIInput(true);
             _battleCamera.AllowPlayerInput(true);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void RoundWin()
-        {
-            _battleManager.NextStage();
-            _mainUI.UpdateForNextWave();
-            _mainUI.Win();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private bool RoundLost()
+        private bool CheckLevelLost()
         {
             var health = --_battleManager.battle.playerHealthPoints;
             if (health <= 0)
@@ -191,7 +189,6 @@ namespace RobotCastle.Battling
                 ShowFailedScreen();
                 return true;
             }
-            _battleManager.ResetStage();
             return false;
         }
         

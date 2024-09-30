@@ -142,21 +142,20 @@ namespace RobotCastle.Battling
         public void LogAllDecorators()
         {
             var msg = "";
-            Add("Attack", Attack.Decorators);
-            Add("SpellPower", SpellPower.Decorators);
-            Add("Attack Speed", AttackSpeed.Decorators);            
-            Add("Move Speed", MoveSpeed.Decorators);            
-            Add("Health", HealthCurrent.Decorators);            
-            Add("Health_max", HealthMax.Decorators);
-            Add("Phys DEF", PhysicalResist.Decorators);
-            Add("Magic DEF", MagicalResist.Decorators);
+            Add("Attack", Attack);
+            Add("SpellPower", SpellPower);
+            Add("Attack Speed", AttackSpeed);            
+            Add("Move Speed", MoveSpeed);            
+            Add("Health", HealthCurrent);            
+            Add("Health_max", HealthMax);
+            Add("Phys DEF", PhysicalResist);
+            Add("Magic DEF", MagicalResist);
             
             Log(msg);
-            void Add(string statName, List<IStatDecorator> decorators)
+            void Add(string statName, Stat stat)
             {
-                msg += $"{statName} has {decorators.Count}: ";
-                foreach (var dec in decorators)
-                    msg += $"{dec.name} ";
+                msg += $"{statName} ";
+                msg += stat.GetAllDecoratorsAsStr();
                 msg += "\n";
             }
         }

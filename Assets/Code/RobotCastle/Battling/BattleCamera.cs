@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DG.Tweening;
 using RobotCastle.Core;
 using RobotCastle.UI;
@@ -82,16 +83,19 @@ namespace RobotCastle.Battling
             transform.position = _battlePoint.position;
         }
         
-        public void MoveToBattlePoint()
+        public async Task MoveToBattlePoint()
         {
             transform.DOKill();
             transform.DOMove(_battlePoint.position, _moveTime).SetEase(Ease.Linear);
+            await Task.Delay((int)(_moveTime * 1000));
+
         }
 
-        public void MoveToMergePoint()
+        public async Task MoveToMergePoint()
         {
             transform.DOKill();
             transform.DOMove(_mergePoint.position, _moveTime).SetEase(Ease.Linear);
+            await Task.Delay((int)(_moveTime * 1000));
         }
         
     }

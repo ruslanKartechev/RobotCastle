@@ -18,6 +18,16 @@ namespace RobotCastle.Battling
         private const float AngleThreshold = 2;
         [SerializeField] private HeroView _unitView;
         private bool _didSetup;
+        
+        public void SetupAgent()
+        {
+            _unitView.agent.RotationSpeed = HeroesConstants.RotationSpeed;
+            _unitView.agent.SpeedGetter = _unitView.stats.MoveSpeed;
+            if (!_didSetup)
+            {
+            }
+            _didSetup = true;
+        }
 
         public void OnMovementBegan()
         {
@@ -102,28 +112,10 @@ namespace RobotCastle.Battling
             return true;
         }
         
-        public Quaternion GetRotationToCell(Vector2Int pos)
-        {
-            var endPos = _unitView.agent.Map.GetWorldFromCell(pos);
-            _unitView.agent.Map.GetCellAtPosition(transform.position, out var cellPos, out var cell);
-            var startPos = cell.worldPosition;
-            return Quaternion.LookRotation(endPos - startPos);
-        }
-
         public void Stop()
         {
             _unitView.agent.Stop();
             _unitView.state.SetTargetCellToSelf();
-        }
-        
-        public void SetupAgent()
-        {
-            _didSetup = true;
-            _unitView.rb.isKinematic = true;
-            _unitView.collider.isTrigger = false;
-            _unitView.collider.enabled = true;
-            _unitView.agent.RotationSpeed = HeroesConstants.RotationSpeed;
-            _unitView.agent.SpeedGetter = _unitView.stats.MoveSpeed;
         }
 
         private void Update()
@@ -131,5 +123,12 @@ namespace RobotCastle.Battling
             if (_didSetup && _unitView != null)
                 _unitView.state.currentCell = _unitView.agent.CurrentCell;
         }
+        
+        private void OnDisable()
+        {
+            _didSetup = false;
+ 
+        }
     }
+
 }

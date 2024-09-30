@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9192706203097976465, guid: d6ea8215b0b6ebb4ab975572e78c85b5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -184,17 +184,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6502812427258204125 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9179593461380695713, guid: d6ea8215b0b6ebb4ab975572e78c85b5, type: 3}
-  m_PrefabInstance: {fileID: 2691700040293992828}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6542001254381357037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd1e0dc8cb2b426fa7b8c0f3da067993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6542001254381357037 stripped
@@ -322,7 +311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stunnedFxHeight: 1.5
   _heroItemsContainer: {fileID: 3218766728784948633}
-  _heroUI: {fileID: 6502812427258204125}
+  _heroUI: {fileID: 0}
   _collider: {fileID: 4240275110036406292}
   _rb: {fileID: 6170466105492436850}
   _animator: {fileID: 0}

@@ -22,6 +22,7 @@ namespace RobotCastle.Battling
         {
             AddHeroComponents();
             _stats.LoadAndSetHeroStats(id, heroLevel, mergeLevel);
+            _view.statAnimationSync.Init(true);
             _view.spellsContainer.AddModifierProviders(spells);
             _view.spellsContainer.ApplyAllModifiers(_view);
             SetStatsComponentsIfMissing();
@@ -68,6 +69,7 @@ namespace RobotCastle.Battling
 
         private void OnDisable()
         {
+            _view.statAnimationSync.Stop();
             _currentBehaviour?.Stop();
         }
         
@@ -100,6 +102,7 @@ namespace RobotCastle.Battling
             _view.killProcessor = new HeroDeathProcessor(_view);
             _view.spellsContainer = new HeroSpellsContainer();
             _view.stats.DamageCalculator = new DefaultDamageCalculator(_view.stats);
+            _view.statAnimationSync = new HeroAnimationToStatsSync(_view);
 
             var attack = gameObject.GetComponent<IHeroAttackManager>();
             attack.Hero = this;

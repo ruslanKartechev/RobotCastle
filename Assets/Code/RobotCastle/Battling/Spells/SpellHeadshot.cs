@@ -24,7 +24,7 @@ namespace RobotCastle.Battling
             _view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
             _view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
             _view.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
-            _view.stats.SpellPower.PermanentDecorators.Add(this);
+            _view.stats.SpellPower.AddPermanentDecorator(this);
         }
         
         private SpellConfigHeadshot _config;

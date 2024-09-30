@@ -29,7 +29,8 @@ namespace RobotCastle.Battling
         public IKillProcessor killProcessor { get; set; }
         public HeroSpellsContainer spellsContainer { get; set;}
         public HeroStateData state { get; set; } = new();
-        
+        public HeroAnimationToStatsSync statAnimationSync { get; set; }
+
         public Transform projectileSpawnPoint => _projectileSpawnPoint;
         public ParticleSystem shootParticles => _shootParticles;
         public IItemView mergeItemView => _mergeView;

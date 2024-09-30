@@ -1,22 +1,51 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SleepDev;
 
 namespace RobotCastle.Battling
 {
+    public delegate void StatEventHandler(Stat stat);
+    
     [System.Serializable]
     public class Stat : IFloatGetter
     {
-        public readonly List<IStatDecorator> Decorators = new List<IStatDecorator>(10);
-        public readonly List<IStatDecorator> PermanentDecorators = new List<IStatDecorator>(10);
+        public event StatEventHandler OnValueChange;
+        public event StatEventHandler OnDecoratorAdded;
+        public event StatEventHandler OnDecoratorRemoved;
+        
 
-        public float BaseVal;
-        public float Val;
+        private readonly List<IStatDecorator> _decorators = new List<IStatDecorator>(10);
+        private readonly List<IStatDecorator> _permanentDecorators = new List<IStatDecorator>(10);
+
+        private float _base;
+        private float _val;
+
+        public float BaseVal
+        {
+            get => _base;
+            set
+            {
+                _base = value;
+                OnValueChange?.Invoke(this);
+            }
+        }
+
+        public float Val
+        {
+            get => _val;
+            set
+            {
+                _val = value;
+                OnValueChange?.Invoke(this);
+            }
+        }
 
         public void SetBase() => Val = BaseVal;
 
         public void SetBaseAndCurrent(float val)
         {
             BaseVal = Val = val;
+            OnValueChange?.Invoke(this);
         }
 
         /// <summary>
@@ -26,18 +55,50 @@ namespace RobotCastle.Battling
         public float Get()
         {
             var v = Val;
-            foreach (var dec in PermanentDecorators)
+            foreach (var dec in _permanentDecorators)
                 v = dec.Decorate(v);
-            foreach (var dec in Decorators)
+            foreach (var dec in _decorators)
                 v = dec.Decorate(v);
             return v;
         }
 
         public void ClearDecorators()
         {
-            Decorators.Clear();
+            _decorators.Clear();
+        }
+
+        public void AddDecorator(IStatDecorator decorator)
+        {
+            _decorators.Add(decorator);
+            OnDecoratorAdded?.Invoke(this);
+        }
+
+        public void RemoveDecorator(IStatDecorator decorator)
+        {
+            _decorators.Remove(decorator);
+            OnDecoratorRemoved?.Invoke(this);
+        }
+
+        public void AddPermanentDecorator(IStatDecorator decorator)
+        {
+            _permanentDecorators.Add(decorator);
+            OnDecoratorAdded?.Invoke(this);
+        }
+
+        public void RemovePermanentDecorator(IStatDecorator decorator)
+        {
+            _permanentDecorators.Remove(decorator);
+            OnDecoratorRemoved?.Invoke(this);
         }
         
+        
+        public string GetAllDecoratorsAsStr()
+        {
+            var msg = $"Count: {_decorators.Count}; ";
+            foreach (var dec in _decorators)
+                msg += $"{dec.name} ";
+            return msg;
+        }
     }
     
 }

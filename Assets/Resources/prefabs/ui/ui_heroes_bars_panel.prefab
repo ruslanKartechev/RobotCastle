@@ -111,6 +111,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3696131918770746988}
+    - targetCorrespondingSourceObject: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5823432848180561544}
   m_SourcePrefab: {fileID: 100100000, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
 --- !u!1 &3611450252070897869 stripped
 GameObject:
@@ -129,5 +132,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d214598e39438c9ea7d6d18116bbe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: -2455838658177652418, guid: 4b9918dc69ed62342964c7245ebdeac4, type: 3}
-  _prefabEnemy: {fileID: -6601520561453339010, guid: 17e18d6417ca90d4f9108da5f766797a, type: 3}
+  _pool: {fileID: -5823432848180561544}
+--- !u!114 &-5823432848180561544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3611450252070897869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3e73f2cee5c40a9a2acaf03c023f077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pools:
+  - _id: enemy
+    _prefabPath: prefabs/ui/unit_ui_enemies
+    _startCount: 12
+    _parent: {fileID: 5434345392024435966}
+  - _id: player
+    _prefabPath: prefabs/ui/unit_ui_heroes
+    _startCount: 12
+    _parent: {fileID: 5434345392024435966}
+--- !u!224 &5434345392024435966 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8674299170616164390, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
+  m_PrefabInstance: {fileID: 3678281410393636056}
+  m_PrefabAsset: {fileID: 0}

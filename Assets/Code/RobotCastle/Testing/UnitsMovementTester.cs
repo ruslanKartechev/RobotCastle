@@ -31,6 +31,7 @@ namespace RobotCastle.Testing
         public void GetUnits()
         {
             _units = new List<HeroView>(FindObjectsOfType<HeroView>());
+            var heroes = new List<IHeroController>(_units.Count);
             foreach (var unit in _units)
             {
                 var uc = unit.gameObject.GetComponent<HeroController>();
@@ -39,12 +40,14 @@ namespace RobotCastle.Testing
                     if (_initedUnits.Contains(uc) == false)
                     {
                         uc.InitHero("aramis", 1, 1, new List<ModifierProvider>());
-                        BattleManager.PrepareForBattle(uc);
                         _initedUnits.Add(uc);
+                        heroes.Add(uc);
                     }
                     uc.UpdateMap();
                 }
             }
+            BattleManager.PrepareForBattle(heroes);
+
         }
 
         public void MoveOneToPos()
@@ -62,7 +65,7 @@ namespace RobotCastle.Testing
             if (_initedUnits.Contains(uc) == false)
             {
                 uc.InitHero("aramis", 0, 0, new List<ModifierProvider>());
-                BattleManager.PrepareForBattle(uc);
+                BattleManager.PrepareForBattle(new List<IHeroController>(){uc});
                 _initedUnits.Add(uc);
             }
             
