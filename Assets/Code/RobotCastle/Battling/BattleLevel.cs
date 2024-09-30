@@ -35,10 +35,9 @@ namespace RobotCastle.Battling
         
         public void OnBattleStarted(Battle battle)
         {
-            AllowPlayerUIInput(false);
+            AllowPlayerUIInput(true);
             _gridSwitch.SetBattleMode();
             _mergeManager.AllowInput(false);
-            _battleCamera.MoveToBattlePoint();
             ServiceLocator.Get<MergeManager>().StopHighlight();
         }
 
@@ -111,11 +110,24 @@ namespace RobotCastle.Battling
         
         private void StartBattle()
         {
+            if (_battleManager.CanStart())
+            {
+                if(_fillActiveAreaBeforeStart)
+                    _mergeManager.FillActiveArea();
+                StartCoroutine(Starting());
+            }
+        }
+
+        private IEnumerator Starting()
+        {
             _battleCamera.AllowPlayerInput(false);
-            if(_fillActiveAreaBeforeStart)
-                _mergeManager.FillActiveArea();
+            _battleManager.SetGoingState();
+            _battleCamera.MoveToBattlePoint();
+            _mainUI.Started();
+            foreach (var hero in _battleManager.battle.playersAlive)
+                hero.View.transform.rotation = Quaternion.Euler(Vector3.zero);
+            yield return new WaitForSeconds(_battleCamera.MoveTime);
             _battleManager.BeginBattle();
-            _mainUI.SetMainAreaLowerPos();
         }
 
         private void BuyNewItem()

@@ -35,6 +35,20 @@ namespace RobotCastle.Battling
             return _battle;
         }
 
+        public bool CanStart()
+        {
+            _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>().GetItemsInActiveArea<IHeroController>(_ => true);
+            if (_battle.PlayerUnits.Count == 0)
+            {
+                _battle.State = BattleState.NotStarted;
+                CLog.LogWhite($"No Player Units on active area!");
+                return false;
+            }
+            return true;
+        }
+
+        public void SetGoingState() => _battle.State = BattleState.Going;
+
         public bool BeginBattle()
         {
             SetupRewardForCurrentRound();

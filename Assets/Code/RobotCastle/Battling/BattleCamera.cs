@@ -18,6 +18,12 @@ namespace RobotCastle.Battling
                     _slideBlockers = 0;
             } 
         }
+
+        public float MoveTime
+        {
+            get => _moveTime;
+            set => _moveTime = value;
+        }
         
         [SerializeField] private float _moveTime;
         [SerializeField] private Transform _mergePoint;

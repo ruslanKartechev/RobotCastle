@@ -30,7 +30,8 @@ namespace RobotCastle.UI
         [SerializeField] private FadeInOutAnimator _startTopBtnAnimator;
         [SerializeField] private FadePopAnimator _winAnimator;
         [SerializeField] private FadePopAnimator _lostAnimator;
-        
+        [SerializeField] private FadePopAnimator _startedAnimator;
+
         private Battle _battle;
         private InvasionLevelData _levelData;
         
@@ -47,6 +48,12 @@ namespace RobotCastle.UI
         {
             _levelUI.SetRewardForWave(_levelData.levels[_battle.stageIndex].reward);
             _levelUI.SetLevel(_battle.stageIndex, _levelData.levels, true);
+        }
+
+        public void Started()
+        {
+            _startedAnimator.Animate();
+            SetMainAreaLowerPos();
         }
 
         public void Win()
