@@ -8,7 +8,11 @@ namespace RobotCastle.Battling
 {
     public class HeroView : MonoBehaviour
     {
-        public BattleUnitUI heroUI => _heroUI;
+        public BattleUnitUI heroUI
+        {
+            get => _heroUI;
+            set => _heroUI = value;
+        }
         public Animator animator => _animator;
         public Ragdoll ragdoll => _ragdoll;
         public Collider collider => _collider;
@@ -31,6 +35,7 @@ namespace RobotCastle.Battling
         public IItemView mergeItemView => _mergeView;
         public HeroProcessesContainer processes { get; } = new();
         public float StunnedFxHeight => _stunnedFxHeight;
+        public Transform UITrackingPoint => _uiTrackingPoint;
         
         [SerializeField] private float _stunnedFxHeight = 1.5f;
         [SerializeField] private HeroItemsContainer _heroItemsContainer;
@@ -44,7 +49,7 @@ namespace RobotCastle.Battling
         [Space(10)]
         [SerializeField] private Transform _projectileSpawnPoint;
         [SerializeField] private ParticleSystem _shootParticles;
-
+        [SerializeField] private Transform _uiTrackingPoint;
 
     }
 }

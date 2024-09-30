@@ -53,8 +53,10 @@ namespace RobotCastle.Battling
             spawnedItem = spawner.SpawnItemOnCell(cellView, args.ItemData);
             if (args.coreData.type is MergeConstants.TypeUnits)
             {
-                var instanceGO = spawnedItem.Transform.gameObject;
-                var hero = instanceGO.GetComponent<IHeroController>();
+                var heroGo = spawnedItem.Transform.gameObject;
+                var hero = heroGo.GetComponent<IHeroController>();
+                // var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
+                // barsPanel.AssignHeroUI(hero.View);
                 var id = args.coreData.id;
                 // heroSave.isUnlocked = true;
                 var modifiers = HeroesHelper.GetModifiersForHero(id);
@@ -62,7 +64,7 @@ namespace RobotCastle.Battling
                 if (args.useAdditionalItems)
                 {
                     var mergedItems = MergeFunctions.TryMergeAll(HeroItemData.GetDataWithDefaultModifiers(args.additionalItems), MergeConstants.MaxItemLevel);
-                    var itemsContainer = instanceGO.GetComponent<IHeroItemsContainer>();
+                    var itemsContainer = heroGo.GetComponent<IHeroItemsContainer>();
                     itemsContainer.SetItems(mergedItems);
                 }
                 hero.SetBehaviour(new HeroIdleBehaviour());
