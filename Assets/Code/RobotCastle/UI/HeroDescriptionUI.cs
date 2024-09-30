@@ -88,7 +88,6 @@ namespace RobotCastle.UI
         
         public void Show(HeroStatsManager stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
         {
-            const string Color = "#FFFF11";
             var atkTxt = (stats.Attack.Get()).ToString(CultureInfo.InvariantCulture);
             var atkSpTxt = (stats.AttackSpeed.Get()).ToString(CultureInfo.InvariantCulture);
             var spTxt = stats.SpellPower.Get().ToString(CultureInfo.InvariantCulture);
@@ -125,18 +124,18 @@ namespace RobotCastle.UI
                 if (addedAtk > 0)
                 {
                     var addedVal = Mathf.RoundToInt(addedAtk * stats.Attack.Val);
-                    atkTxt += $"+<color={Color}>{addedVal}</color>";
+                    atkTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
                     // atkTxt += $"+{addedVal}";
                 }
                 if (addedSp > 0)
                 {
                     var addedVal = Mathf.RoundToInt(addedSp * stats.SpellPower.Val);
-                    spTxt += $"+<color={Color}>{addedVal}</color>";
+                    spTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
                 }
                 if (addedAtkSpeed > 0)
                 {
                     var addedVal = Mathf.RoundToInt(addedAtkSpeed * stats.AttackSpeed.Val);
-                    atkSpTxt += $"+<color={Color}>{addedVal}</color>";
+                    atkSpTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
                 }
             }
             

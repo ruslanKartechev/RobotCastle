@@ -30,7 +30,7 @@ namespace RobotCastle.UI
             
             ui.transform.position = Camera.main.WorldToScreenPoint(worldPosition);
             ui.Show(amount);
-            ui.Animate(_animateTime, _ease);
+            ui.Animate(_ease);
         }
 
         private void OnEnable()

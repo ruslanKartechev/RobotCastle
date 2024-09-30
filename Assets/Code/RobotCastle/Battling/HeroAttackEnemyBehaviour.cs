@@ -141,8 +141,9 @@ namespace RobotCastle.Battling
                         DecideNextStep(_mainToken.Token);
                         return;
                     }
-                    CLog.LogYellow($"[{_hero.View.gameObject.name}] DuelDistance {distance <= HeroesConstants.DuelMaxDistance} (dist: {distance}. max: {HeroesConstants.DuelMaxDistance})" +
-                                   $"\nEnemy is me: {enemyState.attackData.CurrentEnemy == _hero}, Enemy state: {enemyState.GetStr()}");
+                    // CLog.LogYellow($"[{_hero.View.gameObject.name}] DuelDistance {distance <= HeroesConstants.DuelMaxDistance} (dist: {distance}. max: {HeroesConstants.DuelMaxDistance})" +
+                    //                $"\nEnemy is me: {enemyState.attackData.CurrentEnemy == _hero}, Enemy state: {enemyState.GetStr()}");
+                    //
                     if (distance <= HeroesConstants.DuelMaxDistance 
                         && enemyState.attackData.CurrentEnemy == _hero 
                         && enemyState.isMoving)
@@ -197,6 +198,8 @@ namespace RobotCastle.Battling
         {
             const int waitTimeMs = (int)(1000 * .25f);
             var result = await _hero.View.movement.MoveToCell(targetCell, token);
+            if (token.IsCancellationRequested)
+                return;
             switch (result)
             {
                 case EPathMovementResult.IsBlockedOnTheWay:
@@ -205,7 +208,6 @@ namespace RobotCastle.Battling
                     break;
                 case EPathMovementResult.FailedToBuild:
                     CLog.LogRed($"[{_hero.View.gameObject.name}] FailedToBuild moving to {targetCell.ToString()}");
-                    _hero.View.movement.OnMovementStopped();
                     await Task.Delay(waitTimeMs, token);
                     break;
             }

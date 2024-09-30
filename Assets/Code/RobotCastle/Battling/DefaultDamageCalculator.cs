@@ -5,7 +5,7 @@ namespace RobotCastle.Battling
     public class DefaultDamageCalculator : IDamageCalculator
     {
         private HeroStatsManager _stats;
-        private List<IDamageDecorator> _decorators;
+        private List<IDamageDecorator> _decorators = new (5);
 
         public DefaultDamageCalculator(HeroStatsManager stats)
         {
@@ -23,6 +23,11 @@ namespace RobotCastle.Battling
                     physDamage *= 1 + _stats.PhysicalCritDamage.Get();
             }
             var args = new DamageArgs(physDamage, 0f);
+            for (var ind = 0; ind < _decorators.Count; ind++)
+            {
+                var dec = _decorators[ind];
+                args = dec.Apply(args);
+            }
             return args;
         }
 

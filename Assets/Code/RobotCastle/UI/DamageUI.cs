@@ -15,11 +15,20 @@ namespace RobotCastle.UI
             gameObject.SetActive(true);
         }
 
-        public void Animate(float time, Ease ease)
+        public void Animate(Ease ease)
         {
-            _canvasGroup.DOKill();
+            const float punch = .125f;
+            const float punchTime = .4f;
+            const float fadeTime = .4f;
+            const float upPos = 50f;
             _canvasGroup.alpha = 1f;
-            _canvasGroup.DOFade(0f, time).SetEase(ease).OnComplete(Off);
+            transform.DOPunchScale(new Vector3(punch, punch, punch), punchTime).OnComplete(() =>
+            {
+                var pos = transform.position;
+                pos.y += upPos;
+                transform.DOMove(pos, fadeTime);
+                _canvasGroup.DOFade(0f, fadeTime).SetEase(ease).OnComplete(Off);
+            });
         }
 
         private void Off() => gameObject.SetActive(false);

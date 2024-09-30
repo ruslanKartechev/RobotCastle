@@ -56,11 +56,11 @@ namespace RobotCastle.Battling
                 hero.View.damageReceiver.TakeDamage(args);
                 hero.SetBehaviour(new HeroStunnedBehaviour(_config.duration[lvl]));
             }
-            var view = GetView();
+            var view = GetFxView();
             view.transform.position = target.transform.position;
             var worldPositions = new List<Vector3>(cells.Count);
-            foreach (var c in cells)
-                worldPositions.Add(map.GetWorldFromCell(c));
+            foreach (var enemy in heroesAffected)
+                worldPositions.Add(map.GetWorldFromCell(enemy.View.state.currentCell));
             view.Show(worldPositions);
             
             _isActive = false;
@@ -74,7 +74,7 @@ namespace RobotCastle.Battling
             _token?.Cancel();
         }
         
-        private SpellParticleOnGridEffect GetView()
+        private SpellParticleOnGridEffect GetFxView()
         {
             if (_fxView != null) return _fxView;
             var prefab = Resources.Load<GameObject>(HeroesConstants.SpellFXPrefab_Blizzard);

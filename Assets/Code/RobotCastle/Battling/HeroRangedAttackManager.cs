@@ -7,6 +7,8 @@ namespace RobotCastle.Battling
     public class HeroRangedAttackManager : MonoBehaviour, IHeroAttackManager
     {
         public event Action OnAttackStep;
+        public event Action OnHit;
+        
 
         public IHeroController Hero { get; set; }
         public IDamageReceiver LastTarget => _target;
@@ -60,9 +62,10 @@ namespace RobotCastle.Battling
             if (dm != null)
             {
                 var damage = Hero.View.stats.DamageCalculator.CalculateRegularAttackDamage();
-                Hero.View.stats.ManaAdder.AddMana(damage.physDamage * HeroesConstants.ManaGainDamageMultiplier);
+                Hero.View.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
                 _target.TakeDamage(damage);
             }
+            OnHit?.Invoke();
         }
     }
 }

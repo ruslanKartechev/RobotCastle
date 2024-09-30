@@ -29,6 +29,7 @@ namespace RobotCastle.Battling
         {
             // CLog.Log($"{gameObject.name} On Stopped");
             _unitView.animator.SetBool(HeroesConstants.Anim_Move, false);
+            _unitView.state.SetTargetCellToSelf();
             _unitView.state.isMoving = false;
         }
    
@@ -40,6 +41,7 @@ namespace RobotCastle.Battling
                 return EPathMovementResult.WasCancelled;
             }
             _unitView.state.isMoving = true;
+            _unitView.state.targetMoveCell = pos;
             return await _unitView.agent.MakeOneStepTowards(pos, token);
         }
         
@@ -111,6 +113,7 @@ namespace RobotCastle.Battling
         public void Stop()
         {
             _unitView.agent.Stop();
+            _unitView.state.SetTargetCellToSelf();
         }
         
         public void SetupAgent()

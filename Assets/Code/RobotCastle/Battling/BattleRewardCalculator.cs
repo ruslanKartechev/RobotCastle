@@ -25,8 +25,8 @@ namespace RobotCastle.Battling
             set => _perStageCompletion = value;
         }
         
-        private int _perKill = 5;
-        private int _perStageCompletion = 5;
+        private int _perKill = 0;
+        private int _perStageCompletion = 10;
         
         public void AddRewardForKill(IHeroController hero)
         {

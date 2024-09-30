@@ -1,6 +1,7 @@
 ﻿using System;
 using DG.Tweening;
 using RobotCastle.Core;
+using RobotCastle.UI;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -41,10 +42,16 @@ namespace RobotCastle.Battling
                 if (vec.y < 0)
                 {
                     MoveToBattlePoint();
+                    var battleUI = ServiceLocator.Get<IUIManager>().GetIfShown<BattleMergeUI>(UIConstants.UIBattleMerge);
+                    if(battleUI)
+                        battleUI.SetMainAreaLowerPos();
                 }
                 else if (vec.y > 0)
                 {
                     MoveToMergePoint();
+                    var battleUI = ServiceLocator.Get<IUIManager>().GetIfShown<BattleMergeUI>(UIConstants.UIBattleMerge);
+                    if(battleUI)
+                        battleUI.SetMainAreaUpPos();
                 }
             }
         }

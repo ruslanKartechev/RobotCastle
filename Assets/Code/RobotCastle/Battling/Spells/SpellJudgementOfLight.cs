@@ -28,7 +28,7 @@ namespace RobotCastle.Battling
         
         private SpellConfigJudgementOfLight _config;
         private HeroView _view;
-        private SpellParticleOnGridEffect _fxView;
+        private SpellParticlesByLevel _fxView;
         private CancellationTokenSource _token;
         private ConditionedManaAdder _manaAdder;
         private bool _isActive;
@@ -51,19 +51,18 @@ namespace RobotCastle.Battling
             var map = _view.agent.Map;
 
             const int waitMs = (int)(.25f * 1000);
+            await Task.Yield();
+            if (token.IsCancellationRequested) return;
             while (!token.IsCancellationRequested)
             {
-                var (affectedEnemies, cells) =
-                    HeroesHelper.GetCellsHeroesInsideCellMask(mask, _view.transform.position, map, allEnemies);
+                var affectedEnemies = HeroesHelper.GetHeroesInsideCellMask(mask, _view.transform.position, map, allEnemies);
                 if (affectedEnemies.Count > 0)
                 {
-                    var worldPositions = new List<Vector3>(cells.Count);
-                    foreach (var c in cells)
-                        worldPositions.Add(map.GetWorldFromCell(c));
-                    var effect = GetFxView();
-                    effect.Show(worldPositions);
+                    var fx = GetFxView();
+                    fx.transform.position = map.GetWorldFromCell(_view.state.currentCell);
+                    fx.Show(lvl);
                     var args = new DamageArgs(_config.physDamage[lvl], _view.stats.SpellPower.Get());
-                    for (var i = allEnemies.Count - 1; i >= 0; i--)
+                    for (var i = affectedEnemies.Count - 1; i >= 0; i--)
                         allEnemies[i].View.damageReceiver.TakeDamage(args);
                     _isActive = false;
                     _view.stats.ManaResetAfterFull.Reset(_view);
@@ -75,11 +74,11 @@ namespace RobotCastle.Battling
             }
         }
 
-        private SpellParticleOnGridEffect GetFxView()
+        private SpellParticlesByLevel GetFxView()
         {
             if (_fxView != null) return _fxView;
             var prefab = Resources.Load<GameObject>(HeroesConstants.SpellFXPrefab_JudgementOfLight);
-            var instance = Object.Instantiate(prefab).GetComponent<SpellParticleOnGridEffect>();
+            var instance = Object.Instantiate(prefab).GetComponent<SpellParticlesByLevel>();
             _fxView = instance;
             return instance;
         }

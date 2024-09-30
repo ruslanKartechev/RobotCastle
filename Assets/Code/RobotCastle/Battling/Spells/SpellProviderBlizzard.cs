@@ -18,5 +18,16 @@ namespace RobotCastle.Battling
         {
             view.stats.FullManaListener = new SpellBlizzard(view, _config);
         }
+
+        public override string GetDescription(GameObject target)
+        {
+            var str = base.GetDescription(target);
+            var stats = target.GetComponent<HeroStatsManager>();
+            var lvl = stats.MergeTier;
+            str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
+            str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
+
+            return str;
+        }
     }
 }

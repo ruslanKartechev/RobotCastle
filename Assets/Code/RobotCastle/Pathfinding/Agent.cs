@@ -39,14 +39,14 @@ namespace Bomber
             {
                 _pathfindingAgentAnimatorGO = value;
                 if (_pathfindingAgentAnimatorGO != null)
-                    _pathfindingAgentAnimator = _pathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
+                    _agentAnimator = _pathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
             }
         }
         
         public IPathfindingAgentAnimator PathfindingAgentAnimator
         {
-            get => _pathfindingAgentAnimator;
-            set => _pathfindingAgentAnimator = value;
+            get => _agentAnimator;
+            set => _agentAnimator = value;
         }
         
         public IFloatGetter SpeedGetter { get; set; }
@@ -72,7 +72,7 @@ namespace Bomber
         [SerializeField] private Transform _movable;
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private GameObject _pathfindingAgentAnimatorGO;
-        private IPathfindingAgentAnimator _pathfindingAgentAnimator;
+        private IPathfindingAgentAnimator _agentAnimator;
         private PathfinderAStar _pathfinder;
         private CancellationTokenSource _tokenSource;
         private IMap _map;
@@ -105,8 +105,8 @@ namespace Bomber
             if(_map.ActiveAgents.Contains(this) == false)
                 _map.ActiveAgents.Add(this);
             _pathfinder = new PathfinderAStar(map, new DistanceHeuristic());
-            if (_pathfindingAgentAnimatorGO != null && _pathfindingAgentAnimator == null)
-                _pathfindingAgentAnimator = _pathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
+            if (_pathfindingAgentAnimatorGO != null && _agentAnimator == null)
+                _agentAnimator = _pathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
             SetCurrentCellFromWorldPosition();
         }
 
@@ -122,6 +122,8 @@ namespace Bomber
         
         public void Stop()
         {
+            if(IsMoving)
+                _agentAnimator?.OnMovementStopped();
             State = AgentState.NotMoving;
             _tokenSource?.Cancel();
         }
@@ -191,12 +193,12 @@ namespace Bomber
             State = AgentState.IsMoving;
             SetCurrentCellFromWorldPosition();
             if(!prevMovingState)
-                _pathfindingAgentAnimator?.OnMovementBegan();
+                _agentAnimator?.OnMovementBegan();
             var result = await MovingThroughPoints(path, token);
             if (!token.IsCancellationRequested)
             {
                 State = AgentState.NotMoving;
-                _pathfindingAgentAnimator?.OnMovementStopped();
+                _agentAnimator?.OnMovementStopped();
             }
             return result;
         }
@@ -218,17 +220,19 @@ namespace Bomber
             {
                 // CLog.LogWhite($"[{nameof(PathfindingAgent)}] path count < 2...");
                 State = AgentState.NotMoving;
+                if(alreadyMoving)
+                    _agentAnimator?.OnMovementStopped();
                 return EPathMovementResult.FailedToBuild;
             }
             State = AgentState.IsMoving;
             SetCurrentCellFromWorldPosition();
             if(!alreadyMoving)
-                _pathfindingAgentAnimator?.OnMovementBegan();
+                _agentAnimator?.OnMovementBegan();
             var result = await MoveToCell(path.points[1], token);
             if (!token.IsCancellationRequested)
             {
                 State = AgentState.NotMoving;
-                _pathfindingAgentAnimator?.OnMovementStopped();
+                _agentAnimator?.OnMovementStopped();
                 // SetCurrentCellFromWorldPosition();
             }
             return result;

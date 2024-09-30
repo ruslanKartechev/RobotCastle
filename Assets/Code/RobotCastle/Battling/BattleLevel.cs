@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using Bomber;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
@@ -14,7 +16,7 @@ namespace RobotCastle.Battling
         [SerializeField] private bool _fillActiveAreaBeforeStart = true;
         [SerializeField] private float _endDelay = 2f;
         [SerializeField] private bool _doAutoBegin = true;
-        [SerializeField] private PresetsContainer _presetsContainer;
+        [SerializeField] private InvasionLevelDataContainer _levelContainer;
         [SerializeField] private BattleManager _battleManager;
         [SerializeField] private MergeManager _mergeManager;
         [SerializeField] private EnemiesManager _enemiesManager;
@@ -23,9 +25,13 @@ namespace RobotCastle.Battling
         [SerializeField] private BattleCamera _battleCamera;
         [SerializeField] private BattleGridSwitch _gridSwitch;
         [SerializeField] private CastleHealthView _playerHealthView;
+        [SerializeField] private ParticleSystem _troopSizeExpansion;
         private IPlayerMergeItemPurchaser _itemPurchaser;
         private ITroopSizeManager _troopSizeManager;
         private BattleMergeUI _mainUI;
+        private InvasionLevelData levelData => _levelContainer.data;
+        private InvasionRoundData roundData => levelData.levels[_battleManager.battle.stageIndex];
+        
         
         public void OnBattleStarted(Battle battle)
         {
@@ -59,8 +65,8 @@ namespace RobotCastle.Battling
             _itemPurchaser = gameObject.GetComponent<IPlayerMergeItemPurchaser>();
             _battleManager.startProcessor = this;
             _battleManager.endProcessor = this;
-            var battle = _battleManager.Init(_presetsContainer);
-            _troopSizeManager = new BattleTroopSizeManager(battle);
+            var battle = _battleManager.Init(levelData.levels);
+            _troopSizeManager = new BattleTroopSizeManager(battle, _troopSizeExpansion);
             ServiceLocator.Bind<ITroopSizeManager>(_troopSizeManager);
             _mergeManager.Init();
             _enemiesManager.Init();
@@ -89,9 +95,10 @@ namespace RobotCastle.Battling
             _mainUI = mergeInfoUI.Show<BattleMergeUI>(UIConstants.UIBattleMerge, () => { });
             _mainUI.BtnSpawn.AddMainCallback(BuyNewItem);
             _mainUI.BtnStart.AddMainCallback(StartBattle);
+            _mainUI.BtnStart2.AddMainCallback(StartBattle);
             _mainUI.TroopSizePurchaseUI.Init(_troopSizeManager);
             _mainUI.TroopSizePurchaseUI.SetInteractable(true);
-            _mainUI.Level.SetLevel(_battleManager.battle.stageIndex, false);
+            _mainUI.Init(_battleManager.battle, levelData);
             AllowPlayerUIInput(true);
         }
 
@@ -99,6 +106,7 @@ namespace RobotCastle.Battling
         {
             _mainUI.BtnSpawn.SetInteractable(allow);
             _mainUI.BtnStart.SetInteractable(allow);
+            _mainUI.BtnStart2.SetInteractable(allow);
         }
         
         private void StartBattle()
@@ -107,6 +115,7 @@ namespace RobotCastle.Battling
             if(_fillActiveAreaBeforeStart)
                 _mergeManager.FillActiveArea();
             _battleManager.BeginBattle();
+            _mainUI.SetMainAreaLowerPos();
         }
 
         private void BuyNewItem()
@@ -122,38 +131,58 @@ namespace RobotCastle.Battling
         
         private IEnumerator DelayedBattleEnd(Battle battle)
         {
-            yield return new WaitForSeconds(_endDelay / 2f);
+            yield return new WaitForSeconds(_endDelay * .5f);
             _gridSwitch.SetMergeMode();
             _battleManager.RecollectPlayerUnits();
             switch (battle.State)
             {
                 case BattleState.EnemyWin:
-                    var health = --_battleManager.battle.playerHealthPoints;
-                    if (health <= 0)
-                        health = 0;
-                    _playerHealthView.MinusHealth(health);
-                    if (health == 0)
-                    {
-                        CLog.LogWhite($"[{nameof(BattleLevel)}] Player LOST");
-                        ShowFailedScreen();
+                    if(RoundLost())
                         yield break;
-                    }
-                    _battleManager.ResetStage();
                     break;
                 case BattleState.PlayerWin:
-                    _battleManager.NextStage();
-                    _mainUI.Level.SetLevel(_battleManager.battle.stageIndex, false);
+                       RoundWin();
                     break;
                 default:
                     CLog.LogRed($"[{nameof(BattleLevel)}] Error!");
                     break;
             }
-            yield return new WaitForSeconds(_endDelay / 2f);
+            yield return new WaitForSeconds(_endDelay * .5f);
             _battleCamera.MoveToMergePoint();
+            var battleUI = ServiceLocator.Get<IUIManager>().GetIfShown<BattleMergeUI>(UIConstants.UIBattleMerge);
+            if(battleUI)
+                battleUI.SetMainAreaUpPos();
             _mergeManager.AllowInput(true);
             AllowPlayerUIInput(true);
             _battleCamera.AllowPlayerInput(true);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void RoundWin()
+        {
+            _battleManager.NextStage();
+            _mainUI.UpdateForNextWave();
+            _mainUI.Win();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool RoundLost()
+        {
+            var health = --_battleManager.battle.playerHealthPoints;
+            if (health <= 0)
+                health = 0;
+            _playerHealthView.MinusHealth(health);
+            _mainUI.Lost();
+            if (health == 0)
+            {
+                CLog.LogWhite($"[{nameof(BattleLevel)}] Player LOST");
+                ShowFailedScreen();
+                return true;
+            }
+            _battleManager.ResetStage();
+            return false;
+        }
+        
     }
     
 }

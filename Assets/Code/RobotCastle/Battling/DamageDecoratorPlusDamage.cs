@@ -1,29 +1,25 @@
-﻿namespace RobotCastle.Battling
+﻿using SleepDev;
+
+namespace RobotCastle.Battling
 {
     public class DamageDecoratorPlusDamage : IDamageDecorator
     {
-        public DamageDecoratorPlusDamage(float val, EDamageType type)
+        public DamageDecoratorPlusDamage(float addedPhysDamage, float addedMagicDamage)
         {
-            this.val = val;
-            this.type = type;
+            this.addedPhysDamage = addedPhysDamage;
+            this.addedMagicDamage = addedMagicDamage;
         }
-        
-        public float val;
-        public EDamageType type;
 
-        public string id => $"plus_damage_{val}";
+        public float addedPhysDamage;
+        public float addedMagicDamage;
+
+        public string id => $"plus_damage";
 
         public DamageArgs Apply(DamageArgs damageArgs)
         {
-            switch (type)
-            {
-                case EDamageType.Magical:
-                    damageArgs.magicDamage += val;
-                    break;
-                case EDamageType.Physical:
-                    damageArgs.physDamage += val;
-                    break;
-            }
+            CLog.LogRed($"************ Added damage: {addedPhysDamage}, {addedMagicDamage}");
+            damageArgs.magicDamage += addedMagicDamage;
+            damageArgs.physDamage += addedPhysDamage;
             return damageArgs;
         }
     }

@@ -32,7 +32,7 @@ namespace RobotCastle.UI
         {
             var elapsed = 0f;
             var t = 0f;
-            var max = stats.Shield / stats.HealthMax.Get();
+            var max = .5f;
             while (elapsed < startFillTime)
             {
                 _fillImage.fillAmount = Mathf.Lerp(0f, max, t);
@@ -44,7 +44,7 @@ namespace RobotCastle.UI
             while (stats.Shield > 0)
             {
                 t = stats.Shield / stats.HealthMax.Get();
-                _fillImage.fillAmount = t;
+                _fillImage.fillAmount = Mathf.Lerp(0f ,max, t);
                 yield return null;
             }
             _go.SetActive(false);

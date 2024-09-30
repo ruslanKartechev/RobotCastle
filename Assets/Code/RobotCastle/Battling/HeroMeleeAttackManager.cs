@@ -44,7 +44,7 @@ namespace RobotCastle.Battling
             var damage = Hero.View.stats.DamageCalculator.CalculateRegularAttackDamage();
             _target.TakeDamage(damage);
             OnAttackStep?.Invoke();
-            Hero.View.stats.ManaAdder.AddMana(damage.physDamage * HeroesConstants.ManaGainDamageMultiplier);
+            Hero.View.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
         }
     }
 }

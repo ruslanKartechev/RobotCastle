@@ -9,23 +9,32 @@ namespace RobotCastle.Battling
     public class CrescentSlashView : MonoBehaviour
     {
         private const float cellRadius = 1f;
-        [SerializeField] private List<GameObject> _particles;
+        [SerializeField] private List<ParticleSystem> _particles;
         private IMap _map;
         private float _speed;
         private float _damage;
         
         
-        public void Launch(CellsMask cellMask,  float damage, float speed, List<IHeroController> enemies)
+        public void Launch(int level, CellsMask cellMask, float damage, float speed, List<IHeroController> enemies)
         {
             _map = ServiceLocator.Get<IMap>();
             _damage = damage;
             _speed = speed;
-            var width = cellMask.mask.Count;
-            for (var i = 0; i < width; i++)
-                _particles[i].SetActive(true);
-            for (var i = width; i < _particles.Count; i++)
-                _particles[i].SetActive(false);
             gameObject.SetActive(true);
+            for (var i = 0; i < _particles.Count; i++)
+            {
+                var p = _particles[i];
+                p.gameObject.SetActive(i == level);
+                if (i == level)
+                {
+                    p.gameObject.SetActive(true);
+                    p.Play();
+                }
+                else
+                {
+                    p.gameObject.SetActive(false);
+                }
+            }
             StartCoroutine(Running(cellMask, enemies));
         }
 
@@ -59,7 +68,7 @@ namespace RobotCastle.Battling
                 var dist = Time.deltaTime * _speed;
                 totalDistance += dist;
                 pos += frw * dist;
-                transform.position = pos;
+                // transform.position = pos;
                 if (distances[cellInd] <= totalDistance)
                 {
                     DamageFromCell(cells[cellInd]);

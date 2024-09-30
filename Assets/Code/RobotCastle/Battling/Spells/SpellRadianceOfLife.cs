@@ -27,7 +27,7 @@ namespace RobotCastle.Battling
         }
         
         private SpellConfigRadianceOfLife _config;
-        private SpellParticleOnGridEffect _fxView;
+        private SpellParticlesOnHero _fxView;
         private ConditionedManaAdder _manaAdder;
 
         public void OnFullMana(GameObject heroGo)
@@ -53,15 +53,15 @@ namespace RobotCastle.Battling
                 worldPositions.Add(hero.View.transform.position);
             }
             var effect = GetFxView();
-            effect.Show(worldPositions);
+            effect.Show(_view.transform);
             _isActive = false;
         }
         
-        private SpellParticleOnGridEffect GetFxView()
+        private SpellParticlesOnHero GetFxView()
         {
             if (_fxView != null) return _fxView;
             var prefab = Resources.Load<GameObject>(HeroesConstants.SpellFXPrefab_RadianceOfLife);
-            var instance = Object.Instantiate(prefab).GetComponent<SpellParticleOnGridEffect>();
+            var instance = Object.Instantiate(prefab).GetComponent<SpellParticlesOnHero>();
             _fxView = instance;
             return instance;
         }

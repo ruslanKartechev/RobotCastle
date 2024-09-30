@@ -38,12 +38,24 @@ namespace RobotCastle.Battling
             _view.stats.ManaCurrent.Val = 0;
             _view.stats.Shield = _view.stats.SpellPower.Get();
             _view.heroUI.ShieldBar.TrackUntilZero(_view.stats);
+            var fx = GetFxView();
+            fx.Show(_view.transform);
         }
         
         private SpellConfigIronWill _config;
-        private SpellParticleOnGridEffect _fxView;
         private ConditionedManaAdder _manaAdder;
         private CancellationTokenSource _token;
+        private SpellParticlesOnHero _fxView;
+
+        private SpellParticlesOnHero GetFxView()
+        {
+            if (_fxView != null) return _fxView;
+            var prefab = Resources.Load<GameObject>(HeroesConstants.SpellFXPrefab_IronWill);
+            var instance = Object.Instantiate(prefab).GetComponent<SpellParticlesOnHero>();
+            _fxView = instance;
+            return instance;
+        }
+
 
         
         private void OnAfterDamage()

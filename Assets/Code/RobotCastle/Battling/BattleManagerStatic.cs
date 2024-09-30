@@ -15,6 +15,8 @@ namespace RobotCastle.Battling
             var view = hero.View;
             view.stats.ClearDecorators();
             
+            view.stats.Shield = 0f;
+            view.heroUI.ShieldBar.Hide();
             view.stats.HealthReset.Reset(view);
             view.stats.ManaResetAfterBattle.Reset(view);
             view.heroUI.UpdateStatsView(view);

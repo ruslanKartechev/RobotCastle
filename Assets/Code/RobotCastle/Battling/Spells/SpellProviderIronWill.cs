@@ -17,5 +17,13 @@ namespace RobotCastle.Battling
         {
             view.stats.FullManaListener = new SpellIronWill(view, _config);
         }
+        
+        public override string GetDescription(GameObject target)
+        {
+            var str = base.GetDescription(target);
+            var stats = target.GetComponent<HeroStatsManager>();
+            str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
+            return str;
+        }
     }
 }

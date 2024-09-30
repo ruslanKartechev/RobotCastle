@@ -70,7 +70,7 @@ namespace RobotCastle.Battling
         public string HeroId { get; private set; }
         public int MergeTier { get; private set; }
         public int HeroLvl { get; private set; }
-        public float ProjectileSpeed { get; set; } = 5;
+        public float ProjectileSpeed { get; set; } = HeroesConstants.ProjectileSpeed;
         
         private HeroStats _stats;
         private IAttackRange _range;

@@ -13,8 +13,10 @@ namespace RobotCastle.Battling
         
         public const float SpeedStatFactor = 1f / 40;
         public const float SpeedStatToAnimationFactor = 1f / 150;
+        public const float AddedMana = 18;
 
         public const float RotationSpeed = 900f;
+        public const float ProjectileSpeed = 3.3f;
         
         public const string AnimId_Move = "Run";
         public const string AnimId_Idle = "Idle";
@@ -28,12 +30,16 @@ namespace RobotCastle.Battling
         // Tier 1 - (0, 1), Tier 2 - (2, 3), Tier 3 - (4-5), Tier 4 - (6)
         public static readonly List<int> SpellTiersByMergeLevel = new() {0, 2, 4, 6};
 
+        public const string ColorAddedStats = "#FFFF11";
+        public const string ColorPhysDamage = "#FFFF11";
+        public const string ColorMagDamage = "#1111FF";
+
         public const string SpellFXPrefab_Blizzard = "prefabs/spells/blizzard";
         public const string SpellFXPrefab_JudgementOfLight = "prefabs/spells/judgement_of_light";
         public const string SpellFXPrefab_CrescentSlash = "prefabs/spells/crescent_slash";
         public const string SpellFXPrefab_RadianceOfLife = "prefabs/spells/radiance_of_life";
         public const string SpellFXPrefab_IronWill = "prefabs/spells/iron_will";
-        
+
         
 
     }

@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Merging;
+using UnityEngine;
 
 namespace RobotCastle.Battling
 {
@@ -9,11 +10,13 @@ namespace RobotCastle.Battling
         private int _startSize = 3;
         private int _addedPrice = 5;
         private int _price = 5;
+        private ParticleSystem _particle;
 
         private Battle _battle;
 
-        public BattleTroopSizeManager(Battle battle)
+        public BattleTroopSizeManager(Battle battle, ParticleSystem particle)
         {
+            _particle = particle;
             _battle = battle;
         }
         
@@ -43,6 +46,7 @@ namespace RobotCastle.Battling
             var gridController = ServiceLocator.Get<IGridSectionsController>();
             gridController.SetMaxCount(_battle.troopSize);
             ServiceLocator.Get<GameMoney>().Money = money;
+            _particle.Play();
             return 0;
         }
     }

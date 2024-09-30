@@ -19,8 +19,7 @@ namespace RobotCastle.Battling
         {
             _config = config;
             _view = heroView;
-            _decorator = new DamageDecoratorPlusDamage(0, EDamageType.Magical);
-            _decoratorPhys = new DamageDecoratorPlusDamage(0, EDamageType.Physical);
+            _decorator = new DamageDecoratorPlusDamage(0, 0);
             _manaAdder = new ConditionedManaAdder(_view);
             _view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
             _view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
@@ -31,7 +30,6 @@ namespace RobotCastle.Battling
         private SpellConfigHeadshot _config;
         private HeroView _view;
         private DamageDecoratorPlusDamage _decorator;
-        private DamageDecoratorPlusDamage _decoratorPhys;
         private ConditionedManaAdder _manaAdder;
         private bool _isActive;
         private IProjectileFactory _prevFactory;
@@ -48,27 +46,27 @@ namespace RobotCastle.Battling
                 return;
             _isActive = true;
             CLog.LogWhite($"[{_view.gameObject.name}] Spell headshot executed");
-            _manaAdder.CanAdd = false;
-            _decorator.val = _view.stats.SpellPower.Get();
-            _decoratorPhys.val = _config.physDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
-            _view.stats.DamageCalculator.AddDecorator(_decorator);
-            _view.stats.DamageCalculator.AddDecorator(_decoratorPhys);
-            _view.attackManager.OnAttackStep -= OnAttack;
-            _view.attackManager.OnAttackStep += OnAttack;
             var atk = ((HeroRangedAttackManager)_view.attackManager);
+            if (atk == null)
+                throw new System.Exception($"{nameof(SpellHeadshot)}  cannot cast AttackManager to HeroRangedAttackManager");
+            atk.OnHit -= OnHit;
+            atk.OnHit += OnHit;
+            _manaAdder.CanAdd = false;
+            _decorator.addedMagicDamage = _view.stats.SpellPower.Get();
+            _decorator.addedPhysDamage = _config.physDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+            _view.stats.DamageCalculator.AddDecorator(_decorator);
             _prevFactory = atk.ProjectileFactory;
             atk.ProjectileFactory = this;
         }
 
-        private void OnAttack()
+        private void OnHit()
         {
+            var atk = ((HeroRangedAttackManager)_view.attackManager);
+            atk.OnHit -= OnHit;
             _view.stats.DamageCalculator.RemoveDecorator(_decorator);
-            _view.stats.DamageCalculator.RemoveDecorator(_decoratorPhys);
-            _view.attackManager.OnAttackStep -= OnAttack;
             _view.stats.ManaResetAfterFull.Reset(_view);
             _isActive = false;
             _manaAdder.CanAdd = true;
-            var atk = ((HeroRangedAttackManager)_view.attackManager);
             atk.ProjectileFactory = _prevFactory;
         }
 
