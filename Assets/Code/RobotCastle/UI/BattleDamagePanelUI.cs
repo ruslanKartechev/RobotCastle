@@ -32,6 +32,24 @@ namespace RobotCastle.UI
             ui.Show(amount);
             ui.Animate(_ease);
         }
+        
+        public void ShowAtScreenPos(int amount, EDamageType type, Vector3 screenPos)
+        {
+            DamageUI ui = null;
+            switch (type)
+            {
+                case EDamageType.Magical:
+                    ui = _magical.GetOne();
+                    break;
+                case EDamageType.Physical:
+                    ui = _physical.GetOne();
+                    break;
+            }
+
+            ui.transform.position = screenPos;
+            ui.Show(amount);
+            ui.Animate(_ease);
+        }
 
         private void OnEnable()
         {

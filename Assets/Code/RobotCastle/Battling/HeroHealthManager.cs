@@ -51,7 +51,7 @@ namespace RobotCastle.Battling
                 }
                 else
                     health -= args.physDamage;
-                ServiceLocator.Get<IDamageDisplay>().ShowAt((int)args.physDamage, EDamageType.Physical, _view.transform.position + Vector3.up);
+                ServiceLocator.Get<IDamageDisplay>().ShowAt((int)args.physDamage, EDamageType.Physical, _view.heroUI.DamagePoint.position);
             }
             if(args.magicDamage > 0)
             {
@@ -67,7 +67,7 @@ namespace RobotCastle.Battling
                 }
                 else
                     health -= args.magicDamage;
-                ServiceLocator.Get<IDamageDisplay>().ShowAt((int)args.magicDamage, EDamageType.Magical, _view.transform.position + Vector3.up);
+                ServiceLocator.Get<IDamageDisplay>().ShowAt((int)args.magicDamage, EDamageType.Magical, _view.heroUI.DamagePoint.position);
             }
             if(didDamageShield)
                 stats.Shield = shield;

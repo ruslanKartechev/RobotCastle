@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System.Threading.Tasks;
+using DG.Tweening;
 using RobotCastle.Merging;
 using UnityEngine;
 
@@ -39,9 +40,11 @@ namespace RobotCastle.Battling
             transform.DORotateQuaternion(endPoint.rotation, time);
         }
 
-        public void InitView(ItemData data)
+        public async void InitView(ItemData data)
         {
             _data = data;
+            while (_view.heroUI == null)
+                await Task.Yield();
             _view.heroUI.Level.SetLevel(_data.core.level);
             _view.heroUI.Level.AnimateUpdated();  
         }

@@ -20,8 +20,7 @@ namespace RobotCastle.Battling
             hero.MarkDead();
             hero.Battle.AttackPositionCalculator.RemoveUnit(_heroView.state);
             _heroView.state.SetTargetCellToSelf();
-            _heroView.rb.isKinematic = true;
-            _heroView.collider.enabled = false;
+            _heroView.heroUI.Hide();
             _heroView.gameObject.SetActive(false);
             _heroView.processes.StopAll();
             if (ServiceLocator.GetIfContains<ISimplePoolsManager>(out var pool))

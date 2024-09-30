@@ -12,7 +12,9 @@ namespace RobotCastle.UI
         [SerializeField] private BarTrackerUI _manaUI;
         [SerializeField] private ShieldStatBar _shieldStatBar;
         [SerializeField] private CanvasGroup _canvasGroup;
-        
+        [SerializeField] private RectTransform _damagePoint;
+
+        public RectTransform DamagePoint => _damagePoint;
         public StarsLevelView Level => _levelView;
         public BarTrackerUI HealthUI => _healthUI;
         public BarTrackerUI ManaUI => _manaUI;
@@ -28,7 +30,7 @@ namespace RobotCastle.UI
             _unitUILayout.SetBattle();
         }
 
-        public void AnimateHide()
+        public void Hide()
         {
             gameObject.SetActive(false);
             // _canvasGroup.DOFade(0f, .2f);   

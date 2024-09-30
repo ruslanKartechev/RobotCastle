@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
+using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
 
@@ -40,11 +41,13 @@ namespace RobotCastle.Battling
         {
             _spawnedEnemies = new List<IHeroController>(packPreset.enemies.Count);
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
+            // var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
             foreach (var enemyPreset in packPreset.enemies)
             {
                 var cellView = GridView.GetCell(enemyPreset.gridPos.x, enemyPreset.gridPos.y);
                 var itemView = factory.SpawnItemOnCell(cellView, new ItemData(enemyPreset.enemy));
                 var hero = itemView.Transform.GetComponent<IHeroController>();
+                // barsPanel.AssignEnemyUI(hero.View);
                 var modifiers = HeroesHelper.GetModifiers(enemyPreset.modifiers);
                 
                 hero.InitHero(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
