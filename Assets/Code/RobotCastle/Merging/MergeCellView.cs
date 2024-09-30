@@ -58,10 +58,10 @@ namespace RobotCastle.Merging
                 switch (type)
                 {
                     case 1:
-                        _highlight = ServiceLocator.Get<ISimplePoolsManager>().GetOne("merge_slow") as CellHighlight;
+                        _highlight = ServiceLocator.Get<ISimplePoolsManager>().GetOne(ObjectPoolConstants.MergeDefaultFxId) as CellHighlight;
                         break;
                     case 2:
-                        _highlight = ServiceLocator.Get<ISimplePoolsManager>().GetOne("merge_fast") as CellHighlight;;
+                        _highlight = ServiceLocator.Get<ISimplePoolsManager>().GetOne(ObjectPoolConstants.MergePickedFxId) as CellHighlight;;
                         break;
                 }
                 _highlight.HighlightType = type;

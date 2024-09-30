@@ -2,15 +2,10 @@
 
 namespace RobotCastle.Battling
 {
-    /// <summary>
-    /// Judgment of Light - Smashes his hammer down with all his might,
-    /// dealing 50/60/70/80+SP damage to all enemies in 1/3x3/2/5x5 block(s) nearby.
-    /// </summary>
     [CreateAssetMenu(menuName = "SO/Spells/SpellProvider JudgmentOfLight", fileName = "judgement_of_light", order = 0)]
     public class SpellProviderJudgmentOfLight : SpellProvider
     {
         public override float manaMax => _config.manaMax;
-        
         public override float manaStart => _config.manaStart;
         
         [SerializeField] private SpellConfigJudgementOfLight _config;
@@ -20,8 +15,17 @@ namespace RobotCastle.Battling
         
         public override void AddToHero(HeroView view)
         {
-            view.Stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            view.Stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
+            view.stats.FullManaListener = new SpellJudgementOfLight(view, _config);
+        }
+        
+        public override string GetDescription(GameObject target)
+        {
+            var str = base.GetDescription(target);
+            var stats = target.GetComponent<HeroStatsManager>();
+            var lvl = stats.MergeTier;
+            str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
+            str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
+            return str;
         }
     }
 }

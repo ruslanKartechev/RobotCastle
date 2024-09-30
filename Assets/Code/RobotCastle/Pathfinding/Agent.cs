@@ -1,6 +1,5 @@
 #define __DrawPathCells
 #define __DrawCurrentCell
-
 using System.Threading;
 using System.Threading.Tasks;
 using SleepDev;
@@ -8,31 +7,15 @@ using UnityEngine;
 
 namespace Bomber
 {
-    public enum EPathMovementResult
-    {
-        FailedToBuild, IsBlockedOnTheWay, WasCancelled, WasStopped, ReachedEnd
-    }
+    public enum EPathMovementResult { FailedToBuild, IsBlockedOnTheWay, WasCancelled, WasStopped, ReachedEnd }
+    public enum AgentState { NotMoving, IsMoving, FailedToReach, IsWaitingToPass, Arrived }
+
     public class Agent : MonoBehaviour, IAgent
     {
-        public enum AgentState { NotMoving, IsMoving, FailedToReach, IsWaitingToPass, Arrived }
         public delegate bool MoveStepCallback(Vector2Int currentCell);
 
-        [SerializeField] private bool _useRb;
-        [SerializeField] private float _speed;
-        [SerializeField] private float _rotationSpeed;
-        [SerializeField] private Transform _movable;
-        [SerializeField] private Rigidbody _rb;
-        [SerializeField] private GameObject _pathfindingAgentAnimatorGO;
-        private IPathfindingAgentAnimator _pathfindingAgentAnimator;
-        private PathfinderAStar _pathfinder;
-        private CancellationTokenSource _tokenSource;
-        private IMap _map;
-        private bool _isMoving;
-        private bool _didInit;
-        private MoveStepCallback _moveStepCallback;
-        
         public AgentState State { get; private set; }
-        public bool IsMoving => _isMoving;
+        public bool IsMoving => State == AgentState.IsMoving;
         
         public Vector2Int CurrentCell { get; private set; }
         public IMap Map => _map;
@@ -56,14 +39,14 @@ namespace Bomber
             {
                 _pathfindingAgentAnimatorGO = value;
                 if (_pathfindingAgentAnimatorGO != null)
-                    _pathfindingAgentAnimator = _pathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
+                    _agentAnimator = _pathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
             }
         }
         
         public IPathfindingAgentAnimator PathfindingAgentAnimator
         {
-            get => _pathfindingAgentAnimator;
-            set => _pathfindingAgentAnimator = value;
+            get => _agentAnimator;
+            set => _agentAnimator = value;
         }
         
         public IFloatGetter SpeedGetter { get; set; }
@@ -82,6 +65,19 @@ namespace Bomber
             get => _rotationSpeed;
             set => _rotationSpeed = value;
         }
+        
+        [SerializeField] private bool _useRb;
+        [SerializeField] private float _speed;
+        [SerializeField] private float _rotationSpeed;
+        [SerializeField] private Transform _movable;
+        [SerializeField] private Rigidbody _rb;
+        [SerializeField] private GameObject _pathfindingAgentAnimatorGO;
+        private IPathfindingAgentAnimator _agentAnimator;
+        private PathfinderAStar _pathfinder;
+        private CancellationTokenSource _tokenSource;
+        private IMap _map;
+        private bool _didInit;
+        private MoveStepCallback _moveStepCallback;
 
         public void UpdateMap(IMap map)
         {
@@ -109,8 +105,8 @@ namespace Bomber
             if(_map.ActiveAgents.Contains(this) == false)
                 _map.ActiveAgents.Add(this);
             _pathfinder = new PathfinderAStar(map, new DistanceHeuristic());
-            if (_pathfindingAgentAnimatorGO != null && _pathfindingAgentAnimator == null)
-                _pathfindingAgentAnimator = _pathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
+            if (_pathfindingAgentAnimatorGO != null && _agentAnimator == null)
+                _agentAnimator = _pathfindingAgentAnimatorGO.GetComponent<IPathfindingAgentAnimator>();
             SetCurrentCellFromWorldPosition();
         }
 
@@ -126,8 +122,9 @@ namespace Bomber
         
         public void Stop()
         {
+            if(IsMoving)
+                _agentAnimator?.OnMovementStopped();
             State = AgentState.NotMoving;
-            _isMoving = false;
             _tokenSource?.Cancel();
         }
 
@@ -164,7 +161,7 @@ namespace Bomber
         
         public async Task<EPathMovementResult> MoveToCellAt(Vector2Int targetCellPos, CancellationToken token)
         {
-            var prevMovingState = _isMoving;
+            var prevMovingState = IsMoving;
             _map.GetCellAtPosition(_movable.position, out var mCellPos, out var mCell);
             var path = await _pathfinder.FindPath(mCellPos, targetCellPos);
             if (token.IsCancellationRequested)
@@ -190,22 +187,57 @@ namespace Bomber
             if (path.points.Count < 2)
             {
                 // CLog.LogWhite($"[{nameof(PathfindingAgent)}] path count < 2...");
-                _isMoving = false;
                 State = AgentState.NotMoving;
                 return EPathMovementResult.FailedToBuild;
             }
-            _isMoving = true;
+            State = AgentState.IsMoving;
             SetCurrentCellFromWorldPosition();
             if(!prevMovingState)
-                _pathfindingAgentAnimator?.OnMovementBegan();
+                _agentAnimator?.OnMovementBegan();
             var result = await MovingThroughPoints(path, token);
             if (!token.IsCancellationRequested)
             {
-                _isMoving = false;
-                _pathfindingAgentAnimator?.OnMovementStopped();
+                State = AgentState.NotMoving;
+                _agentAnimator?.OnMovementStopped();
             }
             return result;
         }
+        
+        
+        public async Task<EPathMovementResult> MakeOneStepTowards(Vector2Int targetCellPos, CancellationToken token)
+        {
+            var alreadyMoving = IsMoving;
+            _map.GetCellAtPosition(_movable.position, out var mCellPos, out var mCell);
+            var path = await _pathfinder.FindPath(mCellPos, targetCellPos);
+            if (token.IsCancellationRequested)
+                return EPathMovementResult.FailedToBuild;
+            if (!path.success)
+            {
+                State = AgentState.NotMoving;
+                CLog.Log($"[{nameof(Agent)}] Pathfinding to {targetCellPos} FAILED..." );
+            }
+            if (path.points.Count < 2)
+            {
+                // CLog.LogWhite($"[{nameof(PathfindingAgent)}] path count < 2...");
+                State = AgentState.NotMoving;
+                if(alreadyMoving)
+                    _agentAnimator?.OnMovementStopped();
+                return EPathMovementResult.FailedToBuild;
+            }
+            State = AgentState.IsMoving;
+            SetCurrentCellFromWorldPosition();
+            if(!alreadyMoving)
+                _agentAnimator?.OnMovementBegan();
+            var result = await MoveToCell(path.points[1], token);
+            if (!token.IsCancellationRequested)
+            {
+                State = AgentState.NotMoving;
+                _agentAnimator?.OnMovementStopped();
+                // SetCurrentCellFromWorldPosition();
+            }
+            return result;
+        }
+        
 
         /// <summary>
         /// </summary>
@@ -241,102 +273,17 @@ namespace Bomber
             for (var i = 1; i < path.points.Count && !token.IsCancellationRequested; i++)
             {
                 var targetCell = path.points[i];
-                var cellState = CheckIfCellIsFree(targetCell);
-                // var totalTime = 0f;
-                // while (cellState == 1)
-                // {
-                //     CLog.LogRed($"*********** CEll State == 1. Waiting");
-                //     State = AgentState.IsWaitingToPass;
-                //     totalTime += waitDelay;
-                //     await Task.Delay((int)(1000 * waitDelay), token);
-                //     if (token.IsCancellationRequested)
-                //         return EPathMovementResult.WasCancelled;
-                //     if (totalTime >= maxWaitTime)
-                //     {
-                //         CLog.LogRed("-------------------- Timeout");
-                //         cellState = 2;
-                //     }
-                //     else
-                //         cellState = CheckIfCellIsFree(targetCell);
-                // }
-                if (token.IsCancellationRequested)
-                    return EPathMovementResult.WasCancelled;
-
-                switch (cellState)
+                var res = await MoveToCell(targetCell, token);
+                if (res != EPathMovementResult.ReachedEnd)
+                    return res;
+                if (_moveStepCallback == null)
                 {
-                    case 0:
-                        CurrentCell = targetCell;
-                        break; // do nothing, go
-                    case 1 or 2:
-                        State = AgentState.FailedToReach;
-                        _isMoving = false;
-                        return EPathMovementResult.IsBlockedOnTheWay;
+                    CLog.LogError($"[{nameof(Agent)}] _cellMoveCheck delegate was null!!");
+                    _moveStepCallback = DefaultStepCallback;
                 }
-                State = AgentState.IsMoving;
-                var targetWorldPos = _map.Grid[targetCell.x, targetCell.y].worldPosition;
-                // CLog.Log($"{gameObject.name} Moving to pos: {targetPos}");
-                var rot1 = _movable.rotation;
-                var rot2 = Quaternion.LookRotation(targetWorldPos - _movable.position);
-                var angle = Quaternion.Angle(rot1, rot2);
-                var rotTime = angle / _rotationSpeed;
-                var elapsed = 0f;
-                while (!token.IsCancellationRequested && elapsed < rotTime)
-                {
-                    _movable.rotation = Quaternion.Lerp(rot1, rot2, elapsed / rotTime);
-                    elapsed += Time.deltaTime;
-                    await Task.Yield();
-                }
-                if (token.IsCancellationRequested)
-                    return EPathMovementResult.WasCancelled;
-      
-                if (_useRb)
-                {
-                    var vec = targetWorldPos - transform.position;
-                    var d2 = vec.sqrMagnitude;
-                    var moveAmount = SpeedGetter.Get() * Time.fixedDeltaTime;
-                    while (!token.IsCancellationRequested && d2 > moveAmount * moveAmount)
-                    {
-                        vec = targetWorldPos - _rb.transform.position;
-                        d2 = vec.sqrMagnitude;
-                        var force = vec.normalized * SpeedGetter.Get();
-                        _rb.velocity = force;
-                        await Task.Yield();
-                    }
-                    if (token.IsCancellationRequested)
-                        return EPathMovementResult.WasCancelled;
-                    State = AgentState.Arrived;
-                    _rb.velocity = Vector3.zero;
-                    _rb.transform.position = targetWorldPos;
-                }
-                else
-                {
-                    _movable.rotation = rot2;
-                    var totalDistance = (targetWorldPos - transform.position).magnitude;
-                    var travelled = 0f;
-                    while (!token.IsCancellationRequested && travelled < totalDistance)
-                    {
-                        var vec = targetWorldPos - transform.position;
-                        var vecL = vec.magnitude;
-                        var amount = SpeedGetter.Get() * Time.deltaTime;
-                        vec *= amount / vecL;
-                        travelled += amount;
-                        transform.position += vec;
-                        await Task.Yield();
-                    }
-                    if (token.IsCancellationRequested)
-                        return EPathMovementResult.WasCancelled;
-                    transform.position = targetWorldPos;
-                    if (_moveStepCallback == null)
-                    {
-                        CLog.LogError($"[{nameof(Agent)}] _cellMoveCheck delegate was null!!");
-                        _moveStepCallback = DefaultStepCallback;
-                    }
-                }
-                
                 var moveToNext = _moveStepCallback.Invoke(targetCell);
                 if (!moveToNext)
                 {
-                    _isMoving = false;
                     State = AgentState.Arrived;
                     return EPathMovementResult.WasStopped;
                 }
@@ -344,6 +291,80 @@ namespace Bomber
             State = AgentState.Arrived;
             return EPathMovementResult.ReachedEnd;
         }
+
+        private async Task<EPathMovementResult> MoveToCell(Vector2Int targetCell, CancellationToken token)
+        {
+            var cellState = CheckIfCellIsFree(targetCell);
+            if (token.IsCancellationRequested)
+                return EPathMovementResult.WasCancelled;
+            switch (cellState)
+            {
+                case 0:
+                    CurrentCell = targetCell;
+                    break; // do nothing, go
+                case 1 or 2:
+                    State = AgentState.FailedToReach;
+                    return EPathMovementResult.IsBlockedOnTheWay;
+            }
+            State = AgentState.IsMoving;
+            var targetWorldPos = _map.Grid[targetCell.x, targetCell.y].worldPosition;
+            // CLog.Log($"{gameObject.name} Moving to pos: {targetPos}");
+            var rot1 = _movable.rotation;
+            var rot2 = Quaternion.LookRotation(targetWorldPos - _movable.position);
+            var angle = Quaternion.Angle(rot1, rot2);
+            var rotTime = angle / _rotationSpeed;
+            var elapsed = 0f;
+            while (!token.IsCancellationRequested && elapsed < rotTime)
+            {
+                _movable.rotation = Quaternion.Lerp(rot1, rot2, elapsed / rotTime);
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
+            if (token.IsCancellationRequested)
+                return EPathMovementResult.WasCancelled;
+      
+            if (_useRb)
+            {
+                var vec = targetWorldPos - transform.position;
+                var d2 = vec.sqrMagnitude;
+                var moveAmount = SpeedGetter.Get() * Time.fixedDeltaTime;
+                while (!token.IsCancellationRequested && d2 > moveAmount * moveAmount)
+                {
+                    vec = targetWorldPos - _rb.transform.position;
+                    d2 = vec.sqrMagnitude;
+                    var force = vec.normalized * SpeedGetter.Get();
+                    _rb.velocity = force;
+                    await Task.Yield();
+                }
+                if (token.IsCancellationRequested)
+                    return EPathMovementResult.WasCancelled;
+                State = AgentState.Arrived;
+                _rb.velocity = Vector3.zero;
+                _rb.transform.position = targetWorldPos;
+            }
+            else
+            {
+                _movable.rotation = rot2;
+                var totalDistance = (targetWorldPos - transform.position).magnitude;
+                var travelled = 0f;
+                while (!token.IsCancellationRequested && travelled < totalDistance)
+                {
+                    var vec = targetWorldPos - transform.position;
+                    var vecL = vec.magnitude;
+                    var amount = SpeedGetter.Get() * Time.deltaTime;
+                    vec *= amount / vecL;
+                    travelled += amount;
+                    transform.position += vec;
+                    await Task.Yield();
+                }
+                if (token.IsCancellationRequested)
+                    return EPathMovementResult.WasCancelled;
+                transform.position = targetWorldPos;
+     
+            }
+            return EPathMovementResult.ReachedEnd;
+        }
+        
 
         public void SetCurrentCellFromWorldPosition()
         {

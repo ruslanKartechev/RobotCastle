@@ -4,7 +4,7 @@
     {
         public void Reset(HeroView heroView)
         {
-            heroView.Stats.HealthCurrent.SetBaseAndCurrent(heroView.Stats.HealthMax.Val);
+            heroView.stats.HealthCurrent.SetBaseAndCurrent(heroView.stats.HealthMax.Val);
         }
     }
 }

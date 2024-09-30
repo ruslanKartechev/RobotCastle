@@ -1,10 +1,14 @@
 ﻿using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 namespace SleepDev
 {
     public class FadePopAnimator : MonoBehaviour
     {
+        [SerializeField] private Ease _scaleEase;
+        [SerializeField] private float _scaleTime;
+        [SerializeField] private RectTransform _rect;
         [SerializeField] private float _fadeDelay;
         [SerializeField] private float _fadeTime;
         [SerializeField] private AnimationCurve _curve;
@@ -47,17 +51,15 @@ namespace SleepDev
 
         private IEnumerator Animating()
         {
-            // var alpha = 1f;
-            // _canvasGroup.alpha = alpha;
-            // yield return new WaitForSeconds(_fadeDelay);
+            _rect.DOKill();
+            _rect.localScale = new Vector3(1f, 0f, 1f);
+            _rect.DOScaleY(1f, _scaleTime).SetEase(_scaleEase);
             var elapsed = 0f;
             var time = _fadeTime;
-            // var start = alpha;
             while (elapsed < time)
             {
                 var t = elapsed / time;
                 _canvasGroup.alpha = _curve.Evaluate(t);
-                // _canvasGroup.alpha = Mathf.Lerp(start, 0f, elapsed / time);
                 elapsed += Time.deltaTime;
                 yield return null;
             }

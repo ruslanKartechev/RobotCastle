@@ -1,5 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RobotCastle.Battling
 {
@@ -16,8 +15,15 @@ namespace RobotCastle.Battling
         
         public override void AddToHero(HeroView view)
         {
-            view.Stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            view.Stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
+            view.stats.FullManaListener = new SpellIronWill(view, _config);
+        }
+        
+        public override string GetDescription(GameObject target)
+        {
+            var str = base.GetDescription(target);
+            var stats = target.GetComponent<HeroStatsManager>();
+            str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
+            return str;
         }
     }
 }

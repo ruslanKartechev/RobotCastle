@@ -1,15 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    [System.Serializable]
-    public class SpellConfigCrescentSlash : BaseSpellConfig
-    {
-        public List<int> widthPerTier;
-        public List<float> spellDamage;
-    }
-    
     [CreateAssetMenu(menuName = "SO/Spells/SpellProvider CrescentSlash", fileName = "crescent_slash", order = 0)]
     public class SpellProviderCrescentSlash : SpellProvider
     {
@@ -18,14 +10,25 @@ namespace RobotCastle.Battling
         public override float manaStart => _config.manaStart;
         
         [SerializeField] private SpellConfigCrescentSlash _config;
+       
 
         public override void AddTo(GameObject target)
         { }
         
         public override void AddToHero(HeroView view)
         {
-            view.Stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            view.Stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
+            view.stats.FullManaListener = new SpellCrescentSlash(view, _config);
         }
+
+        public override string GetDescription(GameObject target)
+        {
+            var str = base.GetDescription(target);
+            var stats = target.GetComponent<HeroStatsManager>();
+            var lvl = stats.MergeTier;
+            str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
+            str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
+            return str;
+        }
+      
     }
 }

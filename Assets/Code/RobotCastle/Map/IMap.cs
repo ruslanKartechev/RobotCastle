@@ -3,15 +3,10 @@ using UnityEngine;
 
 namespace Bomber
 {
-    public interface IAgent
-    {
-        bool IsMoving { get; }
-        Vector2Int CurrentCell { get; }
-    }
     public interface IMap
     {
         List<IAgent> ActiveAgents { get; }
-
+        public bool IsOutOfBounce(Vector2Int coord);
         Vector2Int Size { get; }
         MapCell[,] Grid { get; }
         void GetCellAtPosition(Vector3 worldPosition, out Vector2Int mapCoord, out MapCell cell);

@@ -89,11 +89,11 @@ namespace RobotCastle.Testing
 
         public void StartAttack()
         {
-            var target = new FakeTarget();
+            var target = FakeAttackTarget.GetNew();
             var heroes = _heroesFactory.AllSpawned;
             foreach (var hero in heroes)
             {
-                if (hero.View.AttackManager == null)
+                if (hero.View.attackManager == null)
                 {
                     CLog.LogRed("hero.HeroView.AttackManager is null");
                     continue;
@@ -105,19 +105,19 @@ namespace RobotCastle.Testing
                 }
                 timer.enabled = true;
                 timer.DoLog = _logAttackDelays;
-                switch (hero.View.AttackManager)
+                switch (hero.View.attackManager)
                 {
                     case HeroRangedAttackManager:
-                        var aimTarget = new GameObject($"attackTarget_{hero.gameObject.name}").transform;
-                        aimTarget.position = hero.transform.TransformPoint(new Vector3(0, 1.25f, 2f));
-                        hero.View.AttackManager.BeginAttack(aimTarget, target);
+                        var rangeTarget = FakeAttackTarget.GetNew();
+                        rangeTarget.transform.position = hero.transform.TransformPoint(new Vector3(0, 1.25f, 2f));
+                        hero.View.attackManager.BeginAttack(rangeTarget);
                         break;
                     case HeroMeleeAttackManager:
-                        hero.View.AttackManager.BeginAttack(transform, target);
+                        hero.View.attackManager.BeginAttack(target);
                         break;
                     default:
                         CLog.Log("unknown attack manager type ");
-                        hero.View.AttackManager.BeginAttack(transform, target);
+                        hero.View.attackManager.BeginAttack(target);
                         break;
                 }
             }
@@ -167,18 +167,9 @@ namespace RobotCastle.Testing
             return path;
         }
         
-        private class FakeTarget : IDamageReceiver
-        {
-            public bool IsDamageable => true;
-
-            public void TakeDamage(DamageArgs args)
-            {
-                
-            }
-        }
     }
-    
-    
+
+
     [System.Serializable]
     public class SpeedPerAnimatorData
     {
@@ -188,7 +179,6 @@ namespace RobotCastle.Testing
 
         public SpeedPerAnimatorData(List<SpeedPerAnimator> data) => speedData = data;
     }
-    
     
         
     [System.Serializable]

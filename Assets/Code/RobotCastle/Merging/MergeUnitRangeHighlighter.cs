@@ -44,7 +44,7 @@ namespace RobotCastle.Merging
             _currentPos = centerCoord;
             if (_underCell == null)
             {
-                _underCell = (CellHighlight)ServiceLocator.Get<ISimplePoolsManager>().GetOne(MergeConstants.UnderCellFxId);
+                _underCell = (CellHighlight)ServiceLocator.Get<ISimplePoolsManager>().GetOne(ObjectPoolConstants.UnderCellFxId);
             }
             _underCell.gameObject.SetActive(true);
             _underCell.transform.position = _grid.GetCell(centerCoord.x, centerCoord.y).WorldPosition;
@@ -66,7 +66,7 @@ namespace RobotCastle.Merging
             var pool = ServiceLocator.Get<ISimplePoolsManager>();
             while (_highlights.Count < count)
             {
-                _highlights.Add((CellHighlight)pool.GetOne(MergeConstants.HeroRangeFxId));
+                _highlights.Add((CellHighlight)pool.GetOne(ObjectPoolConstants.HeroRangeFxId));
             }
             for (var i = 0; i < _highlights.Count; i++)
                 _highlights[i].gameObject.SetActive(false);

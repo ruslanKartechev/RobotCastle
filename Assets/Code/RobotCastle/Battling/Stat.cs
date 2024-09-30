@@ -12,11 +12,17 @@ namespace RobotCastle.Battling
         public float BaseVal;
         public float Val;
 
+        public void SetBase() => Val = BaseVal;
+
         public void SetBaseAndCurrent(float val)
         {
             BaseVal = Val = val;
         }
 
+        /// <summary>
+        /// Get Full Value with all decorators applied
+        /// </summary>
+        /// <returns></returns>
         public float Get()
         {
             var v = Val;

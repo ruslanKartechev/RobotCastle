@@ -12,8 +12,8 @@ namespace RobotCastle.Battling
         public BattleState State { get; set; }
         
         public int stageIndex = 0;
-        public int troopSize = HeroesConfig.PlayerTroopsStart;
-        public int playerHealthPoints = HeroesConfig.PlayerHealthStart;
+        public int troopSize = HeroesConstants.PlayerTroopsStart;
+        public int playerHealthPoints = HeroesConstants.PlayerHealthStart;
         public BattleTeam playerTeam;
         public BattleTeam enemyTeam;
 
@@ -134,7 +134,7 @@ namespace RobotCastle.Battling
             var num = 1;
             foreach (var hero in _players)
             {
-                msg += $"{num} {hero.View.Stats.HeroId}\n";
+                msg += $"{num} {hero.View.stats.HeroId}\n";
             }
             return msg;
         }
@@ -145,7 +145,7 @@ namespace RobotCastle.Battling
             var num = 1;
             foreach (var hero in _enemies)
             {
-                msg += $"{num} {hero.View.Stats.HeroId}\n";
+                msg += $"{num} {hero.View.stats.HeroId}\n";
             }
             return msg;
         }

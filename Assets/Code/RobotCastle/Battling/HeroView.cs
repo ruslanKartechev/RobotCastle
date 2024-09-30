@@ -13,23 +13,26 @@ namespace RobotCastle.Battling
         public Ragdoll ragdoll => _ragdoll;
         public Collider collider => _collider;
         public Rigidbody rb => _rb;
+            
         public Agent agent { get; set; }
         public HeroMovementManager movement { get; set; }
-        public HeroStatsManager Stats { get; set; }
-        public HeroAnimationEventReceiver AnimationEventReceiver => _heroAnimationEvent;
-        public HeroItemsContainer HeroItemsContainer => _heroItemsContainer;
-        public IHeroAttackManager AttackManager { get; set; }
-        public IHeroHealthManager HealthManager { get; set; }
-        public IDamageReceiver DamageReceiver { get; set; }
-        public IKillProcessor KillProcessor { get; set; }
-        public AttackTargetData AttackData { get; set; } = new ();
-        public HeroSpellsContainer SpellsContainer { get; set;}
-        public HeroDamageSource DamageSource { get; set; }
+        public HeroStatsManager stats { get; set; }
+        public HeroAnimationEventReceiver animationEventReceiver => _heroAnimationEvent;
+        public HeroItemsContainer heroItemsContainer => _heroItemsContainer;
+        public IHeroAttackManager attackManager { get; set; }
+        public IHeroHealthManager healthManager { get; set; }
+        public IDamageReceiver damageReceiver { get; set; }
+        public IKillProcessor killProcessor { get; set; }
+        public HeroSpellsContainer spellsContainer { get; set;}
+        public HeroStateData state { get; set; } = new();
+        
         public Transform projectileSpawnPoint => _projectileSpawnPoint;
-        public ParticleSystem ShootParticles => _shootParticles;
-        public IItemView MergeItemView => _mergeView;
+        public ParticleSystem shootParticles => _shootParticles;
+        public IItemView mergeItemView => _mergeView;
+        public HeroProcessesContainer processes { get; } = new();
+        public float StunnedFxHeight => _stunnedFxHeight;
         
-        
+        [SerializeField] private float _stunnedFxHeight = 1.5f;
         [SerializeField] private HeroItemsContainer _heroItemsContainer;
         [SerializeField] private BattleUnitUI _heroUI;
         [SerializeField] private Collider _collider;

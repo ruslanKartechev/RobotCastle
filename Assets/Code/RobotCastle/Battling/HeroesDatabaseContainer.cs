@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using SleepDev;
@@ -10,19 +9,17 @@ namespace RobotCastle.Battling
     [CreateAssetMenu(menuName = "SO/Heroes Database Container", fileName = "Heroes Database Container", order = 0)]
     public class HeroesDatabaseContainer : ScriptableObject
     {
+        public HeroesDatabase DataBase => _dataBase;
+        public string PathToHeroes => pathToHeroes;
+        public string PathToEnemies => pathToEnemies;
+        
         [SerializeField] private string pathToHeroes;
         [SerializeField] private string pathToEnemies;
         [Space(8)]
         [SerializeField] private List<string> _heroIdsForFiles;
         [SerializeField] private List<string> _enemiesIdsForFiles;
-
-#if UNITY_EDITOR
-        [Space(5)] [SerializeField, Tooltip("Editor only. Use to copy")] private HeroInfo _dbgHero;
-        [Space(5)] [SerializeField, Tooltip("Editor only. Use to copy")] private HeroInfo _dbgEnemy;
-#endif
         private HeroesDatabase _dataBase;
 
-        public HeroesDatabase DataBase => _dataBase;
 
         public void Load()
         {
@@ -118,60 +115,6 @@ namespace RobotCastle.Battling
             }
         }
 
-        public void CreateForEveryEnemyId()
-        {
-            foreach (var id in _enemiesIdsForFiles)
-            {
-                var fileName = GetPathFor(id, pathToEnemies);
-                var exists = File.Exists(fileName);
-                if (exists)
-                {
-                    CLog.LogRed($"File {fileName} Already exists will SKIP");
-                    continue;
-                }
-                CreateFile(id, pathToEnemies, _dbgEnemy);
-            }
-        }
-
-        public void CreateForEveryEnemyIdForced()
-        {
-            foreach (var id in _enemiesIdsForFiles)
-            {
-                var fileName = GetPathFor(id, pathToEnemies);
-                var exists = File.Exists(fileName);
-                if (exists)
-                    CLog.LogWhite($"File {fileName} Already exists. WILL OVERRIDE");
-                CreateFile(id, pathToEnemies, _dbgEnemy);
-            }
-        }
-        
-        public void CreateForEveryPlayerId()
-        {
-            foreach (var id in _heroIdsForFiles)
-            {
-                var fileName = GetPathFor(id, pathToHeroes);
-                var exists = File.Exists(fileName);
-                if (exists)
-                {
-                    CLog.LogRed($"File {fileName} Already exists will SKIP");
-                    continue;
-                }
-                CreateFile(id, pathToHeroes, _dbgHero);
-            }
-        }
-
-        public void CreateForEveryPlayerIdForced()
-        {
-            foreach (var id in _heroIdsForFiles)
-            {
-                var fileName = GetPathFor(id, pathToHeroes);
-                var exists = File.Exists(fileName);
-                if (exists)
-                    CLog.LogWhite($"File {fileName} Already exists. WILL OVERRIDE");
-                CreateFile(id, pathToHeroes, _dbgHero);
-            }
-        }
-
         private void CreateFile(string id, string folderPath, HeroInfo preset)
         {
             var heroInfo = new HeroInfo(preset);
@@ -190,44 +133,24 @@ namespace RobotCastle.Battling
             return path;
         }
 
-        [ContextMenu("FillDbgHero")]
-        public void FillDbgHero()
-        {
-            _dbgHero.stats.physicalResist = new(20);
-            _dbgHero.stats.magicalResist = new(20);
-
-            var val = .010f;
-            for (var i = 0; i < 20; i++)
-            {
-                _dbgHero.stats.physicalResist.Add(val);
-                val += .010f;
-            }
-            val = .01f;
-            for (var i = 0; i < 20; i++)
-            {
-                _dbgHero.stats.magicalResist.Add(val);
-                val += .010f;
-            }
-            UnityEditor.EditorUtility.SetDirty(this);
-        }
 
         [ContextMenu("Create New File")]
         public void CreateNewPlayerConfigFile()
         {
-           var id = "aramis";
+           var id = "evan";
            var stats = new HeroStats()
            {
-                health = new List<float>() { 150, 180, 210, 285, 315, 345, 375, 450, 480, 510, 540, 570, 600, 630, 660, 705, 750, 795, 840, 885 },
-                attack = new List<float>() { 45, 54, 63, 86, 95, 104, 113, 135, 144, 153, 162, 171, 180, 189, 198, 212, 225, 239, 252, 266 },
-                mana = new List<float>() {70, 80, 90, 100, 110, 120, 130},
-                attackSpeed = new List<float>() { 67f, 74f, 80f, 87f, 94f, 101f, 107f },
+                health = new List<float>() { 250, 300, 350, 285, 315, 345, 375, 450, 480, 510, 540, 570, 600, 630, 660, 705, 750, 795, 840, 885 },
+                attack = new List<float>() { 25, 30, 35, 48, 53, 58, 63, 75, 80, 68, 72, 76, 80, 84, 88, 94, 100, 106, 112, 118 },
+                spellPower = new List<float>() { 20, 24, 28, 38, 42, 46, 50, 60, 64, 68, 72, 76, 80, 84, 88, 94, 100, 106, 112, 118 },
+                attackSpeed = new List<float>() { 1.2f, 1.32f, 1.44f, 1.56f, 1.68f, 180f, 192f },
                 moveSpeed = new List<float>() { 150f },
-                rangeId = "aramis"
+                rangeId = "evan"
            };
            var heroInfo = new HeroInfo();
            heroInfo.stats = stats;
-           heroInfo.viewInfo = new HeroViewInfo() {name = "Aramis", iconId = "hero_icon_aramis"};
-           heroInfo.spellInfo = new HeroSpellInfo() {mainSpellId = "Headshot"};
+           heroInfo.viewInfo = new HeroViewInfo() {name = "Evan", iconId = "hero_evan"};
+           heroInfo.spellInfo = new HeroSpellInfo() {mainSpellId = "crescent_slash"};
            var str = JsonConvert.SerializeObject(heroInfo, Formatting.Indented);
            File.WriteAllText(GetPathToFileHero(id),str);
         } 

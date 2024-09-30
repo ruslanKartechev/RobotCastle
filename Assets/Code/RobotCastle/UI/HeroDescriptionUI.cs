@@ -33,9 +33,9 @@ namespace RobotCastle.UI
         {
             _src = source;
             var provider = source.GetComponent<HeroDescriptionProvider>();
-            var stats = provider.HeroView.Stats;
+            var stats = provider.HeroView.stats;
             var info = ServiceLocator.Get<HeroesDatabase>().GetHeroViewInfo(stats.HeroId);
-            var spells = source.GetComponent<HeroView>().SpellsContainer;
+            var spells = source.GetComponent<HeroView>().spellsContainer;
             var spell = (SpellProvider)spells.GetCurrentSpell();
             if (spell == null)
             {
@@ -88,14 +88,9 @@ namespace RobotCastle.UI
         
         public void Show(HeroStatsManager stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
         {
-            const string Color = "#FFFF11";
-            var atkTxt = (stats.Attack.Val).ToString(CultureInfo.InvariantCulture);
-            var atkSpTxt = (stats.AttackSpeed.Val).ToString(CultureInfo.InvariantCulture);
-            string spTxt;
-            if (stats.SpellPowerGetter != null)
-                spTxt = (stats.SpellPowerGetter.BaseSpellPower).ToString(CultureInfo.InvariantCulture);
-            else
-                spTxt = "0";
+            var atkTxt = (stats.Attack.Get()).ToString(CultureInfo.InvariantCulture);
+            var atkSpTxt = (stats.AttackSpeed.Get()).ToString(CultureInfo.InvariantCulture);
+            var spTxt = stats.SpellPower.Get().ToString(CultureInfo.InvariantCulture);
             
             var items = stats.gameObject.GetComponent<HeroItemsContainer>();
             if (items.Items.Count > 0)
@@ -129,18 +124,18 @@ namespace RobotCastle.UI
                 if (addedAtk > 0)
                 {
                     var addedVal = Mathf.RoundToInt(addedAtk * stats.Attack.Val);
-                    atkTxt += $"+<color={Color}>{addedVal}</color>";
+                    atkTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
                     // atkTxt += $"+{addedVal}";
                 }
-                if (addedSp > 0 && stats.SpellPowerGetter != null)
+                if (addedSp > 0)
                 {
-                    var addedVal = Mathf.RoundToInt(addedSp * stats.SpellPowerGetter.BaseSpellPower);
-                    spTxt += $"+<color={Color}>{addedVal}</color>";
+                    var addedVal = Mathf.RoundToInt(addedSp * stats.SpellPower.Val);
+                    spTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
                 }
                 if (addedAtkSpeed > 0)
                 {
                     var addedVal = Mathf.RoundToInt(addedAtkSpeed * stats.AttackSpeed.Val);
-                    atkSpTxt += $"+<color={Color}>{addedVal}</color>";
+                    atkSpTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
                 }
             }
             

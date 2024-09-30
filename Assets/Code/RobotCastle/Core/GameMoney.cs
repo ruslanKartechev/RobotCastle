@@ -20,8 +20,6 @@ namespace RobotCastle.Core
         /// </summary>
         public event Action<int> OnMoneyAdded;
 
-        
-        
         public int Money
         {
             get

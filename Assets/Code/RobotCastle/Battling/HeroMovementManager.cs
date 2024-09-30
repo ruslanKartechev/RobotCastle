@@ -7,10 +7,8 @@ using SleepDev;
 
 namespace RobotCastle.Battling
 {
-    public class HeroMovementManager : MonoBehaviour, IPathfindingAgentAnimator, IMovingUnit
+    public class HeroMovementManager : MonoBehaviour, IPathfindingAgentAnimator
     {
-        public Vector2Int TargetCell { get; set; }
-        
         public HeroView UnitView
         {
             get => _unitView;
@@ -21,29 +19,30 @@ namespace RobotCastle.Battling
         [SerializeField] private HeroView _unitView;
         private bool _didSetup;
 
-        public void SetNullTargetCell() => TargetCell = new Vector2Int(-1, -1);
-
         public void OnMovementBegan()
         {
             // CLog.LogYellow($"{gameObject.name} MOVEMENT BEGAN");
-            _unitView.animator.SetBool(HeroesConfig.Anim_Move, true);
+            _unitView.animator.SetBool(HeroesConstants.Anim_Move, true);
         }
 
         public void OnMovementStopped()
         {
             // CLog.Log($"{gameObject.name} On Stopped");
-            _unitView.animator.SetBool(HeroesConfig.Anim_Move, false);
+            _unitView.animator.SetBool(HeroesConstants.Anim_Move, false);
+            _unitView.state.SetTargetCellToSelf();
+            _unitView.state.isMoving = false;
         }
    
         public async Task<EPathMovementResult> MoveToCell(Vector2Int pos, CancellationToken token)
         {
-            // CLog.LogYellow($"{gameObject.name} Move call to {pos}. Frame {Time.frameCount}");
             if (!_didSetup)
             {
                 CLog.LogRed("Unit Mover NOT setup!!");
                 return EPathMovementResult.WasCancelled;
             }
-            return await _unitView.agent.MoveToCellAt(pos, token);
+            _unitView.state.isMoving = true;
+            _unitView.state.targetMoveCell = pos;
+            return await _unitView.agent.MakeOneStepTowards(pos, token);
         }
         
         public bool CheckIfShouldRotate(Vector2Int cellPos)
@@ -52,12 +51,12 @@ namespace RobotCastle.Battling
             var rotation = Quaternion.LookRotation(worldPos - transform.position);
             var startRot = transform.rotation;
             var angle = Quaternion.Angle(startRot, rotation);
-            
             return Mathf.Abs(angle) > AngleThreshold;
         }
         
         public async void RotateIfNecessary(Vector2Int cellPos, CancellationToken token, Action callback = null)
         {
+            _unitView.state.isMoving = true;
             var worldPos = _unitView.agent.Map.GetWorldFromCell(cellPos);
             var rotation = Quaternion.LookRotation(worldPos - transform.position);
             var startRot = transform.rotation;
@@ -76,6 +75,7 @@ namespace RobotCastle.Battling
             if (token.IsCancellationRequested)
                 return;
             transform.rotation = rotation;
+            _unitView.state.isMoving = false;
             callback?.Invoke();
         }
 
@@ -113,6 +113,7 @@ namespace RobotCastle.Battling
         public void Stop()
         {
             _unitView.agent.Stop();
+            _unitView.state.SetTargetCellToSelf();
         }
         
         public void SetupAgent()
@@ -121,9 +122,14 @@ namespace RobotCastle.Battling
             _unitView.rb.isKinematic = true;
             _unitView.collider.isTrigger = false;
             _unitView.collider.enabled = true;
-            _unitView.agent.RotationSpeed = HeroesConfig.RotationSpeed;
-            _unitView.agent.SpeedGetter = _unitView.Stats.MoveSpeed;
+            _unitView.agent.RotationSpeed = HeroesConstants.RotationSpeed;
+            _unitView.agent.SpeedGetter = _unitView.stats.MoveSpeed;
         }
 
+        private void Update()
+        {
+            if (_didSetup && _unitView != null)
+                _unitView.state.currentCell = _unitView.agent.CurrentCell;
+        }
     }
 }

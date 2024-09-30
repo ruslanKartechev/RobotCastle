@@ -1,4 +1,6 @@
-﻿using RobotCastle.Core;
+﻿using System.Collections.Generic;
+using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
@@ -11,7 +13,7 @@ namespace RobotCastle.Battling
         [SerializeField] private bool _activateEnemies = true;
         [SerializeField] private bool _activatePlayers = true;
         private Battle _battle;
-        private PresetsContainer _presetsContainer;
+        private List<InvasionRoundData> _roundData;
         private BattleRewardCalculator _rewardCalculator;
 
         public BattleRewardCalculator BattleRewardCalculator => _rewardCalculator;
@@ -22,21 +24,35 @@ namespace RobotCastle.Battling
         public IBattleStartedProcessor startProcessor { get; set; }
         
 
-        public Battle Init(PresetsContainer presetsContainer)
+        public Battle Init(List<InvasionRoundData> roundData)
         {
+            _roundData = roundData;
             CLog.Log($"[{nameof(BattleManager)}] Init Created new battle data");
-            _presetsContainer = presetsContainer;
             _battle = Battle.GetDefault();
             ServiceLocator.Bind<Battle>(_battle);
             _battle.State = BattleState.NotStarted;
             _rewardCalculator = _battle.RewardCalculator = new BattleRewardCalculator(3,5);
             return _battle;
         }
-        
+
+        public bool CanStart()
+        {
+            _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>().GetItemsInActiveArea<IHeroController>(_ => true);
+            if (_battle.PlayerUnits.Count == 0)
+            {
+                _battle.State = BattleState.NotStarted;
+                CLog.LogWhite($"No Player Units on active area!");
+                return false;
+            }
+            return true;
+        }
+
+        public void SetGoingState() => _battle.State = BattleState.Going;
+
         public bool BeginBattle()
         {
-            _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>()
-                .GetItemsInActiveArea<IHeroController>(_ => true);
+            SetupRewardForCurrentRound();
+            _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>().GetItemsInActiveArea<IHeroController>(_ => true);
             if (_battle.PlayerUnits.Count == 0)
             {
                 _battle.State = BattleState.NotStarted;
@@ -91,7 +107,7 @@ namespace RobotCastle.Battling
 
         public void SetStage(int stageIndex)
         {
-            if (_presetsContainer.Presets.Count <= stageIndex)
+            if (_roundData.Count <= stageIndex)
             {
                 CLog.LogError($"[{nameof(BattleManager)}] Preset index out of range!");
                 return;
@@ -101,7 +117,7 @@ namespace RobotCastle.Battling
                 Destroy(en.View.gameObject);
             _battle.Enemies.Clear();
             _battle.enemiesAlive.Clear();
-            var preset = _presetsContainer.Presets[stageIndex];
+            var preset = _roundData[stageIndex].enemyPreset;
             var enemyManager = ServiceLocator.Get<EnemiesManager>();
             enemyManager.SpawnPreset(preset);
             _battle.Enemies = enemyManager.Enemies;
@@ -150,6 +166,12 @@ namespace RobotCastle.Battling
                 ResetHeroAfterBattle(playerUnit);
             mergeManager.ResetAllItemsPositions();
         }
+        
+        public void SetupRewardForCurrentRound()
+        {
+            _rewardCalculator.RewardPerStageCompletion = _roundData[_battle.stageIndex].reward;
+        }
+        
         
         private void OnTeamWin(int teamNum)
         {

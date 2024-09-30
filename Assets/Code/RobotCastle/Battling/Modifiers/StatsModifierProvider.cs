@@ -33,7 +33,7 @@ namespace RobotCastle.Battling
         
         public override void AddToHero(HeroView view)
         {
-            var stats = view.Stats;
+            var stats = view.stats;
             switch (_statType)
             {
                 case EStatType.Attack:
@@ -55,7 +55,7 @@ namespace RobotCastle.Battling
                     stats.MagicalResist.Decorators.Add(_decorator);
                     break;
                 case EStatType.SpellPower:
-                    stats.SpellPowerDecorators.Add(_decorator);
+                    stats.SpellPower.Decorators.Add(_decorator);
                     break;
                 default:
                     CLog.LogError($"{_statType} cannot add");

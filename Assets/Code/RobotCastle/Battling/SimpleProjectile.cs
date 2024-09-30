@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections;
 using RobotCastle.Core;
-using RobotCastle.Merging;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
     public class SimpleProjectile : MonoBehaviour, IProjectile, IPoolItem
     {
+        [SerializeField] private bool _isPooled = true;
         [SerializeField] private ParticleSystem _hitParticles;
+        [SerializeField] private ParticleSystem _trailParticles;
         private Action<object> _hitCallback;
         private object _target;
         
@@ -18,6 +19,8 @@ namespace RobotCastle.Battling
             _target = target;
             transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
             gameObject.SetActive(true);
+            if(_trailParticles != null)
+                _trailParticles.gameObject.SetActive(true);
             StartCoroutine(Moving(startPoint, endPoint, speed));
         }
 
@@ -43,15 +46,19 @@ namespace RobotCastle.Battling
                 yield return null;
             }
             transform.position = endPos;
+            _hitCallback?.Invoke(_target);
+            if(_trailParticles != null)
+                _trailParticles.gameObject.SetActive(false);
             if (_hitParticles != null)
             {
-                _hitParticles.transform.parent = transform.parent;
-                _hitParticles.transform.position = transform.position;
                 _hitParticles.gameObject.SetActive(true);
                 _hitParticles.Play();
+                yield return new WaitForSeconds(2f);
             }
-            _hitCallback?.Invoke(_target);
-            ServiceLocator.Get<ISimplePoolsManager>().ReturnOne(this);
+            if(_isPooled)
+                ServiceLocator.Get<ISimplePoolsManager>().ReturnOne(this);
+            else
+                gameObject.SetActive(false);
         }
     }
 }

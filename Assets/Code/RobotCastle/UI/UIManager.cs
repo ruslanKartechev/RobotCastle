@@ -46,6 +46,13 @@ namespace RobotCastle.UI
             }
         }
 
+        public T GetIfShown<T>(string id) where T : IScreenUI
+        {
+            if(_openedScreens.ContainsKey(id))
+                return (T)_openedScreens[id];
+            return default;
+        }
+
         public void ShowScene(string id, Action onClosed)
         {
            var scene = NamingData.Inst.uiData[id];
