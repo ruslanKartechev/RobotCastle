@@ -34,7 +34,7 @@ namespace RobotCastle.Data
             var text = UnityEngine.Resources.Load<TextAsset>(FileNameDescriptions);
             if (text == null)
             {
-                CLog.LogError("FileName Does not exist!");
+                CLog.LogError($"FileName {FileNameView} Does not exist!");
                 return;
             }
             var data = JsonConvert.DeserializeObject<DescriptionsDataBase>(text.text);
@@ -51,7 +51,7 @@ namespace RobotCastle.Data
             var text = UnityEngine.Resources.Load<TextAsset>(FileNameView);
             if (text == null)
             {
-                CLog.LogError("FileName Does not exist!");
+                CLog.LogError($"FileName {FileNameView} Does not exist!");
                 return;
             }
             var data = JsonConvert.DeserializeObject<ViewDataBase>(text.text);

@@ -19,7 +19,7 @@ namespace RobotCastle.Saving
         {
             var saver = ServiceLocator.Get<IDataSaver>();
             var playerData = saver.GetData<SavePlayerData>();
-            playerData.money = startMoney;
+            playerData.levelMoney = startMoney;
             playerData.playerLevel = startPlayerLevel;
 
             // if (addMergeItems)

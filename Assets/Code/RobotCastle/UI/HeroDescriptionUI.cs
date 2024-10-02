@@ -2,6 +2,7 @@
 using System.Globalization;
 using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using SleepDev;
 using TMPro;
@@ -84,8 +85,6 @@ namespace RobotCastle.UI
             _rangeHighlighter = highlighter;
         }
         
-        
-        
         public void Show(HeroStatsManager stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
         {
             var atkTxt = (stats.Attack.Get()).ToString(CultureInfo.InvariantCulture);
@@ -147,7 +146,7 @@ namespace RobotCastle.UI
             _lvlText.text = (stats.MergeTier + 1).ToString();
 
             _nameText.text = viewInfo.name;
-            _heroIcon.sprite = HeroesDatabase.GetHeroSprite(viewInfo.iconId);
+            _heroIcon.sprite = ViewDataBase.GetHeroSprite(viewInfo.iconId);
             if (spellProvider != null)
             {
                 _descriptionLayout.SetLong();

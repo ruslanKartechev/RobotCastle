@@ -13,503 +13,147 @@ MonoBehaviour:
   m_Name: Saves_DataBase
   m_EditorClassIdentifier: 
   PlayerData:
-    money: 120
-    playerLevel: 0
+    levelMoney: 0
+    globalMoney: 3500
+    globalHardMoney: 120
+    playerLevel: 2
+    playerXp: 0
+    playerEnergy: 40
+    playerEnergyMax: 40
+    scrollsData:
+      scrollsTyp1: 0
+      scrollsTyp2: 0
+      scrollsTyp3: 0
+      didTakeNoAds: 0
+      lastTimeNoAdsAccepted:
+        year: 0
+        month: 0
+        day: 0
+        hour: 0
+        minute: 0
+        second: 0
+        milliSecond: 0
+    party:
+      maxCount: 6
+      heroesIds:
+      - alberon
+      - aramis
+      - daniel
+      - evan
+      - priya
+      - shelda
+    inventory:
+      items:
+      - id: book
+        amount: 45
+      - id: king_medal
+        amount: 15
+      - id: hero_medal
+        amount: 5
   LevelsProgress:
     lastLevelIndex: 0
     tower: 0
     levelsTotal: 0
   PlayerHeroes:
     heroSaves:
-    - id: shelda
+    - id: alberon
       level: 0
       xp: 0
-      xpForNext: 0
+      xpForNext: 5
+      isUnlocked: 1
+    - id: shelda
+      level: 0
+      xp: 2
+      xpForNext: 5
       isUnlocked: 1
     - id: evan
-      level: 2
-      xp: 0
-      xpForNext: 0
+      level: 0
+      xp: 2
+      xpForNext: 5
       isUnlocked: 1
     - id: aramis
-      level: 1
-      xp: 0
-      xpForNext: 0
+      level: 0
+      xp: 5
+      xpForNext: 5
       isUnlocked: 1
     - id: priya
-      level: 3
-      xp: 0
-      xpForNext: 0
+      level: 0
+      xp: 10
+      xpForNext: 5
+      isUnlocked: 1
+    - id: daniel
+      level: 0
+      xp: 22
+      xpForNext: 5
       isUnlocked: 1
     - id: leonhard
-      level: 4
+      level: 0
       xp: 0
-      xpForNext: 0
+      xpForNext: 5
       isUnlocked: 1
     - id: hansi
       level: 0
       xp: 0
-      xpForNext: 0
-      isUnlocked: 1
-    - id: alberon
-      level: 0
-      xp: 0
-      xpForNext: 0
-      isUnlocked: 1
-    - id: daniel
-      level: 0
-      xp: 0
-      xpForNext: 0
+      xpForNext: 5
       isUnlocked: 1
     - id: asiaq
       level: 0
       xp: 0
-      xpForNext: 0
+      xpForNext: 5
       isUnlocked: 1
     - id: maiu
       level: 0
       xp: 0
-      xpForNext: 0
+      xpForNext: 5
       isUnlocked: 1
     - id: mara
       level: 0
       xp: 0
-      xpForNext: 0
-      isUnlocked: 1
+      xpForNext: 5
+      isUnlocked: 0
     - id: joi
       level: 0
       xp: 0
-      xpForNext: 0
-      isUnlocked: 1
+      xpForNext: 5
+      isUnlocked: 0
     - id: saras
       level: 0
       xp: 0
-      xpForNext: 0
-      isUnlocked: 1
-  MergeGrid:
-    rows:
-    - cells:
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 0
-        y: 0
-        isUnlocked: 0
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 1
-        y: 0
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 2
-        y: 0
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 3
-        y: 0
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 4
-        y: 0
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 5
-        y: 0
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 6
-        y: 0
-        isUnlocked: 0
-        isOccupied: 0
-    - cells:
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 0
-        y: 1
-        isUnlocked: 0
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 1
-        y: 1
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 2
-        y: 1
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 3
-        y: 1
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 4
-        y: 1
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 5
-        y: 1
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 6
-        y: 1
-        isUnlocked: 0
-        isOccupied: 0
-    - cells:
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 0
-        y: 2
-        isUnlocked: 0
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 1
-        y: 2
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 2
-        y: 2
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 3
-        y: 2
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 4
-        y: 2
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 5
-        y: 2
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 6
-        y: 2
-        isUnlocked: 0
-        isOccupied: 0
-    - cells:
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 0
-        y: 3
-        isUnlocked: 0
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 1
-        y: 3
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 2
-        y: 3
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 3
-        y: 3
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 4
-        y: 3
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 5
-        y: 3
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 6
-        y: 3
-        isUnlocked: 0
-        isOccupied: 0
-    - cells:
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 0
-        y: 4
-        isUnlocked: 0
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 1
-        y: 4
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 2
-        y: 4
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 3
-        y: 4
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 4
-        y: 4
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 5
-        y: 4
-        isUnlocked: 1
-        isOccupied: 0
-      - currentItem:
-          core:
-            level: -1
-            id: 
-            type: 
-          pivotX: 0
-          pivotY: 0
-          size: {x: 1, y: 1}
-        x: 6
-        y: 4
-        isUnlocked: 0
-        isOccupied: 0
+      xpForNext: 5
+      isUnlocked: 0
+    - id: zupitere
+      level: 0
+      xp: 0
+      xpForNext: 5
+      isUnlocked: 0
+    - id: draco
+      level: 0
+      xp: 0
+      xpForNext: 5
+      isUnlocked: 0
+    - id: behemus
+      level: 0
+      xp: 0
+      xpForNext: 5
+      isUnlocked: 0
+    - id: bombie
+      level: 0
+      xp: 0
+      xpForNext: 5
+      isUnlocked: 0
+    - id: rie
+      level: 0
+      xp: 0
+      xpForNext: 5
+      isUnlocked: 0
+  playerParty:
+    maxCount: 6
+    heroesIds:
+    - alberon
+    - aramis
+    - daniel
+    - evan
+    - priya
+    - shelda
+  mergeGrid:
+    rows: []

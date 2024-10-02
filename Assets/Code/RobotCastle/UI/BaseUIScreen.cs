@@ -22,7 +22,7 @@ namespace RobotCastle.UI
         protected void OnOpened<T>(string id, T obj) where T : IScreenUI
         {
             var ui = ServiceLocator.Get<IUIManager>();
-            ui.AddAsOpened<T>(id, obj);
+            ui.AddAsShown<T>(id, obj);
         }
 
         protected void OnClosed(string id)

@@ -15,7 +15,7 @@ namespace RobotCastle.Battling
         public void TryPurchaseItem(bool promptUser = true)
         {
             var gameMoney = ServiceLocator.Get<GameMoney>();
-            var money = gameMoney.Money;
+            var money = gameMoney.levelMoney;
             if (money < _cost)
             {
                 CLog.Log($"[{nameof(PlayerMergeItemPurchaser)}] Not enough money");
@@ -33,7 +33,7 @@ namespace RobotCastle.Battling
             if (spawnedItem != null)
             {
                 money -= _cost;
-                gameMoney.Money = money;
+                gameMoney.levelMoney = money;
                 merge.HighlightMergeOptions();
                 
             }

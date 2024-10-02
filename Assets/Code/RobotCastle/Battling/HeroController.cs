@@ -69,7 +69,7 @@ namespace RobotCastle.Battling
 
         private void OnDisable()
         {
-            _view.statAnimationSync.Stop();
+            _view.statAnimationSync?.Stop();
             _currentBehaviour?.Stop();
         }
         

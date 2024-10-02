@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using SleepDev;
 using UnityEngine;
 

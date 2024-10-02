@@ -49,16 +49,16 @@ namespace RobotCastle.UI
             var gm = ServiceLocator.Get<GameMoney>();
             if (react)
             {
-                gm.OnMoneyUpdated += UpdateValue;
-                _text.text = $"{gm.Money}";
+                gm.OnMoneySet += UpdateValue;
+                _text.text = $"{gm.levelMoney}";
             }
             else
             {
-                gm.OnMoneyUpdated -= UpdateValue;
+                gm.OnMoneySet -= UpdateValue;
             }
         }
         
-        public void UpdateValue(int val)
+        public void UpdateValue(int val, int prevVal)
         {
             _text.text = $"{val}";
             _fadeImage.DOKill();
@@ -66,7 +66,7 @@ namespace RobotCastle.UI
             _fadeImage.DOFade(0f, _splashTime);
         }
 
-        public void AddMoney(int added)
+        public void AddMoney(int added, int prevVal)
         {
             _addedMoneyAnimator.Animate(added);
         }
@@ -75,9 +75,9 @@ namespace RobotCastle.UI
         {
             if (ServiceLocator.GetIfContains<GameMoney>(out var gm))
             {
-                gm.OnMoneyUpdated += UpdateValue;
+                gm.OnMoneySet += UpdateValue;
                 gm.OnMoneyAdded += AddMoney;
-                _text.text = $"{gm.Money}";
+                _text.text = $"{gm.levelMoney}";
             }
         }
 
@@ -85,7 +85,7 @@ namespace RobotCastle.UI
         {
             if (ServiceLocator.GetIfContains<GameMoney>(out var gm))
             {
-                gm.OnMoneyUpdated -= UpdateValue;
+                gm.OnMoneySet -= UpdateValue;
                 gm.OnMoneyAdded -= AddMoney;        
             }
         }

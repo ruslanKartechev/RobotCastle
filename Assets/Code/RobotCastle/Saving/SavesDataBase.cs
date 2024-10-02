@@ -14,7 +14,21 @@ namespace RobotCastle.Saving
         [Space(10)]
         public SavePlayerHeroes PlayerHeroes;
         [Space(10)]
-        public MergeGrid MergeGrid;
-        
+        public SavePlayerParty playerParty;
+        [Space(10)]
+        public MergeGrid mergeGrid;
+
+
+        #if UNITY_EDITOR
+        [ContextMenu("E_SetAllXp")]
+        public void E_SetAllXp()
+        {
+            foreach (var ss in PlayerHeroes.heroSaves)
+            {
+                ss.xpForNext = 5;
+            }
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+        #endif
     }
 }

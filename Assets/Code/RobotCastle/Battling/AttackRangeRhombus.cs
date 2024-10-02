@@ -24,6 +24,8 @@ namespace RobotCastle.Battling
             }
         }
 
+        public string GetStringDescription() => (_sideLength * 2).ToString();
+
         public List<Vector2Int> GetCellsMask()
         {
             return _cellsMask;

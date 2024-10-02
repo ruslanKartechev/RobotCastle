@@ -6,7 +6,7 @@ namespace RobotCastle.Battling
 {
     public class UnitUIWrapper : MonoBehaviour, IPoolItem
     {
-        public BattleUnitUI ui;
+        public object ui;
         public UIWorldPositionTracker tracker;
 
         public void ReturnBack()

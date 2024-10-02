@@ -1,5 +1,4 @@
-﻿using System;
-using RobotCastle.Core;
+﻿using RobotCastle.Core;
 using RobotCastle.UI;
 using UnityEngine;
 
@@ -18,14 +17,14 @@ namespace RobotCastle.Battling
         {
             var wrapper = ((UnitUIWrapper)_pool.GetOne("enemy"));
             wrapper.tracker.SetTarget(view.UITrackingPoint);
-            view.heroUI = wrapper.ui;
+            view.heroUI = (BattleUnitUI)wrapper.ui;
         }        
         
         public void AssignHeroUI(HeroView view)
         {
             var wrapper = ((UnitUIWrapper)_pool.GetOne("player"));
             wrapper.tracker.SetTarget(view.UITrackingPoint);
-            view.heroUI = wrapper.ui;
+            view.heroUI = (BattleUnitUI)wrapper.ui;
         }
 
         public void ReturnToPool(UnitUIWrapper uiWrapper)

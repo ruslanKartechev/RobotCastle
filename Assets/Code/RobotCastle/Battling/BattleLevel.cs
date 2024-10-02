@@ -50,6 +50,7 @@ namespace RobotCastle.Battling
         
         private void Start()
         {
+            GameState.Mode = GameState.EGameMode.InvasionBattle;
             _token = new CancellationTokenSource();
             Init(_token.Token);
         }

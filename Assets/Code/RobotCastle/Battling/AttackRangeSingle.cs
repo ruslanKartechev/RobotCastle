@@ -20,6 +20,8 @@ namespace RobotCastle.Battling
             };
         }
 
+        public string GetStringDescription() => "1";
+        
         public List<Vector2Int> GetCellsMask() => _cellsMask;
 
         public List<Vector2Int> ApplyMask(Vector2Int center)
@@ -113,5 +115,6 @@ namespace RobotCastle.Battling
             }
             return output;
         }
+
     }
 }

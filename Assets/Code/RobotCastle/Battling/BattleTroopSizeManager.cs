@@ -22,7 +22,7 @@ namespace RobotCastle.Battling
         
         public bool CanPurchase()
         {
-            var money = ServiceLocator.Get<GameMoney>().Money;
+            var money = ServiceLocator.Get<GameMoney>().levelMoney;
             return money >= _price;
         }
 
@@ -36,7 +36,7 @@ namespace RobotCastle.Battling
         /// <returns>0 if success. 1 if not enough money</returns>
         public int TryPurchase()
         {
-            var money = ServiceLocator.Get<GameMoney>().Money;
+            var money = ServiceLocator.Get<GameMoney>().levelMoney;
             if (money < _price)
                 return 1;
             money -= _price;
@@ -45,7 +45,7 @@ namespace RobotCastle.Battling
             _battle.troopSize++;
             var gridController = ServiceLocator.Get<IGridSectionsController>();
             gridController.SetMaxCount(_battle.troopSize);
-            ServiceLocator.Get<GameMoney>().Money = money;
+            ServiceLocator.Get<GameMoney>().levelMoney = money;
             _particle.Play();
             return 0;
         }

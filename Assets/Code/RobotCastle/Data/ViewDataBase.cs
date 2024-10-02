@@ -14,6 +14,11 @@ namespace RobotCastle.Data
         public Dictionary<string, string> StatsIcons = new (5);
         public Dictionary<string, string> SpellsIcons = new (5);
 
+        public static Sprite GetHeroSprite(string spriteId)
+        {
+            return Resources.Load<Sprite>($"sprites/{spriteId}");
+        }
+
         public static string GetStatId(EStatType statType)
         {
             switch (statType)

@@ -11,6 +11,8 @@ namespace RobotCastle.Battling
         private readonly int halfHight;
         private readonly List<Vector2Int> _cellsMask;
 
+        public string GetStringDescription() => $"{halfWidth * 2}x{halfHight * 2}";
+        
         public AttackRangeRectangle(int halfWidth, int halfHeight)
         {
             this.halfWidth = halfWidth;

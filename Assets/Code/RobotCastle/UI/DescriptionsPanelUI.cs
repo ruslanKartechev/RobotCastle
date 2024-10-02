@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RobotCastle.Core;
 using UnityEngine;
 using UnityEngine.UI;
-using SleepDev;
 
 namespace RobotCastle.UI
 {

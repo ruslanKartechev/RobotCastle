@@ -11,7 +11,7 @@ namespace RobotCastle.UI
         T GetIfShown<T>(string id) where T : IScreenUI;
         void ShowScene(string id, Action onClosed);
         
-        void AddAsOpened<T>(string id, T obj) where T : IScreenUI;
+        void AddAsShown<T>(string id, T obj) where T : IScreenUI;
         void OnClosed(string id);
     }
 }

@@ -11,7 +11,7 @@ namespace RobotCastle.Battling
         [SerializeField] private List<ModifierProvider> _spells;
         private readonly Dictionary<string, ModifierProvider> _map = new(100);
    
-        public void Init()
+        public void Load()
         {
             _map.Clear();
             foreach (var mod in _modifiers)

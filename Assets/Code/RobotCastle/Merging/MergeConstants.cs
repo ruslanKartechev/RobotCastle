@@ -14,7 +14,10 @@
         public const int HeroMaxLvl = 7;
         
         public const string UpgradeBookId = "book_xp";
-        public const float MergeItemPutAnimationTime = .2f;
+        public const float MergeItemPutAnimationTime = .3f;
+        public const float PickScale = .85f;
+        public const float PickScaleTime = .22f;
+        
         
         public const int PlayerGridId = 1;
         public const int EnemyGridId = 2;

@@ -96,6 +96,7 @@ namespace RobotCastle.Merging
         
 #if UNITY_EDITOR
         [Space(20)]
+        [Header("EDITOR ONLY")]
         public List<Transform> e_transforms;
         public float e_posZ;
         public List<Material> e_materials;

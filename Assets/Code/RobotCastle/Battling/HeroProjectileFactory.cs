@@ -12,6 +12,8 @@ namespace RobotCastle.Battling
 
         private void Start()
         {
+            if (GameState.Mode == GameState.EGameMode.MainMenu)
+                return;
             var pools = ServiceLocator.Get<ISimplePoolsManager>();
             pools.AddPoolIfNot(_projId, _projPrefab, _startCount);
         }

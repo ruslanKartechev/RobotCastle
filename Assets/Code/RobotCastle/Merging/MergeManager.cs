@@ -39,7 +39,7 @@ namespace RobotCastle.Merging
             _sectionsController = gameObject.GetComponent<IGridSectionsController>();
             _mergeInput = gameObject.GetComponent<MergeInput>();
             _mergeProcessor = new ClassBasedMergeProcessor();
-            _mergeController = new MergeController(_grid, _mergeProcessor,_itemsSpawner, _sectionsController, _gridView);
+            _mergeController = new MergeController(_mergeProcessor, _sectionsController, _gridView, new MergeSwapAllowedCheck());
             _mergeInput.Init(_mergeController);
             _sectionsController.SetGridView(_gridView);
             _mergeCellHighlight.Init();

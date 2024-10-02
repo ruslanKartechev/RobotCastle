@@ -60,7 +60,7 @@ namespace RobotCastle.UI
             _closedCallbacks.Add(id, onClosed);
         }
 
-        public void AddAsOpened<T>(string id, T obj) where T : IScreenUI
+        public void AddAsShown<T>(string id, T obj) where T : IScreenUI
         {
             _openedScreens.Add(id, obj);
         }

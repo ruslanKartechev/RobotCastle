@@ -9,15 +9,12 @@ namespace RobotCastle.Merging
         void SetGridView(IGridView gridView);
         bool IsCellAllowed(Vector2Int coord, ItemData item, bool promptUser = true);
         void SetMaxCount(int maxCount);
-        int GetMaxCount();
         /// <summary>
         /// Internally calls OnGridUpdated()
         /// </summary>
         void OnItemPut(ItemData item);
-        bool GetFreeCell(MergeGrid grid, out Vector2Int coordinates);
         bool GetFreeAllowedCell(MergeGrid grid, ItemData itemData, out Vector2Int coordinates);
         
-        int GetFreeCellsCount();
         List<ItemData> GetAllItems();
         List<ItemData> GetAllItemsInMergeArea();
         List<IItemView> GetAllItemViewsInMergeArea();

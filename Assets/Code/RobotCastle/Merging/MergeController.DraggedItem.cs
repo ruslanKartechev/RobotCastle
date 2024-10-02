@@ -7,27 +7,29 @@
             public ICellView originalCellView;
             public IItemView itemView;
             public ICellView underCell;
-            public MergeUnitRangeHighlighter rangeHighlighter; 
+            public bool highlightUnder;
+            public MergeUnitRangeHighlighter rangeHighlighter;
             
-            public DraggedItem(ICellView cell, IItemView item, IGridView grid)
+            public DraggedItem(ICellView cell, IItemView item, IGridView grid, bool highlightUnder)
             {
+                this.highlightUnder = highlightUnder;
                 originalCellView = cell;
                 itemView = item;
                 underCell = null;
-                if(item.itemData.core.type == MergeConstants.TypeUnits)
+                if(highlightUnder && item.itemData.core.type == MergeConstants.TypeUnits)
                     rangeHighlighter = new MergeUnitRangeHighlighter(item.Transform.gameObject, grid);
             }
 
-            public void OnPut()
+            public void OnDraggingEnd()
             {
-                if (rangeHighlighter != null)
+                if (highlightUnder && rangeHighlighter != null)
                 {
                     rangeHighlighter.Clear();
                     rangeHighlighter = null;                        
                 }
             }
             
-            public void PutBack() // On Put is called is after this one!
+            public void PutBack() // OnDraggingEnd is called is after this one!
             {
                 itemView.Transform.position = originalCellView.ItemPoint.position;
                 itemView.Transform.rotation = originalCellView.ItemPoint.rotation;
@@ -47,7 +49,7 @@
                 }
                 underCell = cell;
                 itemView.Rotate(cell.ItemPoint.rotation, MergeConstants.MergeItemPutAnimationTime);
-                if (rangeHighlighter != null)
+                if (highlightUnder && rangeHighlighter != null)
                 {
                     rangeHighlighter.UpdateForUnderCell(underCell.cell.Coord);
                     rangeHighlighter.ShowUnderCell(underCell.cell.Coord);             

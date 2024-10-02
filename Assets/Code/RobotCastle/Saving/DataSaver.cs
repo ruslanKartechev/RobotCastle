@@ -71,8 +71,6 @@ namespace RobotCastle.Saving
             var str = JsonUtility.ToJson(data);
             File.WriteAllText(path, str);
         }
-	    
-
 
         public T GetData<T>()
         {

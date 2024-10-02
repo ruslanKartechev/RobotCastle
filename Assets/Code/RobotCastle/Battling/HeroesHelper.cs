@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Bomber;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Saving;
 using UnityEngine;
 

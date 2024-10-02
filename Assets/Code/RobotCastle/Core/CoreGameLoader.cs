@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using MAXHelper;
+using RobotCastle.Data;
+using RobotCastle.MainMenu;
 using RobotCastle.Saving;
 using RobotCastle.UI;
 using SleepDev;
@@ -50,19 +52,22 @@ namespace RobotCastle.Core
             var uiManager = UIManager.Create();
             ServiceLocator.Bind<IUIManager>(uiManager);
             ServiceLocator.Bind<UIManager>(uiManager);
-            ServiceLocator.Bind<GameMoney>(GameMoney.Create());
             ServiceLocator.Bind<SceneLoader>(SceneLoader.Create());
             ServiceLocator.Bind<GameInput>(_gameInput);
             _gameInput.Init();
             CLog.Log($"Loading saves");
             _dataInitializer.LoadAll();
-            CLog.Log($"Init AdsPlayer");
             AdsPlayer.Create(_intersReloadtime, _adPlayMode);
             
             CLog.Log($"Calling other loaders");
             var loaders = GetComponentsInChildren<IGameLoader>();
             foreach (var ll in loaders)
                 ll.Load();
+            ServiceLocator.Bind<GameMoney>(GameMoney.Create());
+            ServiceLocator.Bind<CastleXpManager>(CastleXpManager.Create());
+            ServiceLocator.Bind<PlayerEnergyManager>(PlayerEnergyManager.Create());
+            
+            
             if(_initSdk)
                 InitSdk();
             InputBtn.Create();

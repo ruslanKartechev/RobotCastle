@@ -13,6 +13,7 @@ namespace RobotCastle.Core
         [SerializeField] private ViewDataBaseContainer _viewDb;
         [SerializeField] private HeroesDatabaseContainer _heroesDb;
         [SerializeField] private ModifiersDataBase _modifiersDataBase;
+        [SerializeField] private XpDatabaseContainer _xpDatabase;
         
         public void Load()
         {
@@ -22,12 +23,14 @@ namespace RobotCastle.Core
             ServiceLocator.Bind<HeroesDatabaseContainer>(_heroesDb);
             ServiceLocator.Bind<ViewDataBaseContainer>(_viewDb);
             ServiceLocator.Bind<ModifiersDataBase>(_modifiersDataBase);
-            _modifiersDataBase.Init();
+            _modifiersDataBase.Load();
             _viewDb.Load();
             _heroesDb.Load();
+            _xpDatabase.Load();
             ServiceLocator.Bind<ViewDataBase>(_viewDb.viewDb);
             ServiceLocator.Bind<DescriptionsDataBase>(_viewDb.descriptionsDb);
             ServiceLocator.Bind<HeroesDatabase>(_heroesDb.DataBase);
+            ServiceLocator.Bind<XpDatabase>(_xpDatabase.Database);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace RobotCastle.Saving
         [SerializeField] private bool _useCheat;
         [SerializeField] private CheatManager _cheatManager;
         [SerializeField] private SavesDataBase _initialSaves;
+        
 
         public void LoadAll()
         {
@@ -29,7 +30,6 @@ namespace RobotCastle.Saving
             saver.LoadSave<SaveLevelsProgress>(new SaveLevelsProgress(_initialSaves.LevelsProgress));
             var heroes = saver.LoadSave<SavePlayerHeroes>(new SavePlayerHeroes(_initialSaves.PlayerHeroes));
             heroes.Init();
-
             if (_useCheat)
                 _cheatManager.ApplyStartCheat();
         }

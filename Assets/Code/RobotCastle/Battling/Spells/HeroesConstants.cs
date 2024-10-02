@@ -5,6 +5,7 @@ namespace RobotCastle.Battling
 {
     public class HeroesConstants
     {
+        public const int PartySize = 6;
         public const int PlayerHealthStart = 3;
         public const int PlayerTroopsStart = 3;
         public const float ManaGainDamageMultiplier = .2f;

@@ -28,5 +28,7 @@ namespace RobotCastle.Battling
         List<ICellView> ApplyMask(Vector2Int center, IGridView gridView, int minX, int minY);
 
         Vector2Int GetClosestCell(Vector2Int fromPoint, Vector2Int toPoint);
+
+        string GetStringDescription();
     }
 }

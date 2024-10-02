@@ -7,10 +7,14 @@ namespace RobotCastle.Merging
     {
         [SerializeField] private MeshRenderer _meshRenderer;
         [SerializeField] private Transform _itemPoint;
+        [SerializeField] private Transform _lowerPoint;
         private IItemView _item;
         private CellHighlight _highlight;
 
+        public Transform LowerPoint => _lowerPoint;
+
         public int GridId { get; set; }
+        
         public Cell cell { get; set; }
         
         public IItemView itemView
