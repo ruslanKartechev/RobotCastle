@@ -1,8 +1,8 @@
 ﻿using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.MainMenu;
 using RobotCastle.Saving;
-using SleepDev;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +14,7 @@ namespace RobotCastle.UI
         public MyButton btnGrowth => _btnGrowth;
 
         public MyButton btnBack => _btnBack;
-        
+
         [SerializeField] private TextMeshProUGUI _statTxtAttack;
         [SerializeField] private TextMeshProUGUI _statTxtSpellPower;
         [SerializeField] private TextMeshProUGUI _statTxtAttackSpeed;
@@ -32,12 +32,13 @@ namespace RobotCastle.UI
         [Space(10)] 
         [SerializeField] private MyButton _btnGrowth;
         [SerializeField] private MyButton _btnBack;
-
+        private string _heroId;
 
         public void Show(string id)
         {
+            gameObject.SetActive(true);
+            _heroId = id;
             var viewDb = ServiceLocator.Get<ViewDataBase>();
-            var descriptionDb = ServiceLocator.Get<DescriptionsDataBase>();
             var heroesDb = ServiceLocator.Get<HeroesDatabase>();
             var save = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerHeroes>().GetSave(id);
             var heroData = heroesDb.GetHeroInfo(id);
@@ -60,16 +61,19 @@ namespace RobotCastle.UI
             
             _btnGrowth.AddMainCallback(Growth);
             _btnBack.AddMainCallback(Back);
+            _btnGrowth.SetInteractable(true);
+            _btnBack.SetInteractable(true);
         }
 
         private void Growth()
         {
-            CLog.LogBlue($"Growth");
+            var panel = ServiceLocator.Get<IUIManager>().Show<HeroGrowthPanel>(UIConstants.UIHeroGrowth, () => {});
+            panel.Show(_heroId);
         }
 
         private void Back()
         {
-            CLog.LogBlue($"Back");
+            ServiceLocator.Get<TabsSwitcher>().SetBarracksTab();
         }
 
         public void Close()

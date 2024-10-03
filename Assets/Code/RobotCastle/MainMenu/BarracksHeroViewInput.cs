@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Merging;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.MainMenu
@@ -11,6 +12,7 @@ namespace RobotCastle.MainMenu
         
         public void SetActive(bool active)
         {
+            CLog.Log($"Set Active: {active}, prev: {_isActive}");
             if (active == _isActive) return;
             if (active)
             {
@@ -30,12 +32,23 @@ namespace RobotCastle.MainMenu
             {
                 if (hit.collider.gameObject.TryGetComponent<IItemView>(out var itemView))
                 {
-                    if (itemView.itemData.core.type == MergeConstants.TypeUnits)
-                    {
-                        var id = itemView.itemData.core.id;
-                        ServiceLocator.Get<TabsSwitcher>().SetHeroView();
-                        ServiceLocator.Get<BarracksHeroView>().ShowHero(id);
-                    }
+                    TryOpen(itemView); 
+                }
+                else if (hit.collider.gameObject.TryGetComponent<ICellView>(out var cellView))
+                {
+                    itemView = cellView.itemView;
+                    if(itemView != null)
+                        TryOpen(itemView);
+                }
+            }
+
+            void TryOpen(IItemView itemView)
+            {
+                if (itemView.itemData.core.type == MergeConstants.TypeUnits)
+                {
+                    var id = itemView.itemData.core.id;
+                    ServiceLocator.Get<TabsSwitcher>().SetHeroView();
+                    ServiceLocator.Get<BarracksHeroView>().ShowHero(id);
                 }
             }
         }

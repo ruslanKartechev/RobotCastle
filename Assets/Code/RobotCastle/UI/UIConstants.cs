@@ -13,6 +13,7 @@
         public const string UIGateTab = "ui_tab_gate";
         public const string UIPlayerData = "ui_player_data";
         public const string UIBarracksHeroDescription = "ui_barracks_hero_description";
+        public const string UIHeroGrowth = "ui_hero_growth";
 
         public const string DescriptionItemShort = "ui_item_description_short";
         public const string DescriptionItemLong = "ui_item_description_long";

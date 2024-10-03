@@ -8,6 +8,12 @@
         
         public InventoryItemData(){}
 
+        public InventoryItemData(string id, int amount)
+        {
+            this.id = id;
+            this.amount = amount;
+        }
+
         public InventoryItemData(InventoryItemData other)
         {
             id = other.id;

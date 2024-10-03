@@ -39,9 +39,8 @@ namespace RobotCastle.MainMenu
                         Destroy(comp);
                 }
             }
-
             views.Clear();
         }
-        
     }
+    
 }

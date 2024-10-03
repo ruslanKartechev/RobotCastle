@@ -28,16 +28,18 @@ namespace RobotCastle.UI
         /// <summary>
         /// </summary>
         /// <param name="heroSave"></param>
-        /// <returns>0 - can, 1 - not enough xp, 2 - not enough money</returns>
-        public static int CanUpgrade(HeroSave heroSave, int money)
+        /// <returns>0 - can, 1 - not enough xp, 2 - not enough money, 3 - maxLvl </returns>
+        public static int CanUpgrade(HeroSave heroSave, int money, out int upgCost)
         {
+            upgCost = 0;
             if (heroSave.level >= MaxHeroLevel)
-                return 1;
+                return 3;
             var db = ServiceLocator.Get<XpDatabase>();
+            var cost = db.heroesUpgradeCosts[heroSave.level];
+            upgCost = cost;
             heroSave.xpForNext = db.heroXpLevels[heroSave.level];
             if (heroSave.xp < heroSave.xpForNext)
                 return 1;
-            var cost = db.heroesUpgradeCosts[heroSave.level];
             if (cost > money)
                 return 2;
             return 0;
@@ -53,6 +55,17 @@ namespace RobotCastle.UI
             var cost = db.heroesUpgradeCosts[heroSave.level];
             money -= cost;
             gm.globalMoney = money;
+            heroSave.xp -= heroSave.xpForNext;
+            heroSave.level++;
+            if (heroSave.level < MaxHeroLevel)
+                heroSave.xpForNext = db.heroXpLevels[heroSave.level];
+        }
+
+        public static void UpgradeNoCharge(HeroSave heroSave)
+        {
+            if (heroSave.level >= MaxHeroLevel)
+                return;
+            var db = ServiceLocator.Get<XpDatabase>();
             heroSave.xp -= heroSave.xpForNext;
             heroSave.level++;
             if (heroSave.level < MaxHeroLevel)

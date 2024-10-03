@@ -22,6 +22,7 @@ namespace RobotCastle.Merging
         {
             if (_isActive == active)
                 return;
+            CLog.Log($"Merge input Set active: {active}");
             _isActive = active;
             if(_positionChecking != null)
                 StopCoroutine(_positionChecking);
