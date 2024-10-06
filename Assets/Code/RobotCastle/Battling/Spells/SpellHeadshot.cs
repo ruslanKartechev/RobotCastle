@@ -6,7 +6,7 @@ namespace RobotCastle.Battling
     [System.Serializable]
     public class SpellHeadshot : IFullManaListener, IStatDecorator, IProjectileFactory
     {
-        public float BaseSpellPower => _config.spellDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+        public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         public string name => "spell";
         public int priority => 10;
         public float Decorate(float val)
@@ -53,7 +53,7 @@ namespace RobotCastle.Battling
             atk.OnHit += OnHit;
             _manaAdder.CanAdd = false;
             _decorator.addedMagicDamage = _view.stats.SpellPower.Get();
-            _decorator.addedPhysDamage = _config.physDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+            _decorator.addedPhysDamage = _config.physDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
             _view.stats.DamageCalculator.AddDecorator(_decorator);
             _prevFactory = atk.ProjectileFactory;
             atk.ProjectileFactory = this;

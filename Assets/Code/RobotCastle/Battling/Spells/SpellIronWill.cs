@@ -6,7 +6,7 @@ namespace RobotCastle.Battling
 {
     public class SpellIronWill : Spell, IFullManaListener, IStatDecorator, IHeroProcess
     {
-        public float BaseSpellPower => _config.spellResist[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+        public float BaseSpellPower => _config.spellResist[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         
         public string name => "spell";
         public int priority => 10;

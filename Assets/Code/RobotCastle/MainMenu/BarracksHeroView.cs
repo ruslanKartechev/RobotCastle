@@ -1,4 +1,6 @@
-﻿using RobotCastle.Core;
+﻿using DG.Tweening;
+using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.UI;
 using UnityEngine;
 
@@ -14,6 +16,7 @@ namespace RobotCastle.MainMenu
             var pool = ServiceLocator.Get<BarracksHeroesPool>();
             var hero = pool.GetHero(heroId);
             var tr = hero.Transform;
+            tr.DOKill();
             tr.gameObject.SetActive(true);
             tr.SetPositionAndRotation(_heroPoint.position, _heroPoint.rotation);
             if (_descriptionPanel == null)

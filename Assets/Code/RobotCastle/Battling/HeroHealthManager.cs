@@ -29,10 +29,10 @@ namespace RobotCastle.Battling
                 return;
             OnDamagePreApplied?.Invoke();
             var stats = _view.stats;
-            args.physDamage = HeroesHelper.ReduceDamageByDef(args.physDamage, stats.PhysicalResist.Val);
-            args.magicDamage = HeroesHelper.ReduceDamageByDef(args.magicDamage, stats.MagicalResist.Val);
+            args.physDamage = HeroesManager.ReduceDamageByDef(args.physDamage, stats.PhysicalResist.Val);
+            args.magicDamage = HeroesManager.ReduceDamageByDef(args.magicDamage, stats.MagicalResist.Val);
             CLog.Log($"[{_view.gameObject.name}] Took Damage {args.physDamage}, {args.magicDamage}. " +
-                     $"Defence: {HeroesHelper.GetDef(stats.PhysicalResist.Val)}, {HeroesHelper.GetDef(stats.MagicalResist.Val)}");
+                     $"Defence: {HeroesManager.GetDef(stats.PhysicalResist.Val)}, {HeroesManager.GetDef(stats.MagicalResist.Val)}");
             var shield = stats.Shield;
             var health = stats.HealthCurrent.Get();
             var didDamageShield = false;

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DG.Tweening;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.UI;
 using UnityEngine;
 

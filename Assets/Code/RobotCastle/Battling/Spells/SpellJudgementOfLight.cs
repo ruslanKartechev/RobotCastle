@@ -7,7 +7,7 @@ namespace RobotCastle.Battling
 {
     public class SpellJudgementOfLight : IFullManaListener, IStatDecorator, IHeroProcess
     {
-        public float BaseSpellPower => _config.spellDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+        public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         public string name => "spell";
         public int priority => 10;
         public float Decorate(float val)
@@ -45,9 +45,9 @@ namespace RobotCastle.Battling
 
         private async void Waiting(CancellationToken token)
         {
-            var lvl = (int)HeroesHelper.GetSpellTier(_view.stats.MergeTier);
+            var lvl = (int)HeroesManager.GetSpellTier(_view.stats.MergeTier);
             var mask = _config.cellsMasksByTear[lvl];
-            var allEnemies = HeroesHelper.GetHeroesEnemies(_view);
+            var allEnemies = HeroesManager.GetHeroesEnemies(_view);
             var map = _view.agent.Map;
 
             const int waitMs = (int)(.25f * 1000);
@@ -55,7 +55,7 @@ namespace RobotCastle.Battling
             if (token.IsCancellationRequested) return;
             while (!token.IsCancellationRequested)
             {
-                var affectedEnemies = HeroesHelper.GetHeroesInsideCellMask(mask, _view.transform.position, map, allEnemies);
+                var affectedEnemies = HeroesManager.GetHeroesInsideCellMask(mask, _view.transform.position, map, allEnemies);
                 if (affectedEnemies.Count > 0)
                 {
                     var fx = GetFxView();

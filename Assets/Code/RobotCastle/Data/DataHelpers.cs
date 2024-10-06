@@ -1,11 +1,26 @@
-﻿using RobotCastle.Core;
+﻿using System.Collections.Generic;
+using RobotCastle.Core;
 using RobotCastle.Merging;
+using RobotCastle.Saving;
 using UnityEngine;
 
 namespace RobotCastle.Data
 {
     public static class DataHelpers
     {
+
+        public static void SeparateOwnedAndNotOwnedHeroes(SavePlayerHeroes heroes, 
+            out List<HeroSave> ownedHeroes, out List<HeroSave> notOwnedHeroes)
+        {
+            ownedHeroes = new List<HeroSave>(heroes.heroSaves.Count);
+            notOwnedHeroes = new List<HeroSave>(heroes.heroSaves.Count);
+            foreach (var save in heroes.heroSaves)
+            {
+                if(save.isUnlocked) ownedHeroes.Add(save);
+                else notOwnedHeroes.Add(save);
+            }
+        }
+        
         public static DescriptionInfo GetItemDescription(CoreItemData itemData)
         {
             var id = itemData.id;
@@ -16,6 +31,11 @@ namespace RobotCastle.Data
         public static Sprite GetItemIcon(CoreItemData itemData)
         {
             return ServiceLocator.Get<ViewDataBase>().GetUnitItemSpriteAtLevel(itemData.id, itemData.level);
+        }
+
+        public static PlayerInventory GetInventory()
+        {
+            return ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;
         }
     }
 }

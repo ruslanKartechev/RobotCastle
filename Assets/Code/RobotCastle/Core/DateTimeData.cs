@@ -5,6 +5,8 @@ namespace RobotCastle.Core
     [System.Serializable]
     public class DateTimeData
     {
+        public DateTimeData(){}
+        
         public DateTimeData(DateTime dt)
         {
             this.year = dt.Year;
@@ -48,8 +50,17 @@ namespace RobotCastle.Core
             var dt = new DateTime(year, month, day, hour, minute, second, milliSecond);
             return dt;
         }
+
+        public TimeSpan GetTimeSpan()
+        {
+            return new TimeSpan(day, hour, minute, second, milliSecond);
+        }
         
-        
-        
+        public bool CheckIfTimePassed(TimeSpan timeSpan)
+        {
+            if (IsNull()) return true;
+            var diff = DateTime.Now - GetDateTime();
+            return diff >= timeSpan;
+        }
     }
 }

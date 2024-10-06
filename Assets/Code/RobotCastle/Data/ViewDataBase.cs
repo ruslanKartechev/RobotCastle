@@ -13,6 +13,7 @@ namespace RobotCastle.Data
         public Dictionary<string, ItemInfo> ItemInfo = new (5);
         public Dictionary<string, string> StatsIcons = new (5);
         public Dictionary<string, string> SpellsIcons = new (5);
+        public Dictionary<string, string> ItemsIcons = new (5);
 
         public static Sprite GetHeroSprite(string spriteId)
         {
@@ -33,6 +34,11 @@ namespace RobotCastle.Data
             throw new Exception($"{statType.ToString()} is not supported!");
         }
 
+        public Sprite GetItemSprite(string spriteId)
+        {
+            return Resources.Load<Sprite>(ItemsIcons[spriteId]);
+        }
+        
         public Sprite GetStatIcon(EStatType statType)
         {
             return GetIconForStat(GetStatId(statType));
@@ -40,12 +46,12 @@ namespace RobotCastle.Data
         
         public Sprite GetSpellIcon(string id)
         {
-            return Resources.Load<Sprite>($"sprites/{SpellsIcons[id]}");
+            return Resources.Load<Sprite>(SpellsIcons[id]);
         }
         
         public Sprite GetIconForStat(string statId)
         {
-            return Resources.Load<Sprite>($"sprites/{StatsIcons[statId]}");
+            return Resources.Load<Sprite>(StatsIcons[statId]);
         }
         
         public GameObject GetMergePrefabAtLevel(string id, int levelIndex)

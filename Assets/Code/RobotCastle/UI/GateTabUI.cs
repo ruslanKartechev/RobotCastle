@@ -1,4 +1,7 @@
-﻿using SleepDev;
+﻿using RobotCastle.Core;
+using RobotCastle.Data;
+using RobotCastle.Summoning;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.UI
@@ -34,6 +37,11 @@ namespace RobotCastle.UI
         private void OpenSummonMenu()
         {
             CLog.Log($"Open summon menu");
+            gameObject.SetActive(false);
+            ServiceLocator.Get<IUIManager>().Show<SummoningUI>(UIConstants.UISummon, () => 
+            { 
+                gameObject.SetActive(true);
+            }).Show();
         }
 
         private void StartBattle()

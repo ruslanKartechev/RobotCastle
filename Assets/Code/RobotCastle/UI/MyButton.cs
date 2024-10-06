@@ -8,7 +8,7 @@ namespace RobotCastle.UI
     public class MyButton : MonoBehaviour, IButtonInput
     {
         [SerializeField] private Button _btn;
-        private bool _doRespond;
+        [SerializeField] private bool _doRespond;
         private readonly List<Action> _callbacks = new List<Action>(5);
 
         private void OnEnable()
@@ -23,6 +23,10 @@ namespace RobotCastle.UI
             _btn.onClick.RemoveListener(FXCallback);
         }
 
+        /// <summary>
+        /// Will add a new callback, if not already added
+        /// </summary>
+        /// <param name="callback"></param>
         public void AddMainCallback(Action callback)
         {
             if (_callbacks.Contains(callback))
@@ -30,6 +34,11 @@ namespace RobotCastle.UI
             _callbacks.Add(callback);
         }
 
+
+        /// <summary>
+        /// Will delete all existing non-fx callbacks and set this one
+        /// </summary>
+        /// <param name="callback"></param>
         public void OverrideMainCallback(Action callback)
         {
             _callbacks.Clear();
@@ -73,5 +82,17 @@ namespace RobotCastle.UI
             if (!_doRespond) return;
             // play sound, etc
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (_btn == null)
+            {
+                _btn = gameObject.GetComponent<Button>();
+                if(_btn != null)
+                    UnityEditor.EditorUtility.SetDirty(this);
+            }
+        }
+#endif
     }
 }

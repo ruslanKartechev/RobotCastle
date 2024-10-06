@@ -1,16 +1,13 @@
-﻿using System;
-using RobotCastle.Saving;
+﻿using RobotCastle.Saving;
 using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Core
 {
     public delegate void MoneyUpdateDelegate(int newVal , int prevVal);
-
     
     public class GameMoney : MonoBehaviour
     {
-        
         public static GameMoney Create()
         {
             var go = new GameObject("game_money");
@@ -24,13 +21,31 @@ namespace RobotCastle.Core
             return me;
         }
         
+        /// <summary>
+        /// Passes (newVal, previousValue)
+        /// </summary>
         public event MoneyUpdateDelegate OnMoneySet;
+        /// <summary>
+        /// Passes (newVal, addedValue)
+        /// </summary>
         public event MoneyUpdateDelegate OnMoneyAdded;
         
+        /// <summary>
+        /// Passes (newVal, previousValue)
+        /// </summary>
         public event MoneyUpdateDelegate OnGlobalMoneySet;
+        /// <summary>
+        /// Passes (newVal, addedValue)
+        /// </summary>
         public event MoneyUpdateDelegate OnGlobalMoneyAdded;
         
+        /// <summary>
+        /// Passes (newVal, previousValue)
+        /// </summary>
         public event MoneyUpdateDelegate OnGlobalHardMoneySet;
+        /// <summary>
+        /// Passes (newVal, addedValue)
+        /// </summary>
         public event MoneyUpdateDelegate OnGlobalHardMoneyAdded;
 
         public int levelMoney
@@ -62,7 +77,7 @@ namespace RobotCastle.Core
             {
                 var prev = _playerData.globalHardMoney;
                 _playerData.globalHardMoney = value;
-                OnGlobalMoneySet?.Invoke(value, prev);
+                OnGlobalHardMoneySet?.Invoke(value, prev);
             }
         }
         
@@ -78,7 +93,7 @@ namespace RobotCastle.Core
         {
             var prev = _playerData.levelMoney;
             _playerData.levelMoney += added;
-            OnMoneyAdded?.Invoke(added, prev);
+            OnMoneyAdded?.Invoke(_playerData.levelMoney, added);
             OnMoneySet?.Invoke(_playerData.levelMoney, prev);
             return _playerData.levelMoney;
         }
@@ -87,8 +102,8 @@ namespace RobotCastle.Core
         {
             var prev = _playerData.globalMoney;
             _playerData.globalMoney += added;
-            OnMoneyAdded?.Invoke(added, prev);
-            OnMoneySet?.Invoke(_playerData.globalMoney, prev);
+            OnGlobalMoneyAdded?.Invoke(_playerData.globalMoney, added);
+            OnGlobalMoneySet?.Invoke(_playerData.globalMoney, prev);
             return _playerData.globalMoney;
         }
 
@@ -96,8 +111,8 @@ namespace RobotCastle.Core
         {
             var prev = _playerData.globalHardMoney;
             _playerData.globalHardMoney += added;
-            OnMoneyAdded?.Invoke(added, prev);
-            OnMoneySet?.Invoke(_playerData.globalHardMoney, prev);
+            OnGlobalHardMoneyAdded?.Invoke(_playerData.globalHardMoney, added);
+            OnGlobalHardMoneySet?.Invoke(_playerData.globalHardMoney, prev);
             return _playerData.globalHardMoney;
         }
     }

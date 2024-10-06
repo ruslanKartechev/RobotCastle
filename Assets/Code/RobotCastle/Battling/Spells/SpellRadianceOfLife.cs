@@ -6,7 +6,7 @@ namespace RobotCastle.Battling
 {
     public class SpellRadianceOfLife : Spell, IFullManaListener, IStatDecorator
     {
-        public float BaseSpellPower => _config.healAmount[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+        public float BaseSpellPower => _config.healAmount[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         
         public string name => "spell";
         public int priority => 10;
@@ -36,11 +36,11 @@ namespace RobotCastle.Battling
             CLog.Log($"[{_view.gameObject.name}] [{nameof(SpellRadianceOfLife)}]");
             _isActive = true;
             _view.stats.ManaResetAfterFull.Reset(_view);
-            var lvl = (int)HeroesHelper.GetSpellTier(_view.stats.MergeTier);
+            var lvl = (int)HeroesManager.GetSpellTier(_view.stats.MergeTier);
             var amount = _view.stats.SpellPower.Get();
-            var allies = HeroesHelper.GetHeroesAllies(_view);
+            var allies = HeroesManager.GetHeroesAllies(_view);
             var map = _view.agent.Map;
-            var (heroesAffected, cells) = HeroesHelper.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
+            var (heroesAffected, cells) = HeroesManager.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
                 _view.transform.position, map, allies);
             
             var worldPositions = new List<Vector3>(cells.Count);
