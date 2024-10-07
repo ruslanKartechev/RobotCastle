@@ -58,15 +58,15 @@ namespace RobotCastle.UI
             }
         }
         
-        public void UpdateValue(int val, int prevVal)
+        public void UpdateValue(int newVal, int prevVal)
         {
-            _text.text = $"{val}";
+            _text.text = $"{newVal}";
             _fadeImage.DOKill();
             _fadeImage.SetAlpha(_splashAlphaMax);
             _fadeImage.DOFade(0f, _splashTime);
         }
 
-        public void AddMoney(int added, int prevVal)
+        public void AddMoney(int newVal, int added)
         {
             _addedMoneyAnimator.Animate(added);
         }

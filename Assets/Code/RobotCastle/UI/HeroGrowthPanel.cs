@@ -59,8 +59,7 @@ namespace RobotCastle.UI
             _itemDescriptionHeader.text = "";
             _itemDescription.text = "";
             SetupInventory();
-            SetMode(Mode.UpgradeForMoney);
-            _currentOperation = new PurchaseUpgradeOperation(_heroSave);
+            SetAppropriateMode();
         }
 
         private void SetStats(bool animated = false)
@@ -117,93 +116,83 @@ namespace RobotCastle.UI
             {
                 CLog.Log("No grand xp operation");
             }
-            
         }
 
-        private void SetMode(Mode mode)
+        private void SetAppropriateMode()
         {
-            _mode = mode;
-            switch (mode)
+            var money = ServiceLocator.Get<GameMoney>().globalMoney;
+            var canUpgr = HeroesManager.CanUpgrade(_heroSave, money, out var cost);
+            switch (canUpgr)
             {
-                case Mode.GrantXp:
-                    
-                    _btnGrowth.gameObject.SetActive(false);
-                    _btnGrowthXp.gameObject.SetActive(true);
-                    _buttonTextXp.text = "Grant XP";
-                    if (_heroSave.xp >= _heroSave.xpForNext)
-                        _btnGrowthXp.interactable = false;
-                    else
-                        _btnGrowthXp.interactable = true;
-                    break;
-                case Mode.UpgradeFree:
-                    _btnGrowth.gameObject.SetActive(false);
-                    _btnGrowthXp.interactable = true;
-                    _btnGrowthXp.gameObject.SetActive(true);
-                    _buttonTextXp.text = "Upgrade Free";
-                    break;
-                case Mode.UpgradeForMoney:
-                    _btnGrowthXp.gameObject.SetActive(false);
+                case 0: // can
                     _btnGrowth.gameObject.SetActive(true);
-                    var money = ServiceLocator.Get<GameMoney>().globalMoney;
-                    var canUpgr = HeroesUpgradeManager.CanUpgrade(_heroSave, money, out var cost);
-                    var color = "#FFFFFF";
-                    switch (canUpgr)
+                    _btnGrowthXp.gameObject.SetActive(false);
+                    _buttonText.text = $"Upgrade <color=#FFFFFF>{cost}</color>";
+                    _btnGrowth.interactable = true;
+                    _mode = Mode.UpgradeForMoney;
+                    _addAnimation.Stop();
+                    _currentOperation = new PurchaseUpgradeOperation(_heroSave);
+                    break;
+                case 1: // no xp
+                    _btnGrowth.gameObject.SetActive(false);
+                    _btnGrowthXp.gameObject.SetActive(true);
+                    var itemPicked = _inventoryUI.PickedItem;
+                    if (itemPicked != null && itemPicked.GetCount() > 0)
                     {
-                        case 0:
-                            _btnGrowth.gameObject.SetActive(true);
-                            _btnGrowth.interactable = true;
-                            break;
-                        case 1:
-                            _btnGrowth.gameObject.SetActive(true);
-                            _btnGrowth.interactable = false;         
-                            break;
-                        case 2:
-                            _btnGrowth.gameObject.SetActive(true);
-                            color = "#FF1111";
-                            _btnGrowth.interactable = false;
-                            break;
-                        case 3:
-                            CLog.Log($"Max level already reached");
-                            _btnGrowth.gameObject.SetActive(false);
-                            break;
+                        _btnGrowthXp.interactable = true;
+                        switch (itemPicked.Id)
+                        {
+                            case "upgrade_cube":
+                                _buttonTextXp.text = "Instant Upgrade";
+                                _mode = Mode.UpgradeFree;
+                                _currentOperation = new InstantUpgradeOperation(_heroSave, itemPicked);
+                                break;
+                            case "book" or "king_medal" or "hero_medal":
+                                _buttonTextXp.text = "Grant XP";
+                                _mode = Mode.GrantXp;
+                                _currentOperation = new GrantXpOperation(_heroSave, itemPicked);
+                                ShowPossibleXpGain();
+                                break;
+                        }
                     }
-                    _buttonText.text = $"Upgrade <color={color}>{cost}</color>";
+                    else
+                    {
+                        _buttonTextXp.text = "Grant XP";
+                        _btnGrowthXp.interactable = false;
+                        _addAnimation.Stop();
+                        _mode = Mode.GrantXp;
+                    }
+                    break;
+                case 2: // no money
+                    _btnGrowth.gameObject.SetActive(true);
+                    _btnGrowthXp.gameObject.SetActive(false);
+                    _buttonText.text = $"Upgrade <color=#FF1111>{cost}</color>";
+                    _btnGrowth.interactable = false;
+                    _mode = Mode.UpgradeForMoney;
+                    _addAnimation.Stop();
+                    _currentOperation = new PurchaseUpgradeOperation(_heroSave);
+                    break;
+                case 3:
+                    _btnGrowth.gameObject.SetActive(false);
+                    _btnGrowthXp.gameObject.SetActive(false);
+                    _mode = Mode.UpgradeForMoney;
+                    _addAnimation.Stop();
+                    _currentOperation = null;
                     break;
             }
         }
-
+        
         private void OnNothingInventoryItem()
         {
-            _currentOperation = new PurchaseUpgradeOperation(_heroSave);
-            SetMode(Mode.UpgradeForMoney);
-            _addAnimation.Stop();
             _itemDescriptionHeader.text = "";
             _itemDescription.text = "";
+            SetAppropriateMode();
         }
 
         private void OnNewInventoryItemPicked(Item itemPicked)
         {
             CLog.Log($"Item picked: {itemPicked.Id}");
-            if (_heroSave.xp >= _heroSave.xpForNext)
-            {
-                _currentOperation = new PurchaseUpgradeOperation(_heroSave);
-                SetMode(Mode.UpgradeForMoney);
-            }
-            else
-            {
-                switch (itemPicked.Id)
-                {
-                    case "upgrade_cube":
-                        _currentOperation = new InstantUpgradeOperation(_heroSave, itemPicked);
-                        SetMode(Mode.UpgradeFree);
-                        break;
-                    case "book" or "king_medal" or "hero_medal":
-                        _currentOperation = new GrantXpOperation(_heroSave, itemPicked);
-                        SetMode(Mode.GrantXp);
-                        ShowPossibleXpGain();
-                        break;
-                }
-            }
+            SetAppropriateMode();
             var db = ServiceLocator.Get<DescriptionsDataBase>();
             var info = db.GetDescription(itemPicked.Id);
             _itemDescriptionHeader.text = info.parts[0];
@@ -212,60 +201,21 @@ namespace RobotCastle.UI
 
         private void OnGrowth()
         {
-            CLog.Log($"On Growth Btn. Mode: {_mode.ToString()}");
-            _currentOperation.Apply();
-            _addAnimation.Stop();
-            switch (_mode)
+            if (_currentOperation == null)
             {
-                case Mode.GrantXp:
-                    SetStats();
-                    if (_heroSave.xp >= _heroSave.xpForNext)
-                    {
-                        _currentOperation = new PurchaseUpgradeOperation(_heroSave);
-                        SetMode(Mode.UpgradeForMoney);
-                    }
-                    else
-                    {
-                        if (_inventoryUI.PickedItem.GetCount() > 0)
-                        {
-                            SetMode(Mode.GrantXp);
-                            ShowPossibleXpGain();
-                        }
-                        else
-                        {
-                            SetMode(Mode.UpgradeForMoney);
-                        }       
-                    }
-                    break;
-                case Mode.UpgradeFree:
-                    if (_inventoryUI.PickedItem.GetCount() > 0)
-                    {
-                        SetMode(Mode.GrantXp);
-                        ShowPossibleXpGain();
-                    }
-                    else
-                    {
-                        SetMode(Mode.UpgradeForMoney);
-                    }
-                    break;
-                case Mode.UpgradeForMoney:
-                    SetStats(true);
-                    if (_heroSave.xp < _heroSave.xpForNext && _inventoryUI.PickedItem != null)
-                    {
-                        _currentOperation = new GrantXpOperation(_heroSave, _inventoryUI.PickedItem);
-                        SetMode(Mode.GrantXp);
-                        ShowPossibleXpGain();
-                    }
-                    else
-                    {
-                        SetMode(Mode.UpgradeForMoney);
-                        _currentOperation = new PurchaseUpgradeOperation(_heroSave);
-                    }
-                    break;
+                CLog.Log("Next purcahse Operation is not chosen");
+                return;
             }
-            _heroLevelText.text = (_heroSave.level + 1).ToString();
-            _xpText.text = $"{_heroSave.xp}/{_heroSave.xpForNext}";
-            _xpFillImage.fillAmount = (float)(_heroSave.xp) / _heroSave.xpForNext;
+            CLog.Log($"On Growth Btn. Mode: {_mode.ToString()}");
+            var result = _currentOperation.Apply();
+            if (result == 0 && _mode == Mode.UpgradeForMoney)
+            {
+                SetStats();
+                _heroLevelText.text = (_heroSave.level + 1).ToString();
+                _xpText.text = $"{_heroSave.xp}/{_heroSave.xpForNext}";
+                _xpFillImage.fillAmount = (float)(_heroSave.xp) / _heroSave.xpForNext;
+            }
+            SetAppropriateMode();
         }
 
         private void OnReturnBtn()
@@ -294,7 +244,10 @@ namespace RobotCastle.UI
 
         
         private interface IOperation {
-            void Apply();
+            /// <summary>
+            /// </summary>
+            /// <returns>int ExitCode -> 0 is success by default </returns>
+            int Apply();
         }
 
         private class InstantUpgradeOperation : IOperation
@@ -308,11 +261,12 @@ namespace RobotCastle.UI
                 this.item = item;
             }
             
-            public void Apply()
+            public int Apply()
             {
-                HeroesUpgradeManager.UpgradeNoCharge(heroSave);
+                HeroesManager.UpgradeNoCharge(heroSave);
                 var count = item.GetCount();
                 item.SetCount(count-1);
+                return 0;
             }
         }
         
@@ -325,9 +279,9 @@ namespace RobotCastle.UI
                 this.heroSave = heroSave;
             }
             
-            public void Apply()
+            public int Apply()
             {
-                HeroesUpgradeManager.UpgradeHero(heroSave);
+                return HeroesManager.UpgradeHero(heroSave);
             }
         }
 
@@ -339,7 +293,6 @@ namespace RobotCastle.UI
             public int needItemsCount;
             public int giveXpAmount;
             public int consumeItemsCount;
-            
             
             public GrantXpOperation(HeroSave heroSave, Item itemUI)
             {
@@ -362,11 +315,12 @@ namespace RobotCastle.UI
                 }
             }
 
-            public void Apply()
+            public int Apply()
             {
                 heroSave.xp += giveXpAmount;
                 var count = itemUI.GetCount();
                 itemUI.SetCount(count - consumeItemsCount);
+                return 0;
             }
         }
     }

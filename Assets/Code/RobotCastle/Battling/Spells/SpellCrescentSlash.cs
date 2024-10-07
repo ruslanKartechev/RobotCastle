@@ -9,7 +9,7 @@ namespace RobotCastle.Battling
     {
         public const int MaxDistance = 10;
         
-        public float BaseSpellPower => _config.spellDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+        public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         public string name => "spell";
         public int priority => 10;
         public float Decorate(float val)
@@ -61,7 +61,7 @@ namespace RobotCastle.Battling
             _view.processes.Remove(this);
             _view.stats.ManaResetAfterFull.Reset(_view);
             var fx = GetFxView();
-            var lvl = (int)HeroesHelper.GetSpellTier(_view.stats.MergeTier);
+            var lvl = (int)HeroesManager.GetSpellTier(_view.stats.MergeTier);
             var hero = _view.GetComponent<IHeroController>();
             fx.transform.SetPositionAndRotation(_view.transform.position, _view.transform.rotation);
             fx.Launch(lvl, _config.cellsMasksByTear[lvl], _view.stats.SpellPower.Get(), 
@@ -83,9 +83,9 @@ namespace RobotCastle.Battling
             if (token.IsCancellationRequested) return;
             
             var map = _view.agent.Map;
-            var lvl = (int)HeroesHelper.GetSpellTier(_view.stats.MergeTier);
+            var lvl = (int)HeroesManager.GetSpellTier(_view.stats.MergeTier);
             var mask = _config.cellsMasksByTear[lvl];
-            var enemies = HeroesHelper.GetHeroesEnemies(_view);
+            var enemies = HeroesManager.GetHeroesEnemies(_view);
             while (token.IsCancellationRequested == false)
             {
                 var tr = _view.transform;
@@ -97,7 +97,7 @@ namespace RobotCastle.Battling
                     var frwCellDir = new Vector2Int(Mathf.RoundToInt(frw.x), Mathf.RoundToInt(frw.z));
                     for (var stepInd = 0; stepInd < MaxDistance; stepInd++)
                     {
-                        if (HeroesHelper.CheckIfAtLeastOneHeroInMask(mask, cellCenter, map, enemies))
+                        if (HeroesManager.CheckIfAtLeastOneHeroInMask(mask, cellCenter, map, enemies))
                         {
                             Launch();
                             return;

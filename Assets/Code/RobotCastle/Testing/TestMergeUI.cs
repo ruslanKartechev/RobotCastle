@@ -1,4 +1,5 @@
 ﻿using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;

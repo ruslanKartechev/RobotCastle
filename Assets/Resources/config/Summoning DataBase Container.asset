@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8476838c60bc4603adcd2604ba64c7da, type: 3}
+  m_Name: Summoning DataBase Container
+  m_EditorClassIdentifier: 
+  dataBase:
+    tier_1:
+      id: scroll_tier_1
+      currencyId: money
+      purchaseCost: 250
+      adAvailable: 0
+      freeAvailable: 1
+      timePeriodHours: 24
+    tier_2:
+      id: scroll_tier_2
+      currencyId: hard_money
+      purchaseCost: 35
+      adAvailable: 1
+      freeAvailable: 0
+      timePeriodHours: 24
+    tier_3:
+      id: scroll_tier_3
+      currencyId: hard_money
+      purchaseCost: 80
+      adAvailable: 0
+      freeAvailable: 0
+      timePeriodHours: 24
+    tier_4:
+      id: scroll_tier_4
+      currencyId: king_medal
+      purchaseCost: 100
+      adAvailable: 0
+      freeAvailable: 0
+      timePeriodHours: 24

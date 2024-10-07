@@ -1,6 +1,7 @@
 ﻿using RobotCastle.Battling;
 using RobotCastle.Data;
 using RobotCastle.Merging;
+using RobotCastle.Summoning;
 using UnityEngine;
 
 namespace RobotCastle.Core
@@ -14,7 +15,7 @@ namespace RobotCastle.Core
         [SerializeField] private HeroesDatabaseContainer _heroesDb;
         [SerializeField] private ModifiersDataBase _modifiersDataBase;
         [SerializeField] private XpDatabaseContainer _xpDatabase;
-        
+        [SerializeField] private SummoningDataBaseContainer _summoningDataBase;
         public void Load()
         {
             ServiceLocator.Bind<GlobalConfig>(_globalConfig);
@@ -23,6 +24,7 @@ namespace RobotCastle.Core
             ServiceLocator.Bind<HeroesDatabaseContainer>(_heroesDb);
             ServiceLocator.Bind<ViewDataBaseContainer>(_viewDb);
             ServiceLocator.Bind<ModifiersDataBase>(_modifiersDataBase);
+            ServiceLocator.Bind<SummoningDataBase>(_summoningDataBase.dataBase);
             _modifiersDataBase.Load();
             _viewDb.Load();
             _heroesDb.Load();

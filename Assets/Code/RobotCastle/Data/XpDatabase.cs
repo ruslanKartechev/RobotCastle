@@ -10,6 +10,5 @@ namespace RobotCastle.Data
         public List<int> heroesUpgradeCosts; // 40, 100, 200, 400, 1000, 2000, 4000    
         
         public Dictionary<string, float> xpGrantedByItem;
-
     }
 }

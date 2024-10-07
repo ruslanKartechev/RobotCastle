@@ -50,7 +50,7 @@ namespace RobotCastle.Battling
                 var itemView = factory.SpawnItemOnCell(cellView, new ItemData(enemyPreset.enemy));
                 var hero = itemView.Transform.GetComponent<IHeroController>();
                 barsPanel.AssignEnemyUI(hero.View);
-                var modifiers = HeroesHelper.GetModifiers(enemyPreset.modifiers);
+                var modifiers = HeroesManager.GetModifiers(enemyPreset.modifiers);
                 hero.InitHero(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
                 hero.View.heroUI.UpdateStatsView(hero.View);
                 _spawnedEnemies.Add(hero);

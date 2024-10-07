@@ -118,7 +118,7 @@ namespace SleepDev
                 i++;
                 yield return null;
             }
-
+            AssetDatabase.Refresh();
         }
 
         private void TakeFor(GameObject go)

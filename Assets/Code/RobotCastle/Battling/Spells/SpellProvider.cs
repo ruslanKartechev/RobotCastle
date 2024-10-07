@@ -17,7 +17,7 @@ namespace RobotCastle.Battling
 
         public virtual ESpellTier GetTier(GameObject hero)
         {
-            return HeroesHelper.GetSpellTier(hero.GetComponent<HeroStatsManager>().MergeTier);
+            return HeroesManager.GetSpellTier(hero.GetComponent<HeroStatsManager>().MergeTier);
         }
 
         public virtual string GetName()

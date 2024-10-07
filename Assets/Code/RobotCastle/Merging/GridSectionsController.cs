@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;

@@ -10,7 +10,6 @@
         public int playerXp;
         public int playerEnergy;
         public int playerEnergyMax;
-        public PlayerScrollsData scrollsData;
         public SavePlayerParty party;
         public PlayerInventory inventory;
         
@@ -25,7 +24,6 @@
             playerXp = other.playerXp;
             playerEnergy = other.playerEnergy;
             playerEnergyMax = other.playerEnergyMax;
-            scrollsData = new PlayerScrollsData(other.scrollsData);
             party = new SavePlayerParty(other.party);
             inventory = new PlayerInventory(other.inventory);
         }

@@ -7,7 +7,7 @@ namespace RobotCastle.Battling
 {
     public class SpellBlizzard : Spell, IFullManaListener, IStatDecorator, IHeroProcess
     {
-        public float BaseSpellPower => _config.spellDamage[(int)HeroesHelper.GetSpellTier(_view.stats.MergeTier)];
+        public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         public string name => "spell";
         public int priority => 10;
         public float Decorate(float val)
@@ -45,10 +45,10 @@ namespace RobotCastle.Battling
             _view.attackManager.OnAttackStep -= OnAttack;
             _view.stats.ManaResetAfterFull.Reset(_view);
             var target = _view.attackManager.LastTarget.GetGameObject();
-            var lvl = (int)HeroesHelper.GetSpellTier(_view.stats.MergeTier);
-            var enemies = HeroesHelper.GetHeroesEnemies(_view);
+            var lvl = (int)HeroesManager.GetSpellTier(_view.stats.MergeTier);
+            var enemies = HeroesManager.GetHeroesEnemies(_view);
             var map = _view.agent.Map;
-            var (heroesAffected, cells) = HeroesHelper.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
+            var (heroesAffected, cells) = HeroesManager.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
                 target.transform.position, map, enemies);
             var args = new DamageArgs(_config.physDamage[lvl], _view.stats.SpellPower.Get());
             foreach (var hero in heroesAffected)

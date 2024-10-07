@@ -1,4 +1,5 @@
 ﻿using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
@@ -59,8 +60,8 @@ namespace RobotCastle.Battling
                 barsPanel.AssignHeroUI(hero.View);
                 var id = args.coreData.id;
                 // heroSave.isUnlocked = true;
-                var modifiers = HeroesHelper.GetModifiersForHero(id);
-                hero.InitHero(id, HeroesHelper.GetHeroLevel(id), args.coreData.level, modifiers);
+                var modifiers = HeroesManager.GetModifiersForHero(id);
+                hero.InitHero(id, HeroesManager.GetHeroLevel(id), args.coreData.level, modifiers);
                 if (args.useAdditionalItems)
                 {
                     var mergedItems = MergeFunctions.TryMergeAll(HeroItemData.GetDataWithDefaultModifiers(args.additionalItems), MergeConstants.MaxItemLevel);
