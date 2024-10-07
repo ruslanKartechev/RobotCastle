@@ -10,11 +10,7 @@ namespace RobotCastle.Saving
         [Header("Initial saves to start the game")]
         public SavePlayerData PlayerData;
         [Space(10)]
-        public SaveLevelsProgress LevelsProgress;
-        [Space(10)]
         public SavePlayerHeroes PlayerHeroes;
-        [Space(10)]
-        public SavePlayerParty playerParty;
         [Space(10)]
         public MergeGrid mergeGrid;
 

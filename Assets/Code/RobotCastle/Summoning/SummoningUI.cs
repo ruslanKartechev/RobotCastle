@@ -6,6 +6,7 @@ using RobotCastle.Data;
 using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RobotCastle.Summoning
 {
@@ -20,6 +21,7 @@ namespace RobotCastle.Summoning
         [SerializeField] private LeftRightScroller _scroller;
         [SerializeField] private GameObject _freeLeftBadge;
         [SerializeField] private GameObject _freeRightBadge;
+        [SerializeField] private Button _returnBtn;
         private SummoningManager _manager = new();
         private CancellationTokenSource _tokenSource;
         private bool _canTakeInput;
@@ -227,12 +229,22 @@ namespace RobotCastle.Summoning
         {
             _tokenSource = new CancellationTokenSource();
             _canTakeInput = true;
+            _returnBtn.onClick.AddListener(ReturnFromScreen);
         }
-
+        
         private void OnDisable()
         {
             _tokenSource?.Cancel();
+            _returnBtn.onClick.RemoveListener(ReturnFromScreen);
         }
+        
+        private void ReturnFromScreen()
+        {
+            if (!_canTakeInput) return;
+            gameObject.SetActive(false);
+            ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UISummon);
+        }
+
 
         private void SetData(SummonOptionUI optionUI)
         {

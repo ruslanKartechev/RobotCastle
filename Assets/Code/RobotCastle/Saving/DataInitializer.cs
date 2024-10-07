@@ -27,7 +27,6 @@ namespace RobotCastle.Saving
                 saver.Delete<SavePlayerHeroes>();
             }
             saver.LoadSave<SavePlayerData>(new SavePlayerData(_initialSaves.PlayerData));
-            saver.LoadSave<SaveLevelsProgress>(new SaveLevelsProgress(_initialSaves.LevelsProgress));
             var heroes = saver.LoadSave<SavePlayerHeroes>(new SavePlayerHeroes(_initialSaves.PlayerHeroes));
             heroes.Init();
             if (_useCheat)

@@ -1,4 +1,7 @@
-﻿namespace RobotCastle.Core
+﻿using RobotCastle.Data;
+using RobotCastle.InvasionMode;
+
+namespace RobotCastle.Core
 {
     [System.Serializable]
     public class SavePlayerData
@@ -10,8 +13,10 @@
         public int playerXp;
         public int playerEnergy;
         public int playerEnergyMax;
+        public EGameMode gameMode;
         public SavePlayerParty party;
         public PlayerInventory inventory;
+        public SaveInvasionProgression progression;
         
         public SavePlayerData(){}
 
@@ -24,8 +29,10 @@
             playerXp = other.playerXp;
             playerEnergy = other.playerEnergy;
             playerEnergyMax = other.playerEnergyMax;
+            gameMode = other.gameMode;
             party = new SavePlayerParty(other.party);
             inventory = new PlayerInventory(other.inventory);
+            progression = new SaveInvasionProgression(other.progression);
         }
     }
 }

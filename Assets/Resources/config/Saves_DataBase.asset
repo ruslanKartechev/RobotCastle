@@ -20,19 +20,7 @@ MonoBehaviour:
     playerXp: 0
     playerEnergy: 40
     playerEnergyMax: 40
-    scrollsData:
-      scrollsTyp1: 0
-      scrollsTyp2: 0
-      scrollsTyp3: 0
-      didTakeNoAds: 0
-      lastTimeNoAdsAccepted:
-        year: 0
-        month: 0
-        day: 0
-        hour: 0
-        minute: 0
-        second: 0
-        milliSecond: 0
+    gameMode: 0
     party:
       maxCount: 6
       heroesIds:
@@ -97,10 +85,230 @@ MonoBehaviour:
           minute: 0
           second: 0
           milliSecond: 0
-  LevelsProgress:
-    lastLevelIndex: 0
-    tower: 0
-    levelsTotal: 0
+    progression:
+      chapterIndex: 0
+      tierLevel: 0
+      chapters:
+      - unlocked: 1
+        tierData:
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 1
+        tierData:
+        - unlocked: 1
+          completed: 1
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 1
+          completed: 1
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 1
+          completed: 1
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 1
+        tierData:
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 1
+        tierData:
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 1
+        tierData:
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
   PlayerHeroes:
     heroSaves:
     - id: alberon
@@ -193,14 +401,5 @@ MonoBehaviour:
       xp: 0
       xpForNext: 5
       isUnlocked: 0
-  playerParty:
-    maxCount: 6
-    heroesIds:
-    - alberon
-    - aramis
-    - daniel
-    - evan
-    - priya
-    - shelda
   mergeGrid:
     rows: []

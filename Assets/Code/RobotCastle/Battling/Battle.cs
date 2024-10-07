@@ -16,6 +16,7 @@ namespace RobotCastle.Battling
         public int playerHealthPoints = HeroesConstants.PlayerHealthStart;
         public BattleTeam playerTeam;
         public BattleTeam enemyTeam;
+        public bool isCompleted => _completed;
 
         public List<IHeroController> enemiesAlive => _enemiesAlive;
 

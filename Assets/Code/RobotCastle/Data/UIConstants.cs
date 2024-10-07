@@ -19,7 +19,9 @@
 
         public const string DescriptionItemShort = "ui_item_description_short";
         public const string DescriptionItemLong = "ui_item_description_long";
-        
+
+        public const string UIGameModeSelection = "ui_game_mode_select";
+
 
     }
 }

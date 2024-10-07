@@ -2,6 +2,7 @@
 using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.InvasionMode;
 using SleepDev;
 using UnityEngine;
 
@@ -33,15 +34,15 @@ namespace RobotCastle.UI
         [SerializeField] private FadePopAnimator _startedAnimator;
 
         private Battle _battle;
-        private InvasionLevelData _levelData;
+        private LevelData _levelData;
         
-        public void Init(Battle battle, InvasionLevelData levelData)
+        public void Init(Battle battle, Chapter chapter)
         {
             _battle = battle;
-            _levelData = levelData;
-            _levelUI.LevelName = levelData.viewName;
-            _levelUI.SetRewardForWave(levelData.levels[battle.stageIndex].reward);
-            _levelUI.SetLevel(battle.stageIndex, levelData.levels, false);
+            _levelData = chapter.levelData;
+            _levelUI.LevelName = chapter.viewName;
+            _levelUI.SetRewardForWave(chapter.levelData.levels[battle.stageIndex].reward);
+            _levelUI.SetLevel(battle.stageIndex, chapter.levelData.levels, false);
         }
         
         public void UpdateForNextWave()

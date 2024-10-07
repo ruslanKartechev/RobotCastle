@@ -68,7 +68,9 @@ namespace RobotCastle.UI
         public void OnClosed(string id)
         {
             _openedScreens.Remove(id);
+            var callback = _closedCallbacks[id];
             _closedCallbacks.Remove(id);
+            callback?.Invoke();
         }
     }
 }
