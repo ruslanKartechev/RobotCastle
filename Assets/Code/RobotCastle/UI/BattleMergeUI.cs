@@ -41,14 +41,14 @@ namespace RobotCastle.UI
             _battle = battle;
             _levelData = chapter.levelData;
             _levelUI.LevelName = chapter.viewName;
-            _levelUI.SetRewardForWave(chapter.levelData.levels[battle.stageIndex].reward);
-            _levelUI.SetLevel(battle.stageIndex, chapter.levelData.levels, false);
+            _levelUI.SetRewardForWave(chapter.levelData.levels[battle.roundIndex].reward);
+            _levelUI.SetLevel(battle.roundIndex, chapter.levelData.levels, false);
         }
         
         public void UpdateForNextWave()
         {
-            _levelUI.SetRewardForWave(_levelData.levels[_battle.stageIndex].reward);
-            _levelUI.SetLevel(_battle.stageIndex, _levelData.levels, true);
+            _levelUI.SetRewardForWave(_levelData.levels[_battle.roundIndex].reward);
+            _levelUI.SetLevel(_battle.roundIndex, _levelData.levels, true);
         }
 
         public void Started()

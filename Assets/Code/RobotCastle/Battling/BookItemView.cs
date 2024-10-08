@@ -70,7 +70,7 @@ namespace RobotCastle.Battling
 
         public EItemDescriptionMode Mode => EItemDescriptionMode.DescriptionOnly;
         
-        public DescriptionInfo GetInfo() => DataHelpers.GetItemDescription(itemData.core);
+        public DescriptionInfo GetInfo() => ServiceLocator.Get<DescriptionsDataBase>().GetDescriptionByLevel(itemData.core);
         
         public bool CanUpgrade(CoreItemData item) => item.level <= _maxItemLevelIndexToUpgrade;
     }

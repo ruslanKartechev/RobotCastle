@@ -1,5 +1,4 @@
-﻿using System;
-using RobotCastle.Battling;
+﻿using RobotCastle.Battling;
 using SleepDev;
 using TMPro;
 using UnityEngine;

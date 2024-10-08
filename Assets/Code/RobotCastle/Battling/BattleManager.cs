@@ -98,13 +98,13 @@ namespace RobotCastle.Battling
         public void SetNextStage()
         {
             _battle.Reset();
-            _battle.stageIndex++;
+            _battle.roundIndex++;
         }
         
         public async Task SetAndInitNextStage(CancellationToken token)
         {
             SetNextStage();
-            await SetStage(_battle.stageIndex, token);
+            await SetStage(_battle.roundIndex, token);
         }
 
         public async Task ResetStage(CancellationToken token)
@@ -115,13 +115,13 @@ namespace RobotCastle.Battling
         
         public async Task SetCurrentStage(CancellationToken token)
         {
-            await SetStage(_battle.stageIndex, token);
+            await SetStage(_battle.roundIndex, token);
         }
 
         public async Task SetStage(int stageIndex, CancellationToken token)
         {
             _rewardCalculator.RewardPerStageCompletion = _roundData[stageIndex].reward;
-            _battle.stageIndex = stageIndex;
+            _battle.roundIndex = stageIndex;
             if (_battle.Enemies.Count > 0)
             {
                 foreach (var en in _battle.Enemies)
@@ -186,7 +186,7 @@ namespace RobotCastle.Battling
         
         public void SetupRewardForCurrentRound()
         {
-            _rewardCalculator.RewardPerStageCompletion = _roundData[_battle.stageIndex].reward;
+            _rewardCalculator.RewardPerStageCompletion = _roundData[_battle.roundIndex].reward;
         }
         
         

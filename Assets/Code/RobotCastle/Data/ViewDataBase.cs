@@ -13,7 +13,7 @@ namespace RobotCastle.Data
         public Dictionary<string, ItemInfo> ItemInfo = new (5);
         public Dictionary<string, string> StatsIcons = new (5);
         public Dictionary<string, string> SpellsIcons = new (5);
-        public Dictionary<string, string> ItemsIcons = new (5);
+        public Dictionary<string, string> GeneralIcons = new (5);
 
         public static Sprite GetHeroSprite(string spriteId)
         {
@@ -34,9 +34,9 @@ namespace RobotCastle.Data
             throw new Exception($"{statType.ToString()} is not supported!");
         }
 
-        public Sprite GetItemSprite(string spriteId)
+        public Sprite GetGeneralItemSprite(string spriteId)
         {
-            return Resources.Load<Sprite>(ItemsIcons[spriteId]);
+            return Resources.Load<Sprite>(GeneralIcons[spriteId]);
         }
         
         public Sprite GetStatIcon(EStatType statType)
@@ -59,10 +59,9 @@ namespace RobotCastle.Data
             if (ItemInfo.ContainsKey(id))
             {
                 var path = $"{ItemInfo[id].Prefab}_lvl_{levelIndex + 1}";
-                // CLog.LogRed($"id {id}. level {levelIndex}. Path {path}");
                 return Resources.Load<GameObject>(path);
             }
-            CLog.LogError($"DataBase does not contain id {id}");
+            CLog.LogError($"[ViewDb] does not contain id {id}");
             return null;
         }
         
@@ -72,7 +71,7 @@ namespace RobotCastle.Data
             {
                 return Resources.Load<GameObject>(ItemInfo[id].Prefab);
             }
-            CLog.LogError($"DataBase does not contain id {id}");
+            CLog.LogError($"[ViewDb] does not contain id {id}");
             return null;
         }
 
@@ -83,8 +82,24 @@ namespace RobotCastle.Data
                 var path = $"{ItemInfo[id].Icon}_lvl_{levelIndex + 1}";
                 return Resources.Load<Sprite>(path);
             }
-            CLog.LogError($"DataBase does not contain fullId {id}");
+            CLog.LogError($"[ViewDb] does not contain fullId {id}");
             return null;
+        }
+
+        public Sprite GetItemSpriteByTypeAndLevel(CoreItemData itemData)
+        {
+            string path;
+            switch (itemData.type)
+            {
+                case MergeConstants.TypeItems:
+                    path = $"{ItemInfo[itemData.id].Icon}_lvl_{itemData.level + 1}";
+                    return Resources.Load<Sprite>(path);
+                case MergeConstants.TypeBonus:
+                    path = GeneralIcons[$"{itemData.id}_{itemData.level}"];
+                    return Resources.Load<Sprite>(path);
+                default:
+                    return Resources.Load<Sprite>(GeneralIcons[itemData.id]);
+            }
         }
         
         public Sprite GetUnitItemSprite(string id)

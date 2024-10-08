@@ -56,8 +56,6 @@ namespace RobotCastle.Merging
             ServiceLocator.Bind<ISimplePoolsManager>(_mergeCellHighlight);
             ServiceLocator.Bind<MergeManager>(this);
             ServiceLocator.Bind<GridViewsContainer>(gridViewContainer);
-            
-            
             if(_allowInputOnStart)
                 _mergeInput.SetActive(true);
         }

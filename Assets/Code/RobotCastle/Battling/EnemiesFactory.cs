@@ -52,6 +52,10 @@ namespace RobotCastle.Battling
                 barsPanel.AssignEnemyUI(hero.View);
                 var modifiers = HeroesManager.GetModifiers(enemyPreset.modifiers);
                 hero.InitHero(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
+                if (hero.View.heroUI == null)
+                {
+                    CLog.Log($"HERO UI IS NULL");
+                }
                 hero.View.heroUI.UpdateStatsView(hero.View);
                 _spawnedEnemies.Add(hero);
                 await Task.Yield();

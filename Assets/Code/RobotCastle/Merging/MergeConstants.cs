@@ -4,6 +4,7 @@
     {
         public const string TypeUnits = "unit";
         public const string TypeItems = "item";
+        public const string TypeBonus = "bonus";
         
         public const int MaxItemLevel = 3;
         public const int MaxItemsCount = 3;
