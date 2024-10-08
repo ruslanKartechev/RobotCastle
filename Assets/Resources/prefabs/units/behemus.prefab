@@ -55,11 +55,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7419259439634546665, guid: 1c4ec03a32c367a4a8f2469fa2bed0fb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7946055253132239111}
   m_SourcePrefab: {fileID: 100100000, guid: 1c4ec03a32c367a4a8f2469fa2bed0fb, type: 3}
+--- !u!1 &5068890577989705803 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7419259439634546665, guid: 1c4ec03a32c367a4a8f2469fa2bed0fb, type: 3}
+  m_PrefabInstance: {fileID: 2355048598955614114}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7946055253132239111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5068890577989705803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18ff2bd602d54997a583d9ad73c281e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5553925373304437489 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7907566175378285907, guid: 1c4ec03a32c367a4a8f2469fa2bed0fb, type: 3}
+  m_PrefabInstance: {fileID: 2355048598955614114}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8829575774226607834 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -2727452548554542728, guid: 1c4ec03a32c367a4a8f2469fa2bed0fb, type: 3}
   m_PrefabInstance: {fileID: 2355048598955614114}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8003807688630378730
@@ -78,6 +103,14 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.9257038
       objectReference: {fileID: 0}
+    - target: {fileID: 1451587380498265510, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 8829575774226607834}
+    - target: {fileID: 1451587380498265510, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
+      propertyPath: _heroAnimationEvent
+      value: 
+      objectReference: {fileID: 7946055253132239111}
     - target: {fileID: 5363242922858587073, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1

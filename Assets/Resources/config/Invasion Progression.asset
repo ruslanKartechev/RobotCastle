@@ -1,0 +1,620 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c40f28c58cb46dc952e76465f437546, type: 3}
+  m_Name: Invasion Progression
+  m_EditorClassIdentifier: 
+  database:
+    chapters:
+    - id: chapter_1
+      viewName: Golblins
+      moneyGoldReward: 100
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: mushrooms_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushrooms_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushrooms_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushrooms_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: mushrooms_5
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushrooms_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushrooms_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushrooms_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushrooms_9
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushrooms_10
+          reward: 10
+          roundType: 0
+    - id: chapter_2
+      viewName: Bandits
+      moneyGoldReward: 120
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: chapter_2_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_2_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_2_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_2_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_2_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_2_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_2_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_2_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_2_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_2_10
+          reward: 10
+          roundType: 3
+    - id: chapter_3
+      viewName: Slimes
+      moneyGoldReward: 160
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: chapter_3_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_3_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_3_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_3_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_3_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_3_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_3_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_3_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_3_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_3_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_3_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_3_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_3_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_3_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_3_15
+          reward: 10
+          roundType: 3
+    - id: chapter_4
+      viewName: Undead
+      moneyGoldReward: 191
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: chapter_4_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_4_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_4_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_4_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_4_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_4_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_4_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_4_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_4_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_4_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_4_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_4_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_4_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_4_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_4_15
+          reward: 10
+          roundType: 3
+    - id: chapter_5
+      viewName: Elf
+      moneyGoldReward: 208
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: chapter_5_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_5_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_5_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_5_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_5_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_5_15
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_5_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_5_19
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_5_20
+          reward: 10
+          roundType: 3
+    - id: chapter_6
+      viewName: Orc
+      moneyGoldReward: 250
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: chapter_6_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_6_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_6_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_6_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_6_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_6_15
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_6_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_6_19
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_6_20
+          reward: 10
+          roundType: 3
+    - id: chapter_7
+      viewName: Wraith
+      moneyGoldReward: 300
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: chapter_7_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_7_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_7_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_7_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_7_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_7_15
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_7_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_7_19
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_7_20
+          reward: 10
+          roundType: 3
+    - id: chapter_8
+      viewName: Vampire
+      moneyGoldReward: 360
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: chapter_8_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_8_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_8_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_8_10
+          reward: 10
+          roundType: 3
+    - id: chapter_9
+      viewName: Frost
+      moneyGoldReward: 431
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: chapter_9_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_9_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_9_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_9_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_9_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_9_15
+          reward: 10
+          roundType: 2
+        - enemyPreset: chapter_9_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: chapter_9_19
+          reward: 10
+          roundType: 1
+        - enemyPreset: chapter_9_20
+          reward: 10
+          roundType: 3
+    corruptionChapters: []

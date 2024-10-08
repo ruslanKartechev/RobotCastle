@@ -78,9 +78,9 @@ namespace RobotCastle.Summoning
             foreach (var go in _cardsOneByOneObjects) { go.SetActive(false); }
             var startIndex = 0;
             var hasHero = outputs[0].data.type == SummonConfig.Id_NewHero;
-            CLog.LogRed($"NEW HERO !!!!!!!!!! {outputs[0].data.id}");
             if (hasHero)
             {
+                CLog.Log($"New hero{outputs[0].data.id}");
                 foreach (var go in _firstObjects) { go.SetActive(false); }
                 Setup(_heroCard, outputs[0], viewDb, heroesDb, descrDb);
                 startIndex = 1;

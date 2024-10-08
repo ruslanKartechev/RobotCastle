@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
 using RobotCastle.Data;
+using RobotCastle.InvasionMode;
 using SleepDev;
 using TMPro;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace RobotCastle.UI
 
         public string LevelName { get; set; }
 
-        public void SetLevel(int levelIndex, List<InvasionRoundData> roundData,  bool animated)
+        public void SetLevel(int levelIndex, List<RoundData> roundData,  bool animated)
         {
             SetRewardForWave(roundData[levelIndex].reward);
             _levelNumText.text = $"{LevelName} | Wave {levelIndex + 1}";

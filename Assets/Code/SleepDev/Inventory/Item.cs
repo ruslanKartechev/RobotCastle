@@ -7,6 +7,7 @@ namespace SleepDev.Inventory
         public virtual object ObjectInside { get; set; }
         
         public virtual string Id { get; set; }
+        public virtual int NumberId { get; set; }
         
         public virtual bool IsPicked { get; protected set; }
         

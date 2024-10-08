@@ -91,11 +91,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1399829944585087428, guid: 34c86c951cd38604d8af736db6c521b7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1351766803347408379}
   m_SourcePrefab: {fileID: 100100000, guid: 34c86c951cd38604d8af736db6c521b7, type: 3}
+--- !u!1 &470415937037372710 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1399829944585087428, guid: 34c86c951cd38604d8af736db6c521b7, type: 3}
+  m_PrefabInstance: {fileID: 1579199029101290722}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1351766803347408379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470415937037372710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18ff2bd602d54997a583d9ad73c281e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &994328368281016220 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1740326003672265598, guid: 34c86c951cd38604d8af736db6c521b7, type: 3}
+  m_PrefabInstance: {fileID: 1579199029101290722}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1806472058042725519 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -8287870287727865747, guid: 34c86c951cd38604d8af736db6c521b7, type: 3}
   m_PrefabInstance: {fileID: 1579199029101290722}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8003807688630378730
@@ -114,6 +139,14 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.9257038
       objectReference: {fileID: 0}
+    - target: {fileID: 1451587380498265510, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 1806472058042725519}
+    - target: {fileID: 1451587380498265510, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
+      propertyPath: _heroAnimationEvent
+      value: 
+      objectReference: {fileID: 1351766803347408379}
     - target: {fileID: 5363242922858587073, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1

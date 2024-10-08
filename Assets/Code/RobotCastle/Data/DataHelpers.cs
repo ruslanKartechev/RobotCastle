@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
+using RobotCastle.InvasionMode;
 using RobotCastle.Merging;
 using RobotCastle.Saving;
 using UnityEngine;
@@ -33,6 +34,21 @@ namespace RobotCastle.Data
             return ServiceLocator.Get<ViewDataBase>().GetUnitItemSpriteAtLevel(itemData.id, itemData.level);
         }
 
+        public static SaveInvasionProgression GetInvasionProgress()
+        {
+            return ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().progression;
+        }
+
+        public static SavePlayerParty GetPlayerParty()
+        {
+            return ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().party;
+        }
+
+        public static SavePlayerData GetPlayerData()
+        {
+            return ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>();
+        }
+        
         public static PlayerInventory GetInventory()
         {
             return ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;

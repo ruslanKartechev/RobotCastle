@@ -14,9 +14,16 @@ namespace SleepDev.Inventory
         public List<Item> AllItems => _items;
         
         public Item PickedItem => _pickedItem;
+
+        public bool AllowPickNothing
+        {
+            get => _allowPickNothing;
+            set => _allowPickNothing = value;
+        }
         
         [SerializeField] private List<Item> _items;
         [SerializeField] private GraphicRaycaster _raycaster;
+        [SerializeField] private bool _allowPickNothing = true;
         private Item _pickedItem;
 
         public void Reset()
@@ -34,6 +41,27 @@ namespace SleepDev.Inventory
                 Click();
             }
         }
+
+        public void SetNoItem()
+        {
+            CLog.Log($"[{nameof(InventoryController)}] Call to pick nothing");
+            if(_pickedItem != null)
+                _pickedItem.Unpick();
+            _pickedItem = null;
+        }
+
+        public void SetItemPicked(int index)
+        {
+            CLog.Log($"[{nameof(InventoryController)}] Call to set {index}");
+            var item = _items[index];
+            if (item != _pickedItem)
+            {
+                if(_pickedItem != null)
+                    _pickedItem.Unpick();
+                _pickedItem = item;
+                _pickedItem.Pick();
+            }
+        }
         
         private void Click()
         {
@@ -45,6 +73,8 @@ namespace SleepDev.Inventory
             {
                 if (res.gameObject.TryGetComponent<Item>(out var item))
                 {
+                    if (!item.IsAllowedToPick)
+                        continue;
                     if (item != _pickedItem)
                     {
                         if(_pickedItem != null)
@@ -53,7 +83,7 @@ namespace SleepDev.Inventory
                         _pickedItem.Pick();
                         OnNewPicked?.Invoke(_pickedItem);
                     }
-                    else
+                    else if(_allowPickNothing)
                     {
                         _pickedItem.Unpick();
                         _pickedItem = null;

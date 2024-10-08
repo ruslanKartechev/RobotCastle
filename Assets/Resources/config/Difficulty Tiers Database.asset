@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 979e2252dd2e44d09b7594f088150934, type: 3}
+  m_Name: Difficulty Tiers Database
+  m_EditorClassIdentifier: 
+  _tiersConfig:
+  - _enemyForcesPercent: 0
+    _enemyTier: 0
+    _challenngePhaseEliteEnemies: 0
+    _castleDurabilityPenalty: 0
+    _additionalEliteEnemies: 0
+    _textDescription: 
+  - _enemyForcesPercent: 0.15
+    _enemyTier: 0
+    _challenngePhaseEliteEnemies: 1
+    _castleDurabilityPenalty: 0
+    _additionalEliteEnemies: 0
+    _textDescription: '+<color=#FF1111>15</color>% Enemy Forces
+
+      + Challenge
+      phase <color=#FF1111>1</color> Elite Enemy'
+  - _enemyForcesPercent: 0.3
+    _enemyTier: 1
+    _challenngePhaseEliteEnemies: 2
+    _castleDurabilityPenalty: 0
+    _additionalEliteEnemies: 0
+    _textDescription: '+<color=#FF1111>30</color>% Enemy Forces
+
+      +<color=#FF1111>1</color>
+      Enemy Tier
+
+      + Challenge phase <color=#FF1111>2</color> Elite Enemies'
+  - _enemyForcesPercent: 0.5
+    _enemyTier: 2
+    _challenngePhaseEliteEnemies: 2
+    _castleDurabilityPenalty: 1
+    _additionalEliteEnemies: 1
+    _textDescription: '+<color=#FF1111>50</color>% Enemy Forces
+
+      +<color=#FF1111>2</color>
+      Enemy Tier
+
+      + Challenge phase <color=#FF1111>2</color> Elite Enemies
+
+      -
+      <color=#FF1111>1</color> Castle Durability
+
+      <color=#FF1111>1</color>
+      additional Elite Enemy'
+  - _enemyForcesPercent: 0.5
+    _enemyTier: 3
+    _challenngePhaseEliteEnemies: 2
+    _castleDurabilityPenalty: 2
+    _additionalEliteEnemies: 1
+    _textDescription: '+<color=#FF1111>50</color>% Enemy Forces
+
+      +<color=#FF1111>3</color>
+      Enemy Tier
+
+      + Challenge phase <color=#FF1111>2</color> Elite Enemies
+
+      -
+      <color=#FF1111>2</color> Castle Durability
+
+      <color=#FF1111>2</color>
+      additional Elite Enemy'

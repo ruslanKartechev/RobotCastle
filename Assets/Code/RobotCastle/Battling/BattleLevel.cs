@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Bomber;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.InvasionMode;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
@@ -17,7 +18,6 @@ namespace RobotCastle.Battling
         [SerializeField] private bool _fillActiveAreaBeforeStart = true;
         [SerializeField] private float _endDelay = 2f;
         [SerializeField] private bool _doAutoBegin = true;
-        [SerializeField] private InvasionLevelDataContainer _levelContainer;
         [SerializeField] private BattleManager _battleManager;
         [SerializeField] private MergeManager _mergeManager;
         [SerializeField] private EnemiesManager _enemiesManager;
@@ -30,10 +30,8 @@ namespace RobotCastle.Battling
         private IPlayerMergeItemPurchaser _itemPurchaser;
         private ITroopSizeManager _troopSizeManager;
         private BattleMergeUI _mainUI;
+        private Chapter _chapter;
         private CancellationTokenSource _token;
-        private InvasionLevelData levelData => _levelContainer.data;
-        private InvasionRoundData roundData => levelData.levels[_battleManager.battle.stageIndex];
-        
         
         public void OnBattleStarted(Battle battle)
         {
@@ -43,7 +41,7 @@ namespace RobotCastle.Battling
             ServiceLocator.Get<MergeManager>().StopHighlight();
         }
 
-        public async void OnBattleEnded(Battle battle)
+        public void OnBattleEnded(Battle battle)
         {
             BattleCompletion(battle, _token.Token);
         }
@@ -51,6 +49,8 @@ namespace RobotCastle.Battling
         private void Start()
         {
             GameState.Mode = GameState.EGameMode.InvasionBattle;
+            var save = DataHelpers.GetInvasionProgress();
+            _chapter = ServiceLocator.Get<ProgressionDataBase>().chapters[save.chapterIndex];
             _token = new CancellationTokenSource();
             Init(_token.Token);
         }
@@ -67,7 +67,7 @@ namespace RobotCastle.Battling
 
             _battleManager.startProcessor = this;
             _battleManager.endProcessor = this;
-            var battle = _battleManager.Init(levelData.levels);
+            var battle = _battleManager.Init(_chapter.levelData.levels);
             _troopSizeManager = new BattleTroopSizeManager(battle, _troopSizeExpansion);
             ServiceLocator.Bind<ITroopSizeManager>(_troopSizeManager);
             _mergeManager.Init();
@@ -99,7 +99,7 @@ namespace RobotCastle.Battling
             _mainUI.BtnStart2.AddMainCallback(StartBattle);
             _mainUI.TroopSizePurchaseUI.Init(_troopSizeManager);
             _mainUI.TroopSizePurchaseUI.SetInteractable(true);
-            _mainUI.Init(_battleManager.battle, levelData);
+            _mainUI.Init(_battleManager.battle, _chapter);
             AllowPlayerUIInput(true);
         }
 

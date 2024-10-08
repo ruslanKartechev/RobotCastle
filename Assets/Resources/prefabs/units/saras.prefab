@@ -55,11 +55,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8111600951416363775, guid: 894a1a2bde3cf964e87909b1c6fa9935, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 945147836898680171}
   m_SourcePrefab: {fileID: 100100000, guid: 894a1a2bde3cf964e87909b1c6fa9935, type: 3}
 --- !u!4 &6035974925752581257 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8924413425343578181, guid: 894a1a2bde3cf964e87909b1c6fa9935, type: 3}
+  m_PrefabInstance: {fileID: 2890736521863855308}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6381538667958494771 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8111600951416363775, guid: 894a1a2bde3cf964e87909b1c6fa9935, type: 3}
+  m_PrefabInstance: {fileID: 2890736521863855308}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &945147836898680171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6381538667958494771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18ff2bd602d54997a583d9ad73c281e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &6557259028345114790 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8295038792353098858, guid: 894a1a2bde3cf964e87909b1c6fa9935, type: 3}
   m_PrefabInstance: {fileID: 2890736521863855308}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8003807688630378730
@@ -78,6 +103,14 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.9257038
       objectReference: {fileID: 0}
+    - target: {fileID: 1451587380498265510, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 6557259028345114790}
+    - target: {fileID: 1451587380498265510, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
+      propertyPath: _heroAnimationEvent
+      value: 
+      objectReference: {fileID: 945147836898680171}
     - target: {fileID: 5363242922858587073, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1

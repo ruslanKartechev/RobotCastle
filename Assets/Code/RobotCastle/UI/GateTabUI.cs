@@ -22,7 +22,7 @@ namespace RobotCastle.UI
         private void Start()
         {
             _summonBtn.AddMainCallback(OpenSummonMenu);
-            _battleBtn.AddMainCallback(StartBattle);
+            _battleBtn.AddMainCallback(OpenGameModeMenu);
             _settingBtn.AddMainCallback(OpenSettings);
             _summonBtn.SetInteractable(true);
             _battleBtn.SetInteractable(true);
@@ -44,9 +44,13 @@ namespace RobotCastle.UI
             }).Show();
         }
 
-        private void StartBattle()
+        private void OpenGameModeMenu()
         {
             CLog.Log($"Start battle call");
+            ServiceLocator.Get<IUIManager>().Show<GameModeSelectionUI>(UIConstants.UIGameModeSelection, () => 
+            { 
+                gameObject.SetActive(true);
+            }).Show();
         }
 
         public void Show()

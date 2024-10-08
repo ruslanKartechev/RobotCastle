@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.InvasionMode;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace RobotCastle.Battling
         [SerializeField] private bool _activateEnemies = true;
         [SerializeField] private bool _activatePlayers = true;
         private Battle _battle;
-        private List<InvasionRoundData> _roundData;
+        private List<RoundData> _roundData;
         private BattleRewardCalculator _rewardCalculator;
 
         public BattleRewardCalculator BattleRewardCalculator => _rewardCalculator;
@@ -26,7 +27,7 @@ namespace RobotCastle.Battling
         public IBattleStartedProcessor startProcessor { get; set; }
         
 
-        public Battle Init(List<InvasionRoundData> roundData)
+        public Battle Init(List<RoundData> roundData)
         {
             _roundData = roundData;
             CLog.Log($"[{nameof(BattleManager)}] Init Created new battle data");
