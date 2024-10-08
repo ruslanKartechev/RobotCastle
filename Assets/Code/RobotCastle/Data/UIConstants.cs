@@ -24,6 +24,8 @@
 
         public const string UISmeltingOffer = "ui_smelting_offer";
         public const string UIDevilsOffer = "ui_devils_offer";
+        public const string UIMerchantOffer = "ui_merchant_offer";
+        
 
     }
 }

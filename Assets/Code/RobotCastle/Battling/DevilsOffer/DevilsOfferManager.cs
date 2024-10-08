@@ -8,11 +8,11 @@ namespace RobotCastle.Battling.DevilsOffer
 {
     public class DevilsOfferManager 
     {
-        public DevilsOfferManager(DevilsOfferConfig config, EnemiesManager enemiesManager, IGridView playerGrid,
-            IGridSectionsController sectionsController, ITroopSizeManager troops, BattleManager battleManager, CastleHealthView healthView)
+        public DevilsOfferManager(DevilsOfferConfig config, IGridView playerGrid,
+            IGridSectionsController sectionsController, ITroopSizeManager troops, 
+            BattleManager battleManager, CastleHealthView healthView)
         {
             this.config = config;
-            this.enemiesManager = enemiesManager;
             this.sectionsController = sectionsController;
             this.troops = troops;
             this.battleManager = battleManager;
@@ -21,28 +21,26 @@ namespace RobotCastle.Battling.DevilsOffer
         }
 
         public DevilsOfferConfig config;
-        public EnemiesManager enemiesManager;
         public IGridView playerGrid;
         public IGridSectionsController sectionsController;
         public ITroopSizeManager troops;
-        
         public CastleHealthView healthView;
         public BattleManager battleManager;
-        private int _index;
         private DevilsOfferData _currentOption;
         private System.Action _callback;
+        private int _offerTier;
 
         public void MakeNextOffer(System.Action callback)
         {
-            if (_index >= config.optionsPerTier.Count)
+            if (_offerTier >= config.optionsPerTier.Count)
             {
                 CLog.LogError($"[{nameof(DevilsOfferManager)}] _index >= config.optionsPerTier.Count");
                 return;
             }
             _callback = callback;
-            var index = _index;
-            _index++;
-            _currentOption = new (config.optionsPerTier[index].options[0]);
+            var tier = _offerTier;
+            _offerTier++;
+            _currentOption = new (config.optionsPerTier[tier].options[0]);
             if (_currentOption.penaltyType == EDevilsPenaltyType.CastleDurability
                 && battleManager.battle.playerHealthPoints <= 1)
             {

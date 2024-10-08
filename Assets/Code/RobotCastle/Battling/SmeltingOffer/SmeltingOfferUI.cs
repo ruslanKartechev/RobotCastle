@@ -63,7 +63,7 @@ namespace RobotCastle.Battling.SmeltingOffer
             _pickedItemIcon.enabled = false;
             _txtDescription.text = "";
             _txtItemLevel.text = "";
-            _txtItemName.text = "";
+            _txtItemName.text = "Pick One Item";
         }
 
         private void OnItemPicked(SleepDev.Inventory.Item item)

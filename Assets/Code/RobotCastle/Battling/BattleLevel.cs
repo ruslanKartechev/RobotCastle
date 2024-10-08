@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bomber;
 using RobotCastle.Battling.DevilsOffer;
+using RobotCastle.Battling.MerchantOffer;
 using RobotCastle.Battling.SmeltingOffer;
 using RobotCastle.Core;
 using RobotCastle.Data;
@@ -20,7 +21,6 @@ namespace RobotCastle.Battling
         [SerializeField] private int _startMoney = 0;
         [SerializeField] private bool _fillActiveAreaBeforeStart = true;
         [SerializeField] private float _endDelay = 2f;
-        [SerializeField] private bool _doAutoBegin = true;
         [SerializeField] private BattleManager _battleManager;
         [SerializeField] private MergeManager _mergeManager;
         [SerializeField] private EnemiesManager _enemiesManager;
@@ -30,8 +30,10 @@ namespace RobotCastle.Battling
         [SerializeField] private BattleGridSwitch _gridSwitch;
         [SerializeField] private CastleHealthView _playerHealthView;
         [SerializeField] private ParticleSystem _troopSizeExpansion;
+        [Space(10)]
         [SerializeField] private SmeltingConfigContainer _smeltingConfigContainer;
         [SerializeField] private DevilsOfferConfigContainer _devilsOfferConfigContainer;
+        [SerializeField] private MerchantOfferConfigContainer _merchantOfferConfigContainer;
         private IPlayerMergeItemPurchaser _itemPurchaser;
         private ITroopSizeManager _troopSizeManager;
         private BattleMergeUI _mainUI;
@@ -39,6 +41,7 @@ namespace RobotCastle.Battling
         private CancellationTokenSource _token;
         private SmeltingOfferManager _smeltingOffer;
         private DevilsOfferManager _devilsOffer;
+        private MerchantOfferManager _merchantOffer;
         
         
         public void OnBattleStarted(Battle battle)
@@ -54,7 +57,7 @@ namespace RobotCastle.Battling
             BattleRoundCompletion(battle, _token.Token);
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         [ContextMenu("ForceShowSmeltingOffer")]
         public void ForceShowSmeltingOffer()
         {
@@ -62,9 +65,11 @@ namespace RobotCastle.Battling
             ShowSmeltingOffer();
         }
 
+        [ContextMenu("ForceShowTradeOffer")]
         public void ForceShowTradeOffer()
         {
-            
+            AllowPlayerUIInput(false);
+            ShowTradeOffer();
         }
 
         [ContextMenu("ForceShowDevilOffer")]
@@ -73,7 +78,7 @@ namespace RobotCastle.Battling
             AllowPlayerUIInput(false);
             ShowDevilsOffer();
         }
-        #endif
+#endif
         
         private void Start()
         {
@@ -111,7 +116,8 @@ namespace RobotCastle.Battling
             _playerHealthView.SetHealth(battle.playerHealthPoints);
             _itemPurchaser = gameObject.GetComponent<IPlayerMergeItemPurchaser>();
             _smeltingOffer = new SmeltingOfferManager(_smeltingConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager.battle);
-            _devilsOffer = new DevilsOfferManager(_devilsOfferConfigContainer.config, _enemiesManager, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
+            _devilsOffer = new DevilsOfferManager(_devilsOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
+            _merchantOffer = new MerchantOfferManager(_merchantOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
             try
             {
                 await _battleManager.SetStage(0, token);
@@ -231,9 +237,10 @@ namespace RobotCastle.Battling
                     ShowSmeltingOffer();
                     break;
                 case RoundType.EliteEnemy:
-                    ShowDevilsOffer();
+                    ShowDevilsOfferAndTrade();
                     break;
                 case RoundType.Boss:
+                    CLog.Log($"[{nameof(BattleLevel)}] Boss level");
                     GrantPlayerInput();
                     break;
             }
@@ -249,6 +256,16 @@ namespace RobotCastle.Battling
             _devilsOffer.MakeNextOffer(GrantPlayerInput);
         }
 
+        private void ShowDevilsOfferAndTrade()
+        {
+            _devilsOffer.MakeNextOffer(ShowTradeOffer);
+        }
+
+        private void ShowTradeOffer()
+        {
+            _merchantOffer.MakeNextOffer(GrantPlayerInput);
+        }
+        
         private void GrantPlayerInput()
         {
             _mergeManager.AllowInput(true);
