@@ -63,14 +63,14 @@ namespace RobotCastle.Battling
             }
         }
 
-        public void SpawnNew(SpawnMergeItemArgs args, int heroLvl = 0)
+        public IHeroController SpawnNew(SpawnMergeItemArgs args, int heroLvl = 0)
         {
             ICellView cellView = null;
             if (args.usePreferredCoordinate)
             {
                 var cell = GridView.GetCell(args.preferredCoordinated.x, args.preferredCoordinated.y);
                 if (cell.cell.isUnlocked == false || cell.cell.isOccupied)
-                    return;
+                    return null;
                 cellView = cell;
             }
 
@@ -85,11 +85,11 @@ namespace RobotCastle.Battling
             var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
             var itemView = factory.SpawnItemOnCell(cellView, new ItemData(args.coreData));
-            var hero = itemView.Transform.GetComponent<HeroController>();
+            var hero = itemView.Transform.GetComponent<IHeroController>();
             barsPanel.AssignEnemyUI(hero.View);
             hero.InitHero(args.coreData.id, heroLvl, args.coreData.level, new List<ModifierProvider>());
             hero.View.heroUI.UpdateStatsView(hero.View);
-            _spawnedEnemies.Add(hero);
+            return hero;
         }
 
 #if UNITY_EDITOR

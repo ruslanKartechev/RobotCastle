@@ -11,7 +11,7 @@ namespace RobotCastle.Battling.SmeltingOffer
 
         public void AnimateShow()
         {
-            const float time = .35f;
+            const float time = .55f;
             var angles = transform.eulerAngles;
             angles.y = 90f;
             transform.eulerAngles = angles;

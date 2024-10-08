@@ -12,17 +12,20 @@ namespace RobotCastle.Battling.SmeltingOffer
         public SmeltingOfferManager(SmeltingConfig config, 
             IGridView gridView, 
             IGridSectionsController sectionsController,
+            ITroopSizeManager troopSizeManager,
             Battle battle)
         {
             this.battle = battle;
             this.config = config;
             this.gridView = gridView;
             this.sectionsController = sectionsController;
+            this.troopSizeManager = troopSizeManager;
         }
 
         public Battle battle;
         public SmeltingConfig config;
         public IGridView gridView;
+        public ITroopSizeManager troopSizeManager;
         public IGridSectionsController sectionsController;
         private System.Action _callback; 
         private int _offerIndex;
@@ -76,9 +79,7 @@ namespace RobotCastle.Battling.SmeltingOffer
                     {
                         case "bonus_troops":
                             CLog.Log($"Adding troops size by 1");
-                            var size = battle.troopSize + 1;
-                            battle.troopSize = size;
-                            sectionsController.SetMaxCount(size);
+                            troopSizeManager.ExtendBy(1);
                             break;
                         case "bonus_money":
                             CLog.Log($"Adding money +{data.level}");

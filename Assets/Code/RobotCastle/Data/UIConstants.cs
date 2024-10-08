@@ -23,6 +23,7 @@
         public const string UIGameModeSelection = "ui_game_mode_select";
 
         public const string UISmeltingOffer = "ui_smelting_offer";
+        public const string UIDevilsOffer = "ui_devils_offer";
 
     }
 }

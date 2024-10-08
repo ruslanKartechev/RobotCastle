@@ -4,24 +4,24 @@ namespace RobotCastle.Battling
 {
     public class HeroAnimationToStatsSync
     {
-        private HeroView _unitView;
+        private HeroView _view;
         private bool _inited;
         
         public HeroAnimationToStatsSync(HeroView view)
         {
-            _unitView = view;
+            _view = view;
         }
 
         public void Init(bool sync)
         {
             if (_inited) return;
             _inited = true;
-            var ms = _unitView.stats.MoveSpeed;
+            var ms = _view.stats.MoveSpeed;
             ms.OnValueChange += UpdateMoveSpeed;
             ms.OnDecoratorAdded += UpdateMoveSpeed;
             ms.OnDecoratorRemoved += UpdateMoveSpeed;
             
-            var atks = _unitView.stats.AttackSpeed;
+            var atks = _view.stats.AttackSpeed;
             atks.OnValueChange += UpdateAttackSpeed;
             atks.OnDecoratorAdded += UpdateAttackSpeed;
             atks.OnDecoratorRemoved += UpdateAttackSpeed;
@@ -36,12 +36,12 @@ namespace RobotCastle.Battling
         {
             if (!_inited) return;
             _inited = false;
-            var ms = _unitView.stats.MoveSpeed; 
+            var ms = _view.stats.MoveSpeed; 
             ms.OnValueChange -= UpdateMoveSpeed;
             ms.OnDecoratorAdded -= UpdateMoveSpeed;
             ms.OnDecoratorRemoved -= UpdateMoveSpeed;
 
-            var atks = _unitView.stats.AttackSpeed; 
+            var atks = _view.stats.AttackSpeed; 
             atks.OnValueChange -= UpdateAttackSpeed;
             atks.OnDecoratorAdded -= UpdateAttackSpeed;
             atks.OnDecoratorRemoved -= UpdateAttackSpeed;
@@ -49,27 +49,27 @@ namespace RobotCastle.Battling
 
         public void ForceUpdateMoveSpeed()
         {
-            UpdateMoveSpeed(_unitView.stats.MoveSpeed);
+            UpdateMoveSpeed(_view.stats.MoveSpeed);
         }
 
         public void ForceUpdateAttackSpeed()
         {
-            UpdateAttackSpeed(_unitView.stats.AttackSpeed);
+            UpdateAttackSpeed(_view.stats.AttackSpeed);
         }
         
         private void UpdateMoveSpeed(Stat stat)
         {
             var val = stat.Get();
             var animSpeed = val * HeroesConstants.SpeedStatToAnimationFactor / HeroesConstants.SpeedStatFactor;
-            CLog.LogGreen($"Updating move animation speed. Stat: {val}. Speed: {animSpeed}");
-            _unitView.animator.SetFloat("MoveSpeed", animSpeed);
+            // CLog.Log($"Updating move animation speed. Stat: {val}. Speed: {animSpeed}");
+            _view.animator.SetFloat("MoveSpeed", animSpeed);
         }
      
         private void UpdateAttackSpeed(Stat stat)
         {
             var val = stat.Get();
-            CLog.LogYellow($"Updating attack animation speed. Stat: {val}");
-            _unitView.animator.SetFloat("Speed", val);
+            CLog.Log($"[{_view.gameObject.name}] Updating attack animation speed. Stat: {val}");
+            _view.animator.SetFloat("Speed", val);
         }
     }
 }

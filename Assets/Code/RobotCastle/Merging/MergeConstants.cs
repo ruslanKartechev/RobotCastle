@@ -12,13 +12,14 @@
         /// <summary>
         /// Not index. Max Index is 6  
         /// </summary>
-        public const int HeroMaxLvl = 7;
+        public const int HeroMaxMergeLvl = 7;
         
         public const string UpgradeBookId = "book_xp";
         public const float MergeItemPutAnimationTime = .3f;
         public const float PickScale = .85f;
         public const float PickScaleTime = .22f;
-        
+        public const float MergedScalePunch = .3f;
+
         
         public const int PlayerGridId = 1;
         public const int EnemyGridId = 2;

@@ -65,7 +65,7 @@ namespace RobotCastle.Battling
 
         public override string GetDescription(GameObject target)
         {
-            return $"{DescriptionMap[_statType]}\n+{Mathf.RoundToInt(_addedPercent)}%";
+            return $"{DescriptionMap[_statType]}\n+{Mathf.RoundToInt(_addedPercent * 100)}%";
         }
         
         

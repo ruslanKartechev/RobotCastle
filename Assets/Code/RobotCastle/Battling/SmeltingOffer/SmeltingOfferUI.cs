@@ -30,6 +30,7 @@ namespace RobotCastle.Battling.SmeltingOffer
                 CLog.LogError($"Options count and ui elements count don't match!");
                 return;
             }
+            gameObject.SetActive(true);
             _callback = callback;
             _options = options;
             var viewDb = ServiceLocator.Get<ViewDataBase>();
