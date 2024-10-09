@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using RobotCastle.Merging;
-using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -37,7 +36,7 @@ namespace RobotCastle.Battling
         {
             _tweenScale?.Kill();
             transform.localScale = Vector3.one;
-            transform.DOPunchScale(Vector3.one * .2f, MergeConstants.PickScaleTime);
+            transform.DOPunchScale(Vector3.one * MergeConstants.MergedScalePunch, MergeConstants.PickScaleTime);
         }
 
         public void OnDroppedBack() 
@@ -47,8 +46,7 @@ namespace RobotCastle.Battling
         }
 
         public void Rotate(Quaternion rotation, float time)
-        {
-        }
+        { }
 
         public void MoveToPoint(Transform endPoint, float time)
         {

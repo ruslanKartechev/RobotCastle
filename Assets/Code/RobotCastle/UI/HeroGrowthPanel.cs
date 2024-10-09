@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using DG.Tweening;
 using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Data;
@@ -11,7 +13,7 @@ using UnityEngine.UI;
 
 namespace RobotCastle.UI
 {
-    public class HeroGrowthPanel : MonoBehaviour, IScreenUI
+    public partial class HeroGrowthPanel : MonoBehaviour, IScreenUI
     {
         private enum Mode {UpgradeForMoney, UpgradeFree, GrantXp}
 
@@ -114,7 +116,7 @@ namespace RobotCastle.UI
             }
             else
             {
-                CLog.Log("No grand xp operation");
+                CLog.Log("[GrowthPanel] No grand xp operation");
             }
         }
 
@@ -131,7 +133,7 @@ namespace RobotCastle.UI
                     _btnGrowth.interactable = true;
                     _mode = Mode.UpgradeForMoney;
                     _addAnimation.Stop();
-                    _currentOperation = new PurchaseUpgradeOperation(_heroSave);
+                    _currentOperation = new PurchaseUpgradeOperation(_heroSave, AnimateUpgradeXp, AnimateUpgradeStats, AnimateUpgradeLevel);
                     break;
                 case 1: // no xp
                     _btnGrowth.gameObject.SetActive(false);
@@ -150,7 +152,7 @@ namespace RobotCastle.UI
                             case "book" or "king_medal" or "hero_medal":
                                 _buttonTextXp.text = "Grant XP";
                                 _mode = Mode.GrantXp;
-                                _currentOperation = new GrantXpOperation(_heroSave, itemPicked);
+                                _currentOperation = new GrantXpOperation(_heroSave, itemPicked, AnimateUpgradeXp);
                                 ShowPossibleXpGain();
                                 break;
                         }
@@ -170,7 +172,7 @@ namespace RobotCastle.UI
                     _btnGrowth.interactable = false;
                     _mode = Mode.UpgradeForMoney;
                     _addAnimation.Stop();
-                    _currentOperation = new PurchaseUpgradeOperation(_heroSave);
+                    _currentOperation = new PurchaseUpgradeOperation(_heroSave, AnimateUpgradeXp, AnimateUpgradeStats, AnimateUpgradeLevel);
                     break;
                 case 3:
                     _btnGrowth.gameObject.SetActive(false);
@@ -191,7 +193,7 @@ namespace RobotCastle.UI
 
         private void OnNewInventoryItemPicked(Item itemPicked)
         {
-            CLog.Log($"Item picked: {itemPicked.Id}");
+            CLog.Log($"[GrowthPanel] Item picked: {itemPicked.Id}");
             SetAppropriateMode();
             var db = ServiceLocator.Get<DescriptionsDataBase>();
             var info = db.GetDescription(itemPicked.Id);
@@ -203,12 +205,12 @@ namespace RobotCastle.UI
         {
             if (_currentOperation == null)
             {
-                CLog.Log("Next purcahse Operation is not chosen");
+                CLog.Log("[GrowthPanel] Next purchase Operation is not chosen");
                 return;
             }
-            CLog.Log($"On Growth Btn. Mode: {_mode.ToString()}");
+            CLog.Log($"[GrowthPanel] On Growth Btn. Mode: {_mode.ToString()}");
             var result = _currentOperation.Apply();
-            if (result == 0 && _mode == Mode.UpgradeForMoney)
+            if (result == 0)
             {
                 SetStats();
                 _heroLevelText.text = (_heroSave.level + 1).ToString();
@@ -218,16 +220,57 @@ namespace RobotCastle.UI
             SetAppropriateMode();
         }
 
-        private void OnReturnBtn()
+        private void AnimateUpgradeStats()
         {
-            CLog.Log($"On Return Btn");
+            SetStats(true);
+        }
+
+        private void AnimateUpgradeLevel()
+        {
+            _heroLevelText.text = (_heroSave.level + 1).ToString();
+            _heroLevelText.transform.DOPunchScale(Vector3.one * .2f, .2f);
+        }
+
+        private void AnimateUpgradeXp(Vector2Int xpStart, Vector2Int xpEnd, float percentStart, float percentEnd)
+        {
+            // _xpText.text = $"{_heroSave.xp}/{_heroSave.xpForNext}";
+            // _xpFillImage.fillAmount = (float)(_heroSave.xp) / _heroSave.xpForNext;
+            if(_animating != null)
+                StopCoroutine(_animating);
+            _animating =StartCoroutine(XpBarAnimating(xpStart, xpEnd, percentStart, percentEnd));
+        }
+
+        private Coroutine _animating;
+
+        private IEnumerator XpBarAnimating(Vector2Int xpStart, Vector2Int xpEnd, float percentStart, float percentEnd)
+        {
+            var time = .3f;
+            var elapsed = 0f;
+            var t = elapsed / time;
+            while (t <= 1f)
+            {
+                var xp = Mathf.RoundToInt( Mathf.Lerp(xpStart.x, xpEnd.x, t) );
+                var xpMax = Mathf.RoundToInt( Mathf.Lerp(xpStart.y, xpEnd.y, t) );
+                _xpText.text = $"{xp}/{xpMax}";
+                _xpFillImage.fillAmount = Mathf.Lerp(percentStart, percentEnd, t);
+                elapsed += Time.deltaTime;
+                t = elapsed / time;
+                yield return null;
+            }
+            _xpText.text = $"{xpEnd.x}/{xpEnd.y}";
+            _xpFillImage.fillAmount = percentEnd;
+        }
+
+        private void Close()
+        {
             gameObject.SetActive(false);
+            ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UIHeroGrowth);
         }
 
         private void OnEnable()
         {
             _btnGrowth.onClick.AddListener(OnGrowth);
-            _btnBack.onClick.AddListener(OnReturnBtn);
+            _btnBack.onClick.AddListener(Close);
             _btnGrowthXp.onClick.AddListener(OnGrowth);
             _inventoryUI.OnNewPicked += OnNewInventoryItemPicked;
             _inventoryUI.OnNothingPicked += OnNothingInventoryItem;
@@ -236,7 +279,7 @@ namespace RobotCastle.UI
         private void OnDisable()
         {
             _btnGrowth.onClick.RemoveListener(OnGrowth);
-            _btnBack.onClick.RemoveListener(OnReturnBtn);
+            _btnBack.onClick.RemoveListener(Close);
             _btnGrowthXp.onClick.RemoveListener(OnGrowth);
             _inventoryUI.OnNewPicked -= OnNewInventoryItemPicked;
             _inventoryUI.OnNothingPicked -= OnNothingInventoryItem;
@@ -248,80 +291,6 @@ namespace RobotCastle.UI
             /// </summary>
             /// <returns>int ExitCode -> 0 is success by default </returns>
             int Apply();
-        }
-
-        private class InstantUpgradeOperation : IOperation
-        {
-            public Item item;
-            public HeroSave heroSave;
-
-            public InstantUpgradeOperation(HeroSave heroSave, Item item)
-            {
-                this.heroSave = heroSave;
-                this.item = item;
-            }
-            
-            public int Apply()
-            {
-                HeroesManager.UpgradeNoCharge(heroSave);
-                var count = item.GetCount();
-                item.SetCount(count-1);
-                return 0;
-            }
-        }
-        
-        private class PurchaseUpgradeOperation : IOperation
-        {
-            public HeroSave heroSave;
-
-            public PurchaseUpgradeOperation(HeroSave heroSave)
-            {
-                this.heroSave = heroSave;
-            }
-            
-            public int Apply()
-            {
-                return HeroesManager.UpgradeHero(heroSave);
-            }
-        }
-
-        private class GrantXpOperation : IOperation
-        {
-            public HeroSave heroSave;
-            public Item itemUI;
-            public float needXpAmount;
-            public int needItemsCount;
-            public int giveXpAmount;
-            public int consumeItemsCount;
-            
-            public GrantXpOperation(HeroSave heroSave, Item itemUI)
-            {
-                this.itemUI = itemUI;
-                this.heroSave = heroSave;
-                var xpdb = ServiceLocator.Get<XpDatabase>();
-                var xpPerItem = xpdb.xpGrantedByItem[itemUI.Id];
-                needXpAmount = (float)(this.heroSave.xpForNext - this.heroSave.xp);
-                var totalItemsCount = itemUI.GetCount();
-                var necessaryCount = Mathf.CeilToInt(needXpAmount / xpPerItem);
-                if (totalItemsCount >= necessaryCount)
-                {
-                    giveXpAmount = Mathf.CeilToInt(needXpAmount);
-                    consumeItemsCount = necessaryCount;
-                }
-                else
-                {
-                    consumeItemsCount = totalItemsCount;
-                    giveXpAmount = Mathf.CeilToInt(totalItemsCount * xpPerItem);
-                }
-            }
-
-            public int Apply()
-            {
-                heroSave.xp += giveXpAmount;
-                var count = itemUI.GetCount();
-                itemUI.SetCount(count - consumeItemsCount);
-                return 0;
-            }
         }
     }
 }

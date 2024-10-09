@@ -1,4 +1,5 @@
-﻿using RobotCastle.Data;
+﻿using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace RobotCastle.UI
 
         public CoreItemData CoreData => _mergeView.itemData.core;
         
-        public DescriptionInfo GetInfo() => DataHelpers.GetItemDescription(_mergeView.itemData.core);
+        public DescriptionInfo GetInfo() => ServiceLocator.Get<DescriptionsDataBase>().GetDescriptionByLevel(_mergeView.itemData.core);
         
         public Sprite GetItemIcon() => DataHelpers.GetItemIcon(_mergeView.itemData.core);
 

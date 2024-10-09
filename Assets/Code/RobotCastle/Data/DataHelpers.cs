@@ -21,13 +21,6 @@ namespace RobotCastle.Data
                 else notOwnedHeroes.Add(save);
             }
         }
-        
-        public static DescriptionInfo GetItemDescription(CoreItemData itemData)
-        {
-            var id = itemData.id;
-            var fullId = $"{id}_lvl_{itemData.level}";
-            return ServiceLocator.Get<DescriptionsDataBase>().GetDescription(fullId);
-        }
 
         public static Sprite GetItemIcon(CoreItemData itemData)
         {

@@ -11,7 +11,7 @@ namespace RobotCastle.Battling
         
         public BattleState State { get; set; }
         
-        public int stageIndex = 0;
+        public int roundIndex = 0;
         public int troopSize = HeroesConstants.PlayerTroopsStart;
         public int playerHealthPoints = HeroesConstants.PlayerHealthStart;
         public BattleTeam playerTeam;
@@ -30,8 +30,8 @@ namespace RobotCastle.Battling
         private List<IHeroController> _enemies; // is not changed. All units set at startup
         private List<IHeroController> _players; // is not changed. All units set at startup
         
-        private List<IHeroController> _enemiesAlive;
-        private List<IHeroController> _playersAlive;
+        private List<IHeroController> _enemiesAlive = new(20);
+        private List<IHeroController> _playersAlive = new(20);
         
         public BattleTeam GetTeam(int num) => num == 0 ? playerTeam : enemyTeam;
         public BattleTeam GetEnemyTeam(int num) => num == 0 ? enemyTeam : playerTeam;
@@ -84,10 +84,17 @@ namespace RobotCastle.Battling
             set
             {
                 _enemies = value;
-                _enemiesAlive = new List<IHeroController>(value);
+                _enemiesAlive.Clear();
+                _enemiesAlive.AddRange(_enemies);
                 enemyTeam.ourUnits = _enemiesAlive;
                 playerTeam.enemyUnits = _enemiesAlive;
             }
+        }
+
+        public void UpdateEnemiesAliveList()
+        {
+            _enemiesAlive.Clear();
+            _enemiesAlive.AddRange(_enemies);
         }
         
         public List<IHeroController> PlayerUnits
@@ -96,7 +103,8 @@ namespace RobotCastle.Battling
             set
             {
                 _players = value;
-                _playersAlive = new List<IHeroController>(value);
+                _playersAlive.Clear();
+                _playersAlive.AddRange(_players);
                 playerTeam.ourUnits = _playersAlive;
                 enemyTeam.enemyUnits = _playersAlive;
             }
@@ -119,14 +127,14 @@ namespace RobotCastle.Battling
             return new Battle()
             {
                 troopSize = 3,
-                stageIndex = 0,
+                roundIndex = 0,
                 playerHealthPoints = 3,
             };
         }
 
         public string GetMainStateAsStr()
         {
-            return $"TroopSize: {troopSize}. Stage {stageIndex}. PlayerHealth: {playerHealthPoints}. Player Count: {_players.Count}. Enemies count: {_enemies.Count}";
+            return $"TroopSize: {troopSize}. Stage {roundIndex}. PlayerHealth: {playerHealthPoints}. Player Count: {_players.Count}. Enemies count: {_enemies.Count}";
         }
 
         public string GetPlayerAsStr()

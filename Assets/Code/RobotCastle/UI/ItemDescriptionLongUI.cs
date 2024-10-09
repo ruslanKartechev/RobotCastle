@@ -2,10 +2,10 @@
 using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Data;
-using SleepDev;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using SleepDev;
 
 namespace RobotCastle.UI
 {
@@ -34,11 +34,26 @@ namespace RobotCastle.UI
                     ShowCoreAndModifiers(info, icon, modifiers, src.GetGameObject());
                     break;
             }
-          
             _rectToScreenFitter.SetScreenPos(Camera.main.WorldToScreenPoint(src.WorldPosition));
             _animator.FadeIn();
         }
 
+        public void ShowItem(HeroItemData itemData)
+        {
+            var db = ServiceLocator.Get<ViewDataBase>();
+            var icon = db.GetUnitItemSpriteAtLevel(itemData.id, itemData.level);
+            var descr = ServiceLocator.Get<DescriptionsDataBase>().GetDescriptionByLevel(itemData.core);
+            ShowCoreAndModifiers(descr, icon, itemData.modifierIds, null);
+        }
+
+        public void ShowBonus(CoreItemData itemData)
+        {
+            var db = ServiceLocator.Get<ViewDataBase>();
+            var sprite = db.GetItemSpriteByTypeAndLevel(itemData);
+            var info = ServiceLocator.Get<DescriptionsDataBase>().GetDescriptionByTypeAndLevel(itemData);
+            ShowCore(info, sprite);
+        }
+        
         public void ShowCore(DescriptionInfo info, Sprite icon)
         {
             _lvlText.text = info.parts[1];

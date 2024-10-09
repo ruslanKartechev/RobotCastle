@@ -214,6 +214,8 @@ namespace RobotCastle.Battling
                 return;
             var db = ServiceLocator.Get<XpDatabase>();
             heroSave.xp -= heroSave.xpForNext;
+            if(heroSave.xp < 0)
+                heroSave.xp = 0;
             heroSave.level++;
             if (heroSave.level < MaxHeroLevel)
                 heroSave.xpForNext = db.heroXpLevels[heroSave.level];

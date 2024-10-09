@@ -49,5 +49,14 @@ namespace RobotCastle.Battling
             _particle.Play();
             return 0;
         }
+
+        public void ExtendBy(int count)
+        {
+            _battle.troopSize++;
+            var gridController = ServiceLocator.Get<IGridSectionsController>();
+            gridController.SetMaxCount(_battle.troopSize);
+            _particle.Play();
+
+        }
     }
 }

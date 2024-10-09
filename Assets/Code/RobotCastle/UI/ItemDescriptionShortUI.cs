@@ -51,7 +51,7 @@ namespace RobotCastle.UI
         
         public void ShowCore(CoreItemData itemData)
         {
-            var info = DataHelpers.GetItemDescription(itemData);   
+            var info = ServiceLocator.Get<DescriptionsDataBase>().GetDescriptionByLevel(itemData);   
             _lvlText.text = info.parts[1];
             _nameText.text = info.parts[0];
             _heroIcon.sprite = DataHelpers.GetItemIcon(itemData);

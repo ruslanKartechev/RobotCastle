@@ -2,6 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Bomber;
+using RobotCastle.Battling.DevilsOffer;
+using RobotCastle.Battling.MerchantOffer;
+using RobotCastle.Battling.SmeltingOffer;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.InvasionMode;
@@ -15,9 +18,9 @@ namespace RobotCastle.Battling
     [DefaultExecutionOrder(35)]
     public class BattleLevel : MonoBehaviour, IBattleStartedProcessor, IBattleEndProcessor
     {
+        [SerializeField] private int _startMoney = 0;
         [SerializeField] private bool _fillActiveAreaBeforeStart = true;
         [SerializeField] private float _endDelay = 2f;
-        [SerializeField] private bool _doAutoBegin = true;
         [SerializeField] private BattleManager _battleManager;
         [SerializeField] private MergeManager _mergeManager;
         [SerializeField] private EnemiesManager _enemiesManager;
@@ -27,11 +30,19 @@ namespace RobotCastle.Battling
         [SerializeField] private BattleGridSwitch _gridSwitch;
         [SerializeField] private CastleHealthView _playerHealthView;
         [SerializeField] private ParticleSystem _troopSizeExpansion;
+        [Space(10)]
+        [SerializeField] private SmeltingConfigContainer _smeltingConfigContainer;
+        [SerializeField] private DevilsOfferConfigContainer _devilsOfferConfigContainer;
+        [SerializeField] private MerchantOfferConfigContainer _merchantOfferConfigContainer;
         private IPlayerMergeItemPurchaser _itemPurchaser;
         private ITroopSizeManager _troopSizeManager;
         private BattleMergeUI _mainUI;
         private Chapter _chapter;
         private CancellationTokenSource _token;
+        private SmeltingOfferManager _smeltingOffer;
+        private DevilsOfferManager _devilsOffer;
+        private MerchantOfferManager _merchantOffer;
+        
         
         public void OnBattleStarted(Battle battle)
         {
@@ -43,8 +54,31 @@ namespace RobotCastle.Battling
 
         public void OnBattleEnded(Battle battle)
         {
-            BattleCompletion(battle, _token.Token);
+            BattleRoundCompletion(battle, _token.Token);
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("ForceShowSmeltingOffer")]
+        public void ForceShowSmeltingOffer()
+        {
+            AllowPlayerUIInput(false);
+            ShowSmeltingOffer();
+        }
+
+        [ContextMenu("ForceShowTradeOffer")]
+        public void ForceShowTradeOffer()
+        {
+            AllowPlayerUIInput(false);
+            ShowTradeOffer();
+        }
+
+        [ContextMenu("ForceShowDevilOffer")]
+        public void ForceShowDevilOffer()
+        {
+            AllowPlayerUIInput(false);
+            ShowDevilsOffer();
+        }
+#endif
         
         private void Start()
         {
@@ -52,7 +86,14 @@ namespace RobotCastle.Battling
             var save = DataHelpers.GetInvasionProgress();
             _chapter = ServiceLocator.Get<ProgressionDataBase>().chapters[save.chapterIndex];
             _token = new CancellationTokenSource();
-            Init(_token.Token);
+            ServiceLocator.Get<GameMoney>().levelMoney = _startMoney;
+            try
+            {
+                Init(_token.Token);
+            }catch(System.Exception ex)
+            {
+                CLog.Log(ex.Message);    
+            }
         }
 
         private async Task Init(CancellationToken token)
@@ -74,24 +115,32 @@ namespace RobotCastle.Battling
             _enemiesManager.Init();
             _playerHealthView.SetHealth(battle.playerHealthPoints);
             _itemPurchaser = gameObject.GetComponent<IPlayerMergeItemPurchaser>();
-            await _battleManager.SetStage(0, token);
+            _smeltingOffer = new SmeltingOfferManager(_smeltingConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager.battle);
+            _devilsOffer = new DevilsOfferManager(_devilsOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
+            _merchantOffer = new MerchantOfferManager(_merchantOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
+            try
+            {
+                await _battleManager.SetStage(0, token);
+            }
+            catch (System.Exception ex)
+            {
+                CLog.LogError($"Exception: {ex.Message}\n{ex.StackTrace}");
+            }
             _battleCamera.AllowPlayerInput(false);
             _battleCamera.SetBattlePoint();
             var config = ServiceLocator.Get<GlobalConfig>();
             await Task.Delay((int)(config.BattleStartEnemyShowTime * 1000), token);
             InitUI();
-            // await Task.Delay((int)(config.BattleStartInputDelay * 1000));
             await _battleCamera.MoveToMergePoint();
-            _mergeManager.AllowInput(true);
-            _battleCamera.AllowPlayerInput(true);
+            GrantPlayerInput();
         }
         
         private void InitUI()
         {
             var uiManager = ServiceLocator.Get<IUIManager>();
             uiManager.Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {}).ShowIdle();
-            var dam = uiManager.Show<BattleDamagePanelUI>("ui_damage", () => { });
-            dam.gameObject.SetActive(true);
+            var damageUI = uiManager.Show<BattleDamagePanelUI>("ui_damage", () => { });
+            damageUI.gameObject.SetActive(true);
             
             _mainUI = uiManager.Show<BattleMergeUI>(UIConstants.UIBattleMerge, () => { });
             _mainUI.BtnSpawn.AddMainCallback(BuyNewItem);
@@ -100,35 +149,28 @@ namespace RobotCastle.Battling
             _mainUI.TroopSizePurchaseUI.Init(_troopSizeManager);
             _mainUI.TroopSizePurchaseUI.SetInteractable(true);
             _mainUI.Init(_battleManager.battle, _chapter);
-            AllowPlayerUIInput(true);
+            InitCurrentRound();
         }
 
-        private void AllowPlayerUIInput(bool allow)
-        {
-            _mainUI.BtnSpawn.SetInteractable(allow);
-            _mainUI.BtnStart.SetInteractable(allow);
-            _mainUI.BtnStart2.SetInteractable(allow);
-        }
-        
         private void StartBattle()
         {
             if (_battleManager.CanStart())
             {
                 if(_fillActiveAreaBeforeStart)
                     _mergeManager.FillActiveArea();
-                StartCoroutine(Starting());
+                StartingBattle(_token.Token);
             }
         }
 
-        private IEnumerator Starting()
+        private async Task StartingBattle(CancellationToken token)
         {
             _battleCamera.AllowPlayerInput(false);
             _battleManager.SetGoingState();
-            _battleCamera.MoveToBattlePoint();
             _mainUI.Started();
             foreach (var hero in _battleManager.battle.playersAlive)
                 hero.View.transform.rotation = Quaternion.Euler(Vector3.zero);
-            yield return new WaitForSeconds(_battleCamera.MoveTime);
+            await _battleCamera.MoveToBattlePoint();
+            if (token.IsCancellationRequested) return;
             _battleManager.BeginBattle();
         }
 
@@ -143,12 +185,11 @@ namespace RobotCastle.Battling
             ServiceLocator.Get<IUIManager>().Show<LevelFailUI>(UIConstants.UILevelFail, () =>{});
         }
         
-        private async Task BattleCompletion(Battle battle, CancellationToken token)
+        private async Task BattleRoundCompletion(Battle battle, CancellationToken token)
         {
             _battleManager.BattleRewardCalculator.AddRewardForStage();
             await Task.Delay((int)(_endDelay * .5f * 1000), token);
             _gridSwitch.SetMergeMode();
-            _battleManager.RecollectPlayerUnits();
             switch (battle.State)
             {
                 case BattleState.EnemyWin:
@@ -166,17 +207,80 @@ namespace RobotCastle.Battling
                     CLog.LogRed($"[{nameof(BattleLevel)}] Error!");
                     break;
             }
-            await Task.Delay((int)(_endDelay * .5f * 1000), token);
+            await Task.Yield();
+            if (token.IsCancellationRequested) return;
 
+            _battleManager.RecollectPlayerUnits();
+
+            await Task.Delay((int)(_endDelay * .5f * 1000), token);
+            if (token.IsCancellationRequested) return;
+            
             var battleUI = ServiceLocator.Get<IUIManager>().GetIfShown<BattleMergeUI>(UIConstants.UIBattleMerge);
             if(battleUI)
                 battleUI.SetMainAreaUpPos();
+            
             await _battleCamera.MoveToMergePoint();
+            if (token.IsCancellationRequested) return;
+            
+            InitCurrentRound();
+        }
+
+        private void InitCurrentRound()
+        {
+            var roundType = _chapter.levelData.levels[_battleManager.battle.roundIndex].roundType;
+            switch (roundType)
+            {
+                case RoundType.Default:
+                    GrantPlayerInput();
+                    break;
+                case RoundType.Smelting:
+                    ShowSmeltingOffer();
+                    break;
+                case RoundType.EliteEnemy:
+                    ShowDevilsOfferAndTrade();
+                    break;
+                case RoundType.Boss:
+                    CLog.Log($"[{nameof(BattleLevel)}] Boss level");
+                    GrantPlayerInput();
+                    break;
+            }
+        }
+
+        private void ShowSmeltingOffer()
+        {
+            _smeltingOffer.MakeNextOffer(GrantPlayerInput);
+        }
+
+        private void ShowDevilsOffer()
+        {
+            _devilsOffer.MakeNextOffer(GrantPlayerInput);
+        }
+
+        private void ShowDevilsOfferAndTrade()
+        {
+            _devilsOffer.MakeNextOffer(ShowTradeOffer);
+        }
+
+        private void ShowTradeOffer()
+        {
+            _merchantOffer.MakeNextOffer(GrantPlayerInput);
+        }
+        
+        private void GrantPlayerInput()
+        {
             _mergeManager.AllowInput(true);
             AllowPlayerUIInput(true);
             _battleCamera.AllowPlayerInput(true);
         }
 
+        private void AllowPlayerUIInput(bool allow)
+        {
+            _mainUI.BtnSpawn.SetInteractable(allow);
+            _mainUI.BtnStart.SetInteractable(allow);
+            _mainUI.BtnStart2.SetInteractable(allow);
+            _mainUI.TroopSizePurchaseUI.SetInteractable(allow);
+        }
+        
         private bool CheckLevelLost()
         {
             var health = --_battleManager.battle.playerHealthPoints;
@@ -194,5 +298,4 @@ namespace RobotCastle.Battling
         }
         
     }
-    
 }

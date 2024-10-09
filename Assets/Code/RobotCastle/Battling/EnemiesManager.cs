@@ -41,9 +41,58 @@ namespace RobotCastle.Battling
             await _enemiesFactory.SpawnPreset(preset, token);
         }
 
-        public void SpawnNewEnemy(SpawnMergeItemArgs args, int heroLvl = 0)
+        public IHeroController SpawnNewEnemy(SpawnMergeItemArgs args, int heroLvl = 0, bool addToList = true)
         {
-            _enemiesFactory.SpawnNew(args, heroLvl);
+            var h = _enemiesFactory.SpawnNew(args, heroLvl);
+            if(addToList)
+                Enemies.Add(h);
+            return h;
+        }
+
+        public void IncreaseEnemyForcesBy(float percent)
+        {
+            var enemies = Enemies;
+            var totalCount = enemies.Count;
+            var additionalCount = Mathf.RoundToInt(totalCount * percent);
+            if(additionalCount == 0 && percent > 0)
+                additionalCount = 1;
+            CLog.Log($"[{nameof(EnemiesManager)}] Adding: {additionalCount} more enemies ({Mathf.RoundToInt(percent*100)}%)");
+            var countLeft = additionalCount;
+            var newEnemies = new List<IHeroController>(additionalCount);
+            while (countLeft > 0)
+            {
+                for (var i = 0; i < enemies.Count && countLeft > 0; i++)
+                {
+                    var original = enemies[i];
+                    var mergeView = original.View.gameObject.GetComponent<IItemView>();
+                    var h = _enemiesFactory.SpawnNew(new SpawnMergeItemArgs(mergeView.itemData.core));
+                    newEnemies.Add(h);
+                    countLeft--;
+                }
+            }
+            Enemies.AddRange(newEnemies);
+        }
+
+        public void RaiseEnemiesTierAll(int additionalVal)
+        {
+            RaiseEnemiesTier(Enemies, additionalVal);
+        }        
+        
+        public void RaiseEnemiesTier(List<IHeroController> enemies, int additionalVal)
+        {
+            foreach (var hero in enemies)
+            {
+                var itemView = hero.View.gameObject.GetComponent<IItemView>();
+                var lvl = itemView.itemData.core.level;
+                if (lvl < MergeConstants.HeroMaxMergeLvl)
+                {
+                    lvl += additionalVal;
+                    if (lvl > MergeConstants.HeroMaxMergeLvl)
+                        lvl = MergeConstants.HeroMaxMergeLvl;
+                    itemView.itemData.core.level = lvl;
+                    itemView.UpdateViewToData();
+                }
+            }    
         }
     }
 }

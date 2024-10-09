@@ -184,7 +184,7 @@ namespace RobotCastle.Summoning
                 }
                     break;
                 case SummonConfig.Id_Gold or SummonConfig.Id_AnyInventoryItem: {
-                    ui.SetIcon(viewDb.GetItemSprite(output.data.id));
+                    ui.SetIcon(viewDb.GetGeneralItemSprite(output.data.id));
                     if (descrDb.descriptions.ContainsKey(output.data.id) == false)
                         CLog.LogError($"Descriptions db does not contain: {output.data.id}");    
                     else

@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 731ce6f9d6d446eb9ad1105647f06ed5, type: 3}
+  m_Name: Smelting Config
+  m_EditorClassIdentifier: 
+  config:
+    smeltingTiers:
+    - itemsOptions:
+      - level: 0
+        id: bow
+        type: item
+      - level: 0
+        id: sword
+        type: item
+      - level: 0
+        id: armor
+        type: item
+      - level: 0
+        id: staff
+        type: item
+      - level: 5
+        id: bonus_money
+        type: bonus
+      - level: 1
+        id: bonus_troops
+        type: bonus
+    - itemsOptions:
+      - level: 1
+        id: bow
+        type: item
+      - level: 1
+        id: sword
+        type: item
+      - level: 1
+        id: armor
+        type: item
+      - level: 1
+        id: staff
+        type: item
+      - level: 10
+        id: bonus_money
+        type: bonus
+      - level: 1
+        id: bonus_troops
+        type: bonus
+    - itemsOptions:
+      - level: 2
+        id: bow
+        type: item
+      - level: 2
+        id: sword
+        type: item
+      - level: 2
+        id: armor
+        type: item
+      - level: 2
+        id: staff
+        type: item
+      - level: 15
+        id: bonus_money
+        type: bonus
+      - level: 1
+        id: bonus_troops
+        type: bonus
+    - itemsOptions:
+      - level: 2
+        id: bow
+        type: item
+      - level: 2
+        id: sword
+        type: item
+      - level: 2
+        id: armor
+        type: item
+      - level: 2
+        id: staff
+        type: item
+      - level: 20
+        id: bonus_money
+        type: bonus
+      - level: 1
+        id: bonus_troops
+        type: bonus

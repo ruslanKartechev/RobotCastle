@@ -187,11 +187,20 @@ namespace RobotCastle.Core
         private IEnumerator Working()
         {
             var oldMainPos = Input.mousePosition;
+            var didWait = false;
             while (true)
             {
                 while (!InputAllowed)
+                {
+                    didWait = true;
                     yield return null;
-
+                }
+                if (didWait)
+                {
+                    oldMainPos = Input.mousePosition;
+                    didWait =false;
+                }
+                
                 var mainPos = MainMousePosition;
                 if (Input.GetMouseButtonDown(0))
                 {

@@ -32,7 +32,6 @@ namespace RobotCastle.Battling
         [SerializeField] private Transform _battlePoint;
         private int _slideBlockers;
     
-
         public void AllowPlayerInput(bool allowed)
         {
             if(allowed)

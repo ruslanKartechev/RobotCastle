@@ -44,8 +44,8 @@ namespace RobotCastle.Testing
         public void NextHeroLvl()
         {
             HeroLvl++;
-            if (HeroLvl >= MergeConstants.HeroMaxLvl)
-                HeroLvl = MergeConstants.HeroMaxLvl - 1;
+            if (HeroLvl >= MergeConstants.HeroMaxMergeLvl)
+                HeroLvl = MergeConstants.HeroMaxMergeLvl - 1;
         }
 
         public void PrevHeroLvl()

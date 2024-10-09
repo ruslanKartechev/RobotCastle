@@ -24,6 +24,7 @@ namespace RobotCastle.Battling
                     var ui = ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {});
                     ui.ShowNotEnoughMoney();
                 }
+                return;
             }
             var item = _possibleItems.Random(true);
             var merge = ServiceLocator.Get<MergeManager>();
@@ -35,7 +36,6 @@ namespace RobotCastle.Battling
                 money -= _cost;
                 gameMoney.levelMoney = money;
                 merge.HighlightMergeOptions();
-                
             }
         }
         

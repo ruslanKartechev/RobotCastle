@@ -31,6 +31,18 @@ namespace RobotCastle.Battling
             }
             return result;
         }
+        
+        public static HeroItemData GetDataWithDefaultModifiers(CoreItemData it)
+        {
+            HeroItemData result;
+            var db = ServiceLocator.Get<ViewDataBase>();
+            var prefab = db.GetMergePrefabAtLevel(it.id, it.level);
+            if (prefab.TryGetComponent<ModifiersContainer>(out var container))
+                result = new HeroItemData(it, container.ModifierIds);   
+            else
+                result = new HeroItemData(it, new List<string>());
+            return result;
+        }
 
         public HeroItemData(CoreItemData core, List<string> modifier)
         {

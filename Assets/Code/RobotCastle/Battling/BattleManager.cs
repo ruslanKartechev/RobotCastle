@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using RobotCastle.Core;
-using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 using RobotCastle.Merging;
 using SleepDev;
@@ -13,20 +12,35 @@ namespace RobotCastle.Battling
     [DefaultExecutionOrder(10)]
     public partial class BattleManager : MonoBehaviour
     {
+        public Battle battle => _battle;
+        public BattleRewardCalculator BattleRewardCalculator => _rewardCalculator;
+        public IBattleEndProcessor endProcessor { get; set; }
+        public IBattleStartedProcessor startProcessor { get; set; }
+        
         [SerializeField] private bool _activateEnemies = true;
         [SerializeField] private bool _activatePlayers = true;
         private Battle _battle;
         private List<RoundData> _roundData;
         private BattleRewardCalculator _rewardCalculator;
+        private List<IRoundModifier> _roundModifiers = new(5);
 
-        public BattleRewardCalculator BattleRewardCalculator => _rewardCalculator;
-        public Battle battle => _battle;
-        
-        public IBattleEndProcessor endProcessor { get; set; }
-        
-        public IBattleStartedProcessor startProcessor { get; set; }
-        
 
+        public void AddRoundModifier(IRoundModifier modifier)
+        {
+            _roundModifiers.Add(modifier);
+        }
+
+        public void RemoveRoundModifier(IRoundModifier modifier)
+        {
+            _roundModifiers.Remove(modifier);
+        }
+
+        public void ClearAllModifiers()
+        {
+            _roundModifiers.Clear();
+        }
+        
+        
         public Battle Init(List<RoundData> roundData)
         {
             _roundData = roundData;
@@ -65,6 +79,7 @@ namespace RobotCastle.Battling
             _battle.State = BattleState.Going;
             _battle.WinCallback = OnTeamWin;
             var map = ServiceLocator.Get<Bomber.IMap>();
+            CLog.LogRed($"Enemies count: {_battle.Enemies.Count}");
             foreach (var hero in _battle.Enemies)
             {
                 hero.TeamNum = 1;
@@ -98,13 +113,13 @@ namespace RobotCastle.Battling
         public void SetNextStage()
         {
             _battle.Reset();
-            _battle.stageIndex++;
+            _battle.roundIndex++;
         }
         
         public async Task SetAndInitNextStage(CancellationToken token)
         {
             SetNextStage();
-            await SetStage(_battle.stageIndex, token);
+            await SetStage(_battle.roundIndex, token);
         }
 
         public async Task ResetStage(CancellationToken token)
@@ -115,13 +130,20 @@ namespace RobotCastle.Battling
         
         public async Task SetCurrentStage(CancellationToken token)
         {
-            await SetStage(_battle.stageIndex, token);
+            try
+            {
+                await SetStage(_battle.roundIndex, token);
+            }
+            catch (System.Exception ex)
+            {
+                CLog.LogError($"Exception: {ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         public async Task SetStage(int stageIndex, CancellationToken token)
         {
             _rewardCalculator.RewardPerStageCompletion = _roundData[stageIndex].reward;
-            _battle.stageIndex = stageIndex;
+            _battle.roundIndex = stageIndex;
             if (_battle.Enemies.Count > 0)
             {
                 foreach (var en in _battle.Enemies)
@@ -129,12 +151,15 @@ namespace RobotCastle.Battling
                 await Task.Yield();
                 if (token.IsCancellationRequested) return;
             }
-        
+            
             _battle.Enemies.Clear();
             _battle.enemiesAlive.Clear();
             var preset = _roundData[stageIndex].enemyPreset;
             var enemyManager = ServiceLocator.Get<EnemiesManager>();
             await enemyManager.SpawnPreset(preset, token);
+
+            for (var i = 0; i < _roundModifiers.Count; i++)
+                _roundModifiers[i].OnRoundSet(this);
             if (token.IsCancellationRequested) return;
 
             _battle.Enemies = enemyManager.Enemies;
@@ -186,7 +211,7 @@ namespace RobotCastle.Battling
         
         public void SetupRewardForCurrentRound()
         {
-            _rewardCalculator.RewardPerStageCompletion = _roundData[_battle.stageIndex].reward;
+            _rewardCalculator.RewardPerStageCompletion = _roundData[_battle.roundIndex].reward;
         }
         
         
@@ -197,6 +222,10 @@ namespace RobotCastle.Battling
                 unit.SetBehaviour(new HeroIdleBehaviour());
             foreach (var unit in _battle.playersAlive)
                 unit.SetBehaviour(new HeroIdleBehaviour());
+            
+            for (var i = _roundModifiers.Count - 1; i >= 0; i--)
+                _roundModifiers[i].OnRoundCompleted(this);
+            
             switch (teamNum)
             {
                 case 0:
