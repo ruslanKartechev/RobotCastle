@@ -9,31 +9,36 @@ namespace RobotCastle.UI
         public RectTransform rect;
         public LayoutElement element;
         public Image background;
-        private const float scaleTime = .4f;
         private Coroutine _animating;
         
-        public void Animate(float width, Color color, Sprite sprite)
+        public void Animate(Vector2 size, Color color, Sprite sprite, float time)
         {
             background.sprite = sprite;
             if(_animating != null) StopCoroutine(_animating);
-            _animating = StartCoroutine(Scaling(width, scaleTime, color));
+            _animating = StartCoroutine(Scaling(size, time, color));
         }
         
-        private IEnumerator Scaling(float endVal, float time, Color endColor)
+        private IEnumerator Scaling(Vector2 endSize, float time, Color endColor)
         {
             var c1 = background.color;
-            var w1 = element.preferredWidth;
+            // var size1 = new Vector2(element.preferredWidth, element.preferredHeight);
+            var s1 = rect.localScale;
             var elapsed = Time.deltaTime;
             var t = elapsed / time;
             while (t <= 1f)
             {
-                element.preferredWidth = Mathf.Lerp(w1, endVal, t);
+                rect.localScale =Vector3.Lerp(s1, endSize, t);
+                // var size = Vector2.Lerp(size1, endSize, t);
+                // element.preferredWidth = size.x;
+                // element.preferredHeight = size.y;
                 background.color = Color.Lerp(c1, endColor, t);
                 elapsed += Time.deltaTime;
                 t = elapsed / time;
                 yield return null;
             }
-            element.preferredWidth = endVal;
+            rect.localScale = endSize;
+            // element.preferredWidth = endSize.x;
+            // element.preferredHeight = endSize.y;
             background.color = endColor;
 
         }
