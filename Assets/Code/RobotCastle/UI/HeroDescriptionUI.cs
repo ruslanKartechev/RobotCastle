@@ -88,7 +88,7 @@ namespace RobotCastle.UI
         public void Show(HeroStatsManager stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
         {
             var atkTxt = (stats.Attack.Get()).ToString(CultureInfo.InvariantCulture);
-            var atkSpTxt = (stats.AttackSpeed.Get()).ToString(CultureInfo.InvariantCulture);
+            var atkSpTxt = $"{stats.AttackSpeed.Val:N2}";
             var spTxt = stats.SpellPower.Get().ToString(CultureInfo.InvariantCulture);
             
             var items = stats.gameObject.GetComponent<HeroItemsContainer>();
@@ -123,7 +123,7 @@ namespace RobotCastle.UI
                 if (addedAtk > 0)
                 {
                     var addedVal = Mathf.RoundToInt(addedAtk * stats.Attack.Val);
-                    atkTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
+                    atkTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal:N1}</color>";
                     // atkTxt += $"+{addedVal}";
                 }
                 if (addedSp > 0)

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
 using Bomber;
@@ -43,7 +44,7 @@ namespace RobotCastle.Battling
         private DevilsOfferManager _devilsOffer;
         private MerchantOfferManager _merchantOffer;
         
-        
+
         public void OnBattleStarted(Battle battle)
         {
             AllowPlayerUIInput(true);
@@ -79,10 +80,16 @@ namespace RobotCastle.Battling
             ShowDevilsOffer();
         }
 #endif
-        
-        private void Start()
+
+        private void Awake()
         {
             GameState.Mode = GameState.EGameMode.InvasionBattle;
+            if(!SleepDev.AdsPlayer.Instance.BannerCalled)
+                SleepDev.AdsPlayer.Instance.ShowBanner();
+        }
+
+        private void Start()
+        {
             var save = DataHelpers.GetInvasionProgress();
             _chapter = ServiceLocator.Get<ProgressionDataBase>().chapters[save.chapterIndex];
             _token = new CancellationTokenSource();

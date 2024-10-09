@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace RobotCastle.MainMenu
 {
+    [DefaultExecutionOrder(1)]
     public class MainMenuInitializer : MonoBehaviour
     {
         [SerializeField] private Canvas _parentCanvas;
@@ -19,10 +20,17 @@ namespace RobotCastle.MainMenu
         [SerializeField] private MergeItemsFactory _mergeItems;
         [SerializeField] private BarracksManager _barracksManager;
         [SerializeField] private BarracksHeroView _barrackHeroView;
+
         
-        private void Start()
+        private void Awake()
         {
             GameState.Mode = GameState.EGameMode.MainMenu;
+            if(!SleepDev.AdsPlayer.Instance.BannerCalled)
+                SleepDev.AdsPlayer.Instance.ShowBanner();
+        }
+
+        private void Start()
+        {
             ServiceLocator.Bind<MainMenuCamera>(_camera);
             ServiceLocator.Bind<BarracksHeroesPool>(_heroesPool);
             ServiceLocator.Bind<TabsSwitcher>(_tabsSwitcher);

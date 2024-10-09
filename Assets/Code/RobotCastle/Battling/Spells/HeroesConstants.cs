@@ -17,7 +17,7 @@ namespace RobotCastle.Battling
         public const float AddedMana = 18;
 
         public const float RotationSpeed = 900f;
-        public const float ProjectileSpeed = 3.3f;
+        public const float ProjectileSpeed = 4.2f;
         
         public const string AnimId_Move = "Run";
         public const string AnimId_Idle = "Idle";

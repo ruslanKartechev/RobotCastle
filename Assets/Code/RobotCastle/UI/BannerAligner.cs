@@ -2,6 +2,7 @@
 
 namespace RobotCastle.UI
 {
+    [DefaultExecutionOrder(500)]
     public class BannerAligner : MonoBehaviour
     {
         public RectTransform rect;
@@ -33,6 +34,14 @@ namespace RobotCastle.UI
         {
             if(startWithBanner)
                 SetBanner();
+        }
+
+        private void OnEnable()
+        {
+            if(SleepDev.AdsPlayer.Instance.BannerCalled)
+                SetBanner();
+            else
+                SetNoBanner();
         }
 
         public void SetBanner()
