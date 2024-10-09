@@ -19,5 +19,16 @@
         public int totalEnergyCost = BasicEnergyCost;
         public int chapterIndex;
         public int tierIndex;
+        
+        public ChapterSelectionData(){}
+
+        public ChapterSelectionData(ChapterSelectionData other)
+        {
+            multiplierTier = other.multiplierTier;
+            basicRewardMultiplier = other.basicRewardMultiplier;
+            totalEnergyCost = other.totalEnergyCost;
+            chapterIndex = other.chapterIndex;
+            tierIndex = other.tierIndex;
+        }
     }
 }

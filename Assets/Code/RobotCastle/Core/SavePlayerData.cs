@@ -17,6 +17,7 @@ namespace RobotCastle.Core
         public SavePlayerParty party;
         public PlayerInventory inventory;
         public SaveInvasionProgression progression;
+        public ChapterSelectionData chapterSelectionData;
         
         public SavePlayerData(){}
 
@@ -33,6 +34,7 @@ namespace RobotCastle.Core
             party = new SavePlayerParty(other.party);
             inventory = new PlayerInventory(other.inventory);
             progression = new SaveInvasionProgression(other.progression);
+            chapterSelectionData = new ChapterSelectionData(other.chapterSelectionData);
         }
     }
 }

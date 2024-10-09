@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 #if HAS_DOTWEEN
 using DG.Tweening;
 #endif
@@ -6,26 +7,27 @@ namespace SleepDev
 {
     public class ScalePulser : MonoBehaviour
     {
+        public Transform Target => _target;
+
         [SerializeField] private float _magnitude;
         [SerializeField] private float _time;
         [SerializeField] private bool _autoStart;
         [SerializeField] private Transform _target;
-        #if HAS_DOTWEEN
+#if HAS_DOTWEEN
         private Sequence _sequence;
-        #endif
-        public Transform Target => _target;
+#endif
 
-        private void OnEnable()
+        
+#if UNITY_EDITOR
+        private void OnValidate()
         {
-            if (_autoStart == false)
-                return;
-            Begin();
+            if (_target == null)
+            {
+                _target = transform;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
         }
-
-        private void OnDisable()
-        {
-            Stop();
-        }
+#endif
 
         public void Begin()
         {
@@ -45,12 +47,24 @@ namespace SleepDev
 #if HAS_DOTWEEN
             _sequence?.Kill();
 #endif
-}
+        }
 
         public void Reset()
         {
             Stop();
             _target.localScale = Vector3.one;
+        }
+        
+        private void OnEnable()
+        {
+            if (_autoStart == false)
+                return;
+            Begin();
+        }
+
+        private void OnDisable()
+        {
+            Stop();
         }
     }
 }

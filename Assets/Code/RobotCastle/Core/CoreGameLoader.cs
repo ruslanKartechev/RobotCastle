@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using MAXHelper;
-using RobotCastle.Data;
 using RobotCastle.MainMenu;
 using RobotCastle.Saving;
 using RobotCastle.UI;
@@ -12,6 +11,7 @@ namespace RobotCastle.Core
     [DefaultExecutionOrder(-300)]
     public class CoreGameLoader : MonoBehaviour
     {
+        public static bool DidInit;
         [Header("Core")]
         [SerializeField] private bool _autoStart = true;
         [SerializeField] private bool _initSdk = true;
@@ -37,12 +37,14 @@ namespace RobotCastle.Core
 
         private void Awake()
         {
-            if(_autoStart)
+            if(!DidInit && _autoStart)
                 Init();
         }
 
         public void Init()
         {
+            if (DidInit) return;
+            DidInit = true;
             DontDestroyOnLoad(gameObject);
             NamingDataLoader.Load();
             ServiceLocator.Create();

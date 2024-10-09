@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace RobotCastle.UI
 {
-    public class InvasionLevelsUI : MonoBehaviour
+    public class InvasionLevelsUI : MonoBehaviour, IScreenUI
     {
         [SerializeField] private TextMeshProUGUI _levelNumText;
         [SerializeField] private TextMeshProUGUI _rewardText;

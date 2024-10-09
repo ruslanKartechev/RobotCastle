@@ -103,14 +103,14 @@ namespace RobotCastle.UI
 
         public void Return()
         {
-            CLog.LogGreen("Return");
+            CLog.Log("Return");
             _partyUI.Off();
             ReturnCallback?.Invoke();
         }
 
         public void NextChapter()
         {
-            CLog.LogYellow("Next chapter");
+            CLog.Log("Next chapter");
             var nextIndex = _data.chapterIndex + 1;
             if (nextIndex >= _chaptersDb.chapters.Count)
                 return;
@@ -120,7 +120,7 @@ namespace RobotCastle.UI
 
         public void PrevChapter()
         {
-            CLog.LogYellow("Prev chapter");
+            CLog.Log("Prev chapter");
             var prevIndex = _data.chapterIndex - 1;
             if (prevIndex < 0)
                 return;
@@ -131,14 +131,14 @@ namespace RobotCastle.UI
         private void OnNewTierPicked(Item item)
         {
             _data.tierIndex = item.NumberId;
-            CLog.LogYellow($"On new tier picked: {item.NumberId}");
+            CLog.Log($"On new tier picked: {item.NumberId}");
             UpdateTier();
         }
         
         private void UpdateChapter()
         {
             var chapterInd = _data.chapterIndex;
-            CLog.LogYellow($"Updating chapter. Index: {chapterInd}. Unlocked: {_progresSave.chapters[chapterInd].unlocked}");
+            CLog.Log($"Updating chapter. Index: {chapterInd}. Unlocked: {_progresSave.chapters[chapterInd].unlocked}");
             var chapterConfig = _chaptersDb.chapters[chapterInd];
             _txtLevel.text = $"Chapter {_data.chapterIndex + 1}";
             _txtName.text = chapterConfig.viewName;

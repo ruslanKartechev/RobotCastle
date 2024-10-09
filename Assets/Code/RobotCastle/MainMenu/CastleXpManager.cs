@@ -34,7 +34,7 @@ namespace RobotCastle.MainMenu
 
         public int GetXp()
         {
-            return _playerData.playerLevel;
+            return _playerData.playerXp;
         }
 
         public int GetMaxXp()
@@ -54,18 +54,22 @@ namespace RobotCastle.MainMenu
             return (float)xp / max;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns>True if new level reached!</returns>
         public bool AddXp(int added)
         {
             var prev = _playerData.playerXp;
             _playerData.playerXp += added;
+            CLog.LogGreen($"[CastleXpManager] Added {added} to player xp, total: {_playerData.playerXp}");
             if (_playerData.playerXp >= GetMaxXp())
             {
                 _playerData.playerLevel++;
                 OnLevelSet?.Invoke(_playerData.playerLevel, _playerData.playerLevel - 1);
-                OnXpSet?.Invoke(prev, _playerData.playerXp);
+                OnXpSet?.Invoke(_playerData.playerXp, prev);
                 return true;
             }
-            OnXpSet?.Invoke(prev, _playerData.playerXp);
+            OnXpSet?.Invoke(_playerData.playerXp, prev);
             return false;
         }
         

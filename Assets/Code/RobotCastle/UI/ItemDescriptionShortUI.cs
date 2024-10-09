@@ -72,7 +72,7 @@ namespace RobotCastle.UI
                         continue;
                     didFindStat = true;
                     _statsIcon.sprite = viewDb.GetStatIcon(statMod.StatType);
-                    _statsText.text = $"{Mathf.RoundToInt(statMod.AddedPercent * 100f)}";
+                    _statsText.text = $"+{Mathf.RoundToInt(statMod.AddedPercent * 100f)}%";
                     if (_dontShowSpell)
                         break;
                 }

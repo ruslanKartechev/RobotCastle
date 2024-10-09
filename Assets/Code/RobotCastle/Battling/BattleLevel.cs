@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Bomber;
@@ -9,17 +8,21 @@ using RobotCastle.Battling.SmeltingOffer;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.InvasionMode;
+using RobotCastle.MainMenu;
 using RobotCastle.Merging;
+using RobotCastle.Saving;
 using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RobotCastle.Battling
 {
     [DefaultExecutionOrder(35)]
-    public class BattleLevel : MonoBehaviour, IBattleStartedProcessor, IBattleEndProcessor
+    public partial class BattleLevel : MonoBehaviour, IBattleStartedProcessor, IBattleEndProcessor
     {
-        [SerializeField] private int _startMoney = 0;
+        [SerializeField] private bool _logRewardItems;
+        [SerializeField] private int _startMoney = 9;
         [SerializeField] private bool _fillActiveAreaBeforeStart = true;
         [SerializeField] private float _endDelay = 2f;
         [SerializeField] private BattleManager _battleManager;
@@ -39,11 +42,11 @@ namespace RobotCastle.Battling
         private ITroopSizeManager _troopSizeManager;
         private BattleMergeUI _mainUI;
         private Chapter _chapter;
+        private ChapterSelectionData _selectionData;
         private CancellationTokenSource _token;
         private SmeltingOfferManager _smeltingOffer;
         private DevilsOfferManager _devilsOffer;
         private MerchantOfferManager _merchantOffer;
-        
 
         public void OnBattleStarted(Battle battle)
         {
@@ -58,29 +61,6 @@ namespace RobotCastle.Battling
             BattleRoundCompletion(battle, _token.Token);
         }
 
-#if UNITY_EDITOR
-        [ContextMenu("ForceShowSmeltingOffer")]
-        public void ForceShowSmeltingOffer()
-        {
-            AllowPlayerUIInput(false);
-            ShowSmeltingOffer();
-        }
-
-        [ContextMenu("ForceShowTradeOffer")]
-        public void ForceShowTradeOffer()
-        {
-            AllowPlayerUIInput(false);
-            ShowTradeOffer();
-        }
-
-        [ContextMenu("ForceShowDevilOffer")]
-        public void ForceShowDevilOffer()
-        {
-            AllowPlayerUIInput(false);
-            ShowDevilsOffer();
-        }
-#endif
-
         private void Awake()
         {
             GameState.Mode = GameState.EGameMode.InvasionBattle;
@@ -90,12 +70,15 @@ namespace RobotCastle.Battling
 
         private void Start()
         {
-            var save = DataHelpers.GetInvasionProgress();
-            _chapter = ServiceLocator.Get<ProgressionDataBase>().chapters[save.chapterIndex];
+            var playerData = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>();
+            _selectionData = playerData.chapterSelectionData;
+            SleepDev.Analytics.OnLevelStarted(_selectionData.chapterIndex, _selectionData.tierIndex);
+            _chapter = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
             _token = new CancellationTokenSource();
             ServiceLocator.Get<GameMoney>().levelMoney = _startMoney;
             try
             {
+                CLog.Log($"Start init");
                 Init(_token.Token);
             }catch(System.Exception ex)
             {
@@ -105,14 +88,16 @@ namespace RobotCastle.Battling
 
         private async Task Init(CancellationToken token)
         {
+            CLog.Log($"Start INIT CALL");
+            var uiMan = ServiceLocator.Get<IUIManager>(); 
             _map.InitRuntime();
             ServiceLocator.Bind<IMap>(_map.Map);
             ServiceLocator.Bind<BattleCamera>(_battleCamera);
-            ServiceLocator.Get<IUIManager>().ParentCanvas = _mainCanvas;
             ServiceLocator.Bind<EnemiesManager>(_enemiesManager);
             ServiceLocator.Bind<CastleHealthView>(_playerHealthView);
-            ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
-
+            uiMan.ParentCanvas = _mainCanvas;
+            uiMan.Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
+            
             _battleManager.startProcessor = this;
             _battleManager.endProcessor = this;
             var battle = _battleManager.Init(_chapter.levelData.levels);
@@ -127,6 +112,7 @@ namespace RobotCastle.Battling
             _merchantOffer = new MerchantOfferManager(_merchantOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
             try
             {
+                CLog.Log($"Awaiting settings stage");
                 await _battleManager.SetStage(0, token);
             }
             catch (System.Exception ex)
@@ -161,17 +147,22 @@ namespace RobotCastle.Battling
 
         private void StartBattle()
         {
+            if (_battleManager.battle.State == BattleState.Going)
+            {
+                CLog.LogError($"Battle is already going!");
+                return;
+            }
             if (_battleManager.CanStart())
             {
-                if(_fillActiveAreaBeforeStart)
-                    _mergeManager.FillActiveArea();
                 StartingBattle(_token.Token);
             }
         }
 
         private async Task StartingBattle(CancellationToken token)
         {
-            _battleCamera.AllowPlayerInput(false);
+            AllowPlayerUIInput(false);
+            if(_fillActiveAreaBeforeStart)
+                _mergeManager.FillActiveArea();
             _battleManager.SetGoingState();
             _mainUI.Started();
             foreach (var hero in _battleManager.battle.playersAlive)
@@ -186,14 +177,15 @@ namespace RobotCastle.Battling
             _itemPurchaser.TryPurchaseItem();
         }
 
-        private void ShowFailedScreen()
-        {
-            _mergeManager.AllowInput(false);
-            ServiceLocator.Get<IUIManager>().Show<LevelFailUI>(UIConstants.UILevelFail, () =>{});
-        }
-        
         private async Task BattleRoundCompletion(Battle battle, CancellationToken token)
         {
+            if (battle.roundIndex >= _chapter.levelData.levels.Count)
+            {
+                CLog.Log($"Win");
+                SleepDev.Analytics.OnLevelCompleted(_selectionData.chapterIndex, _selectionData.tierIndex);
+                GiveRewardAndShowUI();
+                return;
+            }
             _battleManager.BattleRewardCalculator.AddRewardForStage();
             await Task.Delay((int)(_endDelay * .5f * 1000), token);
             _gridSwitch.SetMergeMode();
@@ -231,7 +223,8 @@ namespace RobotCastle.Battling
             
             InitCurrentRound();
         }
-
+        
+        
         private void InitCurrentRound()
         {
             var roundType = _chapter.levelData.levels[_battleManager.battle.roundIndex].roundType;
@@ -288,6 +281,13 @@ namespace RobotCastle.Battling
             _mainUI.TroopSizePurchaseUI.SetInteractable(allow);
         }
         
+        private void ShowFailedScreen()
+        {
+            _mergeManager.AllowInput(false);
+            var lvlFail = ServiceLocator.Get<IUIManager>().Show<InvasionLevelFailUI>(UIConstants.UILevelFail, () =>{});
+            lvlFail.Show(Replay, ReturnToMenu);
+        }
+        
         private bool CheckLevelLost()
         {
             var health = --_battleManager.battle.playerHealthPoints;
@@ -298,10 +298,104 @@ namespace RobotCastle.Battling
             if (health == 0)
             {
                 CLog.LogWhite($"[{nameof(BattleLevel)}] Player LOST");
+                AllowPlayerUIInput(false);
                 ShowFailedScreen();
                 return true;
             }
             return false;
+        }
+
+        private void SetTierCompletedAndUnlockNext()
+        {
+            var playerData = DataHelpers.GetPlayerData();
+            var tier = _selectionData.tierIndex;
+            var chapterSave = playerData.progression.chapters[_selectionData.chapterIndex];
+            var tierSave = chapterSave.tierData[tier];
+            tierSave.completed = true;
+            tierSave.completedCount++;
+            var chapterConfig = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
+            tier++;
+            if (tier < chapterSave.tierData.Count)
+            {
+                chapterSave.tierData[tier].unlocked = true;
+            }
+            else if(_selectionData.chapterIndex < playerData.progression.chapters.Count)
+            {
+                var nextChapterSave = playerData.progression.chapters[_selectionData.chapterIndex + 1];
+                nextChapterSave.unlocked = true;
+                nextChapterSave.tierData[0].unlocked = true;
+            }
+        }
+        
+        
+        private void GiveRewardAndShowUI()
+        {
+            var chapterConfig = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
+            var playerData = DataHelpers.GetPlayerData();
+            SetTierCompletedAndUnlockNext();
+            var rewardMultiplier = chapterConfig.tiers[_selectionData.tierIndex].multiplier;
+            var goldReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.moneyGoldReward);
+            var xpReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.playerXpReward);
+
+            var addedHeroesXp = Mathf.RoundToInt(rewardMultiplier * chapterConfig.heroXpReward);
+            var heroesSaves = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerHeroes>();
+            foreach (var id in playerData.party.heroesIds)
+                heroesSaves.GetSave(id).xp += addedHeroesXp;
+
+            var gm = ServiceLocator.Get<GameMoney>();
+            gm.globalMoney += goldReward;
+            var newPlayerXp = ServiceLocator.Get<CastleXpManager>().AddXp(xpReward);
+            
+            var rewardsList = new List<CoreItemData>(5);
+            rewardsList.Add(new CoreItemData(goldReward, "gold", "bonus"));
+            rewardsList.Add(new CoreItemData(goldReward, "player_xp", "bonus"));
+            var inventory = playerData.inventory;
+            foreach (var reward in chapterConfig.chapterCompletedRewards)
+            {
+                var upgReward = new CoreItemData(reward);
+                upgReward.level = Mathf.RoundToInt(upgReward.level * rewardMultiplier);
+                rewardsList.Add(upgReward);
+                if(reward.type == "item")
+                    inventory.AddItem(reward.id, reward.level);
+                else
+                    CLog.LogRed($"reward type != \"item\", will not add to inventory!");
+            }
+
+            if (_logRewardItems)
+            {
+                var msg = "Added rewards after level win!";
+                foreach (var it in rewardsList)
+                    msg += $"\n{it.id}  {it.level}";
+                CLog.Log(msg);          
+            }
+            
+            var addedXps = new List<float>(6){addedHeroesXp,addedHeroesXp,addedHeroesXp,addedHeroesXp,addedHeroesXp,addedHeroesXp};
+            var ui = ServiceLocator.Get<IUIManager>().Show<InvasionLevelWinUI>(UIConstants.UILevelWin, () => {});
+            ui.Show(new InvasionWinArgs()
+            {
+                playerNewLevelReached = newPlayerXp,
+                playerXpAdded = xpReward,
+                heroesXp = addedXps,
+                selectionData = _selectionData,
+                rewards = rewardsList,
+                replayCallback = Replay,
+                returnCallback = ReturnToMenu
+            });
+        }
+
+        private void ReturnToMenu()
+        {
+            CLog.Log($"[{nameof(BattleLevel)}] Return to menu call");
+            SceneManager.LoadScene(GlobalConfig.SceneMainMenu);
+        }
+
+        private void Replay()
+        {
+            CLog.Log($"[{nameof(BattleLevel)}] Replay call");
+            SleepDev.Analytics.LevelReplayCalled(_selectionData.chapterIndex, _selectionData.tierIndex);
+            var playerData = DataHelpers.GetPlayerData();
+            playerData.playerEnergy -= ChapterSelectionData.BasicEnergyCost;
+            SceneManager.LoadScene(GlobalConfig.SceneBattle);
         }
         
     }

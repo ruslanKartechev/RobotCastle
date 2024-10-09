@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerData:
     levelMoney: 0
-    globalMoney: 3520
-    globalHardMoney: 120
-    playerLevel: 2
+    globalMoney: 1000
+    globalHardMoney: 80
+    playerLevel: 1
     playerXp: 0
     playerEnergy: 40
     playerEnergyMax: 40
@@ -35,14 +35,14 @@ MonoBehaviour:
       - id: book
         amount: 45
       - id: king_medal
-        amount: 15
+        amount: 40
       - id: hero_medal
-        amount: 5
+        amount: 30
       - id: upgrade_cube
-        amount: 3
+        amount: 2
       scrolls:
       - id: scroll_tier_1
-        ownedAmount: 4
+        ownedAmount: 5
         purchasedCount: 0
         timerData:
           year: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
           second: 0
           milliSecond: 0
       - id: scroll_tier_2
-        ownedAmount: 2
+        ownedAmount: 5
         purchasedCount: 0
         timerData:
           year: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
           second: 0
           milliSecond: 0
       - id: scroll_tier_3
-        ownedAmount: 3
+        ownedAmount: 5
         purchasedCount: 0
         timerData:
           year: 0
@@ -103,7 +103,7 @@ MonoBehaviour:
           completed: 0
           completedCount: 0
           attemptedCount: 0
-        - unlocked: 1
+        - unlocked: 0
           completed: 0
           completedCount: 0
           attemptedCount: 0
@@ -114,18 +114,6 @@ MonoBehaviour:
       - unlocked: 1
         tierData:
         - unlocked: 1
-          completed: 1
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 1
-          completed: 1
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 1
-          completed: 1
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 1
           completed: 0
           completedCount: 0
           attemptedCount: 0
@@ -133,17 +121,7 @@ MonoBehaviour:
           completed: 0
           completedCount: 0
           attemptedCount: 0
-      - unlocked: 1
-        tierData:
         - unlocked: 1
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 1
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
           completed: 0
           completedCount: 0
           attemptedCount: 0
@@ -161,7 +139,7 @@ MonoBehaviour:
           completed: 0
           completedCount: 0
           attemptedCount: 0
-        - unlocked: 0
+        - unlocked: 1
           completed: 0
           completedCount: 0
           attemptedCount: 0
@@ -178,6 +156,28 @@ MonoBehaviour:
           completedCount: 0
           attemptedCount: 0
       - unlocked: 1
+        tierData:
+        - unlocked: 1
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
         tierData:
         - unlocked: 1
           completed: 0

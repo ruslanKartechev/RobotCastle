@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using RobotCastle.Battling;
 using RobotCastle.Core;
@@ -16,6 +17,11 @@ namespace RobotCastle.Merging
         public void Init(MergeController mergeController)
         {
             _mergeController = mergeController;
+        }
+
+        private void OnDisable()
+        {
+            SetActive(false);
         }
 
         public void SetActive(bool active)

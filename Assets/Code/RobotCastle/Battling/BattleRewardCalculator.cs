@@ -31,8 +31,11 @@ namespace RobotCastle.Battling
         public void AddRewardForKill(IHeroController hero)
         {
             // CLog.Log($"Adding reward: {_perKill}");
-            var gm = ServiceLocator.Get<GameMoney>();
-            gm.AddMoney(_perKill);
+            if (_perKill > 0)
+            {
+                var gm = ServiceLocator.Get<GameMoney>();
+                gm.AddMoney(_perKill);              
+            }
         }
 
         public void AddRewardForStage()

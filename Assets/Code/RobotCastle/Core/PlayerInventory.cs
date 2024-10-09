@@ -64,6 +64,16 @@ namespace RobotCastle.Core
             itemsMap[id].amount = amount;
         }
 
+        public void AddItem(string id, int count)
+        {
+            if (itemsMap.ContainsKey(id) == false)
+            {
+                itemsMap.Add(id, new InventoryItemData(id, count));
+                return;
+            }
+            itemsMap[id].amount += count;
+        }
+        
         public int GetScrollsCount(string id)
         {
             if (scrollsMap.ContainsKey(id))

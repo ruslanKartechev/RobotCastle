@@ -133,7 +133,7 @@ namespace RobotCastle.UI
                 }
                 if (addedAtkSpeed > 0)
                 {
-                    var addedVal = Mathf.RoundToInt(addedAtkSpeed * stats.AttackSpeed.Val);
+                    var addedVal = addedAtkSpeed * stats.AttackSpeed.Val;
                     atkSpTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
                 }
             }

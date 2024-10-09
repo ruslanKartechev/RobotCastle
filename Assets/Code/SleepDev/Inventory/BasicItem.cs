@@ -33,6 +33,16 @@ namespace SleepDev.Inventory
             _countText.text = $"x{count}";
         }
 
+        public void SetIcon(Sprite icon)
+        {
+            _icon.sprite = icon;
+        }
+        
+        public void SetTextCount(string msg)
+        {
+            _countText.text = msg;
+        }
+
         public override int GetCount()
         {
             return _count;

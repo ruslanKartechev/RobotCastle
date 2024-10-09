@@ -9,6 +9,8 @@ namespace RobotCastle.InvasionMode
         public string id;
         public string viewName;
         public float moneyGoldReward;
+        public int playerXpReward = 10;
+        public int heroXpReward = 10;
         public List<DifficultyTier> tiers;
         public List<CoreItemData> chapterCompletedRewards;
         public LevelData levelData;

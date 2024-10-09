@@ -17,6 +17,8 @@ MonoBehaviour:
     - id: chapter_1
       viewName: Golblins
       moneyGoldReward: 100
+      playerXpReward: 90
+      heroXpReward: 3
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -28,7 +30,10 @@ MonoBehaviour:
         additionalRewards: []
       - multiplier: 2.5
         additionalRewards: []
-      chapterCompletedRewards: []
+      chapterCompletedRewards:
+      - level: 20
+        id: book
+        type: item
       levelData:
         levels:
         - enemyPreset: mushrooms_1
@@ -45,7 +50,7 @@ MonoBehaviour:
           roundType: 1
         - enemyPreset: mushrooms_5
           reward: 10
-          roundType: 0
+          roundType: 2
         - enemyPreset: mushrooms_6
           reward: 10
           roundType: 0
@@ -57,13 +62,15 @@ MonoBehaviour:
           roundType: 0
         - enemyPreset: mushrooms_9
           reward: 10
-          roundType: 0
+          roundType: 1
         - enemyPreset: mushrooms_10
           reward: 10
-          roundType: 0
+          roundType: 3
     - id: chapter_2
       viewName: Bandits
       moneyGoldReward: 120
+      playerXpReward: 10
+      heroXpReward: 10
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -111,6 +118,8 @@ MonoBehaviour:
     - id: chapter_3
       viewName: Slimes
       moneyGoldReward: 160
+      playerXpReward: 10
+      heroXpReward: 10
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -173,6 +182,8 @@ MonoBehaviour:
     - id: chapter_4
       viewName: Undead
       moneyGoldReward: 191
+      playerXpReward: 10
+      heroXpReward: 10
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -235,6 +246,8 @@ MonoBehaviour:
     - id: chapter_5
       viewName: Elf
       moneyGoldReward: 208
+      playerXpReward: 10
+      heroXpReward: 10
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -312,6 +325,8 @@ MonoBehaviour:
     - id: chapter_6
       viewName: Orc
       moneyGoldReward: 250
+      playerXpReward: 10
+      heroXpReward: 10
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -389,6 +404,8 @@ MonoBehaviour:
     - id: chapter_7
       viewName: Wraith
       moneyGoldReward: 300
+      playerXpReward: 10
+      heroXpReward: 10
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -466,6 +483,8 @@ MonoBehaviour:
     - id: chapter_8
       viewName: Vampire
       moneyGoldReward: 360
+      playerXpReward: 10
+      heroXpReward: 10
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -543,6 +562,8 @@ MonoBehaviour:
     - id: chapter_9
       viewName: Frost
       moneyGoldReward: 431
+      playerXpReward: 10
+      heroXpReward: 10
       tiers:
       - multiplier: 1
         additionalRewards: []
