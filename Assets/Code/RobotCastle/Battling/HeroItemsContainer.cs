@@ -12,7 +12,8 @@ namespace RobotCastle.Battling
         public List<HeroItemData> Items => _items;
         
         private const int MaxSize = 3;
-        [SerializeField] private UnitItemsContainerView _view;
+        
+        [SerializeField] private HeroView _view;
         private readonly List<HeroItemData> _items = new (MaxSize);
 
         public void UpdateItems(List<HeroItemData> items)
@@ -23,8 +24,8 @@ namespace RobotCastle.Battling
                 foreach (var it in items)
                     _items.Add(it);
             }
-            _view.ShowItems(items);
-            _view.Animate();
+            _view.heroUI.Items.ShowItems(items);
+            _view.heroUI.Items.Animate();
         }
 
         public void SetItems(List<HeroItemData> items)
@@ -35,7 +36,7 @@ namespace RobotCastle.Battling
                 foreach (var it in items)
                     _items.Add(it);
             }
-            _view.ShowItems(items);
+            _view.heroUI.Items.ShowItems(items);
         }
         
         public void ReplaceWithMergedItem(int indexAt, HeroItemData newItem)
@@ -45,21 +46,21 @@ namespace RobotCastle.Battling
                 _items.Add(newItem);
             else
                 _items[indexAt] = newItem;
-            _view.UpdateMergedItem(_items, indexAt);
-            _view.Animate();
+            _view.heroUI.Items.UpdateMergedItem(_items, indexAt);
+            _view.heroUI.Items.Animate();
         }
 
         public void AddNewItem(HeroItemData newItem)
         {
             // CLog.LogGreen($"AddNewItem. {newItem.AsStr()}");
             _items.Add(newItem);
-            _view.ShowLastAddedItem(_items);
-            _view.Animate();
+            _view.heroUI.Items.ShowLastAddedItem(_items);
+            _view.heroUI.Items.Animate();
         }
 
         public void UpdateView()
         {
-            _view.ShowItems(_items);
+            _view.heroUI.Items.ShowItems(_items);
         }
 
         [ContextMenu("LogAllModifiers")]

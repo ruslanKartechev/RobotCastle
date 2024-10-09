@@ -51,6 +51,9 @@ namespace RobotCastle.Battling
 
         private void OnAttack()
         {
+            if(Hero.View.shootParticles != null)
+                Hero.View.shootParticles.Play();
+            
             var projectile = _projectileFactory.GetProjectile();
             projectile.LaunchProjectile(Hero.View.projectileSpawnPoint, _targetTransform, Hero.View.stats.ProjectileSpeed, HitCallback, _target);
             OnAttackStep?.Invoke();
