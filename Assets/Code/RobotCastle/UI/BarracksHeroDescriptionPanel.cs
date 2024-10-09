@@ -14,7 +14,7 @@ namespace RobotCastle.UI
         public MyButton btnGrowth => _btnGrowth;
 
         public MyButton btnBack => _btnBack;
-
+        
         [SerializeField] private TextMeshProUGUI _statTxtAttack;
         [SerializeField] private TextMeshProUGUI _statTxtSpellPower;
         [SerializeField] private TextMeshProUGUI _statTxtAttackSpeed;
@@ -38,10 +38,19 @@ namespace RobotCastle.UI
         {
             gameObject.SetActive(true);
             _heroId = id;
+            UpdateStats();
+            _btnGrowth.AddMainCallback(Growth);
+            _btnBack.AddMainCallback(Back);
+            _btnGrowth.SetInteractable(true);
+            _btnBack.SetInteractable(true);
+        }
+
+        private void UpdateStats()
+        {
             var viewDb = ServiceLocator.Get<ViewDataBase>();
             var heroesDb = ServiceLocator.Get<HeroesDatabase>();
-            var save = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerHeroes>().GetSave(id);
-            var heroData = heroesDb.GetHeroInfo(id);
+            var save = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerHeroes>().GetSave(_heroId);
+            var heroData = heroesDb.GetHeroInfo(_heroId);
             var stats = heroData.stats;
             var lvl = save.level;
             _heroIcon.sprite = ViewDataBase.GetHeroSprite(heroData.viewInfo.iconId);
@@ -56,21 +65,23 @@ namespace RobotCastle.UI
             _statTxtAttackSpeed.text = ((int)HeroStatsManager.GetStatByLevel(stats.attackSpeed, lvl, 1)).ToString();
             _statTxtHealth.text = ((int)HeroStatsManager.GetStatByLevel(stats.health, lvl, 1)).ToString();
             _statTxtMoveSpeed.text = ((int)HeroStatsManager.GetMoveSpeed(stats.moveSpeed)).ToString();
-            var range = AttackRangeFactory.GetAttackRangeById(id);
+            var range = AttackRangeFactory.GetAttackRangeById(_heroId);
             _statTxtRange.text = range.GetStringDescription();
-            
-            _btnGrowth.AddMainCallback(Growth);
-            _btnBack.AddMainCallback(Back);
-            _btnGrowth.SetInteractable(true);
-            _btnBack.SetInteractable(true);
         }
 
         private void Growth()
         {
-            var panel = ServiceLocator.Get<IUIManager>().Show<HeroGrowthPanel>(UIConstants.UIHeroGrowth, () => {});
+            gameObject.SetActive(false);
+            var panel = ServiceLocator.Get<IUIManager>().Show<HeroGrowthPanel>(UIConstants.UIHeroGrowth, OnGrowthClosed);
             panel.Show(_heroId);
         }
 
+        private void OnGrowthClosed()
+        {
+            gameObject.SetActive(true);
+            UpdateStats();
+        }
+        
         private void Back()
         {
             ServiceLocator.Get<TabsSwitcher>().SetBarracksTab();
