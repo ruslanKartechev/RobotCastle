@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.MainMenu;
 using RobotCastle.Summoning;
 using SleepDev;
 using UnityEngine;
@@ -51,10 +52,12 @@ namespace RobotCastle.UI
 
         private void OpenGameModeMenu()
         {
-            CLog.Log($"Start battle call");
+            CLog.Log($"On battle button");
+            // gameObject.SetActive(false);
+            ServiceLocator.Get<TabsSwitcher>().SetNoneTab();
             ServiceLocator.Get<IUIManager>().Show<GameModeSelectionUI>(UIConstants.UIGameModeSelection, () => 
             { 
-                gameObject.SetActive(true);
+                ServiceLocator.Get<TabsSwitcher>().SetGateTab();
             }).Show();
         }
 

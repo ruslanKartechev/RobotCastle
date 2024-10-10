@@ -77,16 +77,10 @@ namespace RobotCastle.UI
             var cost = SelectionData.totalEnergyCost = SelectionData.multiplierTier * ChapterSelectionData.BasicEnergyCost;
 
             _txtAdditionalEnergyCost.text = _txtEnergyCostBtn.text = $"-{cost}";
-            if (SelectionData.multiplierTier <= 1)
-            {
-                _btnPrev.SetInteractable(false);
-                _btnNext.SetInteractable(true);
-            }
-            else if (SelectionData.multiplierTier >= 3)
-            {
-                _btnPrev.SetInteractable(true);
-                _btnNext.SetInteractable(false);
-            }
+            
+            _btnPrev.SetInteractable(SelectionData.multiplierTier > 1);
+            _btnNext.SetInteractable(SelectionData.multiplierTier < 3);
+
         }
     }
 }

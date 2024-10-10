@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Core;
+using RobotCastle.Data;
 using UnityEngine;
 
 namespace RobotCastle.UI
@@ -7,6 +9,7 @@ namespace RobotCastle.UI
     {
         [SerializeField] private MyButton _btnChapters1;
         [SerializeField] private MyButton _btnChapters2;
+        [SerializeField] private MyButton _closeBtn;
         [SerializeField] private Canvas _selectionCanvas;
         [SerializeField] private List<Canvas> _otherCanvases;
         [Space(5)]
@@ -24,6 +27,13 @@ namespace RobotCastle.UI
             gameObject.SetActive(true);
             _btnChapters1.AddMainCallback(ShowChapter1);
             _btnChapters2.AddMainCallback(ShowChapter2);
+            _closeBtn.AddMainCallback(Return);
+        }
+
+        private void Return()
+        {
+            gameObject.SetActive(false);
+            ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UIGameModeSelection);
         }
 
         private void ShowChapter1()
