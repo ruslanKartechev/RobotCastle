@@ -6,6 +6,8 @@ namespace RobotCastle.Core
     [System.Serializable]
     public class SavePlayerData
     {
+        public bool soundOn;
+        public bool vibrOn;
         public int levelMoney;
         public int globalMoney;
         public int globalHardMoney;
@@ -23,6 +25,8 @@ namespace RobotCastle.Core
 
         public SavePlayerData(SavePlayerData other)
         {
+            soundOn = other.soundOn;
+            vibrOn = other.vibrOn;
             levelMoney = other.levelMoney;
             globalMoney = other.globalMoney;
             globalHardMoney = other.globalHardMoney;

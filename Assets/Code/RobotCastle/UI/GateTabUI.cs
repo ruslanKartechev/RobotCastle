@@ -32,6 +32,11 @@ namespace RobotCastle.UI
         private void OpenSettings()
         {
             CLog.Log($"Open settings");
+            gameObject.SetActive(false);
+            ServiceLocator.Get<IUIManager>().Show<SettingsUI>(UIConstants.UISettings, () => 
+            { 
+                gameObject.SetActive(true);
+            }).Show();
         }
 
         private void OpenSummonMenu()
