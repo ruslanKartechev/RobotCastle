@@ -66,6 +66,7 @@ namespace RobotCastle.Battling
 
         private void Awake()
         {
+            ServiceLocator.Get<IUIManager>().Refresh();
             GameState.Mode = GameState.EGameMode.InvasionBattle;
             // if(!SleepDev.AdsPlayer.Instance.BannerCalled)
                 // SleepDev.AdsPlayer.Instance.ShowBanner();

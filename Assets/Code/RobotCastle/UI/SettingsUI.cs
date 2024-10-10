@@ -11,12 +11,17 @@ namespace RobotCastle.UI
         [SerializeField] private SwitchButton _btnSound;
         [SerializeField] private SwitchButton _btnVibr;
         [SerializeField] private MyButton _btnClose;
+        [SerializeField] private Button _btnPrivacy;
         [SerializeField] private List<Button> _buttons;
         [SerializeField] private FadeInOutAnimator _fadeInOutAnimator;
-        
+        [SerializeField] private string _link;
+
+
 
         public void Show()
         {
+            _btnPrivacy.onClick.RemoveListener(OnPrivacy);
+            _btnPrivacy.onClick.AddListener(OnPrivacy);
             _btnClose.AddMainCallback(Close);
             foreach (var btn in _buttons)
                 btn.interactable = true;
@@ -68,6 +73,11 @@ namespace RobotCastle.UI
             
             _fadeInOutAnimator.FadeOut();
             ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UISettings);
+        }
+        
+        private void OnPrivacy()
+        {
+            Application.OpenURL(_link);
         }
         
     }

@@ -24,6 +24,7 @@ namespace RobotCastle.MainMenu
         
         private void Awake()
         {
+            ServiceLocator.Get<IUIManager>().Refresh();
             GameState.Mode = GameState.EGameMode.MainMenu;
             // if(!SleepDev.AdsPlayer.Instance.BannerCalled)
                 // SleepDev.AdsPlayer.Instance.ShowBanner();

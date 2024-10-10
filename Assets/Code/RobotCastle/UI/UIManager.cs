@@ -29,21 +29,25 @@ namespace RobotCastle.UI
 
         public T Show<T>(string id, Action onClosed) where T : IScreenUI
         {
+            T obj;
             if (_openedScreens.ContainsKey(id))
             {
-                var obj = _openedScreens[id];
-                _closedCallbacks[id] = onClosed;
-                return (T)obj;
+                obj = (T)_openedScreens[id];
+                if (obj != null)
+                {
+                    _closedCallbacks[id] = onClosed;
+                    return obj;       
+                }
+                else
+                    Debug.LogError($"OBJECT IS NULL {id}");
             }
-            else
-            {
-                var path = $"prefabs/ui/{id}";
-                var prefab = Resources.Load<GameObject>(path);
-                var obj = UnityEngine.Object.Instantiate(prefab, ParentCanvas.transform).GetComponent<T>();
-                _openedScreens.Add(id, obj);
-                _closedCallbacks.Add(id, onClosed);
-                return obj;
-            }
+
+            var path = $"prefabs/ui/{id}";
+            var prefab = Resources.Load<GameObject>(path);
+            obj = UnityEngine.Object.Instantiate(prefab, ParentCanvas.transform).GetComponent<T>();
+            _openedScreens.Add(id, obj);
+            _closedCallbacks.Add(id, onClosed);
+            return obj;
         }
 
         public T GetIfShown<T>(string id) where T : IScreenUI
