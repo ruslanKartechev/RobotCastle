@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 using RobotCastle.Saving;
 using SleepDev;
 using SleepDev.Inventory;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace RobotCastle.UI
@@ -46,15 +48,16 @@ namespace RobotCastle.UI
         [SerializeField] private ChapterSelectionData _data;
         private InvasionMode.ProgressionDataBase _chaptersDb;
         private SaveInvasionProgression _progresSave;
-        
+        private bool _isLoading;
+
         public void Off()
         {
             _canvas.enabled = false;
-            // gameObject.SetActive(false);
         }
 
-        public void Show()
+        public void Show(Action callbackReturn)
         {
+            ReturnCallback = callbackReturn;
             _canvas.enabled = true;
             gameObject.SetActive(true);
             _chaptersDb = ServiceLocator.Get<InvasionMode.ProgressionDataBase>();
@@ -88,29 +91,42 @@ namespace RobotCastle.UI
             _prevChapterBtn.AddMainCallback(PrevChapter);
             _playBtn.AddMainCallback(Play);
             _returnBtn.AddMainCallback(Return);
+            DataHelpers.GetPlayerData().chapterSelectionData = _data;
+            _isLoading = false;
         }
 
         public void Play()
         {
-            CLog.LogGreen($"Play");
+            if (_isLoading) return;
+            if (_progresSave.chapters[_data.chapterIndex].unlocked == false)
+            {
+                CLog.Log($"Chapter not unlocked, won't play");
+                return;
+            }
             var tierUnlocked = _progresSave.chapters[_data.chapterIndex].tierData[_data.tierIndex].unlocked;
             if (!tierUnlocked)
             {
                 CLog.Log("Tier not unlocked, won't play");
                 return;
             }
+            _isLoading = true;
+            CLog.LogGreen($"Playing chapter {_data.chapterIndex}, tier {_data.tierIndex}");
+            DataHelpers.GetPlayerData().chapterSelectionData = _data;
+            SceneManager.LoadSceneAsync(GlobalConfig.SceneBattle);
         }
 
         public void Return()
         {
-            CLog.Log("Return");
+            if (_isLoading) return;
             _partyUI.Off();
+            _canvas.enabled = false;
             ReturnCallback?.Invoke();
         }
 
         public void NextChapter()
         {
-            CLog.Log("Next chapter");
+            if (_isLoading) return;
+            CLog.Log("Next Chapter");
             var nextIndex = _data.chapterIndex + 1;
             if (nextIndex >= _chaptersDb.chapters.Count)
                 return;
@@ -120,7 +136,8 @@ namespace RobotCastle.UI
 
         public void PrevChapter()
         {
-            CLog.Log("Prev chapter");
+            if (_isLoading) return;
+            CLog.Log("Prev Chapter");
             var prevIndex = _data.chapterIndex - 1;
             if (prevIndex < 0)
                 return;
@@ -131,14 +148,14 @@ namespace RobotCastle.UI
         private void OnNewTierPicked(Item item)
         {
             _data.tierIndex = item.NumberId;
-            CLog.Log($"On new tier picked: {item.NumberId}");
+            CLog.Log($"Difficulty tier: {item.NumberId}");
             UpdateTier();
         }
         
         private void UpdateChapter()
         {
             var chapterInd = _data.chapterIndex;
-            CLog.Log($"Updating chapter. Index: {chapterInd}. Unlocked: {_progresSave.chapters[chapterInd].unlocked}");
+            // CLog.Log($"Updating chapter. Index: {chapterInd}. Unlocked: {_progresSave.chapters[chapterInd].unlocked}");
             var chapterConfig = _chaptersDb.chapters[chapterInd];
             _txtLevel.text = $"Chapter {_data.chapterIndex + 1}";
             _txtName.text = chapterConfig.viewName;
@@ -148,16 +165,14 @@ namespace RobotCastle.UI
             var tiersCount = chapterConfig.tiers.Count;
             for (var i = 0; i < tiersCount; i++)
                 _tierUis[i].SetPercentMultiplier(chapterConfig.tiers[i].multiplier);
-
             if (_progresSave.chapters[chapterInd].unlocked)
             {
                 foreach (var go in _lockedGameobjects)
                     go.SetActive(false);
-                
                 for (var i = 0; i < tiersCount; i++)
                 {
                     var tierUnlocked = _progresSave.chapters[chapterInd].tierData[i].unlocked;
-                    _tierUis[i].SetInteractable(tierUnlocked);
+                    // _tierUis[i].SetInteractable(tierUnlocked);
                     _tierUis[i].SetLocked(!tierUnlocked);
                 }
                 CorrectTierIndex();
@@ -169,10 +184,9 @@ namespace RobotCastle.UI
                 foreach (var go in _lockedGameobjects)
                     go.SetActive(true);
                 _inventory.SetNoItem();
-                
                 for (var i = 0; i < tiersCount; i++)
                 {
-                    _tierUis[i].SetInteractable(false);
+                    // _tierUis[i].SetInteractable(false);
                     _tierUis[i].SetLocked(true);
                 }
             }
@@ -182,7 +196,9 @@ namespace RobotCastle.UI
         {
             var tierInd = _data.tierIndex;
             var chapter = _chaptersDb.chapters[_data.chapterIndex];
-            var totalReward = chapter.moneyGoldReward * chapter.tiers[_data.tierIndex].multiplier;
+            var multiplier = chapter.tiers[_data.tierIndex].multiplier;
+            _data.basicRewardMultiplier = multiplier;
+            var totalReward = chapter.moneyGoldReward * multiplier;
             var tierUnlocked = _progresSave.chapters[_data.chapterIndex].tierData[tierInd].unlocked;
             _playBtn.SetInteractable(tierUnlocked);
             

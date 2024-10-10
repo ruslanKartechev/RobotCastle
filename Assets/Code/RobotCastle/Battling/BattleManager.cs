@@ -16,7 +16,7 @@ namespace RobotCastle.Battling
         public BattleRewardCalculator BattleRewardCalculator => _rewardCalculator;
         public IBattleEndProcessor endProcessor { get; set; }
         public IBattleStartedProcessor startProcessor { get; set; }
-        
+        public bool isRoundBoss => _battle.roundIndex == _roundData.Count - 1;
         [SerializeField] private bool _activateEnemies = true;
         [SerializeField] private bool _activatePlayers = true;
         private Battle _battle;
@@ -155,7 +155,7 @@ namespace RobotCastle.Battling
             _battle.Enemies.Clear();
             _battle.enemiesAlive.Clear();
             var preset = _roundData[stageIndex].enemyPreset;
-            var boss = _battle.roundIndex == _roundData.Count - 1;
+            var boss = isRoundBoss;
             // boss = _battle.roundIndex == 0;
             CLog.Log($"[BattleManager] ======= Boss mode: {boss}");
             await enemiesManager.SpawnPreset(preset, boss, token);

@@ -25,13 +25,13 @@ namespace RobotCastle.UI
         private void ShowChapter1()
         {
             _selectionCanvas.enabled = false;
-            _chapters1.Show();
+            _chapters1.Show(ModeReturnCallback);
         }
 
         private void ShowChapter2()
         {
             _selectionCanvas.enabled = false;
-            _chapters2.Show();
+            _chapters2.Show(ModeReturnCallback);
         }
 
         public void ModeReturnCallback()

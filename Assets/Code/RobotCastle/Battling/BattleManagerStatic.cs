@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -50,8 +51,49 @@ namespace RobotCastle.Battling
                 }
             }
         }
-        
+
+        private class HeroAttackPoints
+        {
+            public IHeroController hero;
+            public int points;
+        }
+
         public static IHeroController GetBestTargetForAttack(IHeroController hero)
+        {
+            var map = hero.View.agent.Map;
+            var myPos = map.GetCellPositionFromWorld(hero.View.transform.position);
+            // var cellsMask = hero.View.stats.Range.GetCellsMask();
+            var enemies = hero.Battle.GetTeam(hero.TeamNum).enemyUnits;
+            // var pointsData = new List<HeroAttackPoints>(enemies.Count);
+            IHeroController bestTarget = null;
+            var maxPoints = -float.MaxValue;
+            foreach (var otherHero in enemies)
+            {
+                var enemyPos = otherHero.View.agent.CurrentCell;
+                var d2 = (enemyPos - myPos).sqrMagnitude;
+                var points = -d2;
+                if (otherHero.View.state.isStunned)
+                    points++;
+                if (!otherHero.View.state.isMoving)
+                    points++;
+                if (otherHero.View.state.attackData.CurrentEnemy == hero)
+                    points += 2;
+                if (points >= maxPoints)
+                {
+                    maxPoints = points;
+                    bestTarget = otherHero;
+                }
+            }
+            if (bestTarget == null)
+            {
+                CLog.Log($"Error trying to calculate best enemy");
+                return enemies[0];
+            }
+            return bestTarget;
+        }
+
+        
+        public static IHeroController GetBestTargetForAttack2(IHeroController hero)
         {
             var map = hero.View.agent.Map;
             var myPos = map.GetCellPositionFromWorld(hero.View.transform.position);

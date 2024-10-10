@@ -15,7 +15,6 @@ namespace RobotCastle.Battling
             set => _heroUI = value;
         }
         public Animator animator => _animator;
-        public Ragdoll ragdoll => _ragdoll;
         public Collider collider => _collider;
         public Rigidbody rb => _rb;
             
@@ -46,7 +45,6 @@ namespace RobotCastle.Battling
         [SerializeField] private Collider _collider;
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Animator _animator;
-        [SerializeField] private Ragdoll _ragdoll;
         [SerializeField] private MergeView_Hero _mergeView;
         [SerializeField] private HeroAnimationEventReceiver _heroAnimationEvent;
         [SerializeField] private MaterialFlicker _flicker;

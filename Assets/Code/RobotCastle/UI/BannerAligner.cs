@@ -24,7 +24,7 @@ namespace RobotCastle.UI
 
             if (rect != null)
             {
-                normalSizeDelta = rect.sizeDelta;
+                // normalSizeDelta = rect.sizeDelta;
                 UnityEditor.EditorUtility.SetDirty(this);
             }
         }

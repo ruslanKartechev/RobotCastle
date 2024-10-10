@@ -87,6 +87,28 @@ namespace RobotCastle.Battling
             }
         }
 
+        private void AddTierBasedDifficultyModifiers()
+        {
+            var tiersDb = ServiceLocator.Get<DifficultyTiersDatabase>();
+            var config = tiersDb.tiersConfig[_selectionData.tierIndex];
+            var roundsCount = _chapter.levelData.levels.Count;
+            if (config.enemyForcesPercent > 0)
+            {
+                _battleManager.AddRoundModifier(new RoundModifierEnemyForcesIncrease(config.enemyForcesPercent, roundsCount));
+            }
+            if (config.enemyTier > 0)
+            {
+                _battleManager.AddRoundModifier(new RoundModifierEnemiesTierUp(config.enemyTier, roundsCount));
+            }
+            if (config.castleDurabilityPenalty > 0)
+            {
+                var health = _battleManager.battle.playerHealthPoints - config.castleDurabilityPenalty;
+                _battleManager.battle.playerHealthPoints = health;
+                _playerHealthView.MinusHealth(health);
+            }
+            
+        }
+        
         private async Task Init(CancellationToken token)
         {
             CLog.Log($"Start INIT CALL");
@@ -108,6 +130,7 @@ namespace RobotCastle.Battling
             _enemiesManager.Init();
             _playerHealthView.SetHealth(battle.playerHealthPoints);
             _itemPurchaser = gameObject.GetComponent<IPlayerMergeItemPurchaser>();
+            AddTierBasedDifficultyModifiers();
             _smeltingOffer = new SmeltingOfferManager(_smeltingConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager.battle);
             _devilsOffer = new DevilsOfferManager(_devilsOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
             _merchantOffer = new MerchantOfferManager(_merchantOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
@@ -193,7 +216,7 @@ namespace RobotCastle.Battling
             switch (battle.State)
             {
                 case BattleState.EnemyWin:
-                    if(CheckLevelLost())
+                    if(SubtractHealthAndCheckLoose())
                         return;
                     await _battleManager.ResetStage(token);
                     break;
@@ -289,7 +312,7 @@ namespace RobotCastle.Battling
             lvlFail.Show(Replay, ReturnToMenu);
         }
         
-        private bool CheckLevelLost()
+        private bool SubtractHealthAndCheckLoose()
         {
             var health = --_battleManager.battle.playerHealthPoints;
             if (health <= 0)
@@ -334,7 +357,8 @@ namespace RobotCastle.Battling
             var chapterConfig = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
             var playerData = DataHelpers.GetPlayerData();
             SetTierCompletedAndUnlockNext();
-            var rewardMultiplier = chapterConfig.tiers[_selectionData.tierIndex].multiplier;
+            var rewardMultiplier = _selectionData.multiplierTier * _selectionData.basicRewardMultiplier;
+            CLog.Log($"Total reward multiplier: {rewardMultiplier}");
             var goldReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.moneyGoldReward);
             var xpReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.playerXpReward);
 

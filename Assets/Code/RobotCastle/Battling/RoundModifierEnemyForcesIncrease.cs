@@ -18,6 +18,8 @@ namespace RobotCastle.Battling
         
         public void OnRoundSet(BattleManager battleManager)
         {
+            if (battleManager.isRoundBoss)
+                return;
             CLog.Log($"[EnemyForcesIncreaseRoundModifier] Applying !");
             var enManager = ServiceLocator.Get<EnemiesManager>();
             enManager.IncreaseEnemyForcesBy(_additionalEnemiesPercent);
@@ -47,9 +49,10 @@ namespace RobotCastle.Battling
             _tierBonus = tierBonus;
         }
         
-        
         public void OnRoundSet(BattleManager battleManager)
         {
+            if (battleManager.isRoundBoss)
+                return;
             CLog.Log($"[EnemyForcesIncreaseRoundModifier] Applying !");
             var enManager = ServiceLocator.Get<EnemiesManager>();
             enManager.RaiseEnemiesTierAll(_tierBonus);

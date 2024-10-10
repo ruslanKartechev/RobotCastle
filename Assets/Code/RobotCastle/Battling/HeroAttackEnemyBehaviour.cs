@@ -91,13 +91,13 @@ namespace RobotCastle.Battling
         
         private async void DecideNextStep(CancellationToken token)
         {
-            // var bestTarget = BattleManager.GetBestTargetForAttack(_hero);
-            // if (bestTarget != null && enemy != bestTarget)
-            // {
-            //     // CLog.LogRed($"[{_hero.gameObject.name}] New enemy Set!");
-            //     enemy = bestTarget;
-            //     attackData.IsMovingForDuel = false;
-            // }
+            var bestTarget = BattleManager.GetBestTargetForAttack(_hero);
+            if (bestTarget != null && enemy != bestTarget)
+            {
+                // CLog.LogRed($"[{_hero.gameObject.name}] New enemy Set!");
+                enemy = bestTarget;
+                myState.attackData.IsMovingForDuel = false;
+            }
             if (enemy.IsDead)
             {
                 _mainToken.Cancel();
