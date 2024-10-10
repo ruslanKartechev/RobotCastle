@@ -100,10 +100,13 @@ namespace RobotCastle.UI
             {
                 _playerLevelText.text = $"{playerData.playerLevel}";
                 yield return StartCoroutine(Filling(.8f, 1f, _xpFillTime)); 
+                yield return null;
                 _playerLevelText.text = $"{playerData.playerLevel+1}";
                 _playerLevelText.transform.DOPunchScale(Vector3.one * _levelPunchScale, _levelPunchTime);
                 var t2 = xpManager.GetProgressToNextLvl();
                 _xpProgBar.fillAmount = 0f;
+                yield return new WaitForSeconds(_levelPunchTime);
+                yield return null;
                 yield return StartCoroutine(Filling(0f, t2, _xpFillTime));
                 
             }

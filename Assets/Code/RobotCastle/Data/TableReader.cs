@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using Castle.Core.Internal;
 using Newtonsoft.Json;
-using RobotCastle.Battling;
 using SleepDev;
-using UnityEditor;
 using UnityEngine;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 namespace RobotCastle.Data
 {
     public class TableReader : MonoBehaviour
@@ -41,6 +40,7 @@ namespace RobotCastle.Data
 
         public void ReplaceAllConfigFromTables()
         {
+#if UNITY_EDITOR
             foreach (var asset in _configFiles)
             {
                 var id = asset.name;
@@ -57,6 +57,7 @@ namespace RobotCastle.Data
                     continue;
                 }
                 heroConfig.stats = stats;
+
                 var path = AssetDatabase.GetAssetPath(asset);
                 if (path.IsNullOrEmpty())
                 {
@@ -70,6 +71,7 @@ namespace RobotCastle.Data
                 var serialized = JsonConvert.SerializeObject(heroConfig, Formatting.Indented);
                 File.WriteAllText(path, serialized);
             }
+#endif
         }
 
         public HeroStats ReadStatsForHero(string heroId)

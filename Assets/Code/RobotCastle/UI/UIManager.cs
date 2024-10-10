@@ -62,7 +62,10 @@ namespace RobotCastle.UI
 
         public void AddAsShown<T>(string id, T obj) where T : IScreenUI
         {
-            _openedScreens.Add(id, obj);
+            if (_openedScreens.ContainsKey(id))
+                _openedScreens[id] = obj;
+            else
+                _openedScreens.Add(id, obj);
         }
 
         public void OnClosed(string id)

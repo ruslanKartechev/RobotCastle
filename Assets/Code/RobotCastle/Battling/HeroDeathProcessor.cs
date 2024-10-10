@@ -25,7 +25,7 @@ namespace RobotCastle.Battling
             _heroView.processes.StopAll();
             if (ServiceLocator.GetIfContains<ISimplePoolsManager>(out var pool))
             {
-                var particles = pool.GetOne("death_particles") as DeathParticles;
+                var particles = pool.GetOne("death_particles") as OneTimeParticles;
                 particles.Show(_heroView.transform.position);
             }
             

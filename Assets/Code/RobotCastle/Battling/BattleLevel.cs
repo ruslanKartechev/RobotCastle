@@ -26,6 +26,7 @@ namespace RobotCastle.Battling
         [SerializeField] private bool _fillActiveAreaBeforeStart = true;
         [SerializeField] private float _endDelay = 2f;
         [SerializeField] private float _startEnemyShowTime = .5f;
+        [SerializeField] private float _winFailDelay = .5f;
         [SerializeField] private BattleManager _battleManager;
         [SerializeField] private MergeManager _mergeManager;
         [SerializeField] private EnemiesManager _enemiesManager;
@@ -35,6 +36,7 @@ namespace RobotCastle.Battling
         [SerializeField] private BattleGridSwitch _gridSwitch;
         [SerializeField] private CastleHealthView _playerHealthView;
         [SerializeField] private ParticleSystem _troopSizeExpansion;
+        [SerializeField] private BattleLocationSpawner _locationSpawner;
         [Space(10)]
         [SerializeField] private SmeltingConfigContainer _smeltingConfigContainer;
         [SerializeField] private DevilsOfferConfigContainer _devilsOfferConfigContainer;
@@ -51,7 +53,7 @@ namespace RobotCastle.Battling
 
         public void OnBattleStarted(Battle battle)
         {
-            AllowPlayerUIInput(true);
+            // AllowPlayerUIInput(true);
             _gridSwitch.SetBattleMode();
             _mergeManager.AllowInput(false);
             ServiceLocator.Get<MergeManager>().StopHighlight();
@@ -65,8 +67,8 @@ namespace RobotCastle.Battling
         private void Awake()
         {
             GameState.Mode = GameState.EGameMode.InvasionBattle;
-            if(!SleepDev.AdsPlayer.Instance.BannerCalled)
-                SleepDev.AdsPlayer.Instance.ShowBanner();
+            // if(!SleepDev.AdsPlayer.Instance.BannerCalled)
+                // SleepDev.AdsPlayer.Instance.ShowBanner();
         }
 
         private void Start()
@@ -75,6 +77,7 @@ namespace RobotCastle.Battling
             _selectionData = playerData.chapterSelectionData;
             SleepDev.Analytics.OnLevelStarted(_selectionData.chapterIndex, _selectionData.tierIndex);
             _chapter = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
+            _locationSpawner.SpawnLocation(_chapter);
             _token = new CancellationTokenSource();
             ServiceLocator.Get<GameMoney>().levelMoney = _startMoney;
             try
@@ -134,6 +137,8 @@ namespace RobotCastle.Battling
             _smeltingOffer = new SmeltingOfferManager(_smeltingConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager.battle);
             _devilsOffer = new DevilsOfferManager(_devilsOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
             _merchantOffer = new MerchantOfferManager(_merchantOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
+            _battleCamera.AllowPlayerInput(false);
+            _battleCamera.SetBattlePoint();
             try
             {
                 CLog.Log($"Awaiting settings stage");
@@ -143,8 +148,6 @@ namespace RobotCastle.Battling
             {
                 CLog.LogError($"Exception: {ex.Message}\n{ex.StackTrace}");
             }
-            _battleCamera.AllowPlayerInput(false);
-            _battleCamera.SetBattlePoint();
             await Task.Delay((int)(_startEnemyShowTime * 1000), token);
             InitUI();
             await _battleCamera.MoveToMergePoint();
@@ -184,6 +187,7 @@ namespace RobotCastle.Battling
         private async Task StartingBattle(CancellationToken token)
         {
             AllowPlayerUIInput(false);
+            
             if(_fillActiveAreaBeforeStart)
                 _mergeManager.FillActiveArea();
             _battleManager.SetGoingState();
@@ -206,12 +210,16 @@ namespace RobotCastle.Battling
             if (battle.roundIndex >= _chapter.levelData.levels.Count - 1)
             {
                 CLog.Log($"Level Completed!");
+                await Task.Delay((int)(_winFailDelay * 1000), token);
+                if (token.IsCancellationRequested) return;
                 SleepDev.Analytics.OnLevelCompleted(_selectionData.chapterIndex, _selectionData.tierIndex);
                 GiveRewardAndShowUI();
                 return;
             }
             _battleManager.BattleRewardCalculator.AddRewardForStage();
             await Task.Delay((int)(_endDelay * .5f * 1000), token);
+            if (token.IsCancellationRequested) return;
+
             _gridSwitch.SetMergeMode();
             switch (battle.State)
             {

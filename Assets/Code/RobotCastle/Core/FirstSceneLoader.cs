@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using MAXHelper;
+using RobotCastle.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,7 +10,8 @@ namespace RobotCastle.Core
     public class FirstSceneLoader : MonoBehaviour
     {
         [SerializeField] private string _firstScene;
-
+        [SerializeField] private SceneLoaderUI _loadingUI;
+        
         private void Start()
         {
             StartCoroutine(Working());
@@ -18,8 +21,11 @@ namespace RobotCastle.Core
         {
             yield return null;
             yield return null;
+            while(AdsManager.Exist == false || AdsManager.Instance.bReady == false)
+                yield return null;
+            _loadingUI.Begin();
             yield return null;
-            SceneManager.LoadScene(_firstScene);
+            yield return SceneManager.LoadSceneAsync(_firstScene);
         }
     }
 }

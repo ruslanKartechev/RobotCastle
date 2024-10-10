@@ -123,7 +123,7 @@ namespace RobotCastle.UI
                 if (addedAtk > 0)
                 {
                     var addedVal = Mathf.RoundToInt(addedAtk * stats.Attack.Get());
-                    atkTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal:N1}</color>";
+                    atkTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
                     // atkTxt += $"+{addedVal}";
                 }
                 if (addedSp > 0)

@@ -5,15 +5,16 @@ using Castle.Core.Internal;
 using Newtonsoft.Json;
 using RobotCastle.Battling;
 using RobotCastle.Core;
-using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor.Animations;
-
+#endif
 namespace RobotCastle.Testing
 {
     public class AttackSpeedTester : MonoBehaviour
     {
+        #if UNITY_EDITOR
         [SerializeField] private bool _logAttackDelays;
         [Space(10)]
         [SerializeField] private float _testSpeed;
@@ -167,6 +168,7 @@ namespace RobotCastle.Testing
             return path;
         }
         
+        #endif
     }
 
 

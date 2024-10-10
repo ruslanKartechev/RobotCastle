@@ -42,6 +42,7 @@ namespace RobotCastle.Battling
             _manaAdder.CanAdd = false;
             _view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
             _view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
+            _token?.Cancel();
             _token = new CancellationTokenSource();
             _view.processes.Add(this);
             CheckingPosition(_token.Token);

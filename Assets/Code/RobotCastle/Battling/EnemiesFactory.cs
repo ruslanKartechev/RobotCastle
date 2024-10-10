@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using DG.Tweening;
 using Newtonsoft.Json;
 using RobotCastle.Core;
 using RobotCastle.Data;
@@ -16,7 +17,7 @@ namespace RobotCastle.Battling
     {
         void InitHero(IHeroController hero);
     }
-    public class EnemiesFactory : MonoBehaviour, IHeroInitializer
+    public class EnemiesFactory : MonoBehaviour
     {
         [SerializeField] private string _presetsDirectory;
         private List<IHeroController> _spawnedEnemies;
@@ -24,7 +25,8 @@ namespace RobotCastle.Battling
         public List<IHeroController> SpawnedEnemies => _spawnedEnemies;
         
         public IGridView GridView { get; set; }
-
+        
+        
         public async Task SpawnPreset(string presetPath, bool bossMode, CancellationToken token)
         {
             var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
@@ -76,6 +78,7 @@ namespace RobotCastle.Battling
                 hero.InitHero(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
                 hero.View.heroUI.AssignStatsTracking(hero.View);
                 _spawnedEnemies.Add(hero);
+                AnimateSpawn(hero);
                 await Task.Yield();
                 if (token.IsCancellationRequested) return;
             }
@@ -96,6 +99,7 @@ namespace RobotCastle.Battling
                 hero.InitHero(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
                 hero.View.heroUI.AssignStatsTracking(hero.View);
                 _spawnedEnemies.Add(hero);
+                AnimateSpawn(hero);
                 await Task.Yield();
                 if (token.IsCancellationRequested) return;
             }
@@ -127,13 +131,24 @@ namespace RobotCastle.Battling
             barsPanel.AssignEnemyUI(hero.View);
             hero.InitHero(args.coreData.id, heroLvl, args.coreData.level, new List<ModifierProvider>());
             hero.View.heroUI.UpdateStatsView(hero.View);
+            AnimateSpawn(hero);
             return hero;
         }
         
-        public void InitHero(IHeroController hero)
+        
+        private void AnimateSpawn(IHeroController hero)
         {
-            throw new System.NotImplementedException();
+            var tr = hero.View.transform;
+            var pos = tr.position;
+            var startPos = pos;
+            pos.y += 10;
+            tr.position = pos;
+            tr.DOMove(startPos, .3f).SetEase(Ease.InQuad);
+            var particles = ServiceLocator.Get<SimplePoolsManager>();
+            var p = particles.GetOne("hero_spawn") as OneTimeParticles;
+            p.Show(startPos);
         }
+        
 
 #if UNITY_EDITOR
         [ContextMenu("E_CreateTestPreset")]

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace RobotCastle.UI
 {
@@ -7,6 +8,7 @@ namespace RobotCastle.UI
         [SerializeField] private MyButton _btnChapters1;
         [SerializeField] private MyButton _btnChapters2;
         [SerializeField] private Canvas _selectionCanvas;
+        [SerializeField] private List<Canvas> _otherCanvases;
         [Space(5)]
         [SerializeField] private InvasionChapterSelectionUI _chapters1;
         [SerializeField] private InvasionChapterSelectionUI _chapters2;
@@ -14,6 +16,8 @@ namespace RobotCastle.UI
 
         public void Show()
         {
+            foreach (var canvas in _otherCanvases)
+                canvas.enabled = false;
             _chapters1.Off();
             _chapters2.Off();
             _selectionCanvas.enabled = true;

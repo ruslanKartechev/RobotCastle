@@ -36,6 +36,9 @@ namespace RobotCastle.Battling
                 money -= _cost;
                 gameMoney.levelMoney = money;
                 merge.HighlightMergeOptions();
+                var particles = ServiceLocator.Get<SimplePoolsManager>();
+                var p = particles.GetOne("hero_spawn") as OneTimeParticles;
+                p.Show(spawnedItem.Transform.position);
             }
         }
         

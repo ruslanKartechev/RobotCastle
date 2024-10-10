@@ -158,7 +158,7 @@ namespace RobotCastle.Battling
             var boss = isRoundBoss;
             // boss = _battle.roundIndex == 0;
             CLog.Log($"[BattleManager] ======= Boss mode: {boss}");
-            await enemiesManager.SpawnPreset(preset, boss, token);
+            await enemiesManager.factory.SpawnPreset(preset, boss, token);
 
             for (var i = 0; i < _roundModifiers.Count; i++)
                 _roundModifiers[i].OnRoundSet(this);

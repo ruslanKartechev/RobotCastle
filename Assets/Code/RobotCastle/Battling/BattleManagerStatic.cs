@@ -61,7 +61,8 @@ namespace RobotCastle.Battling
         public static IHeroController GetBestTargetForAttack(IHeroController hero)
         {
             var map = hero.View.agent.Map;
-            var myPos = map.GetCellPositionFromWorld(hero.View.transform.position);
+            var myWorldPos = hero.View.transform.position;
+            var myPos = map.GetCellPositionFromWorld(myWorldPos);
             // var cellsMask = hero.View.stats.Range.GetCellsMask();
             var enemies = hero.Battle.GetTeam(hero.TeamNum).enemyUnits;
             // var pointsData = new List<HeroAttackPoints>(enemies.Count);
@@ -71,13 +72,21 @@ namespace RobotCastle.Battling
             {
                 var enemyPos = otherHero.View.agent.CurrentCell;
                 var d2 = (enemyPos - myPos).sqrMagnitude;
-                var points = -d2;
+                var points = -d2 * 2f;
                 if (otherHero.View.state.isStunned)
                     points++;
                 if (!otherHero.View.state.isMoving)
                     points++;
                 if (otherHero.View.state.attackData.CurrentEnemy == hero)
                     points += 2;
+                var vec = otherHero.View.transform.position - myWorldPos;
+                var angle = Mathf.Abs(Vector3.SignedAngle(vec, hero.View.transform.forward, Vector3.up));
+                
+                if (angle > 90)
+                    points -= 2;
+                else if (angle > 10)
+                    points -= 1;
+                
                 if (points >= maxPoints)
                 {
                     maxPoints = points;

@@ -87,6 +87,7 @@ namespace RobotCastle.UI
             UpdateChapter();
             _inventory.OnNewPicked -= OnNewTierPicked;
             _inventory.OnNewPicked += OnNewTierPicked;
+            _inventory.AllowPickNothing = false;
             _nextChapterBtn.AddMainCallback(NextChapter);
             _prevChapterBtn.AddMainCallback(PrevChapter);
             _playBtn.AddMainCallback(Play);

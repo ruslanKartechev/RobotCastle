@@ -18,7 +18,8 @@ namespace RobotCastle.Battling
         private bool _didInit;
 
         public List<IHeroController> Enemies => _enemiesFactory.SpawnedEnemies;
-
+        public EnemiesFactory factory => _enemiesFactory;
+        
         private void Start()
         {
             if(_initOnStart)
@@ -38,10 +39,6 @@ namespace RobotCastle.Battling
             _enemiesFactory.GridView = _gridView;
         }
 
-        public async Task SpawnPreset(string preset, bool boss, CancellationToken token)
-        {
-            await _enemiesFactory.SpawnPreset(preset, boss, token);
-        }
 
         public IHeroController SpawnNewEnemy(SpawnMergeItemArgs args, int heroLvl = 0, bool addToList = true)
         {

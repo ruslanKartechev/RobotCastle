@@ -52,7 +52,7 @@ namespace RobotCastle.UI
         private void Update()
         {
             if (_text != null)
-                _text.text = $"{_stat.Get():N2}";
+                _text.text = $"{(int)_stat.Get()}";
             var t = _stat.Get() / _statMax.Get();
             _fillImage.fillAmount = t;
             // CLog.Log($"Val {_stat.Val}. Max: {_statMax.Val}");

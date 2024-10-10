@@ -25,8 +25,8 @@ namespace RobotCastle.MainMenu
         private void Awake()
         {
             GameState.Mode = GameState.EGameMode.MainMenu;
-            if(!SleepDev.AdsPlayer.Instance.BannerCalled)
-                SleepDev.AdsPlayer.Instance.ShowBanner();
+            // if(!SleepDev.AdsPlayer.Instance.BannerCalled)
+                // SleepDev.AdsPlayer.Instance.ShowBanner();
         }
 
         private void Start()
