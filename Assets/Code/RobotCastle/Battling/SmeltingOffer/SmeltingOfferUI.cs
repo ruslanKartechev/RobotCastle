@@ -20,6 +20,7 @@ namespace RobotCastle.Battling.SmeltingOffer
         [SerializeField] private List<SmeltingItemUI> _itemsUI;
         [SerializeField] private InventoryController _inventory;
         [SerializeField] private MyButton _confirmButton;
+        [SerializeField] private FadeInOutAnimator _fadeAnimator;
         private List<CoreItemData> _options;
         private Action<CoreItemData> _callback;
 
@@ -30,7 +31,8 @@ namespace RobotCastle.Battling.SmeltingOffer
                 CLog.LogError($"Options count and ui elements count don't match!");
                 return;
             }
-            gameObject.SetActive(true);
+            _fadeAnimator.On();
+            _fadeAnimator.FadeIn();
             _callback = callback;
             _options = options;
             var viewDb = ServiceLocator.Get<ViewDataBase>();

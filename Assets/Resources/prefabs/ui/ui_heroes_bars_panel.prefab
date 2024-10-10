@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_heroes_bars_panel
       objectReference: {fileID: 0}
+    - target: {fileID: 697934586019279730, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1610373870926224285, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8674299170616164390, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -146,6 +154,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pools:
+  - _id: boss
+    _prefabPath: prefabs/ui/boss_health_panel
+    _startCount: 1
+    _parent: {fileID: 5434345392024435966}
   - _id: enemy
     _prefabPath: prefabs/ui/unit_ui_enemies
     _startCount: 12

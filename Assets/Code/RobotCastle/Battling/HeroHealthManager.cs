@@ -45,7 +45,7 @@ namespace RobotCastle.Battling
                     if (shield < 0)
                     {
                         shield = 0;
-                        health += shield; // left over damage
+                        health += shield; // left over damage (negative value)
                     }
                 }
                 else
@@ -67,11 +67,16 @@ namespace RobotCastle.Battling
                 else
                     health -= args.magicDamage;
                 ServiceLocator.Get<IDamageDisplay>().ShowAtScreenPos((int)args.magicDamage, EDamageType.Magical, _view.heroUI.DamagePoint.position);
+         
             }
             if(didDamageShield)
                 stats.Shield = shield;
+            if (health < 0)
+                health = 0;
             stats.HealthCurrent.Val = health;
             
+            if(_view.Flicker != null)
+                _view.Flicker.Flick();
             // CLog.Log($"[{_view.gameObject.name}] Damaged. Phys: {args.physDamage}. Magic: {args.magicDamage}");
             if (health <= 0)
             {

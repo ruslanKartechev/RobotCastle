@@ -2265,7 +2265,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3491765107648122082, guid: da80564eb12e49148ad00f2d218dd90e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 781788198947564827}
+    - targetCorrespondingSourceObject: {fileID: 3491765107648122082, guid: da80564eb12e49148ad00f2d218dd90e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 139926417997786115}
   m_SourcePrefab: {fileID: 100100000, guid: da80564eb12e49148ad00f2d218dd90e, type: 3}
+--- !u!137 &2694067699675488966 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3491765107651297762, guid: da80564eb12e49148ad00f2d218dd90e, type: 3}
+  m_PrefabInstance: {fileID: 1519539986287436580}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &2694067699679697926 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3491765107655524130, guid: da80564eb12e49148ad00f2d218dd90e, type: 3}
@@ -2288,6 +2296,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ff2bd602d54997a583d9ad73c281e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &139926417997786115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2694067699689091014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b409d1136d9f4bbbb53ab6dafe7370d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultFlickCount: 2
+  _defaultFlickTime: 0.065
+  _renderers:
+  - {fileID: 2694067699675488966}
+  _normalColor: {r: 0.48235294, g: 0.48235294, b: 0.48235294, a: 1}
+  _flickColor: {r: 0.6150943, g: 0, b: 0, a: 1}
 --- !u!4 &2694067699689321440 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3491765107648614596, guid: da80564eb12e49148ad00f2d218dd90e, type: 3}
@@ -2378,6 +2404,10 @@ PrefabInstance:
       propertyPath: m_Mass
       value: 500
       objectReference: {fileID: 0}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _flicker
+      value: 
+      objectReference: {fileID: 139926417997786115}
     - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       propertyPath: _animator
       value: 

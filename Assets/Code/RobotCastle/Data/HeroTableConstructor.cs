@@ -32,6 +32,7 @@ namespace RobotCastle.Data
         
         public void Generate(string id, string folderPath, HeroInfo template)
         {
+            #if UNITY_EDITOR
             var pathToAssets = Application.streamingAssetsPath;
             pathToAssets = pathToAssets.Split("Assets")[0];
             var path = Path.Join(pathToAssets, folderPath,$"{id}.json");
@@ -49,8 +50,10 @@ namespace RobotCastle.Data
             var tableStats = _tableReader.ReadStatsForHero(id);
             if (tableStats != null)
                 heroData.stats = tableStats;
-            var obj = JsonConvert.SerializeObject(heroData);
+            var obj = JsonConvert.SerializeObject(heroData, Formatting.Indented);
             File.WriteAllText(path, obj);
+            UnityEditor.AssetDatabase.Refresh();
+            #endif
         }
     }
 }

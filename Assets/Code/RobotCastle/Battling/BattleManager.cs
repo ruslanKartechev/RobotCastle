@@ -79,7 +79,6 @@ namespace RobotCastle.Battling
             _battle.State = BattleState.Going;
             _battle.WinCallback = OnTeamWin;
             var map = ServiceLocator.Get<Bomber.IMap>();
-            CLog.LogRed($"Enemies count: {_battle.Enemies.Count}");
             foreach (var hero in _battle.Enemies)
             {
                 hero.TeamNum = 1;
@@ -142,12 +141,13 @@ namespace RobotCastle.Battling
 
         public async Task SetStage(int stageIndex, CancellationToken token)
         {
+            var enemiesManager = ServiceLocator.Get<EnemiesManager>();
             _rewardCalculator.RewardPerStageCompletion = _roundData[stageIndex].reward;
             _battle.roundIndex = stageIndex;
+            
             if (_battle.Enemies.Count > 0)
             {
-                foreach (var en in _battle.Enemies)
-                    Destroy(en.View.gameObject);
+                enemiesManager.DestroyCurrentUnits();
                 await Task.Yield();
                 if (token.IsCancellationRequested) return;
             }
@@ -155,14 +155,16 @@ namespace RobotCastle.Battling
             _battle.Enemies.Clear();
             _battle.enemiesAlive.Clear();
             var preset = _roundData[stageIndex].enemyPreset;
-            var enemyManager = ServiceLocator.Get<EnemiesManager>();
-            await enemyManager.SpawnPreset(preset, token);
+            var boss = _battle.roundIndex == _roundData.Count - 1;
+            // boss = _battle.roundIndex == 0;
+            CLog.Log($"[BattleManager] ======= Boss mode: {boss}");
+            await enemiesManager.SpawnPreset(preset, boss, token);
 
             for (var i = 0; i < _roundModifiers.Count; i++)
                 _roundModifiers[i].OnRoundSet(this);
             if (token.IsCancellationRequested) return;
 
-            _battle.Enemies = enemyManager.Enemies;
+            _battle.Enemies = enemiesManager.Enemies;
             // do something for merge reset
             _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>()
                 .GetItemsInActiveArea<IHeroController>(_ => true);

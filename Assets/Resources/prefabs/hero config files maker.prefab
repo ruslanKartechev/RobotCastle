@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f733357f2584c258a8e28b5c1ebedbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _overrideExisting: 0
+  _overrideExisting: 1
   _tableReader: {fileID: 195413007023003844}
   _heroToGenerate: evan
   _pathToHeroes: Assets/Resources/config_heroes
@@ -150,7 +150,7 @@ MonoBehaviour:
     viewInfo:
       name: Evan
       iconId: hero_icon_evan
-  _enemyToGenerate: mushroom_2
+  _enemyToGenerate: wraith
   _pathToEnemies: Assets/Resources/config_enemies
   _enemyTemplate:
     stats:
@@ -266,6 +266,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _configFiles:
+  - {fileID: 4900000, guid: 7ec91615db634c54beb8fc3b3b14584a, type: 3}
+  - {fileID: 4900000, guid: 058d165d8a5e49cdb454b5ba5f5b74f2, type: 3}
+  - {fileID: 4900000, guid: e21bc43a4cdd446499bbc6ba0ee3a1af, type: 3}
+  - {fileID: 4900000, guid: 41e48f927f4746844a6a02df9b85b7db, type: 3}
+  - {fileID: 4900000, guid: 1d1c431500939e040998419fe1b49d2d, type: 3}
+  - {fileID: 4900000, guid: ba71ee2bb938fcb4c8dffea4443d2d82, type: 3}
+  - {fileID: 4900000, guid: 3852a592784843e2a4e1c2f85a51dac2, type: 3}
+  - {fileID: 4900000, guid: 4ec9df7b7161f2c4083f7f8d318df1cd, type: 3}
   - {fileID: 4900000, guid: 6b561b3042374934990e9d178121b725, type: 3}
   - {fileID: 4900000, guid: 82152927aeaf9be4986f0acac332ced6, type: 3}
   - {fileID: 4900000, guid: cb1b3715a0dfdaf45b71526165aa870d, type: 3}
@@ -303,6 +311,7 @@ MonoBehaviour:
   - heroes stats - bombie
   - heroes stats - maiu
   - heroes stats - joi
+  - heroes stats - boss_1_wraith
   _folderPath: C:\Users\karte\OneDrive\Desktop\stats
   _fileName: heroes stats - mara
   _attachFormat: 1

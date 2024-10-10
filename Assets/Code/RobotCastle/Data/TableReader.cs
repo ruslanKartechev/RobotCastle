@@ -132,7 +132,7 @@ namespace RobotCastle.Data
                         break;
                     case IdATKSpeed:
                         heroStats.attackSpeed = new List<float>(MaxMergeLvl);
-                        if (!ReadValues(columns, heroStats.attackSpeed, MaxMergeLvl, 0.01f))
+                        if (!ReadValues(columns, heroStats.attackSpeed, MaxMergeLvl, 1))
                             goto EXIT_NULL;
                         break;
                     case IdMoveSpeed:
@@ -191,7 +191,7 @@ namespace RobotCastle.Data
                         // goto EXIT_NULL;
                 }
             }
-            return _heroStats;
+            return heroStats;
             
             EXIT_NULL:
                 return null;

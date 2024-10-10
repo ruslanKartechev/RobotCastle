@@ -6,6 +6,8 @@ namespace RobotCastle.Battling
     public class HeroAnimationEventReceiver : MonoBehaviour
     {
         public event Action OnAttackEvent;
+        public event Action OnAttackAnimationEndEvent;
+        
 
         /// <summary>
         /// Called from Unity Animator
@@ -14,7 +16,11 @@ namespace RobotCastle.Battling
         {
             OnAttackEvent?.Invoke();
         }
-        
+
+        public void AE_AttackEnd()
+        {
+            OnAttackAnimationEndEvent?.Invoke();
+        }
 
     }
 }

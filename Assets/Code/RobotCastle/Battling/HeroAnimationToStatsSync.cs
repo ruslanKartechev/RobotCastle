@@ -68,8 +68,8 @@ namespace RobotCastle.Battling
         private void UpdateAttackSpeed(Stat stat)
         {
             var val = stat.Get();
-            CLog.Log($"[{_view.gameObject.name}] Updating attack animation speed. Stat: {val}");
-            _view.animator.SetFloat("Speed", val);
+            // CLog.LogYellow($"[{_view.gameObject.name}] Updating attack animation speed. Stat: {val}");
+            _view.animator.SetFloat("AttackSpeed", val);
         }
     }
 }

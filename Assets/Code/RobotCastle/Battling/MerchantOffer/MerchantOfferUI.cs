@@ -17,6 +17,8 @@ namespace RobotCastle.Battling.MerchantOffer
         [SerializeField] private List<MerchantOfferButton> _buttons;
         [SerializeField] private MyButton _completedBtn;
         [SerializeField] private TextMeshProUGUI _moneyText;
+        [SerializeField] private FadeInOutAnimator _fadeAnimator;
+
         private PurchaseCallback _purchaseCallback;
         private Action _endCallback;
         private MerchantOfferData.GoodsPreset _preset;
@@ -57,8 +59,8 @@ namespace RobotCastle.Battling.MerchantOffer
             _buttons[1].activeBtn.OverrideMainCallback(OnBtn2);
             _buttons[2].activeBtn.OverrideMainCallback(OnBtn3);
             _completedBtn.AddMainCallback(Complete);
-            gameObject.SetActive(true);
-
+            _fadeAnimator.On();
+            _fadeAnimator.FadeIn();
         }
 
         private void TryPurchaseAtIndex(int index)

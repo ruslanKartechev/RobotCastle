@@ -831,6 +831,8 @@ GameObject:
   - component: {fileID: 6725499355319676928}
   - component: {fileID: 6316541771157601263}
   - component: {fileID: 5572474250859166932}
+  - component: {fileID: 6382655143387513387}
+  - component: {fileID: 7604021818438072224}
   m_Layer: 5
   m_Name: ui_smelting_offer
   m_TagString: Untagged
@@ -948,6 +950,7 @@ MonoBehaviour:
   - {fileID: 7271705881249443649}
   _inventory: {fileID: 5572474250859166932}
   _confirmButton: {fileID: 6970604892590893206}
+  _fadeAnimator: {fileID: 7604021818438072224}
 --- !u!114 &5572474250859166932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -966,6 +969,33 @@ MonoBehaviour:
   - {fileID: 7271705881249443649}
   _raycaster: {fileID: 6725499355319676928}
   _allowPickNothing: 1
+--- !u!225 &6382655143387513387
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5073151514754374230}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &7604021818438072224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5073151514754374230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8843896775e444b98e8a5c37a8778b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inTime: 0.25
+  _outTime: 0.25
+  _canvasGroup: {fileID: 6382655143387513387}
 --- !u!1 &5198091737055317250
 GameObject:
   m_ObjectHideFlags: 0

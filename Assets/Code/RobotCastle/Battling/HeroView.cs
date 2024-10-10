@@ -1,6 +1,7 @@
 ﻿using Bomber;
 using RobotCastle.Merging;
 using RobotCastle.UI;
+using SleepDev;
 using SleepDev.Ragdoll;
 using UnityEngine;
 
@@ -37,6 +38,7 @@ namespace RobotCastle.Battling
         public HeroProcessesContainer processes { get; } = new();
         public float StunnedFxHeight => _stunnedFxHeight;
         public Transform UITrackingPoint => _uiTrackingPoint;
+        public MaterialFlicker Flicker => _flicker;
         
         [SerializeField] private float _stunnedFxHeight = 1.5f;
         [SerializeField] private HeroItemsContainer _heroItemsContainer;
@@ -47,6 +49,7 @@ namespace RobotCastle.Battling
         [SerializeField] private Ragdoll _ragdoll;
         [SerializeField] private MergeView_Hero _mergeView;
         [SerializeField] private HeroAnimationEventReceiver _heroAnimationEvent;
+        [SerializeField] private MaterialFlicker _flicker;
         [Space(10)]
         [SerializeField] private Transform _projectileSpawnPoint;
         [SerializeField] private ParticleSystem _shootParticles;

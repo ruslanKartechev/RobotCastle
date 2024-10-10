@@ -1,16 +1,14 @@
-﻿using UnityEngine;
+﻿using RobotCastle.Battling;
+using UnityEngine;
 
 namespace RobotCastle.UI
 {
-    public class BossHealthBar : BarTrackerUI
+    public class BossHealthBar : UnitUIWrapper
     {
-        public BarTrackerUI health => _health;
-        public BarTrackerUI mana => _mana;
+        public BattleUnitUI unitUI => _ui;
         
         [SerializeField] private FadeInOutAnimator _animator;
-        [SerializeField] private BarTrackerUI _health;
-        [SerializeField] private BarTrackerUI _mana;
-
+        [SerializeField] private BattleUnitUI _ui;
 
         public void AnimateIn()
         {

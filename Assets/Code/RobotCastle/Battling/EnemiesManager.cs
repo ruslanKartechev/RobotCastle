@@ -2,7 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
+using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
 
@@ -36,9 +38,9 @@ namespace RobotCastle.Battling
             _enemiesFactory.GridView = _gridView;
         }
 
-        public async Task SpawnPreset(string preset, CancellationToken token)
+        public async Task SpawnPreset(string preset, bool boss, CancellationToken token)
         {
-            await _enemiesFactory.SpawnPreset(preset, token);
+            await _enemiesFactory.SpawnPreset(preset, boss, token);
         }
 
         public IHeroController SpawnNewEnemy(SpawnMergeItemArgs args, int heroLvl = 0, bool addToList = true)
@@ -47,6 +49,21 @@ namespace RobotCastle.Battling
             if(addToList)
                 Enemies.Add(h);
             return h;
+        }
+
+        public void DestroyCurrentUnits()
+        {
+            var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
+            foreach (var en in Enemies)
+            {
+                if (en.View.heroUI.gameObject.TryGetComponent<UnitUIWrapper>(out var wrapper))
+                    barsPanel.ReturnToPool(wrapper);
+            }
+            for (var i = Enemies.Count - 1; i >= 0; i--)
+            {
+                Destroy(Enemies[i].View.gameObject);
+            }
+            Enemies.Clear();
         }
 
         public void IncreaseEnemyForcesBy(float percent)

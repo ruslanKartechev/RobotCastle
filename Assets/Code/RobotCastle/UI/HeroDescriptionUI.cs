@@ -88,8 +88,8 @@ namespace RobotCastle.UI
         public void Show(HeroStatsManager stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
         {
             var atkTxt = (stats.Attack.Get()).ToString(CultureInfo.InvariantCulture);
-            var atkSpTxt = $"{stats.AttackSpeed.Val:N2}";
             var spTxt = stats.SpellPower.Get().ToString(CultureInfo.InvariantCulture);
+            var atkSpTxt = $"{Mathf.RoundToInt(stats.AttackSpeed.Get() * 100)}";
             
             var items = stats.gameObject.GetComponent<HeroItemsContainer>();
             if (items.Items.Count > 0)
@@ -122,18 +122,18 @@ namespace RobotCastle.UI
                 }
                 if (addedAtk > 0)
                 {
-                    var addedVal = Mathf.RoundToInt(addedAtk * stats.Attack.Val);
+                    var addedVal = Mathf.RoundToInt(addedAtk * stats.Attack.Get());
                     atkTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal:N1}</color>";
                     // atkTxt += $"+{addedVal}";
                 }
                 if (addedSp > 0)
                 {
-                    var addedVal = Mathf.RoundToInt(addedSp * stats.SpellPower.Val);
-                    spTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
+                    var addedVal = Mathf.RoundToInt(addedSp * stats.SpellPower.Get());
+                    spTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}%</color>";
                 }
                 if (addedAtkSpeed > 0)
                 {
-                    var addedVal = addedAtkSpeed * stats.AttackSpeed.Val;
+                    var addedVal = Mathf.RoundToInt(100 * addedAtkSpeed * stats.AttackSpeed.Get());
                     atkSpTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
                 }
             }

@@ -39,6 +39,7 @@ namespace RobotCastle.Battling
                 view.stats.ManaResetAfterBattle.Reset(view);
                 view.heroUI.AssignStatsTracking(view);
                 view.healthManager.SetDamageable(true);
+                view.statAnimationSync.Init(true);
                 foreach (var itemData in view.heroItemsContainer.Items)
                 {
                     foreach (var id in itemData.modifierIds)

@@ -19,7 +19,7 @@ namespace RobotCastle.Core
             else if (Input.GetKeyDown(_reloadKey))
             {
                 var scene = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(scene);
+                SceneManager.LoadSceneAsync(scene);
             }
         }
 #endif

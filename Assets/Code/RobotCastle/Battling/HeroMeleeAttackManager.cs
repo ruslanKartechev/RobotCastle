@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -10,7 +12,9 @@ namespace RobotCastle.Battling
         public IHeroController Hero { get; set; }
         public IDamageReceiver CurrentTarget => _target;
         public IDamageReceiver LastTarget => _target;
-        
+
+        [SerializeField] private bool _doOverrideAnimations;
+        [SerializeField] private List<RuntimeAnimatorController> _overrideControllers;
         private IDamageReceiver _target;
         private bool _activated;
 
@@ -22,6 +26,11 @@ namespace RobotCastle.Battling
                 _activated = true;
                 Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
                 Hero.View.animationEventReceiver.OnAttackEvent += OnAttack;
+                if (_doOverrideAnimations)
+                {
+                    Hero.View.animationEventReceiver.OnAttackAnimationEndEvent -= SetRandomAnimation;
+                    Hero.View.animationEventReceiver.OnAttackAnimationEndEvent += SetRandomAnimation;
+                }
             }
             Hero.View.state.isAttacking = true;
             Hero.View.animator.SetBool(HeroesConstants.Anim_Attack, true);
@@ -35,6 +44,8 @@ namespace RobotCastle.Battling
             Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
             Hero.View.animator.SetBool(HeroesConstants.Anim_Attack, false);
             Hero.View.state.isAttacking = false;
+            if (_doOverrideAnimations)
+                Hero.View.animationEventReceiver.OnAttackAnimationEndEvent -= SetRandomAnimation;
         }
 
         private void OnAttack()
@@ -45,6 +56,11 @@ namespace RobotCastle.Battling
             _target.TakeDamage(damage);
             OnAttackStep?.Invoke();
             Hero.View.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
+        }
+
+        private void SetRandomAnimation()
+        {
+            Hero.View.animator.runtimeAnimatorController = _overrideControllers.Random();
         }
     }
 }

@@ -25,6 +25,7 @@ namespace RobotCastle.Battling
         [SerializeField] private int _startMoney = 9;
         [SerializeField] private bool _fillActiveAreaBeforeStart = true;
         [SerializeField] private float _endDelay = 2f;
+        [SerializeField] private float _startEnemyShowTime = .5f;
         [SerializeField] private BattleManager _battleManager;
         [SerializeField] private MergeManager _mergeManager;
         [SerializeField] private EnemiesManager _enemiesManager;
@@ -121,8 +122,7 @@ namespace RobotCastle.Battling
             }
             _battleCamera.AllowPlayerInput(false);
             _battleCamera.SetBattlePoint();
-            var config = ServiceLocator.Get<GlobalConfig>();
-            await Task.Delay((int)(config.BattleStartEnemyShowTime * 1000), token);
+            await Task.Delay((int)(_startEnemyShowTime * 1000), token);
             InitUI();
             await _battleCamera.MoveToMergePoint();
             GrantPlayerInput();
@@ -179,9 +179,10 @@ namespace RobotCastle.Battling
 
         private async Task BattleRoundCompletion(Battle battle, CancellationToken token)
         {
-            if (battle.roundIndex >= _chapter.levelData.levels.Count)
+            CLog.Log($"[{nameof(BattleLevel)}] Round index: {battle.roundIndex}. Max Index: {_chapter.levelData.levels.Count - 1}");
+            if (battle.roundIndex >= _chapter.levelData.levels.Count - 1)
             {
-                CLog.Log($"Win");
+                CLog.Log($"Level Completed!");
                 SleepDev.Analytics.OnLevelCompleted(_selectionData.chapterIndex, _selectionData.tierIndex);
                 GiveRewardAndShowUI();
                 return;

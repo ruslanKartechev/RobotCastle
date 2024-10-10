@@ -115,7 +115,7 @@ namespace RobotCastle.Merging
         
         public void HighlightMergeOptions()
         {
-            CLog.Log($"[{nameof(MergeManager)}] Highlight potential merge");
+            // CLog.Log($"[{nameof(MergeManager)}] Highlight potential merge");
             var allItems = _sectionsController.GetAllItems();
             _highlighter.HighlightAllPotentialCombinations(allItems);
         }

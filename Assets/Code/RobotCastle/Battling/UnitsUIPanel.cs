@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.UI;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -18,7 +19,15 @@ namespace RobotCastle.Battling
             var wrapper = ((UnitUIWrapper)_pool.GetOne("enemy"));
             wrapper.tracker.SetTarget(view.UITrackingPoint);
             view.heroUI = (BattleUnitUI)wrapper.ui;
-        }        
+        }
+
+        public void AssignBossUI(HeroView view)
+        {
+            var bossUI = ((BossHealthBar)_pool.GetOne("boss"));
+            bossUI.tracker.SetTarget(view.UITrackingPoint);
+            view.heroUI = bossUI.unitUI;
+            bossUI.AnimateIn();
+        }
         
         public void AssignHeroUI(HeroView view)
         {

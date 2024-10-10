@@ -12,11 +12,13 @@ namespace RobotCastle.Battling.DevilsOffer
         [SerializeField] private MyButton _btnDecline;
         [SerializeField] private TextMeshProUGUI _penaltyText;
         [SerializeField] private ItemDescriptionLongUI _itemDescription;
+        [SerializeField] private FadeInOutAnimator _fadeAnimator;
         private Action<bool> _callback;
-        // private DevilsOfferData _offerData;
 
         public void Show(DevilsOfferData offerData, Action<bool> callback)
         {
+            _fadeAnimator.On();
+            _fadeAnimator.FadeIn();
             gameObject.SetActive(true);
             _callback = callback;
             _btnAccept.AddMainCallback(Accept);

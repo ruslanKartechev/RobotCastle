@@ -316,6 +316,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 3.2325408
       objectReference: {fileID: 0}
+    - target: {fileID: 4558253575628693157, guid: 91b5d5ead6cb5f045bb0139cedb0e524, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4558253575632937061, guid: 91b5d5ead6cb5f045bb0139cedb0e524, type: 3}
       propertyPath: m_Controller
       value: 
@@ -331,7 +335,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4558253575625511845, guid: 91b5d5ead6cb5f045bb0139cedb0e524, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5531900318138250901}
+    - targetCorrespondingSourceObject: {fileID: 4558253575625511845, guid: 91b5d5ead6cb5f045bb0139cedb0e524, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2028311497620108260}
   m_SourcePrefab: {fileID: 100100000, guid: 91b5d5ead6cb5f045bb0139cedb0e524, type: 3}
+--- !u!137 &2977640692732162898 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4558253575628693157, guid: 91b5d5ead6cb5f045bb0139cedb0e524, type: 3}
+  m_PrefabInstance: {fileID: 1589945589536976375}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &2977640692736429458 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4558253575632937061, guid: 91b5d5ead6cb5f045bb0139cedb0e524, type: 3}
@@ -359,6 +371,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ff2bd602d54997a583d9ad73c281e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2028311497620108260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2977640692745829970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b409d1136d9f4bbbb53ab6dafe7370d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultFlickCount: 2
+  _defaultFlickTime: 0.065
+  _renderers:
+  - {fileID: 2977640692732162898}
+  _normalColor: {r: 0.48235294, g: 0.48235294, b: 0.48235294, a: 1}
+  _flickColor: {r: 0.6150943, g: 0, b: 0, a: 1}
 --- !u!1001 &1827581998374206335
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -436,6 +466,10 @@ PrefabInstance:
       value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _flicker
+      value: 
+      objectReference: {fileID: 2028311497620108260}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       propertyPath: _animator
       value: 
       objectReference: {fileID: 2977640692736429458}
@@ -476,6 +510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58110171326f4872acbf1725c3caba12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _doOverrideAnimations: 0
+  _overrideControllers: []
 --- !u!114 &7123008830958139446 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}

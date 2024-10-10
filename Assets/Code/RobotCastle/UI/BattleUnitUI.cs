@@ -22,6 +22,16 @@ namespace RobotCastle.UI
         public BarTrackerUI ManaUI => _manaUI;
         public ShieldStatBar ShieldBar => _shieldStatBar;
 
+        public void ReplaceHealthAndManaBar(BarTrackerUI health, BarTrackerUI mana)
+        {
+            if(_healthUI != null && _healthUI != health)
+                _healthUI.gameObject.SetActive(false);
+            if(_manaUI != null && _manaUI != mana)
+                _manaUI.gameObject.SetActive(false);
+            _healthUI = health;
+            _manaUI = mana;
+        }
+
         public void SetMergeMode()
         {
             _unitUILayout.SetMerge();
@@ -46,20 +56,20 @@ namespace RobotCastle.UI
         
         public void AssignStatsTracking(HeroView view)
         {
-            view.heroUI.HealthUI.AssignStats(view.stats.HealthCurrent, view.stats.HealthMax);
+            _healthUI.AssignStats(view.stats.HealthCurrent, view.stats.HealthMax);
             if(view.stats.ManaMax.Get() > 0)
-                view.heroUI.ManaUI.AssignStats(view.stats.ManaCurrent, view.stats.ManaMax);
+                _manaUI.AssignStats(view.stats.ManaCurrent, view.stats.ManaMax);
             else
-                view.heroUI.ManaUI.SetVal(0f);
+                _manaUI.SetVal(0f);
         }
 
         public void UpdateStatsView(HeroView view)
         {
-            view.heroUI.HealthUI.DisplayStats(view.stats.HealthCurrent, view.stats.HealthMax);
+            _healthUI.DisplayStats(view.stats.HealthCurrent, view.stats.HealthMax);
             if(view.stats.ManaMax.Get() > 0)
-                view.heroUI.ManaUI.DisplayStats(view.stats.ManaCurrent, view.stats.ManaMax);
+                _manaUI.DisplayStats(view.stats.ManaCurrent, view.stats.ManaMax);
             else
-                view.heroUI.ManaUI.SetVal(0f);
+                _manaUI.SetVal(0f);
         }
         
     }

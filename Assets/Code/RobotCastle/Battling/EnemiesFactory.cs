@@ -12,7 +12,11 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class EnemiesFactory : MonoBehaviour
+    public interface IHeroInitializer
+    {
+        void InitHero(IHeroController hero);
+    }
+    public class EnemiesFactory : MonoBehaviour, IHeroInitializer
     {
         [SerializeField] private string _presetsDirectory;
         private List<IHeroController> _spawnedEnemies;
@@ -21,7 +25,7 @@ namespace RobotCastle.Battling
         
         public IGridView GridView { get; set; }
 
-        public async Task SpawnPreset(string presetPath, CancellationToken token)
+        public async Task SpawnPreset(string presetPath, bool bossMode, CancellationToken token)
         {
             var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
             if (asset == null)
@@ -36,9 +40,47 @@ namespace RobotCastle.Battling
             {
                 CLog.LogError($"[{nameof(EnemiesFactory)}] Cannot Deserialize preset at {presetPath}");
             }
-            await SpawnPreset(preset, token);
+
+            if (bossMode)
+                await SpawnBossPreset(preset, token);
+            else
+                await SpawnPreset(preset, token);
         }
 
+        public async Task SpawnBossPreset(EnemyPackPreset packPreset, CancellationToken token)
+        {
+            _spawnedEnemies = new List<IHeroController>(packPreset.enemies.Count);
+            var factory = ServiceLocator.Get<IMergeItemsFactory>();
+            var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
+            var bossPreset = packPreset.enemies[0];
+            {
+                var cellView = GridView.GetCell(bossPreset.gridPos.x, bossPreset.gridPos.y);
+                var itemView = factory.SpawnItemOnCell(cellView, new ItemData(bossPreset.enemy));
+                var hero = itemView.Transform.GetComponent<IHeroController>();
+                barsPanel.AssignBossUI(hero.View);
+                                
+                var modifiers = HeroesManager.GetModifiers(bossPreset.modifiers);
+                hero.InitHero(bossPreset.enemy.id, bossPreset.heroLevel, bossPreset.enemy.level, modifiers);
+                hero.View.heroUI.AssignStatsTracking(hero.View);
+                _spawnedEnemies.Add(hero);
+                hero.View.animator.Play("Appear", 0, 0);
+            }
+            for (var ind = 1; ind < packPreset.enemies.Count; ind++)
+            {
+                var enemyPreset = packPreset.enemies[ind];
+                var cellView = GridView.GetCell(enemyPreset.gridPos.x, enemyPreset.gridPos.y);
+                var itemView = factory.SpawnItemOnCell(cellView, new ItemData(enemyPreset.enemy));
+                var hero = itemView.Transform.GetComponent<IHeroController>();
+                barsPanel.AssignEnemyUI(hero.View);
+                var modifiers = HeroesManager.GetModifiers(enemyPreset.modifiers);
+                hero.InitHero(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
+                hero.View.heroUI.AssignStatsTracking(hero.View);
+                _spawnedEnemies.Add(hero);
+                await Task.Yield();
+                if (token.IsCancellationRequested) return;
+            }
+        }
+        
         public async Task SpawnPreset(EnemyPackPreset packPreset, CancellationToken token)
         {
             _spawnedEnemies = new List<IHeroController>(packPreset.enemies.Count);
@@ -52,11 +94,7 @@ namespace RobotCastle.Battling
                 barsPanel.AssignEnemyUI(hero.View);
                 var modifiers = HeroesManager.GetModifiers(enemyPreset.modifiers);
                 hero.InitHero(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
-                if (hero.View.heroUI == null)
-                {
-                    CLog.Log($"HERO UI IS NULL");
-                }
-                hero.View.heroUI.UpdateStatsView(hero.View);
+                hero.View.heroUI.AssignStatsTracking(hero.View);
                 _spawnedEnemies.Add(hero);
                 await Task.Yield();
                 if (token.IsCancellationRequested) return;
@@ -91,6 +129,11 @@ namespace RobotCastle.Battling
             hero.View.heroUI.UpdateStatsView(hero.View);
             return hero;
         }
+        
+        public void InitHero(IHeroController hero)
+        {
+            throw new System.NotImplementedException();
+        }
 
 #if UNITY_EDITOR
         [ContextMenu("E_CreateTestPreset")]
@@ -121,5 +164,6 @@ namespace RobotCastle.Battling
         }
         
         #endif
+      
     }
 }

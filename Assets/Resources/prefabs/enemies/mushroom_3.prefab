@@ -777,6 +777,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8666222085425565636, guid: 6817f99c996d6954bbc09b0c865d9807, type: 3}
       insertIndex: -1
       addedObject: {fileID: 636407413663937804}
+    - targetCorrespondingSourceObject: {fileID: 8666222085425565636, guid: 6817f99c996d6954bbc09b0c865d9807, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 696756761340454837}
   m_SourcePrefab: {fileID: 100100000, guid: 6817f99c996d6954bbc09b0c865d9807, type: 3}
 --- !u!4 &8585687849241825792 stripped
 Transform:
@@ -805,6 +808,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ff2bd602d54997a583d9ad73c281e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &696756761340454837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8585687849242054148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b409d1136d9f4bbbb53ab6dafe7370d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultFlickCount: 2
+  _defaultFlickTime: 0.065
+  _renderers:
+  - {fileID: 8585687849245164292}
+  _normalColor: {r: 0.48235294, g: 0.48235294, b: 0.48235294, a: 1}
+  _flickColor: {r: 0.6150943, g: 0, b: 0, a: 1}
+--- !u!137 &8585687849245164292 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8666222085430772420, guid: 6817f99c996d6954bbc09b0c865d9807, type: 3}
+  m_PrefabInstance: {fileID: 1108701956183572928}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &8585687849249324484 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8666222085434964996, guid: 6817f99c996d6954bbc09b0c865d9807, type: 3}
@@ -891,6 +917,10 @@ PrefabInstance:
       value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _flicker
+      value: 
+      objectReference: {fileID: 696756761340454837}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       propertyPath: _animator
       value: 
       objectReference: {fileID: 8585687849249324484}
@@ -946,3 +976,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58110171326f4872acbf1725c3caba12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _doOverrideAnimations: 0
+  _overrideControllers: []

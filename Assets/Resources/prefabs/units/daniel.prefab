@@ -402,7 +402,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 3504d236edc9fbc45a433830520a2853, type: 2}
     - target: {fileID: 5278078897459046417, guid: 6d5ba71be37726c43a4f93f495149b64, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5286140972410388559, guid: 6d5ba71be37726c43a4f93f495149b64, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -963,6 +963,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58110171326f4872acbf1725c3caba12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _doOverrideAnimations: 0
+  _overrideControllers: []
 --- !u!4 &4560926120565050433 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5789542847351762091, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
