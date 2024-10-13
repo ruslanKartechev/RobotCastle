@@ -1,4 +1,5 @@
 ﻿using RobotCastle.Battling;
+using RobotCastle.Battling.Altars;
 using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 using RobotCastle.Merging;
@@ -18,6 +19,7 @@ namespace RobotCastle.Core
         [SerializeField] private SummoningDataBaseContainer _summoningDataBase;
         [SerializeField] private ProgressionDataBaseContainer _invasinoProgression;
         [SerializeField] private DifficultyTiersDatabase _difficultyTiersDatabase;
+        [SerializeField] private AltarsDatabase _altarsDatabase;
         
         public void Load()
         {
@@ -37,6 +39,9 @@ namespace RobotCastle.Core
             ServiceLocator.Bind<DescriptionsDataBase>(_viewDb.descriptionsDb);
             ServiceLocator.Bind<HeroesDatabase>(_heroesDb.DataBase);
             ServiceLocator.Bind<XpDatabase>(_xpDatabase.Database);
+            
+            ServiceLocator.Bind<AltarsDatabase>(_altarsDatabase);
+            ServiceLocator.Bind<AltarManager>(new AltarManager());
         }
     }
 }

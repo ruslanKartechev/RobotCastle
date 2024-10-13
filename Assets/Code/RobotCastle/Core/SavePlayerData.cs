@@ -1,4 +1,5 @@
-﻿using RobotCastle.Data;
+﻿using RobotCastle.Battling.Altars;
+using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 
 namespace RobotCastle.Core
@@ -20,6 +21,7 @@ namespace RobotCastle.Core
         public PlayerInventory inventory;
         public SaveInvasionProgression progression;
         public ChapterSelectionData chapterSelectionData;
+        public AltarsSave altars;
         
         public SavePlayerData(){}
 
@@ -39,6 +41,7 @@ namespace RobotCastle.Core
             inventory = new PlayerInventory(other.inventory);
             progression = new SaveInvasionProgression(other.progression);
             chapterSelectionData = new ChapterSelectionData(other.chapterSelectionData);
+            altars = new AltarsSave(other.altars);
         }
     }
 }

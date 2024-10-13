@@ -1,4 +1,5 @@
-﻿using RobotCastle.Core;
+﻿using RobotCastle.Battling.Altars;
+using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.MainMenu;
 using RobotCastle.Summoning;
@@ -19,34 +20,46 @@ namespace RobotCastle.UI
         [SerializeField] private MyButton _summonBtn;
         [SerializeField] private MyButton _battleBtn;
         [SerializeField] private MyButton _settingBtn;
+        [SerializeField] private MyButton _altarsBTN;
 
         private void Start()
         {
             _summonBtn.AddMainCallback(OpenSummonMenu);
             _battleBtn.AddMainCallback(OpenGameModeMenu);
             _settingBtn.AddMainCallback(OpenSettings);
+            _altarsBTN.AddMainCallback(AltarsBtn);
             _summonBtn.SetInteractable(true);
             _battleBtn.SetInteractable(true);
             _settingBtn.SetInteractable(true);
         }
 
+        private void AltarsBtn()
+        {
+            CLog.Log($"SHOW altars");
+            ServiceLocator.Get<TabsSwitcher>().SetNoneTab();
+            ServiceLocator.Get<IUIManager>().Show<AltarsUI>(UIConstants.UIAltars, () =>
+            {
+                ServiceLocator.Get<TabsSwitcher>().SetGateTab();
+            });
+        }
+
         private void OpenSettings()
         {
             CLog.Log($"Open settings");
-            gameObject.SetActive(false);
+            ServiceLocator.Get<TabsSwitcher>().SetNoneTab();
             ServiceLocator.Get<IUIManager>().Show<SettingsUI>(UIConstants.UISettings, () => 
             { 
-                gameObject.SetActive(true);
+                ServiceLocator.Get<TabsSwitcher>().SetGateTab();
             }).Show();
         }
 
         private void OpenSummonMenu()
         {
             CLog.Log($"Open summon menu");
-            gameObject.SetActive(false);
+            ServiceLocator.Get<TabsSwitcher>().SetNoneTab();
             ServiceLocator.Get<IUIManager>().Show<SummoningUI>(UIConstants.UISummon, () => 
             { 
-                gameObject.SetActive(true);
+                ServiceLocator.Get<TabsSwitcher>().SetGateTab();
             }).Show();
         }
 
