@@ -37,10 +37,10 @@ namespace RobotCastle.UI
         {
             CLog.Log($"SHOW altars");
             ServiceLocator.Get<TabsSwitcher>().SetNoneTab();
-            ServiceLocator.Get<IUIManager>().Show<AltarsUI>(UIConstants.UIAltars, () =>
+            ServiceLocator.Get<IUIManager>().Show<AltarsOverviewUI>(UIConstants.UIAltars, () =>
             {
                 ServiceLocator.Get<TabsSwitcher>().SetGateTab();
-            });
+            }).Show();
         }
 
         private void OpenSettings()

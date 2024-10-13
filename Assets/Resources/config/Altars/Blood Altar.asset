@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9da427346b054f92957bcb84352d5487, type: 3}
+  m_Name: Blood Altar
+  m_EditorClassIdentifier: 
+  _id: blood
+  _altarName: God of Blood
+  _mod1:
+    _description: +<val>% Damage Vampirism
+    _detailedDescription: Part of damage dealt to target return as HP
+    _percentage:
+    - 2
+    - 2
+    - 4
+    - 6
+    - 8
+    - 10
+    - 12
+    - 14
+    - 16
+    - 18
+    - 20
+    - 22
+    - 24
+    - 26
+    - 28
+    - 30
+  _mod2:
+    _description: +<val>% ATK increase
+    _detailedDescription: Additional attack bonus for all heroes
+    _percentage:
+    - 0.025
+    - 0.025
+    - 0.0275
+    - 0.03
+    - 0.0325
+    - 0.035
+    - 0.0375
+    - 0.04
+    - 0.0425
+    - 0.045
+    - 0.0475
+    - 0.05
+  _mod3:
+    _description: Mighty Block <val>
+    _detailedDescription: Addes Mighty Block(s) to all heroes at the start of the
+      game
+    _blocksCount: 01000000010000000100000001000000010000000100000002000000

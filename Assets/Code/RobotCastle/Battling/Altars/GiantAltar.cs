@@ -8,7 +8,7 @@ namespace RobotCastle.Battling.Altars
     public class GiantAltar : BasicAltar
     {
         [SerializeField] private AltarMp_AddedDEF _mod1;
-        [SerializeField] private AltarMp_StartItemSmelt _mod2;
+        [SerializeField] private AltarMp_HealthAdded _mod2;
         [SerializeField] private AltarMp_ReflectDamage _mod3;
 
         private void OnEnable()
@@ -22,13 +22,6 @@ namespace RobotCastle.Battling.Altars
     public class AltarMp_AddedDEF : AltarMP
     {
         [SerializeField] private List<float> _defence;
-
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
 
         public override void Apply()
         {
@@ -54,27 +47,20 @@ namespace RobotCastle.Battling.Altars
     [System.Serializable]
     public class AltarMp_HealthAdded : AltarMP
     {
-        [SerializeField] private List<float> _defence;
-
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
+        [SerializeField] private List<float> _healthPercent;
 
         public override void Apply()
         {
-            var tier = _tier >= _defence.Count ? _defence.Count - 1 : _tier;
-            var val = _defence[tier];
+            var tier = _tier >= _healthPercent.Count ? _healthPercent.Count - 1 : _tier;
+            var val = _healthPercent[tier];
             CLog.Log($"[AltarMp_DamageHPDrain] Tier {tier}, drain percentage: {val}");
         }
 
         public override string GetShortDescription()
         {
-            var tier = _tier >= _defence.Count ? _defence.Count - 1 : _tier;
-            var val = _defence[tier];
-            var d = _description.Replace("<val>", $"{val}");
+            var tier = _tier >= _healthPercent.Count ? _healthPercent.Count - 1 : _tier;
+            var val = _healthPercent[tier];
+            var d = _description.Replace("<val>", $"{val*100}");
             return d;
         }
 
@@ -89,13 +75,6 @@ namespace RobotCastle.Battling.Altars
         // halfved for spell damage
         [SerializeField] private List<float> _percentage;
 
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
-
         public override void Apply()
         {
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
@@ -107,7 +86,7 @@ namespace RobotCastle.Battling.Altars
         {
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
             var val = _percentage[tier];
-            var d = _description.Replace("<val>", $"{val}");
+            var d = _description.Replace("<val>", $"{val*100}");
             return d;
         }
 

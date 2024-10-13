@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using SleepDev;
 using UnityEngine;
 
@@ -8,8 +9,8 @@ namespace RobotCastle.Battling.Altars
     public class BloodAltar : BasicAltar
     {
         [SerializeField] private AltarMp_DamageHPDrain _mod1;
-        [SerializeField] private AltarMp_StartItemSmelt _mod2;
-        [SerializeField] private AltarMp_StartItemSmelt _mod3;
+        [SerializeField] private AltarMp_AttackIncrease _mod2;
+        [SerializeField] private AltarMp_MightyBlock _mod3;
 
         private void OnEnable()
         {
@@ -23,13 +24,6 @@ namespace RobotCastle.Battling.Altars
     {
         [SerializeField] private List<float> _percentage;
 
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
-
         public override void Apply()
         {
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
@@ -41,7 +35,7 @@ namespace RobotCastle.Battling.Altars
         {
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
             var val = _percentage[tier];
-            var d = _description.Replace("<val>", $"{val * 100}%");
+            var d = _description.Replace("<val>", (val * 100).ToString(CultureInfo.InvariantCulture));
             return d;
         }
 
@@ -53,13 +47,6 @@ namespace RobotCastle.Battling.Altars
     {
         [SerializeField] private List<float> _percentage;
 
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
-
         public override void Apply()
         {
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
@@ -70,8 +57,8 @@ namespace RobotCastle.Battling.Altars
         public override string GetShortDescription()
         {
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
-            var drain = _percentage[tier];
-            var d = _description.Replace("<val>", $"{drain * 100}%");
+            var val = _percentage[tier];
+            var d = _description.Replace("<val>", (val * 100).ToString(CultureInfo.InvariantCulture));
             return d;
         }
 
@@ -83,13 +70,6 @@ namespace RobotCastle.Battling.Altars
     public class AltarMp_MightyBlock : AltarMP
     {
         [SerializeField] private List<int> _blocksCount;
-
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
 
         public override void Apply()
         {

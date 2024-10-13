@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Data;
 using UnityEngine;
 
 namespace RobotCastle.Battling.Altars
@@ -6,7 +7,8 @@ namespace RobotCastle.Battling.Altars
     public abstract class Altar : ScriptableObject
     {
         public const int MaxPoints = 15;
-
+        public event ValueUpdate<int> OnPointsUpdated;
+        
         public virtual List<AltarMP> modifiers => _modifiers;
 
         public string ViewName => _altarName;
@@ -25,5 +27,7 @@ namespace RobotCastle.Battling.Altars
         [SerializeField] protected string _altarName;
         protected List<AltarMP> _modifiers;
         protected int _points;
+
+        protected void RaisePointsUpdated(int prev, int newVal) => OnPointsUpdated?.Invoke(prev, newVal);
     }
 }

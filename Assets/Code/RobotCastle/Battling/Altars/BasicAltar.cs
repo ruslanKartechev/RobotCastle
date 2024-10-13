@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using SleepDev;
-using UnityEngine;
+﻿using SleepDev;
 
 namespace RobotCastle.Battling.Altars
 {
-    [CreateAssetMenu(menuName = "SO/Altars/Basic Altar", fileName = "BasicAltar", order = 0)]
     public class BasicAltar : Altar
     {
         protected AltarMP GetModifier(int level)
@@ -16,7 +12,6 @@ namespace RobotCastle.Battling.Altars
         public override void AddPoint()
         {
             if (_points == MaxPoints) return;
-            _points++;
             SetPoints(_points + 1);
         }
 
@@ -28,6 +23,7 @@ namespace RobotCastle.Battling.Altars
         
         public override void SetPoints(int points)
         {
+            var prevPoints = _points;
             _points = points;
             if (points == 0)
             {
@@ -36,19 +32,22 @@ namespace RobotCastle.Battling.Altars
             }
             else
             {
-                var pointsLeft = points;
                 const int max = 5;
                 var msg = $"[SetPoints] Altar: {ViewName}";
                 for (var modId = 0; modId < _modifiers.Count; modId++)
                 {
-                    // var modTier = pointsLeft > max ? max : pointsLeft;
-                    pointsLeft -= max;
+                    var pointsLeft = points - modId * max;
+                    if (modId > 0)
+                        pointsLeft += 1;
+                    if(pointsLeft < 0)
+                        pointsLeft = 0;
                     var mod = _modifiers[modId];
-                    msg += $"i {modId}, tier: {pointsLeft}";
+                    msg += $"\nMod_{modId + 1}, tier_{pointsLeft}";
                     mod.SetTier(pointsLeft);
                 }
                 CLog.Log(msg);
             }
+            RaisePointsUpdated(prevPoints, points);
         }
     }
     

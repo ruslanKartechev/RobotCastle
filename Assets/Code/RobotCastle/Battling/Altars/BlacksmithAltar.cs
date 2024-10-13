@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using RobotCastle.Data;
 using SleepDev;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace RobotCastle.Battling.Altars
     {
         [SerializeField] private AltarMp_SmeltUpgrade _mod1;
         [SerializeField] private AltarMp_StartItemSmelt _mod2;
-        [SerializeField] private AltarMp_StartItemSmelt _mod3;
+        [SerializeField] private AltarMp_SmeltReroll _mod3;
 
         private void OnEnable()
         {
@@ -23,13 +24,6 @@ namespace RobotCastle.Battling.Altars
     public class AltarMp_SmeltUpgrade : AltarMP
     {
         [SerializeField] private List<float> _chances;
-        
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
 
         public override void Apply()
         {
@@ -41,8 +35,7 @@ namespace RobotCastle.Battling.Altars
         public override string GetShortDescription()
         {
             var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
-            var percent = $"{_chances[tier] * 100}%";
-            var d = _description.Replace("<val>", percent);
+            var d = _description.Replace("<val>", (_chances[tier] * 100).ToString(CultureInfo.InvariantCulture));
             return d;
         }
 
@@ -56,27 +49,25 @@ namespace RobotCastle.Battling.Altars
     [System.Serializable]
     public class AltarMp_StartItemSmelt : AltarMP
     {
+        [SerializeField] private float _smeltChance;
+        [SerializeField] private List<int> _levels;
         [SerializeField] private List<CoreItemData> _items;
 
 
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-            return _tier;
-        }
-
         public override void Apply()
         {
-            var itemLevel = _tier == 5 ? 1 : 0;
+            var tier = _tier >= _levels.Count ? _levels.Count - 1 : _tier;
+            var itemLevel = _levels[tier];
             var item = new CoreItemData(_items.Random());
             item.level = itemLevel;
-            CLog.Log($"[AltarMp_SmeltUpgrade] Will spawn {item.id} lvl_{itemLevel} at the start");
+            CLog.Log($"[AltarMp_SmeltUpgrade] Chance [{_smeltChance*100}%] Will spawn {item.id} lvl_{itemLevel} at the start");
         }
 
         public override string GetShortDescription()
         {
-            var itemLevel = _tier == 5 ? 1 : 0;
-            var d = _description.Replace("<val>", itemLevel.ToString());
+            var tier = _tier >= _levels.Count ? _levels.Count - 1 : _tier;
+            var itemLevel = _levels[tier];
+            var d = _description.Replace("<val>", (itemLevel+1).ToString());
             return d;
         }
         
@@ -89,13 +80,8 @@ namespace RobotCastle.Battling.Altars
     [System.Serializable]
     public class AltarMp_SmeltReroll : AltarMP
     {
-
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-            return _tier;
-        }
-
+        [SerializeField] private float _chance = .1f;
+        
         public override void Apply()
         {
             var count = _tier == 5 ? 1 : 0;
@@ -104,7 +90,7 @@ namespace RobotCastle.Battling.Altars
 
         public override string GetShortDescription()
         {
-            var itemLevel = _tier == 5 ? 1 : 0;
+            var itemLevel = _tier == 6 ? 2 : 1;
             var d = _description.Replace("<val>", itemLevel.ToString());
             return d;
         }

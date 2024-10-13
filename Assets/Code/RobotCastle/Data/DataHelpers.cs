@@ -2,7 +2,6 @@
 using RobotCastle.Battling.Altars;
 using RobotCastle.Core;
 using RobotCastle.InvasionMode;
-using RobotCastle.Merging;
 using RobotCastle.Saving;
 using UnityEngine;
 

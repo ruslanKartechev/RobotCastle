@@ -17,18 +17,11 @@ namespace RobotCastle.Battling.Altars
     }
     
     
-    
     [System.Serializable]
     public class AltarMp_InitialMoney : AltarMP
     {
         [SerializeField] private List<float> _money;
 
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
 
         public override void Apply()
         {
@@ -54,12 +47,6 @@ namespace RobotCastle.Battling.Altars
     {
         [SerializeField] private List<float> _money;
 
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
 
         public override void Apply()
         {
@@ -84,27 +71,20 @@ namespace RobotCastle.Battling.Altars
     [System.Serializable]
     public class AltarMp_MerchantOfferSale : AltarMP
     {
-        [SerializeField] private List<float> _money;
-
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
+        [SerializeField] private List<float> _sale;
 
         public override void Apply()
         {
-            var tier = _tier >= _money.Count ? _money.Count - 1 : _tier;
-            var val = _money[tier];
-            CLog.Log($"[AltarMp_DamageHPDrain] Tier {tier}, elite level money: {val}");
+            var tier = _tier >= _sale.Count ? _sale.Count - 1 : _tier;
+            var sale = _sale[tier];
+            CLog.Log($"[AltarMp_DamageHPDrain] Tier {tier}, sale: {sale*100}%");
         }
 
         public override string GetShortDescription()
         {
-            var tier = _tier >= _money.Count ? _money.Count - 1 : _tier;
-            var val = _money[tier];
-            var d = _description.Replace("<val>", $"{val}");
+            var tier = _tier >= _sale.Count ? _sale.Count - 1 : _tier;
+            var sale = _sale[tier];
+            var d = _description.Replace("<val>", $"{sale*100}");
             return d;
         }
 

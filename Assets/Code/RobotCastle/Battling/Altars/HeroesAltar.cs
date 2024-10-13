@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using SleepDev;
 using UnityEngine;
 
@@ -22,13 +23,6 @@ namespace RobotCastle.Battling.Altars
     {
         [SerializeField] private List<float> _chances;
         
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
-
         public override void Apply()
         {
             var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
@@ -39,8 +33,7 @@ namespace RobotCastle.Battling.Altars
         public override string GetShortDescription()
         {
             var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
-            var percent = $"{_chances[tier] * 100}%";
-            var d = _description.Replace("<val>", percent);
+            var d = _description.Replace("<val>", (_chances[tier] * 100).ToString(CultureInfo.InvariantCulture));
             return d;
         }
         
@@ -53,15 +46,7 @@ namespace RobotCastle.Battling.Altars
     public class AltarMp_MergeLevelUp : AltarMP
     {
         [SerializeField] private List<float> _chances;
-        [SerializeField] private string _description;
         
-        public override int SetTier(int tier)
-        {
-            _tier = tier;
-
-            return _tier;
-        }
-
         public override void Apply()
         {
             var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
@@ -72,8 +57,7 @@ namespace RobotCastle.Battling.Altars
         public override string GetShortDescription()
         {
             var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
-            var percent = $"{_chances[tier] * 100}%";
-            var d = _description.Replace("<val>", percent);
+            var d = _description.Replace("<val>", (_chances[tier] * 100).ToString(CultureInfo.InvariantCulture));
             return d;
         }
         
@@ -85,8 +69,7 @@ namespace RobotCastle.Battling.Altars
     [System.Serializable]
     public class AltarMp_BookOfPower : AltarMP
     {
-        [SerializeField] private List<float> _chances;
-        [SerializeField] private string _description;
+        [SerializeField] private List<int> _levels;
         
         public override int SetTier(int tier)
         {
@@ -97,16 +80,16 @@ namespace RobotCastle.Battling.Altars
 
         public override void Apply()
         {
-            var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
-            var chance = _chances[tier];
-            CLog.Log($"[AltarMp_BookOfPower] Applying {chance} to level up on merge");
+            var tier = _tier >= _levels.Count ? _levels.Count - 1 : _tier;
+            var bookLvl = _levels[tier];
+            CLog.Log($"[AltarMp_BookOfPower] Adding book of power lvl {bookLvl+1}");
         }
 
         public override string GetShortDescription()
         {
-            var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
-            var percent = $"{_chances[tier] * 100}%";
-            var d = _description.Replace("<val>", percent);
+            var tier = _tier >= _levels.Count ? _levels.Count - 1 : _tier;
+            var bookLvl = _levels[tier];
+            var d = _description.Replace("<val>", (bookLvl+1).ToString());
             return d;
         }
         

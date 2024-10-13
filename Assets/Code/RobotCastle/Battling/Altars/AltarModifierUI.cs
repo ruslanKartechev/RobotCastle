@@ -1,14 +1,16 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace RobotCastle.Battling.Altars
 {
     public class AltarModifierUI : MonoBehaviour
     {
+        public static readonly Color InactiveColorVal = new (0.133f, 0.133f, 0.133f, 1);
+
         [SerializeField] private TextMeshProUGUI _descriptionShort;
         [SerializeField] private TextMeshProUGUI _descriptionLongs;
         [SerializeField] private bool _longMode;
+        [SerializeField] private FadeEffect _fadeEffect;
         private AltarMP _mp;
         private bool _didSubEvents;
         
@@ -34,28 +36,27 @@ namespace RobotCastle.Battling.Altars
             if (_mp != null)
             {
                 _didSubEvents = false;
-                _mp.OnLocked += OnLocked;
-                _mp.OnUnlocked += Unlocked;
-                _mp.OnTierUpdated += TierUpdated;
+                _mp.OnLocked -= OnLocked;
+                _mp.OnUnlocked -= Unlocked;
+                _mp.OnTierUpdated -= TierUpdated;
                 _mp = null;
             }
         }
 
-        private void TierUpdated()
+        private void TierUpdated(int from, int to)
         {
             _descriptionShort.text = _mp.GetShortDescription();
         }
         
         private void Unlocked()
         {
-            _descriptionShort.text = _mp.GetShortDescription();
-
+            SetColor(true);
+            _fadeEffect.Play();
         }
 
         private void OnLocked()
         {
-            _descriptionShort.text = _mp.GetShortDescription();
-            
+            SetColor(false);
         }
 
         private void SetColor(bool active)
@@ -68,9 +69,9 @@ namespace RobotCastle.Battling.Altars
             }
             else
             {
-                _descriptionShort.color = Color.gray;
+                _descriptionShort.color = InactiveColorVal;
                 if (_longMode)
-                    _descriptionLongs.color = Color.gray;
+                    _descriptionLongs.color = InactiveColorVal;
             }
         }
         
