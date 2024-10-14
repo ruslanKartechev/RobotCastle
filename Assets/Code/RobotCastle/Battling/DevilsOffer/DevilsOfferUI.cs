@@ -1,4 +1,5 @@
 ﻿using System;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using TMPro;
@@ -12,14 +13,13 @@ namespace RobotCastle.Battling.DevilsOffer
         [SerializeField] private MyButton _btnDecline;
         [SerializeField] private TextMeshProUGUI _penaltyText;
         [SerializeField] private ItemDescriptionLongUI _itemDescription;
-        [SerializeField] private FadeInOutAnimator _fadeAnimator;
+        [SerializeField] private BlackoutFadeScreen _fadeScreen;
+
         private Action<bool> _callback;
 
         public void Show(DevilsOfferData offerData, Action<bool> callback)
         {
-            _fadeAnimator.On();
-            _fadeAnimator.FadeIn();
-            gameObject.SetActive(true);
+            _fadeScreen.FadeInWithId(UIConstants.UIDevilsOffer);
             _callback = callback;
             _btnAccept.AddMainCallback(Accept);
             _btnDecline.AddMainCallback(Decline);
@@ -59,21 +59,16 @@ namespace RobotCastle.Battling.DevilsOffer
             }
         }
 
-        public void Hide()
-        {
-            gameObject.SetActive(false);
-        }
-        
         private void Accept()
         {
-            _callback?.Invoke(true);   
-            Hide();
+            _callback?.Invoke(true);
+            _fadeScreen.FadeOut();   
         }
         
         private void Decline()
         {
-            _callback?.Invoke(false);               
-            Hide();
+            _callback?.Invoke(false);
+            _fadeScreen.FadeOut();
         }
         
     }

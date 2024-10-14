@@ -18,6 +18,7 @@ namespace RobotCastle.Battling
         private const float AngleThreshold = 2;
         [SerializeField] private HeroView _unitView;
         private bool _didSetup;
+        private bool _isRunning;
         
         public void SetupAgent()
         {
@@ -32,15 +33,19 @@ namespace RobotCastle.Battling
         public void OnMovementBegan()
         {
             // CLog.LogYellow($"{gameObject.name} MOVEMENT BEGAN");
+            if (_isRunning) return;
+            _isRunning = true;
             _unitView.animator.SetBool(HeroesConstants.Anim_Move, true);
         }
 
         public void OnMovementStopped()
         {
             // CLog.Log($"{gameObject.name} On Stopped");
+            if (!_isRunning) return;
             _unitView.animator.SetBool(HeroesConstants.Anim_Move, false);
             _unitView.state.SetTargetCellToSelf();
             _unitView.state.isMoving = false;
+            _isRunning = false;
         }
    
         public async Task<EPathMovementResult> MoveToCell(Vector2Int pos, CancellationToken token)

@@ -84,6 +84,8 @@ namespace RobotCastle.Battling.SmeltingOffer
 
         public List<CoreItemData> RerollItems()
         {
+            if (_rerolls == 0)
+                return null;
             _rerolls--;
             if (_rerolls < 0)
                 _rerolls = 0;
@@ -108,13 +110,13 @@ namespace RobotCastle.Battling.SmeltingOffer
         
         public void OnChoiceConfirmed(CoreItemData data)
         {
-            CLog.Log($"Choice confirmed: {data.AsStr()}");
+            // CLog.Log($"Choice confirmed: {data.AsStr()}");
             switch (data.type)
             {
                 case MergeConstants.TypeWeapons:
-                    var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
-                    factory.SpawnHeroOrItem(new SpawnMergeItemArgs(data), gridView, sectionsController, out var view);
-
+                    var factory = ServiceLocator.Get<IPlayerMergeItemsFactory>();
+                    var view = factory.SpawnHeroOrItem(new SpawnMergeItemArgs(data));
+                    
                     foreach (var mod in _smeltModifiers)
                         mod.OnSmeltedWeapon(view);
                     break;

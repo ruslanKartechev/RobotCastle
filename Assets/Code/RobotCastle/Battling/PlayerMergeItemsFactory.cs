@@ -72,6 +72,8 @@ namespace RobotCastle.Battling
                 foreach (var mod in _modifiers)
                     mod.OnNewItemSpawned(newItem);
             }
+            else
+                CLog.LogError("SPAWNED NEW ITEM NULL");
             return newItem;
         }
         

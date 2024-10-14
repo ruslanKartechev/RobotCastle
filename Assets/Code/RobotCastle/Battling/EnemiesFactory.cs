@@ -128,13 +128,13 @@ namespace RobotCastle.Battling
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
             var itemView = factory.SpawnItemOnCell(cellView, new ItemData(args.coreData));
             var hero = itemView.Transform.GetComponent<IHeroController>();
+            CLog.LogBlue($"Spawning new enemy: {hero.View.gameObject.name}");
             barsPanel.AssignEnemyUI(hero.View);
             hero.InitHero(args.coreData.id, heroLvl, args.coreData.level, new List<ModifierProvider>());
-            hero.View.heroUI.UpdateStatsView(hero.View);
+            hero.View.heroUI.AssignStatsTracking(hero.View);
             AnimateSpawn(hero);
             return hero;
         }
-        
         
         private void AnimateSpawn(IHeroController hero)
         {

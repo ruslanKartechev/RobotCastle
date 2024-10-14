@@ -48,6 +48,7 @@ namespace RobotCastle.Battling
             frw = new Vector3(cellDir.x, 0,cellDir.y);
             var cells = new List<Vector2Int>(5);
             var distances = new List<float>(5);
+            var alreadyDamaged = new List<IDamageReceiver>(10);
             for (var i = 0; i < SpellCrescentSlash.MaxDistance; i++)
             {
                 cell += cellDir;
@@ -89,11 +90,14 @@ namespace RobotCastle.Battling
                     for (var i = enemies.Count - 1; i >= 0; i--)
                     {
                         var en = enemies[i];
-                        if (en.IsDead)
+                        if (en.IsDead || alreadyDamaged.Contains(en.View.damageReceiver))
                             continue;
                         var d2 = (en.View.transform.position - worldPoint).sqrMagnitude;
-                        if(d2 < cellRadius)
+                        if (d2 < cellRadius)
+                        {
                             en.View.damageReceiver.TakeDamage(damageArgs);
+                            alreadyDamaged.Add(en.View.damageReceiver);
+                        }
                     }
                 }
             }

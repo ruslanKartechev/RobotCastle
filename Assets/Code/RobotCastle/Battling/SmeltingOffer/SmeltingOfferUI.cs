@@ -20,9 +20,10 @@ namespace RobotCastle.Battling.SmeltingOffer
         [SerializeField] private List<SmeltingItemUI> _itemsUI;
         [SerializeField] private InventoryController _inventory;
         [SerializeField] private MyButton _confirmButton;
-        [SerializeField] private FadeInOutAnimator _fadeAnimator;
         [SerializeField] private TextMeshProUGUI _rerollsText;
         [SerializeField] private MyButton _rerollsBtn;
+        [SerializeField] private BlackoutFadeScreen _fadeScreen;
+
         private List<CoreItemData> _options;
         private SmeltingOfferManager _manager;
 
@@ -33,8 +34,7 @@ namespace RobotCastle.Battling.SmeltingOffer
                 CLog.LogError($"Options count and ui elements count don't match!");
                 return;
             }
-            _fadeAnimator.On();
-            _fadeAnimator.FadeIn();
+            _fadeScreen.FadeInWithId(UIConstants.UISmeltingOffer);
             _manager = manager;
             _options = options;
 
@@ -52,6 +52,7 @@ namespace RobotCastle.Battling.SmeltingOffer
 
         private void ShowOptions(List<CoreItemData> options)
         {
+            _options = options;
             var viewDb = ServiceLocator.Get<ViewDataBase>();
             for (var i = 0; i < options.Count; i++)
             {
@@ -64,8 +65,16 @@ namespace RobotCastle.Battling.SmeltingOffer
 
         private void RerollBtn()
         {
+            OnNothingPicked();
+            _inventory.SetNoItem();
             var options = _manager.RerollItems();
+            if (options == null)
+            {
+                SetRerolls();
+                return;
+            }
             ShowOptions(options);
+            SetRerolls();
         }
 
         private void SetRerolls()
@@ -97,7 +106,7 @@ namespace RobotCastle.Battling.SmeltingOffer
 
         private void OnItemPicked(SleepDev.Inventory.Item item)
         {
-            CLog.Log($"[OnItemPicked] {item.NumberId}");
+            // CLog.Log($"[OnItemPicked] {item.NumberId}");
             var option = _options[item.NumberId];
             var descrDb = ServiceLocator.Get<DescriptionsDataBase>();
             var dd = descrDb.GetDescriptionByTypeAndLevel(option);
@@ -118,8 +127,7 @@ namespace RobotCastle.Battling.SmeltingOffer
                 return;
             }
             _manager.OnChoiceConfirmed(_options[_inventory.PickedItem.NumberId]);
-            gameObject.SetActive(false);
-            ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UISmeltingOffer);
+            _fadeScreen.FadeOut();
         }
         
     }

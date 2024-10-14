@@ -34,6 +34,7 @@ namespace RobotCastle.Battling
         [SerializeField] private float _endDelay = 2f;
         [SerializeField] private float _startEnemyShowTime = .5f;
         [SerializeField] private float _winFailDelay = .5f;
+        [SerializeField] private float _delayBetweenOffers = .6f;
         [Space(10)]
         [SerializeField] private BattleStartLevelData _startData;
         [Space(10)]
@@ -380,11 +381,13 @@ namespace RobotCastle.Battling
 
         private void ShowDevilsOfferAndTrade()
         {
-            _devilsOffer.MakeNextOffer(ShowTradeOffer);
+            _devilsOffer.MakeNextOffer(ShowMerchantOffer);
         }
 
-        private void ShowTradeOffer()
+        private async void ShowMerchantOffer()
         {
+            await Task.Delay((int)(_delayBetweenOffers * 1000));
+            if (_token == null || _token.IsCancellationRequested) return;
             _merchantOffer.MakeNextOffer(GrantPlayerInput);
         }
         

@@ -48,13 +48,14 @@ namespace RobotCastle.Battling.Altars
         
         public void OnSmeltedWeapon(IItemView view)
         {
+            if (view.itemData.core.type != MergeConstants.TypeWeapons)
+                return;
             var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
             var chance = _chances[tier];
             var r = UnityEngine.Random.Range(0f, 1f);
-            r = 0f; // dbg
             if (r < chance)
             {
-                var maxLvl = ServiceLocator.Get<MergeMaxLevelCheck>();
+                var maxLvl = ServiceLocator.Get<IMergeMaxLevelCheck>();
                 if (maxLvl.CanUpgradeFurther(view.itemData.core))
                 {
                     MergeFunctions.AddLevelToItem(view);
@@ -77,7 +78,6 @@ namespace RobotCastle.Battling.Altars
             if (_tier < 1) return;
             CLog.Log($"[AltarMp_SmeltUpgrade] Applied. Chance [{_smeltChance*100}%] ");
             var r = UnityEngine.Random.Range(0f, 1f);
-            r = 0f; // dbg
             if (r < _smeltChance)
             {
                 var tier = _tier >= _levels.Count ? _levels.Count - 1 : _tier;

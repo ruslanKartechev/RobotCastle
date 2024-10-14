@@ -19,6 +19,7 @@ namespace RobotCastle.Battling
             var wrapper = ((UnitUIWrapper)_pool.GetOne("enemy"));
             wrapper.tracker.SetTarget(view.UITrackingPoint);
             view.heroUI = (BattleUnitUI)wrapper.ui;
+            CLog.LogBlue($"Assigned enemy UI to {view.gameObject.name}");
         }
 
         public void AssignBossUI(HeroView view)

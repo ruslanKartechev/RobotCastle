@@ -37,10 +37,11 @@ namespace RobotCastle.Battling
             
             var distance = (endPos - startPoint.position).magnitude / speed;
             var time = distance / speed;
+            
             while (elapsed <= time)
             {
-                endPos = endPoint.position;
-                endPos.y = startPoint.position.y;
+                // endPos = endPoint.position;
+                // endPos.y = startPoint.position.y;
                 transform.position = Vector3.Lerp(startPoint.position, endPos, elapsed / time);
                 elapsed += Time.deltaTime;
                 yield return null;

@@ -40,7 +40,7 @@ namespace RobotCastle.UI
             var spell = (SpellProvider)spells.GetCurrentSpell();
             if (spell == null)
             {
-                CLog.LogError($"[{source}] does not have a spell!");
+                CLog.Log($"[{source}] does not have a spell!");
             }
             Show(stats, info, spell);
 
@@ -142,7 +142,6 @@ namespace RobotCastle.UI
             _spellPowerText.text = spTxt;
             _attackSpeedText.text = atkSpTxt;
             _health.AssignStats(stats.HealthCurrent, stats.HealthMax);
-            _mana.AssignStats(stats.ManaCurrent, stats.ManaMax);
             _lvlText.text = (stats.MergeTier + 1).ToString();
 
             _nameText.text = viewInfo.name;
@@ -151,12 +150,15 @@ namespace RobotCastle.UI
             {
                 _descriptionLayout.SetLong();
                 _spellDescription.Show(spellProvider, _src);
+                _mana.gameObject.SetActive(true);
+                _mana.AssignStats(stats.ManaCurrent, stats.ManaMax);
             }
             else
             {
                 CLog.Log($"[{nameof(HeroDescriptionUI)}] hero spellProvider is null");
                 _descriptionLayout.SetShort();
                 _spellDescription.SetEmpty();
+                _mana.gameObject.SetActive(false);
             }
         }
         

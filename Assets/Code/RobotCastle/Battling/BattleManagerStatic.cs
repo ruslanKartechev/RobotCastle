@@ -81,11 +81,13 @@ namespace RobotCastle.Battling
                     points += 2;
                 var vec = otherHero.View.transform.position - myWorldPos;
                 var angle = Mathf.Abs(Vector3.SignedAngle(vec, hero.View.transform.forward, Vector3.up));
-                
-                if (angle > 90)
-                    points -= 2;
-                else if (angle > 10)
-                    points -= 1;
+
+                if (angle >= 180)
+                    points -= 10;
+                else if (angle >= 90)
+                    points -= 8;
+                else if (angle >= 10)
+                    points -= 5;
                 
                 if (points >= maxPoints)
                 {
