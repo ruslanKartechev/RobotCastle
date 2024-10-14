@@ -22,7 +22,7 @@ namespace RobotCastle.Battling
         public HeroMovementManager movement { get; set; }
         public HeroStatsManager stats { get; set; }
         public HeroAnimationEventReceiver animationEventReceiver => _heroAnimationEvent;
-        public HeroItemsContainer heroItemsContainer => _heroItemsContainer;
+        public HeroWeaponsContainer heroItemsContainer => _heroItemsContainer;
         public IHeroAttackManager attackManager { get; set; }
         public IHeroHealthManager healthManager { get; set; }
         public IDamageReceiver damageReceiver { get; set; }
@@ -40,7 +40,7 @@ namespace RobotCastle.Battling
         public MaterialFlicker Flicker => _flicker;
         
         [SerializeField] private float _stunnedFxHeight = 1.5f;
-        [SerializeField] private HeroItemsContainer _heroItemsContainer;
+        [SerializeField] private HeroWeaponsContainer _heroItemsContainer;
         [SerializeField] private BattleUnitUI _heroUI;
         [SerializeField] private Collider _collider;
         [SerializeField] private Rigidbody _rb;

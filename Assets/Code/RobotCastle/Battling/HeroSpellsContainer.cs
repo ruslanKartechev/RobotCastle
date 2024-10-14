@@ -44,7 +44,7 @@ namespace RobotCastle.Battling
         {
             foreach (var mod in _modifiers)
             {
-                CLog.LogWhite($"[{view.gameObject.name}] Adding Spell: {mod.name}");
+                // CLog.LogWhite($"[{view.gameObject.name}] Adding Spell: {mod.name}");
                 mod.AddToHero(view);
             }
         }

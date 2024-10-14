@@ -25,6 +25,7 @@ namespace RobotCastle.Battling.Altars
         {
             var prevPoints = _points;
             _points = points;
+            CLog.Log($"== [{name}] Prev points {prevPoints}, new points: {points}");
             if (points == 0)
             {
                 foreach (var mod in _modifiers)

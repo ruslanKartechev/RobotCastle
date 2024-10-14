@@ -1,8 +1,10 @@
-﻿using RobotCastle.Core;
+﻿using System.Collections.Generic;
+using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
+using UnityEngine;
 
 namespace RobotCastle.Battling.MerchantOffer
 {
@@ -19,6 +21,20 @@ namespace RobotCastle.Battling.MerchantOffer
             this.healthView = healthView;
             this.playerGrid = playerGrid;
         }
+
+        public float Sale
+        {
+            get => _sale;
+            set
+            {
+                _sale = value;
+                if (_sale > 1)
+                    _sale = 1;
+                CLog.Log($"[Merchant Offer] Sale set {_sale * 100}");
+            }
+        }
+        
+        
         
         public MerchantOfferConfig config;
         public IGridView playerGrid;
@@ -29,6 +45,7 @@ namespace RobotCastle.Battling.MerchantOffer
         private MerchantOfferData.GoodsPreset _currentPreset;
         private System.Action _callback;
         private int _offerTier;
+        private float _sale;
         
         public void MakeNextOffer(System.Action callback)
         {
@@ -42,7 +59,14 @@ namespace RobotCastle.Battling.MerchantOffer
             _offerTier++;
             _currentPreset = config.optionsPerTier[tier].GetRandomPreset();
             var ui = ServiceLocator.Get<IUIManager>().Show<MerchantOfferUI>(UIConstants.UIMerchantOffer, () => { });
-            ui.Show(_currentPreset, PurchaseItem, Complete);
+            var count = _currentPreset.goods.Count;
+            var prices = new List<int>(count);
+            for(var i = 0; i < count; i++)
+            {
+                prices.Add(Mathf.RoundToInt(_currentPreset.goods[i].cost * (1 - _sale)));
+            }
+            
+            ui.Show(_currentPreset, prices, PurchaseItem, Complete);
         }
 
         private bool PurchaseItem(MerchantOfferData.Goods goods)
@@ -62,9 +86,10 @@ namespace RobotCastle.Battling.MerchantOffer
             {
                 var gm = ServiceLocator.Get<GameMoney>();
                 var money = gm.levelMoney;
-                if (money < goods.cost)
+                var cost = Mathf.RoundToInt(goods.cost * (1 - _sale));
+                if (money < cost)
                     return false;
-                money -= goods.cost;
+                money -= cost;
                 gm.levelMoney = money;
                 GrantGoods(goods);
                 return true;
@@ -76,7 +101,7 @@ namespace RobotCastle.Battling.MerchantOffer
             var data = goods.ItemData;
             switch (data.type)
             {
-                case MergeConstants.TypeItems:
+                case MergeConstants.TypeWeapons:
                     var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
                     factory.SpawnHeroOrItem(new SpawnMergeItemArgs(data), playerGrid, sectionsController, out var item);
                     break;

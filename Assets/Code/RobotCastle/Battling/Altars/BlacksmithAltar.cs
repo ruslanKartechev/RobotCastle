@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using RobotCastle.Battling.SmeltingOffer;
+using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
 
@@ -19,17 +22,19 @@ namespace RobotCastle.Battling.Altars
         }
     }
 
+    
 
     [System.Serializable]
-    public class AltarMp_SmeltUpgrade : AltarMP
+    public class AltarMp_SmeltUpgrade : AltarMP, ISmeltModifier
     {
         [SerializeField] private List<float> _chances;
 
+        
         public override void Apply()
         {
-            var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
-            var chance = _chances[tier];
-            CLog.Log($"[AltarMp_SmeltUpgrade] Applying {chance} to level up on summon");
+            if (_tier < 1) return;
+            CLog.Log($"[AltarMp_SmeltUpgrade] Applying ");
+            ServiceLocator.Get<SmeltingOfferManager>().AddModifier(this);
         }
 
         public override string GetShortDescription()
@@ -40,10 +45,23 @@ namespace RobotCastle.Battling.Altars
         }
 
         public override string GetDetailedDescription() => _detailedDescription;
+        
+        public void OnSmeltedWeapon(IItemView view)
+        {
+            var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
+            var chance = _chances[tier];
+            var r = UnityEngine.Random.Range(0f, 1f);
+            r = 0f; // dbg
+            if (r < chance)
+            {
+                var maxLvl = ServiceLocator.Get<MergeMaxLevelCheck>();
+                if (maxLvl.CanUpgradeFurther(view.itemData.core))
+                {
+                    MergeFunctions.AddLevelToItem(view);
+                }
+            }
+        }
     }
-    
-    
-    
     
      
     [System.Serializable]
@@ -56,11 +74,19 @@ namespace RobotCastle.Battling.Altars
 
         public override void Apply()
         {
-            var tier = _tier >= _levels.Count ? _levels.Count - 1 : _tier;
-            var itemLevel = _levels[tier];
-            var item = new CoreItemData(_items.Random());
-            item.level = itemLevel;
-            CLog.Log($"[AltarMp_SmeltUpgrade] Chance [{_smeltChance*100}%] Will spawn {item.id} lvl_{itemLevel} at the start");
+            if (_tier < 1) return;
+            CLog.Log($"[AltarMp_SmeltUpgrade] Applied. Chance [{_smeltChance*100}%] ");
+            var r = UnityEngine.Random.Range(0f, 1f);
+            r = 0f; // dbg
+            if (r < _smeltChance)
+            {
+                var tier = _tier >= _levels.Count ? _levels.Count - 1 : _tier;
+                var itemLevel = _levels[tier];
+                var item = new CoreItemData(_items.Random());
+                item.level = itemLevel;
+                CLog.Log($"[AltarMp_SmeltUpgrade] Will spawn {item.id} lvl_{itemLevel} at the start");
+                ServiceLocator.Get<IPlayerMergeItemsFactory>().SpawnHeroOrItem(new SpawnMergeItemArgs(item));
+            }
         }
 
         public override string GetShortDescription()
@@ -80,18 +106,20 @@ namespace RobotCastle.Battling.Altars
     [System.Serializable]
     public class AltarMp_SmeltReroll : AltarMP
     {
-        [SerializeField] private float _chance = .1f;
         
         public override void Apply()
         {
-            var count = _tier == 5 ? 1 : 0;
-            CLog.Log($"[AltarMp_SmeltUpgrade] Will reroll {count} during smelting");
+            if (_tier < 1) return;
+            
+            var count = _tier == 6 ? 2 : 1;
+            CLog.Log($"[AltarMp_SmeltUpgrade] Adding {count} rerolls to smelting offer");
+            ServiceLocator.Get<SmeltingOfferManager>().Rerolls = count;
         }
 
         public override string GetShortDescription()
         {
-            var itemLevel = _tier == 6 ? 2 : 1;
-            var d = _description.Replace("<val>", itemLevel.ToString());
+            var count = _tier == 6 ? 2 : 1;
+            var d = _description.Replace("<val>", count.ToString());
             return d;
         }
         

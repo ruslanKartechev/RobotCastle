@@ -72,6 +72,6 @@ namespace RobotCastle.Battling
         
         public DescriptionInfo GetInfo() => ServiceLocator.Get<DescriptionsDataBase>().GetDescriptionByLevel(itemData.core);
         
-        public bool CanUpgrade(CoreItemData item) => item.level <= _maxItemLevelIndexToUpgrade;
+        public bool CanUpgrade(CoreItemData item) => (item.level + 1) <= _maxItemLevelIndexToUpgrade;
     }
 }

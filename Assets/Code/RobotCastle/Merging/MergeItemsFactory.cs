@@ -15,7 +15,6 @@ namespace RobotCastle.Merging
         
         private const int NameMult = 10000;
         private const string ReplaceString = "(Clone)";
-        [SerializeField] private Transform _unitsParent;
         
         public IItemView SpawnItemOnCell(ICellView pivotCell, ItemData itemData)
         {
@@ -24,7 +23,7 @@ namespace RobotCastle.Merging
             GameObject instance = null;
             switch (itemData.core.type)
             {
-                case MergeConstants.TypeItems:
+                case MergeConstants.TypeWeapons:
                     prefab = db.viewDb.GetMergePrefabAtLevel(itemData.core.id, itemData.core.level);
                     break;
                 case MergeConstants.TypeUnits:
@@ -54,7 +53,7 @@ namespace RobotCastle.Merging
                 GameObject instance = null;
                 switch (itemData.type)
                 {
-                    case MergeConstants.TypeItems:
+                    case MergeConstants.TypeWeapons:
                         prefab = db.viewDb.GetMergePrefabAtLevel(itemData.id, itemData.level);
                         break;
                     case MergeConstants.TypeUnits:

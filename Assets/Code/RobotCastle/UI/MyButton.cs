@@ -11,7 +11,7 @@ namespace RobotCastle.UI
         [SerializeField] private bool _doRespond;
         private readonly List<Action> _callbacks = new List<Action>(5);
 
-        private void OnEnable()
+        private  void OnEnable()
         {
             _btn.onClick.AddListener(MainCallback);
             _btn.onClick.AddListener(FXCallback);

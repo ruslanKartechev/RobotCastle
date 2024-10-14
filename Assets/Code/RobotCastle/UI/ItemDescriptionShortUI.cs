@@ -36,7 +36,7 @@ namespace RobotCastle.UI
             _animator.FadeIn();
         }
 
-        public void ShowItemOnHero(HeroItemData heroItemData)
+        public void ShowItemOnHero(HeroWeaponData heroItemData)
         {
             ShowCore(heroItemData.core);
             ShowStats(heroItemData.modifierIds);

@@ -29,8 +29,8 @@ namespace RobotCastle.Battling.DevilsOffer
             var reward = offerData.reward;
             switch (reward.type)
             {
-                case MergeConstants.TypeItems:
-                    var heroItemdata = HeroItemData.GetDataWithDefaultModifiers(reward);
+                case MergeConstants.TypeWeapons:
+                    var heroItemdata = HeroWeaponData.GetDataWithDefaultModifiers(reward);
                     _itemDescription.ShowItem(heroItemdata);
                     break;
                 case MergeConstants.TypeBonus:

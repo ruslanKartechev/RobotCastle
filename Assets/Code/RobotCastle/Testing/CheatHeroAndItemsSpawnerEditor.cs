@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace RobotCastle.Testing
 {
-    [CustomEditor(typeof(CheatHeroAndItemsSpawner))]
+    [CustomEditor(typeof(CheatItemsSpawner))]
     public class CheatHeroAndItemsSpawnerEditor : Editor
     {
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
             GUILayout.Space(15);
-            var me = target as CheatHeroAndItemsSpawner;
+            var me = target as CheatItemsSpawner;
             GUILayout.BeginHorizontal();
             
             GUILayout.BeginVertical();

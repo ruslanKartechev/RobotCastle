@@ -1,5 +1,7 @@
 ﻿using DG.Tweening;
+using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Merging;
 using SleepDev;
 using TMPro;
 using UnityEngine;
@@ -7,7 +9,7 @@ using UnityEngine.UI;
 
 namespace RobotCastle.UI
 {
-    public class MoneyUI : MonoBehaviour
+    public class LevelMoneyUI : MonoBehaviour
     {
         [System.Serializable]
         private class AddedMoneyAnimator
@@ -60,10 +62,10 @@ namespace RobotCastle.UI
         
         public void UpdateValue(int newVal, int prevVal)
         {
-            _text.text = $"{newVal}";
             _fadeImage.DOKill();
             _fadeImage.SetAlpha(_splashAlphaMax);
             _fadeImage.DOFade(0f, _splashTime);
+            _text.text = newVal.ToString();
         }
 
         public void AddMoney(int newVal, int added)

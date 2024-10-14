@@ -5,16 +5,6 @@ using UnityEngine;
 
 namespace RobotCastle.Merging
 {
-    public interface ISwapAllowedCheck
-    {
-        bool IsSwapAllowed(ICellView cell1, ICellView cell2);
-    }
-
-    public class MergeSwapAllowedCheck : ISwapAllowedCheck
-    {
-        public bool IsSwapAllowed(ICellView cell1, ICellView cell2) => true;
-    }
-    
     public partial class MergeController
     {
         private const float RaycastMaxDistance = 100;
@@ -26,29 +16,30 @@ namespace RobotCastle.Merging
         
         private IMergeProcessor _processor;
         private IGridView _gridView;
-        private LayerMask _layerMask;
-        private Vector3 _offset;
         private IGridSectionsController _sectionsController;
         private ISwapAllowedCheck _swapAllowedCheck;
+        private IMergeItemsContainer _container;
+        private ICellView _lastPutCell;
+        private LayerMask _layerMask;
         private Camera _camera;
         private DraggedItem _draggedItem;
         private MergePutResult _lastPutResult;
-        private ICellView _lastPutCell;
         private bool _isProcessingPut;
         
         public MergeController(IMergeProcessor processor, 
             IGridSectionsController sectionsController,
             IGridView gridView,
-            ISwapAllowedCheck swapAllowedCheck)
+            ISwapAllowedCheck swapAllowedCheck,
+            IMergeItemsContainer container)
         {
             _swapAllowedCheck = swapAllowedCheck;
             _processor = processor;
             _sectionsController = sectionsController;
             _gridView = gridView;
+            _container = container;
             _camera = Camera.main;
             var db = ServiceLocator.Get<MergeGridViewDataBase>();
             _layerMask = db.cellsMask;
-            _offset = db.draggingOffset;
         }
 
         public void OnDown(Vector3 screenPosition)
@@ -113,7 +104,7 @@ namespace RobotCastle.Merging
                 }
                 else // cell is occupied
                 {
-                    _processor.TryMerge(_draggedItem.itemView, cellView.itemView, _gridView, MergeCallback, out var oneIntoTwo);
+                    _processor.TryMerge(_draggedItem.itemView, cellView.itemView, _gridView, MergeCallback);
                     return;
                 }
             }
@@ -181,13 +172,11 @@ namespace RobotCastle.Merging
                         _draggedItem.PutBack();
                     putResult = MergePutResult.MergeFailed;
                     break;
-                case EMergeResult.MergedIntoNew:
-                    putResult = MergePutResult.Merged;
-                    break;
-                case EMergeResult.MergedOneIntoAnother:
+                case EMergeResult.MergedIntoNew or EMergeResult.MergedOneIntoAnother:
                     putResult = MergePutResult.Merged;
                     break;
             }
+
             _lastPutResult = putResult;
             UpdateGridAndNullDragged();
         }

@@ -1,17 +1,15 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Data;
+using SleepDev;
 
 namespace RobotCastle.Battling.Altars
 {
     public class AltarManager
     {
-        /// <summary>
-        /// (int prevValue, int newValue)
-        /// </summary>
         public event ValueUpdate<int> OnFreePointsCountChanged;
-
         
         private AltarsDatabase _db;
+        
         private AltarsSave _save;
 
         public AltarManager()
@@ -25,11 +23,30 @@ namespace RobotCastle.Battling.Altars
         /// </summary>
         public void SetupData()
         {
+            CLog.Log($"[{nameof(AltarManager)}] SetupData");
+
             var saves = DataHelpers.GetAltarsSave();
             for (var i = 0; i < saves.altars.Count; i++)
             {
                 var save = saves.altars[i];
                 _db.GetAltar(i).SetPoints(save.points);
+            }
+        }
+
+        public void SetupAndApplyAll()
+        {
+            CLog.Log($"[{nameof(AltarManager)}] ApplyAll");
+            var saves = DataHelpers.GetAltarsSave();
+            for (var i = 0; i < saves.altars.Count; i++)
+            {
+                var save = saves.altars[i];
+                _db.GetAltar(i).SetPoints(save.points);
+                if (save.points > 0)
+                {
+                    var mods = _db.GetAltar(i).modifiers;
+                    foreach (var mod in mods)
+                        mod.Apply();
+                }
             }
         }
 

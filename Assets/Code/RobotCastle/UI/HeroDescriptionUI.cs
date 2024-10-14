@@ -44,7 +44,7 @@ namespace RobotCastle.UI
             }
             Show(stats, info, spell);
 
-            var heroItems = source.GetComponent<IHeroItemsContainer>();
+            var heroItems = source.GetComponent<IHeroWeaponsContainer>();
             var hasItems = false;
             if (heroItems != null)
             {
@@ -91,7 +91,7 @@ namespace RobotCastle.UI
             var spTxt = stats.SpellPower.Get().ToString(CultureInfo.InvariantCulture);
             var atkSpTxt = $"{Mathf.RoundToInt(stats.AttackSpeed.Get() * 100)}";
             
-            var items = stats.gameObject.GetComponent<HeroItemsContainer>();
+            var items = stats.gameObject.GetComponent<HeroWeaponsContainer>();
             if (items.Items.Count > 0)
             {
                 var db = ServiceLocator.Get<ModifiersDataBase>();

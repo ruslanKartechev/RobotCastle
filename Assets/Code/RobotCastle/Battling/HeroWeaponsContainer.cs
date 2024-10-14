@@ -5,18 +5,18 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class HeroItemsContainer : MonoBehaviour, IHeroItemsContainer
+    public class HeroWeaponsContainer : MonoBehaviour, IHeroWeaponsContainer
     {
         public int MaxCount => GlobalConfig.MaxUnitsItemsCount;
         public int ItemsCount => _items.Count;
-        public List<HeroItemData> Items => _items;
+        public List<HeroWeaponData> Items => _items;
         
         private const int MaxSize = 3;
         
         [SerializeField] private HeroView _view;
-        private readonly List<HeroItemData> _items = new (MaxSize);
+        private readonly List<HeroWeaponData> _items = new (MaxSize);
 
-        public void UpdateItems(List<HeroItemData> items)
+        public void UpdateItems(List<HeroWeaponData> items)
         {
             if (_items != items)
             {
@@ -28,7 +28,7 @@ namespace RobotCastle.Battling
             _view.heroUI.Items.Animate();
         }
 
-        public void SetItems(List<HeroItemData> items)
+        public void SetItems(List<HeroWeaponData> items)
         {
             if (_items != items)
             {
@@ -39,7 +39,7 @@ namespace RobotCastle.Battling
             _view.heroUI.Items.ShowItems(items);
         }
         
-        public void ReplaceWithMergedItem(int indexAt, HeroItemData newItem)
+        public void ReplaceWithMergedItem(int indexAt, HeroWeaponData newItem)
         {
             // CLog.LogGreen($"ReplaceWithMergedItem. {indexAt}. {newItem.AsStr()}");
             if (indexAt >= _items.Count)
@@ -50,7 +50,7 @@ namespace RobotCastle.Battling
             _view.heroUI.Items.Animate();
         }
 
-        public void AddNewItem(HeroItemData newItem)
+        public void AddNewItem(HeroWeaponData newItem)
         {
             // CLog.LogGreen($"AddNewItem. {newItem.AsStr()}");
             _items.Add(newItem);

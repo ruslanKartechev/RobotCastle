@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
 using RobotCastle.Battling;
 using RobotCastle.Core;
-using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 using SleepDev;
 using UnityEngine;
@@ -16,13 +15,13 @@ namespace RobotCastle.UI
         public TroopSizePurchaseUI TroopSizePurchaseUI => _troopSizePurchaseUI;
         public IButtonInput BtnStart => _btnStart;
         public IButtonInput BtnStart2 => _btnStartTop;
-        public IButtonInput BtnSpawn => _btnSpawn;
+        public PurchaseNewHeroButton BtnPurchaseHero => _btnPurchaseHero;
         
         
         [SerializeField] private TroopsCountUI _troopsCount;
-        [SerializeField] private MoneyUI _money;
+        [SerializeField] private LevelMoneyUI _money;
         [SerializeField] private MyButton _btnStart;
-        [SerializeField] private MyButton _btnSpawn;
+        [SerializeField] private PurchaseNewHeroButton _btnPurchaseHero;
         [SerializeField] private TroopSizePurchaseUI _troopSizePurchaseUI;
         [SerializeField] private InvasionLevelsUI _levelUI;
         [SerializeField] private Vector2 _blockYPositions;
@@ -43,6 +42,7 @@ namespace RobotCastle.UI
             _levelUI.LevelName = chapter.viewName;
             _levelUI.SetRewardForWave(chapter.levelData.levels[battle.roundIndex].reward);
             _levelUI.SetLevel(battle.roundIndex, chapter.levelData.levels, false);
+            _btnPurchaseHero.Init();
         }
         
         public void UpdateForNextWave()

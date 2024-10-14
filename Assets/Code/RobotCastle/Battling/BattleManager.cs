@@ -14,9 +14,14 @@ namespace RobotCastle.Battling
     {
         public Battle battle => _battle;
         public BattleRewardCalculator BattleRewardCalculator => _rewardCalculator;
+        
         public IBattleEndProcessor endProcessor { get; set; }
+        
         public IBattleStartedProcessor startProcessor { get; set; }
         public bool isRoundBoss => _battle.roundIndex == _roundData.Count - 1;
+
+        public RoundData CurrentRound => _roundData[_battle.roundIndex];
+        
         [SerializeField] private bool _activateEnemies = true;
         [SerializeField] private bool _activatePlayers = true;
         private Battle _battle;
@@ -118,7 +123,7 @@ namespace RobotCastle.Battling
         public async Task SetAndInitNextStage(CancellationToken token)
         {
             SetNextStage();
-            await SetStage(_battle.roundIndex, token);
+            await SetRound(_battle.roundIndex, token);
         }
 
         public async Task ResetStage(CancellationToken token)
@@ -131,7 +136,7 @@ namespace RobotCastle.Battling
         {
             try
             {
-                await SetStage(_battle.roundIndex, token);
+                await SetRound(_battle.roundIndex, token);
             }
             catch (System.Exception ex)
             {
@@ -139,7 +144,7 @@ namespace RobotCastle.Battling
             }
         }
 
-        public async Task SetStage(int stageIndex, CancellationToken token)
+        public async Task SetRound(int stageIndex, CancellationToken token)
         {
             var enemiesManager = ServiceLocator.Get<EnemiesManager>();
             _rewardCalculator.RewardPerStageCompletion = _roundData[stageIndex].reward;

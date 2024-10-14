@@ -17,13 +17,13 @@ namespace RobotCastle.UI
         [SerializeField] private TextMeshProUGUI _textCount;
         [SerializeField] private Button _confirmButton;
         private List<ChoosableUnitItemUI> _activeUI;
-        private List<HeroItemData> _items;
+        private List<HeroWeaponData> _items;
         private IItemsChoiceListener _listener;
         private int _max;
         private int _count;
         private bool _takeInput;
 
-        public void PickMaximum(List<HeroItemData> items, int max, IItemsChoiceListener listener)
+        public void PickMaximum(List<HeroWeaponData> items, int max, IItemsChoiceListener listener)
         {
             _listener = listener;
             _count = 0;

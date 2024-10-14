@@ -26,7 +26,7 @@ namespace RobotCastle.MainMenu
             if (_init) return;
             _init = true;
             _gridView.BuildGridFromView();
-            _mergeController = new MergeController(this,this, _gridView, this);
+            _mergeController = new MergeController(this,this, _gridView, this, null);
             _mergeController.useHighlight = false;
             _mergeInput.Init(_mergeController);
             _unitInfoPanel.Init(new Vector2Int(_gridView.Grid.GetLength(0), _gridView.Grid.GetLength(1)));
@@ -150,9 +150,8 @@ namespace RobotCastle.MainMenu
             return true;
         }
         
-        public void TryMerge(IItemView item1, IItemView itemViewInto, IGridView gridView, Action<EMergeResult, bool> callback, out bool oneIntoTwo)
+        public void TryMerge(IItemView item1, IItemView itemViewInto, IGridView gridView, Action<EMergeResult, bool> callback)
         {
-            oneIntoTwo = false;
             callback?.Invoke(EMergeResult.NoMerge, false);
         }
 
@@ -171,6 +170,20 @@ namespace RobotCastle.MainMenu
         public List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, IGridView gridView) => null;
 
         public List<IItemView> SortAllItemsPossible(List<IItemView> allItems, IGridView gridView) => null;
+        public void AddModifier(IMergeModifier mod)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveModifier(IMergeModifier mod)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearAllModifiers()
+        {
+            throw new NotImplementedException();
+        }
 
         public void SetGridView(IGridView gridView) { }
 

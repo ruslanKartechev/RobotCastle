@@ -7,10 +7,10 @@ using SleepDev;
 
 namespace RobotCastle.Battling.SmeltingOffer
 {
-    public class SmeltingOfferManager
+    public class SmeltingOfferManager : IModifiable<ISmeltModifier>
     {
-        public SmeltingOfferManager(SmeltingConfig config, 
-            IGridView gridView, 
+        public SmeltingOfferManager(SmeltingConfig config,
+            IGridView gridView,
             IGridSectionsController sectionsController,
             ITroopSizeManager troopSizeManager,
             Battle battle)
@@ -22,19 +22,35 @@ namespace RobotCastle.Battling.SmeltingOffer
             this.troopSizeManager = troopSizeManager;
         }
 
+        public int Rerolls
+        {
+            get => _rerolls;
+            set
+            {
+                _rerolls = value;
+                if (_rerolls < 0)
+                    _rerolls = 0;
+                CLog.Log($"[Smelting Offer] Rerolls set {_rerolls}");
+            }
+        }
+
         public Battle battle;
         public SmeltingConfig config;
         public IGridView gridView;
         public ITroopSizeManager troopSizeManager;
         public IGridSectionsController sectionsController;
-        private System.Action _callback; 
+        private List<ISmeltModifier> _smeltModifiers = new (10);
+        private SmeltingData _currentData;
+        private System.Action _callback;
         private int _offerIndex;
+        private int _rerolls;
 
+        
         public static List<CoreItemData> PickThreeItems(List<CoreItemData> itemsOptions)
         {
             const int count = 3;
             var res = new List<CoreItemData>(count);
-           
+
             var options = new List<int>(itemsOptions.Count);
             for (var i = 0; i < itemsOptions.Count; i++)
                 options.Add(i);
@@ -44,9 +60,10 @@ namespace RobotCastle.Battling.SmeltingOffer
                 options.Remove(index);
                 res.Add(itemsOptions[index]);
             }
+
             return res;
         }
-        
+
         public void MakeNextOffer(System.Action callback)
         {
             if (_offerIndex >= config.smeltingTiers.Count)
@@ -54,27 +71,54 @@ namespace RobotCastle.Battling.SmeltingOffer
                 CLog.LogError($"Offer index >= smelting tiers count. Cannot make next offer");
                 return;
             }
+
             var index = _offerIndex;
             _offerIndex++;
-            var options = config.smeltingTiers[index].itemsOptions;
+            _currentData = config.smeltingTiers[index]; 
+            var options = _currentData.itemsOptions;
             var items = PickThreeItems(options);
-            var ui = ServiceLocator.Get<IUIManager>().Show<SmeltingOfferUI>(UIConstants.UISmeltingOffer, () => {});
-            ui.ShowOffer(items, OnChoiceConfirmed);
+            var ui = ServiceLocator.Get<IUIManager>().Show<SmeltingOfferUI>(UIConstants.UISmeltingOffer, () => { });
+            ui.ShowOffer(items, this);
             _callback = callback;
         }
 
-        private void OnChoiceConfirmed(CoreItemData data)
+        public List<CoreItemData> RerollItems()
+        {
+            _rerolls--;
+            if (_rerolls < 0)
+                _rerolls = 0;
+            var items = PickThreeItems(_currentData.itemsOptions);
+            return items;
+        }
+
+        public void AddModifier(ISmeltModifier mod)
+        {
+            _smeltModifiers.Add(mod);
+        }
+
+        public void RemoveModifier(ISmeltModifier mod)
+        {
+            _smeltModifiers.Remove(mod);
+        }
+
+        public void ClearAllModifiers()
+        {
+            _smeltModifiers.Clear();
+        }
+        
+        public void OnChoiceConfirmed(CoreItemData data)
         {
             CLog.Log($"Choice confirmed: {data.AsStr()}");
             switch (data.type)
             {
-                case MergeConstants.TypeItems:
-                    CLog.Log($"Hero item");
+                case MergeConstants.TypeWeapons:
                     var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
                     factory.SpawnHeroOrItem(new SpawnMergeItemArgs(data), gridView, sectionsController, out var view);
+
+                    foreach (var mod in _smeltModifiers)
+                        mod.OnSmeltedWeapon(view);
                     break;
                 case MergeConstants.TypeBonus:
-                    CLog.Log($"Bonus");
                     switch (data.id)
                     {
                         case "bonus_troops":
@@ -87,9 +131,12 @@ namespace RobotCastle.Battling.SmeltingOffer
                             gm.AddMoney(data.level);
                             break;
                     }
+
                     break;
             }
+
             _callback?.Invoke();
         }
+        
     }
 }

@@ -91,7 +91,7 @@ namespace RobotCastle.Data
             string path;
             switch (itemData.type)
             {
-                case MergeConstants.TypeItems:
+                case MergeConstants.TypeWeapons:
                     path = $"{ItemInfo[itemData.id].Icon}_lvl_{itemData.level + 1}";
                     return Resources.Load<Sprite>(path);
                 case MergeConstants.TypeBonus:
@@ -106,7 +106,7 @@ namespace RobotCastle.Data
         {
             if (ItemInfo.ContainsKey(id))
                 return Resources.Load<Sprite>(ItemInfo[id].Icon);
-            CLog.LogError($"DataBase does not contain id {id}");
+            CLog.LogError($"[ViewDB] does not contain id {id}");
             return null;
         }
         
@@ -114,6 +114,8 @@ namespace RobotCastle.Data
         {
             if (ItemInfo.ContainsKey(id))
                 return ItemInfo[id].MaxMergeLevel;
+            
+            CLog.LogError($"[ViewDB] does not contain id {id}");
             return -1;
         }
     }

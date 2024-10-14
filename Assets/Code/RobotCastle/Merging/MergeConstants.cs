@@ -3,7 +3,7 @@
     public static class MergeConstants
     {
         public const string TypeUnits = "unit";
-        public const string TypeItems = "item";
+        public const string TypeWeapons = "item";
         public const string TypeBonus = "bonus";
         
         public const int MaxItemLevel = 3;

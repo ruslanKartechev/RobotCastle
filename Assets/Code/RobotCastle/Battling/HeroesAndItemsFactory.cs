@@ -64,8 +64,8 @@ namespace RobotCastle.Battling
                 hero.InitHero(id, HeroesManager.GetHeroLevel(id), args.coreData.level, modifiers);
                 if (args.useAdditionalItems)
                 {
-                    var mergedItems = MergeFunctions.TryMergeAll(HeroItemData.GetDataWithDefaultModifiers(args.additionalItems), MergeConstants.MaxItemLevel);
-                    var itemsContainer = heroGo.GetComponent<IHeroItemsContainer>();
+                    var mergedItems = MergeFunctions.TryMergeAll(HeroWeaponData.GetDataWithDefaultModifiers(args.additionalItems), MergeConstants.MaxItemLevel);
+                    var itemsContainer = heroGo.GetComponent<IHeroWeaponsContainer>();
                     itemsContainer.SetItems(mergedItems);
                 }
                 hero.SetBehaviour(new HeroIdleBehaviour());

@@ -94,7 +94,7 @@ namespace RobotCastle.Battling.DevilsOffer
         {
             switch (data.type)
             {
-                case MergeConstants.TypeItems:
+                case MergeConstants.TypeWeapons:
                     var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
                     factory.SpawnHeroOrItem(new SpawnMergeItemArgs(_currentOption.reward), playerGrid, sectionsController, out var item);
                     break;

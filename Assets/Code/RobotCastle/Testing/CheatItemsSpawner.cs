@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace RobotCastle.Testing
 {
-    public class CheatHeroAndItemsSpawner : MonoBehaviour
+    public class CheatItemsSpawner : MonoBehaviour
     {
         [Header("Hero")]
         [SerializeField] private CoreItemData _oneHero;
@@ -139,30 +139,30 @@ namespace RobotCastle.Testing
 #endif
         }
 
-        public void SpawnArmor1() => SpawnMergeItem(new CoreItemData(0, "armor", MergeConstants.TypeItems));
-        public void SpawnArmor2() => SpawnMergeItem(new CoreItemData(1, "armor", MergeConstants.TypeItems));
-        public void SpawnArmor3() => SpawnMergeItem(new CoreItemData(2, "armor", MergeConstants.TypeItems));
-        public void SpawnArmor4() => SpawnMergeItem(new CoreItemData(3, "armor", MergeConstants.TypeItems));
+        public void SpawnArmor1() => SpawnMergeItem(new CoreItemData(0, "armor", MergeConstants.TypeWeapons));
+        public void SpawnArmor2() => SpawnMergeItem(new CoreItemData(1, "armor", MergeConstants.TypeWeapons));
+        public void SpawnArmor3() => SpawnMergeItem(new CoreItemData(2, "armor", MergeConstants.TypeWeapons));
+        public void SpawnArmor4() => SpawnMergeItem(new CoreItemData(3, "armor", MergeConstants.TypeWeapons));
 
         
-        public void SpawnSword1() => SpawnMergeItem(new CoreItemData(0, "sword", MergeConstants.TypeItems));
-        public void SpawnSword2() => SpawnMergeItem(new CoreItemData(1, "sword", MergeConstants.TypeItems));
-        public void SpawnSword3() => SpawnMergeItem(new CoreItemData(2, "sword", MergeConstants.TypeItems));
-        public void SpawnSword4() => SpawnMergeItem(new CoreItemData(3, "sword", MergeConstants.TypeItems));
+        public void SpawnSword1() => SpawnMergeItem(new CoreItemData(0, "sword", MergeConstants.TypeWeapons));
+        public void SpawnSword2() => SpawnMergeItem(new CoreItemData(1, "sword", MergeConstants.TypeWeapons));
+        public void SpawnSword3() => SpawnMergeItem(new CoreItemData(2, "sword", MergeConstants.TypeWeapons));
+        public void SpawnSword4() => SpawnMergeItem(new CoreItemData(3, "sword", MergeConstants.TypeWeapons));
 
-        public void SpawnStaff1() => SpawnMergeItem(new CoreItemData(0, "staff", MergeConstants.TypeItems));
-        public void SpawnStaff2() => SpawnMergeItem(new CoreItemData(1, "staff", MergeConstants.TypeItems));
-        public void SpawnStaff3() => SpawnMergeItem(new CoreItemData(2, "staff", MergeConstants.TypeItems));
-        public void SpawnStaff4() => SpawnMergeItem(new CoreItemData(3, "staff", MergeConstants.TypeItems));
+        public void SpawnStaff1() => SpawnMergeItem(new CoreItemData(0, "staff", MergeConstants.TypeWeapons));
+        public void SpawnStaff2() => SpawnMergeItem(new CoreItemData(1, "staff", MergeConstants.TypeWeapons));
+        public void SpawnStaff3() => SpawnMergeItem(new CoreItemData(2, "staff", MergeConstants.TypeWeapons));
+        public void SpawnStaff4() => SpawnMergeItem(new CoreItemData(3, "staff", MergeConstants.TypeWeapons));
 
-        public void SpawnBow1() => SpawnMergeItem(new CoreItemData(0, "bow", MergeConstants.TypeItems));
-        public void SpawnBow2() => SpawnMergeItem(new CoreItemData(1, "bow", MergeConstants.TypeItems));
-        public void SpawnBow3() => SpawnMergeItem(new CoreItemData(2, "bow", MergeConstants.TypeItems));
-        public void SpawnBow4() => SpawnMergeItem(new CoreItemData(3, "bow", MergeConstants.TypeItems));
+        public void SpawnBow1() => SpawnMergeItem(new CoreItemData(0, "bow", MergeConstants.TypeWeapons));
+        public void SpawnBow2() => SpawnMergeItem(new CoreItemData(1, "bow", MergeConstants.TypeWeapons));
+        public void SpawnBow3() => SpawnMergeItem(new CoreItemData(2, "bow", MergeConstants.TypeWeapons));
+        public void SpawnBow4() => SpawnMergeItem(new CoreItemData(3, "bow", MergeConstants.TypeWeapons));
 
-        public void SpawnXPBook1() => SpawnMergeItem(new CoreItemData(0, MergeConstants.UpgradeBookId, MergeConstants.TypeItems));
-        public void SpawnXPBook2() => SpawnMergeItem(new CoreItemData(1, MergeConstants.UpgradeBookId, MergeConstants.TypeItems));
-        public void SpawnXPBook3() => SpawnMergeItem(new CoreItemData(2, MergeConstants.UpgradeBookId, MergeConstants.TypeItems));
+        public void SpawnXPBook1() => SpawnMergeItem(new CoreItemData(0, MergeConstants.UpgradeBookId, MergeConstants.TypeWeapons));
+        public void SpawnXPBook2() => SpawnMergeItem(new CoreItemData(1, MergeConstants.UpgradeBookId, MergeConstants.TypeWeapons));
+        public void SpawnXPBook3() => SpawnMergeItem(new CoreItemData(2, MergeConstants.UpgradeBookId, MergeConstants.TypeWeapons));
         
         public void SpawnPreset(List<CoreItemData> list)
         {
@@ -188,30 +188,25 @@ namespace RobotCastle.Testing
         
         public static IItemView SpawnHeroOrItem(CoreItemData data, bool useSpecificCoord, Vector2Int coord, List<CoreItemData> items = null)
         {
-            var spawner = ServiceLocator.Get<IHeroesAndItemsFactory>();
-            if (spawner == null)
-            {
-                CLog.LogError("No IBattleGridSpawner found!");
-                return null;
-            }
+   
             var manager = ServiceLocator.Get<MergeManager>();
             if (manager == null)
             {
                 CLog.LogError("No MergeManager found!");
                 return null;
             }
-            IItemView view = null;
             var args = new SpawnMergeItemArgs(data);
             args.useAdditionalItems = (items is {Count: > 0});
             args.additionalItems = items;
             args.preferredCoordinated = coord;
             args.usePreferredCoordinate = useSpecificCoord;
-            spawner.SpawnHeroOrItem(args, manager.GridView, manager.SectionsController, out view);
-            manager.HighlightMergeOptions();
-            return view;
+            if (ServiceLocator.GetIfContains(out IPlayerMergeItemsFactory spawner))
+                return spawner.SpawnHeroOrItem(args);
+            
+            CLog.LogRed($"IPlayerMergeItemPurchaser not found");
+            return null;
         }
         
-
         private void CorrectIndexAndSetId()
         {
             if (_heroIds.Count > 0)

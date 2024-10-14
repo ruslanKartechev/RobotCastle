@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Battling.MerchantOffer;
+using RobotCastle.Core;
+using RobotCastle.InvasionMode;
 using SleepDev;
 using UnityEngine;
+
 namespace RobotCastle.Battling.Altars
 {
     [CreateAssetMenu(menuName = "SO/Altars/Greed Altar", fileName = "Greed Altar", order = 5)]
@@ -25,9 +29,11 @@ namespace RobotCastle.Battling.Altars
 
         public override void Apply()
         {
+            if (_tier < 1) return;
             var tier = _tier >= _money.Count ? _money.Count - 1 : _tier;
-            var val = _money[tier];
-            CLog.Log($"[AltarMp_DamageHPDrain] Tier {tier}, initial money: {val}");
+            var val = (int)_money[tier];
+            CLog.Log($"[AltarMp_InitialMoney] Tier {tier}, added money: {val}");
+            ServiceLocator.Get<IBattleStartData>().AddMoney(val);
         }
 
         public override string GetShortDescription()
@@ -43,16 +49,15 @@ namespace RobotCastle.Battling.Altars
 
     
     [System.Serializable]
-    public class AltarMp_EliteRoundSilver : AltarMP
+    public class AltarMp_EliteRoundSilver : AltarMP, IRoundModifier
     {
         [SerializeField] private List<float> _money;
 
-
         public override void Apply()
         {
-            var tier = _tier >= _money.Count ? _money.Count - 1 : _tier;
-            var val = _money[tier];
-            CLog.Log($"[AltarMp_DamageHPDrain] Tier {tier}, elite level money: {val}");
+            if (_tier < 1) return;
+            ServiceLocator.Get<BattleManager>().AddRoundModifier(this);
+            CLog.Log("[AltarMp_EliteRoundSilver] Applied");
         }
 
         public override string GetShortDescription()
@@ -64,6 +69,20 @@ namespace RobotCastle.Battling.Altars
         }
 
         public override string GetDetailedDescription() => _detailedDescription;
+
+        public void OnRoundSet(BattleManager battleManager)
+        {
+            if (battleManager.CurrentRound.roundType == RoundType.EliteEnemy)
+            {
+                var tier = _tier >= _money.Count ? _money.Count - 1 : _tier;
+                var val = (int)_money[tier];
+                CLog.LogGreen($"[AltarMp_EliteRoundSilver] Tier {tier}, elite level money: {val}");
+                ServiceLocator.Get<GameMoney>().AddMoney(val);
+            }
+        }
+
+        public void OnRoundCompleted(BattleManager battleManager)
+        { }
     }
     
     
@@ -75,9 +94,12 @@ namespace RobotCastle.Battling.Altars
 
         public override void Apply()
         {
+            if (_tier < 1) return;
+
             var tier = _tier >= _sale.Count ? _sale.Count - 1 : _tier;
             var sale = _sale[tier];
-            CLog.Log($"[AltarMp_DamageHPDrain] Tier {tier}, sale: {sale*100}%");
+            CLog.Log($"[AltarMp_MerchantOfferSale] Tier {tier}, sale: {sale * 100}%");
+            ServiceLocator.Get<MerchantOfferManager>().Sale += sale;
         }
 
         public override string GetShortDescription()

@@ -12,43 +12,47 @@ namespace RobotCastle.Merging
         
         private Action<EMergeResult, bool> _callback;
         private bool _oneIntoTwo;
-        private IItemView _unitView;
-        private IItemView _itemView;
+        private IItemView _hero;
+        private IItemView _weapon;
         private IGridView _gridView;
+        private IMergeItemsContainer _container;
         private ChooseItemsOffer _offer;
+        private List<IMergeModifier> _modifiers;
 
-        public AddItemToUnitOperation(IItemView item1, IItemView item2, IGridView gridView, Action<EMergeResult,bool> callback)
+        public AddItemToUnitOperation(IItemView item1, IItemView item2, IGridView gridView, IMergeItemsContainer container, Action<EMergeResult,bool> callback, List<IMergeModifier> modifiers)
         {
             _callback = callback;
             _gridView = gridView;
+            _container = container;
+            _modifiers = modifiers;
             if (item1.itemData.core.type == MergeConstants.TypeUnits)
             {
-                _unitView = item1;
-                _itemView = item2;
+                _hero = item1;
+                _weapon = item2;
                 _oneIntoTwo = false;
             }
             else
             {
-                _unitView = item2;
-                _itemView = item1;
+                _hero = item2;
+                _weapon = item1;
                 _oneIntoTwo = true;
             }
         }
 
         public void Process()
         {
-            var itemContainerInto = _unitView.Transform.gameObject.GetComponent<IHeroItemsContainer>();
+            var itemContainerInto = _hero.Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
             if (itemContainerInto == null)
             {
-                CLog.LogRed($"NO <IUnitsItemsContainer> on {_unitView.Transform.gameObject.name}");
+                CLog.LogRed($"NO <IUnitsItemsContainer> on {_hero.Transform.gameObject.name}");
                 return;
             }
             var currentItems = itemContainerInto.Items;
             // var newItem = _itemView.itemData.core;
-            var newItem = new HeroItemData(_itemView.Transform.gameObject);
+            var newItem = new HeroWeaponData(_weapon.Transform.gameObject);
             var didMerge = false;
             var replaceIndex = 0;
-            var mergedItem = (HeroItemData)null;
+            var mergedItem = (HeroWeaponData)null;
             for (var i = 0; i < currentItems.Count; i++)
             {
                 var item = currentItems[i];
@@ -60,12 +64,13 @@ namespace RobotCastle.Merging
                         id = newItem.id,
                         level = newItem.level + 1,
                         type = newItem.type };
-                    mergedItem = new HeroItemData(core, newItem.modifierIds);
+                    mergedItem = new HeroWeaponData(core, newItem.modifierIds);
                     mergedItem.modifierIds.AddRange(item.modifierIds);
                     
                     currentItems[i] = mergedItem;
                     replaceIndex = i;
-                    MergeFunctions.ClearCellAndHideItem(_gridView, _itemView);
+                    _container.RemoveItem(_weapon);
+                    MergeFunctions.ClearCellAndHideItem(_gridView, _weapon);
                     didMerge = true;
                     break;
                 }
@@ -91,7 +96,7 @@ namespace RobotCastle.Merging
                 Complete();
                 return;
             }
-            var allItems = new List<HeroItemData>(MergeConstants.MaxItemsCount * 2);
+            var allItems = new List<HeroWeaponData>(MergeConstants.MaxItemsCount * 2);
             allItems.AddRange(currentItems);
             allItems.Add(newItem);
             _offer = new ChooseItemsOffer(MergeConstants.MaxItemsCount, this);
@@ -102,43 +107,43 @@ namespace RobotCastle.Merging
         {
             if (_oneIntoTwo) // dragged into standing. Item into Unit
             {
-                MergeFunctions.ClearCell(_gridView, _itemView);
-                _itemView.Hide();
+                MergeFunctions.ClearCell(_gridView, _weapon);
+                _weapon.Hide();
             }
             else // standing into dragged. Unit into item
             {
-                MergeFunctions.ClearCell(_gridView, _unitView);
-                var targetCell = _gridView.GetCell(_itemView.itemData.pivotX, _itemView.itemData.pivotY);
-                MergeFunctions.ClearCellAndHideItem(_gridView, _itemView);
-                MergeFunctions.PutItemToCell(_unitView, targetCell);
+                MergeFunctions.ClearCell(_gridView, _hero);
+                var targetCell = _gridView.GetCell(_weapon.itemData.pivotX, _weapon.itemData.pivotY);
+                MergeFunctions.ClearCellAndHideItem(_gridView, _weapon);
+                MergeFunctions.PutItemToCell(_hero, targetCell);
             }
         }
         
-        public void ConfirmChosenItems(List<HeroItemData> allItems, List<int> chosen, List<int> left)
+        public void ConfirmChosenItems(List<HeroWeaponData> allWeapons, List<int> chosen, List<int> left)
         {
-            var chosenItems = new List<HeroItemData>(allItems.Count);
+            var chosenItems = new List<HeroWeaponData>(allWeapons.Count);
             foreach (var ind in chosen)
-                chosenItems.Add(allItems[ind]);
+                chosenItems.Add(allWeapons[ind]);
             if (_oneIntoTwo) // dragged into standing. Unit is standing
             {
-                var container = _unitView.Transform.gameObject.GetComponent<IHeroItemsContainer>();
+                var container = _hero.Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
                 container.SetItems(chosenItems);
-                MergeFunctions.ClearCellAndHideItem(_gridView, _itemView);
+                MergeFunctions.ClearCellAndHideItem(_gridView, _weapon);
             }
             else // standing into dragged. Unit is dragged
             {
-                var container = _unitView.Transform.gameObject.GetComponent<IHeroItemsContainer>();
+                var container = _hero.Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
                 container.SetItems(chosenItems);
-                MergeFunctions.ClearCell(_gridView, _unitView);
-                var targetCell = _gridView.GetCell(_itemView.itemData.pivotX, _itemView.itemData.pivotY);
-                MergeFunctions.ClearCellAndHideItem(_gridView, _itemView);
-                MergeFunctions.PutItemToCell(_unitView, targetCell);
+                MergeFunctions.ClearCell(_gridView, _hero);
+                var targetCell = _gridView.GetCell(_weapon.itemData.pivotX, _weapon.itemData.pivotY);
+                MergeFunctions.ClearCellAndHideItem(_gridView, _weapon);
+                MergeFunctions.PutItemToCell(_hero, targetCell);
             }
             var spawner = ServiceLocator.Get<IMergeItemsFactory>();
             var cellPicker = ServiceLocator.Get<IGridSectionsController>();
             foreach (var ind in left)
             {
-                var itemData = new ItemData(allItems[ind].core);
+                var itemData = new ItemData(allWeapons[ind].core);
                 var hasCell = cellPicker.GetFreeAllowedCell(_gridView.BuiltGrid, itemData, out var coords);
                 if (!hasCell)
                 {
@@ -153,6 +158,9 @@ namespace RobotCastle.Merging
         
         private void Complete()
         {
+            foreach (var mod in _modifiers)
+                mod.OnMergedOneIntoAnother(_weapon, _hero);
+            
             _callback.Invoke(EMergeResult.MergedOneIntoAnother, _oneIntoTwo);
         }
     }

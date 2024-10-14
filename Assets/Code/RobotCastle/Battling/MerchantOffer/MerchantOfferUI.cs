@@ -23,7 +23,7 @@ namespace RobotCastle.Battling.MerchantOffer
         private Action _endCallback;
         private MerchantOfferData.GoodsPreset _preset;
         
-        public void Show(MerchantOfferData.GoodsPreset preset, PurchaseCallback purchaseCallback, Action completedCallback)
+        public void Show(MerchantOfferData.GoodsPreset preset, List<int> prices, PurchaseCallback purchaseCallback, Action completedCallback)
         {
             _preset = preset;
             _endCallback = completedCallback;
@@ -42,13 +42,13 @@ namespace RobotCastle.Battling.MerchantOffer
                 else
                 {
                     btn.SetNonAds();
-                    btn.SetCost(good.cost);
+                    btn.SetCost(prices[i]);
                 }
                 btn.activeBtn.SetInteractable(true);
                 switch (good.ItemData.type)
                 {
-                    case MergeConstants.TypeItems:
-                        _itemDescriptions[i].ShowItem(HeroItemData.GetDataWithDefaultModifiers(good.ItemData));
+                    case MergeConstants.TypeWeapons:
+                        _itemDescriptions[i].ShowItem(HeroWeaponData.GetDataWithDefaultModifiers(good.ItemData));
                         break;
                     case MergeConstants.TypeBonus:
                         _itemDescriptions[i].ShowBonus(good.ItemData);

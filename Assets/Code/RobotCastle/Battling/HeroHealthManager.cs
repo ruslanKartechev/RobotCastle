@@ -8,6 +8,9 @@ namespace RobotCastle.Battling
 {
     public class HeroHealthManager : IHeroHealthManager, IHeroIDamageReceiver
     {
+        
+        public bool LogDamage { get; set; }
+        
         public event Action OnAfterDamage;
         public event Action OnDamagePreApplied;
         public event Action OnDamageAttempted;
@@ -31,8 +34,11 @@ namespace RobotCastle.Battling
             var stats = _view.stats;
             args.physDamage = HeroesManager.ReduceDamageByDef(args.physDamage, stats.PhysicalResist.Val);
             args.magicDamage = HeroesManager.ReduceDamageByDef(args.magicDamage, stats.MagicalResist.Val);
-            CLog.Log($"[{_view.gameObject.name}] Took Damage {args.physDamage}, {args.magicDamage}. " +
-                     $"Defence: {HeroesManager.GetDef(stats.PhysicalResist.Val)}, {HeroesManager.GetDef(stats.MagicalResist.Val)}");
+            if (LogDamage)
+            {
+                CLog.Log($"[{_view.gameObject.name}] Took Damage {args.physDamage}, {args.magicDamage}. " +
+                         $"Defence: {HeroesManager.GetDef(stats.PhysicalResist.Val)}, {HeroesManager.GetDef(stats.MagicalResist.Val)}");
+            }
             var shield = stats.Shield;
             var health = stats.HealthCurrent.Get();
             var didDamageShield = false;

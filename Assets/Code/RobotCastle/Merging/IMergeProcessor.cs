@@ -1,22 +1,18 @@
 using System;
 using System.Collections.Generic;
+using RobotCastle.Core;
 using UnityEngine;
 
 namespace RobotCastle.Merging
 {
-    public interface IMergeProcessor
+    public interface IMergeProcessor : IModifiable<IMergeModifier>
     {
         /// <summary>
         /// Trying to merge item1 into item2
         /// </summary>
         /// <returns></returns>
-        void TryMerge(IItemView item1, IItemView itemViewInto, IGridView gridView, Action<EMergeResult, bool> callback, out bool oneIntoTwo);
-        
-        /// <summary>
-        /// Trying to merge item1 into item2
-        /// </summary>
-        /// <returns></returns>
-        EMergeResult TryMerge(ItemData item1, ItemData item2, out ItemData mergedItem, out bool oneIntoTwo);
+        void TryMerge(IItemView item1, IItemView itemViewInto, 
+            IGridView gridView, Action<EMergeResult, bool> callback);
         
         List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem);
 

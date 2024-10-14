@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using RobotCastle.Core;
 using RobotCastle.UI;
@@ -31,7 +32,14 @@ namespace RobotCastle.Battling.Altars
             altar.OnPointsUpdated -= OnPointsUpdated;
             altar.OnPointsUpdated += OnPointsUpdated;
         }
-        
+
+        private void OnDisable()
+        {
+            if (_altar != null)
+            {
+                _altar.OnPointsUpdated -= OnPointsUpdated;
+            }
+        }
 
         public void SetPointsViewAndBtnState(int altarPoints, int playerFreePoints)
         {
@@ -58,10 +66,10 @@ namespace RobotCastle.Battling.Altars
             if(playerFreePoints == 0)
                 SetButtonsInteractable(false);
             else
-                SetButtonInteractable();
+                SetButtonsInteractableIfNotMaxTier();
         }        
 
-        public void SetButtonInteractable()
+        public void SetButtonsInteractableIfNotMaxTier()
         {
             if (_altar.GetPoints() >= Altar.MaxPoints)
                 SetButtonsInteractable(false);

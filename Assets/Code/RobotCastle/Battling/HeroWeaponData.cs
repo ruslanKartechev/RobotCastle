@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class HeroItemData
+    public class HeroWeaponData
     {
         public CoreItemData core;
         public List<string> modifierIds;
@@ -16,41 +16,41 @@ namespace RobotCastle.Battling
         public int level => core.level;
         public string type => core.type;
 
-        public static List<HeroItemData> GetDataWithDefaultModifiers(List<CoreItemData> items)
+        public static List<HeroWeaponData> GetDataWithDefaultModifiers(List<CoreItemData> items)
         {
-            var result = new List<HeroItemData>(items.Count);
+            var result = new List<HeroWeaponData>(items.Count);
             var db = ServiceLocator.Get<ViewDataBase>();
             foreach (var it in items)
             {
                 var prefab = db.GetMergePrefab(it.id);
                 if (prefab.TryGetComponent<ModifiersContainer>(out var container))
-                    result.Add(new HeroItemData(it, container.ModifierIds));   
+                    result.Add(new HeroWeaponData(it, container.ModifierIds));   
                 else
-                    result.Add(new HeroItemData(it, new List<string>()));
+                    result.Add(new HeroWeaponData(it, new List<string>()));
 
             }
             return result;
         }
         
-        public static HeroItemData GetDataWithDefaultModifiers(CoreItemData it)
+        public static HeroWeaponData GetDataWithDefaultModifiers(CoreItemData it)
         {
-            HeroItemData result;
+            HeroWeaponData result;
             var db = ServiceLocator.Get<ViewDataBase>();
             var prefab = db.GetMergePrefabAtLevel(it.id, it.level);
             if (prefab.TryGetComponent<ModifiersContainer>(out var container))
-                result = new HeroItemData(it, container.ModifierIds);   
+                result = new HeroWeaponData(it, container.ModifierIds);   
             else
-                result = new HeroItemData(it, new List<string>());
+                result = new HeroWeaponData(it, new List<string>());
             return result;
         }
 
-        public HeroItemData(CoreItemData core, List<string> modifier)
+        public HeroWeaponData(CoreItemData core, List<string> modifier)
         {
             this.core = core;
             this.modifierIds = modifier;
         }
         
-        public HeroItemData(GameObject source)
+        public HeroWeaponData(GameObject source)
         {
             var mergeView = source.GetComponent<IItemView>();
             if (mergeView == null)

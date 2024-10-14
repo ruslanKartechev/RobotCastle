@@ -38,7 +38,7 @@ namespace RobotCastle.UI
             _animator.FadeIn();
         }
 
-        public void ShowItem(HeroItemData itemData)
+        public void ShowItem(HeroWeaponData itemData)
         {
             var db = ServiceLocator.Get<ViewDataBase>();
             var icon = db.GetUnitItemSpriteAtLevel(itemData.id, itemData.level);

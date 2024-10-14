@@ -360,6 +360,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d926d0e0bcee6a0488666f5569cbbe4c, type: 3}
+--- !u!114 &6576842594571294818 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6798136286450513357, guid: d926d0e0bcee6a0488666f5569cbbe4c, type: 3}
+  m_PrefabInstance: {fileID: 365485987537087919}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd6abe57389c4fbe904b4f4115ef6e20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6656641580523636157 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6445587500595619858, guid: d926d0e0bcee6a0488666f5569cbbe4c, type: 3}
@@ -481,6 +492,10 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8598687713093575023, guid: 6bea2bbc3a37a5841bfe47e838ffbf28, type: 3}
+      propertyPath: _btn
+      value: 
+      objectReference: {fileID: 2371669247943301924}
     - target: {fileID: 8734822606165126261, guid: 6bea2bbc3a37a5841bfe47e838ffbf28, type: 3}
       propertyPath: m_Name
       value: button_summon
@@ -691,6 +706,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8674299170616164390, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -727,6 +746,7 @@ MonoBehaviour:
   _summonBtn: {fileID: 4139381260141278460}
   _battleBtn: {fileID: 1077192737109407857}
   _settingBtn: {fileID: 6905657177375578912}
+  _altarsBTN: {fileID: 6576842594571294818}
 --- !u!1001 &7676976517444337284
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using RobotCastle.UI;
 using UnityEngine;
@@ -24,7 +25,13 @@ namespace RobotCastle.Battling.Altars
         private AltarsDatabase _db;
         private AltarsSave _save;
         private AltarManager _manager;
-        
+
+        private void OnDisable()
+        {
+            if (_manager != null)
+                _manager.OnFreePointsCountChanged -= OnFreePointsUpdated;
+        }
+
         public void Show()
         {
             _save = DataHelpers.GetAltarsSave();
@@ -47,8 +54,15 @@ namespace RobotCastle.Battling.Altars
 
         private void OnFreePointsUpdated(int prevVal, int newVal)
         {
-            if(prevVal != newVal)
+            if (prevVal != newVal)
+            {
                 SetPointsAndAnimate(newVal);
+                if (newVal == 0)
+                {
+                    foreach (var altar in _uiAltars)
+                        altar.SetButtonsInteractable(false);
+                }
+            }
         }
         
         private void SetPointsAndAnimate(int newVal)
