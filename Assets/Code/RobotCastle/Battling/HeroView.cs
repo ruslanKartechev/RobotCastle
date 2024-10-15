@@ -27,6 +27,8 @@ namespace RobotCastle.Battling
         public IHeroHealthManager healthManager { get; set; }
         public IDamageReceiver damageReceiver { get; set; }
         public IKillProcessor killProcessor { get; set; }
+        public IDamageSource damageSource { get; set; }
+        
         public HeroSpellsContainer spellsContainer { get; set;}
         public HeroStateData state { get; set; } = new();
         public HeroAnimationToStatsSync statAnimationSync { get; set; }

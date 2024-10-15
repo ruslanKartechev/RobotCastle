@@ -2,6 +2,7 @@
 {
     public interface IDamageReceiver : IGameObjectComponent
     {
-        void TakeDamage(DamageArgs args);
+        /// <returns>Amount of damage actually received after all defence stats</returns>
+        DamageArgs TakeDamage(DamageArgs args);
     }
 }

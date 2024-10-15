@@ -61,7 +61,8 @@ namespace RobotCastle.Battling
                     var fx = GetFxView();
                     fx.transform.position = map.GetWorldFromCell(_view.state.currentCell);
                     fx.Show(lvl);
-                    var args = new DamageArgs(_config.physDamage[lvl], _view.stats.SpellPower.Get());
+                    var args = _view.damageSource.CalculateSpellAndPhysDamage();
+                    args.physDamage = _config.physDamage[lvl];
                     for (var i = affectedEnemies.Count - 1; i >= 0; i--)
                         allEnemies[i].View.damageReceiver.TakeDamage(args);
                     _isActive = false;

@@ -44,9 +44,13 @@ namespace RobotCastle.Battling
         }
 
         public IManaAdder ManaAdder { get; set; }
-        public IDamageCalculator DamageCalculator { get; set; }
+        
+        // public IDamageCalculator DamageCalculator { get; set; }
         
         public float Shield = 0f;
+        public Stat MightyBlock { get; set; } = new Stat();
+        public Stat Vampirism { get; set; } = new Stat();
+        
         public Stat Attack {get; set;} = new Stat();
         public Stat AttackSpeed {get; set;} = new Stat();
         public Stat SpellPower {get; set;} = new Stat();

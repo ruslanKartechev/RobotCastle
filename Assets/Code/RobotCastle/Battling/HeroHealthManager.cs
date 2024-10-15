@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class HeroHealthManager : IHeroHealthManager, IHeroIDamageReceiver
+    public class HeroHealthManager : IHeroHealthManager, IHeroDamageReceiver
     {
         
         public bool LogDamage { get; set; }
@@ -25,28 +25,29 @@ namespace RobotCastle.Battling
         private HeroView _view;
         private bool _isDamageable = true;
         
-        public void TakeDamage(DamageArgs args)
+        public DamageArgs TakeDamage(DamageArgs args)
         {
             OnDamageAttempted?.Invoke();
             if (!_isDamageable)
-                return;
+                return default;
             OnDamagePreApplied?.Invoke();
             var stats = _view.stats;
-            args.physDamage = HeroesManager.ReduceDamageByDef(args.physDamage, stats.PhysicalResist.Val);
-            args.magicDamage = HeroesManager.ReduceDamageByDef(args.magicDamage, stats.MagicalResist.Val);
+            var physDam = HeroesManager.ReduceDamageByDef(args.physDamage, stats.PhysicalResist.Val);
+            var spDam = HeroesManager.ReduceDamageByDef(args.magicDamage, stats.MagicalResist.Val);
             if (LogDamage)
             {
-                CLog.Log($"[{_view.gameObject.name}] Took Damage {args.physDamage}, {args.magicDamage}. " +
+                CLog.Log($"[{_view.gameObject.name}] Took Damage {physDam}, {spDam}. " +
                          $"Defence: {HeroesManager.GetDef(stats.PhysicalResist.Val)}, {HeroesManager.GetDef(stats.MagicalResist.Val)}");
             }
             var shield = stats.Shield;
             var health = stats.HealthCurrent.Get();
             var didDamageShield = false;
-            if(args.physDamage > 0)
+            if(physDam > 0)
             {
+                var startHealth = health;
                 if (stats.Shield > 0)
                 {
-                    shield -= args.physDamage;
+                    shield -= physDam;
                     didDamageShield = true;
                     if (shield < 0)
                     {
@@ -55,14 +56,18 @@ namespace RobotCastle.Battling
                     }
                 }
                 else
-                    health -= args.physDamage;
-                ServiceLocator.Get<IDamageDisplay>().ShowAtScreenPos((int)args.physDamage, EDamageType.Physical, _view.heroUI.DamagePoint.position);
+                    health -= physDam;
+
+                physDam = (startHealth - health);
+                ServiceLocator.Get<IDamageDisplay>().ShowAtScreenPos((int)physDam, EDamageType.Physical, _view.heroUI.DamagePoint.position);
             }
-            if(args.magicDamage > 0)
+            
+            if(spDam > 0)
             {
+                var startHealth = health;
                 if (stats.Shield > 0)
                 {
-                    shield -= args.magicDamage;
+                    shield -= spDam;
                     didDamageShield = true;
                     if (shield < 0)
                     {
@@ -71,10 +76,11 @@ namespace RobotCastle.Battling
                     }
                 }
                 else
-                    health -= args.magicDamage;
-                ServiceLocator.Get<IDamageDisplay>().ShowAtScreenPos((int)args.magicDamage, EDamageType.Magical, _view.heroUI.DamagePoint.position);
-         
+                    health -= spDam;
+                spDam = (startHealth - health);
+                ServiceLocator.Get<IDamageDisplay>().ShowAtScreenPos((int)spDam, EDamageType.Magical, _view.heroUI.DamagePoint.position);
             }
+            
             if(didDamageShield)
                 stats.Shield = shield;
             if (health < 0)
@@ -92,6 +98,7 @@ namespace RobotCastle.Battling
                     CLog.LogRed($"[{nameof(HeroHealthManager)}] IKillProcessor is null {_view.name}");
             }
             OnAfterDamage?.Invoke();
+            return new DamageArgs(physDam, spDam, default);
         }
 
 

@@ -50,7 +50,9 @@ namespace RobotCastle.Battling
             var map = _view.agent.Map;
             var (heroesAffected, cells) = HeroesManager.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
                 target.transform.position, map, enemies);
-            var args = new DamageArgs(_config.physDamage[lvl], _view.stats.SpellPower.Get());
+            var args = _view.damageSource.CalculateSpellAndPhysDamage();
+            args.physDamage = _config.physDamage[lvl];
+            
             foreach (var hero in heroesAffected)
             {
                 hero.View.damageReceiver.TakeDamage(args);

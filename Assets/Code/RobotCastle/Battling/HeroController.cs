@@ -101,7 +101,7 @@ namespace RobotCastle.Battling
             _view.stats = _stats;
             _view.killProcessor = new HeroDeathProcessor(_view);
             _view.spellsContainer = new HeroSpellsContainer();
-            _view.stats.DamageCalculator = new DefaultDamageCalculator(_view.stats);
+            _view.damageSource = new HeroDamageSource(_view);
             _view.statAnimationSync = new HeroAnimationToStatsSync(_view);
 
             var attack = gameObject.GetComponent<IHeroAttackManager>();

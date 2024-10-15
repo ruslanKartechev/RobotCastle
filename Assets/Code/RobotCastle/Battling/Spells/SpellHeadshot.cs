@@ -54,7 +54,7 @@ namespace RobotCastle.Battling
             _manaAdder.CanAdd = false;
             _decorator.addedMagicDamage = _view.stats.SpellPower.Get();
             _decorator.addedPhysDamage = _config.physDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
-            _view.stats.DamageCalculator.AddDecorator(_decorator);
+            _view.damageSource.AddDecorator(_decorator);
             _prevFactory = atk.ProjectileFactory;
             atk.ProjectileFactory = this;
         }
@@ -63,7 +63,7 @@ namespace RobotCastle.Battling
         {
             var atk = ((HeroRangedAttackManager)_view.attackManager);
             atk.OnHit -= OnHit;
-            _view.stats.DamageCalculator.RemoveDecorator(_decorator);
+            _view.damageSource.RemoveDecorator(_decorator);
             _view.stats.ManaResetAfterFull.Reset(_view);
             _isActive = false;
             _manaAdder.CanAdd = true;

@@ -13,8 +13,9 @@ namespace RobotCastle.Testing
             
         public bool IsDamageable => true;
 
-        public void TakeDamage(DamageArgs args)
+        public DamageArgs TakeDamage(DamageArgs args)
         {
+            return default;
         }
 
         public GameObject GetGameObject() => gameObject;

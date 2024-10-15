@@ -15,7 +15,8 @@ namespace RobotCastle.Battling
         private float _damage;
         
         
-        public void Launch(int level, CellsMask cellMask, float damage, float speed, List<IHeroController> enemies)
+        public void Launch(int level, CellsMask cellMask, float damage, float speed, 
+            List<IHeroController> enemies, IDamageSource damageSource)
         {
             _map = ServiceLocator.Get<IMap>();
             _damage = damage;
@@ -35,10 +36,10 @@ namespace RobotCastle.Battling
                     p.gameObject.SetActive(false);
                 }
             }
-            StartCoroutine(Running(cellMask, enemies));
+            StartCoroutine(Running(cellMask, enemies, damageSource));
         }
 
-        private IEnumerator Running(CellsMask cellMask, List<IHeroController> enemies)
+        private IEnumerator Running(CellsMask cellMask, List<IHeroController> enemies, IDamageSource damageSource)
         {
             var frw = transform.forward;
             var startCell = _map.GetCellPositionFromWorld(transform.position);
@@ -58,7 +59,7 @@ namespace RobotCastle.Battling
                 cells.Add(cell);
                 distances.Add(i + 1);
             }
-            var damageArgs = new DamageArgs(0, _damage);
+            var damageArgs = new DamageArgs(0, _damage, damageSource);
             var pos = transform.position;
             var doMove = true;
             var totalDistance = 0f;

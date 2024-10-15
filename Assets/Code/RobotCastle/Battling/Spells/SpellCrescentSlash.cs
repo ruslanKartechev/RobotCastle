@@ -66,7 +66,7 @@ namespace RobotCastle.Battling
             var hero = _view.GetComponent<IHeroController>();
             fx.transform.SetPositionAndRotation(_view.transform.position, _view.transform.rotation);
             fx.Launch(lvl, _config.cellsMasksByTear[lvl], _view.stats.SpellPower.Get(), 
-                _config.speed, hero.Battle.GetTeam(hero.TeamNum).enemyUnits);
+                _config.speed, hero.Battle.GetTeam(hero.TeamNum).enemyUnits, _view.damageSource);
         }
 
         private CrescentSlashView GetFxView()
