@@ -1,12 +1,18 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Battling;
-using RobotCastle.Data;
 using UnityEngine;
 
 namespace RobotCastle.Merging
 {
     public static class MergeFunctions
     {
+        public static void AddLevelToItem(IItemView view)
+        {
+            view.itemData.core.level++;
+            view.UpdateViewToData();
+            view.OnMerged();
+        }
+        
         public static ICellView RaycastUnderItem(GameObject item)
         {
             var ray = new Ray(item.transform.position + Vector3.up, Vector3.down);
@@ -38,6 +44,18 @@ namespace RobotCastle.Merging
             itemView.MoveToPoint(targetCell.ItemPoint, MergeConstants.MergeItemPutAnimationTime);
             itemView.OnPut();
         }
+
+        public static void MoveToAnotherCell(IGridView gridView, IItemView itemView, int x, int y)
+        {
+            var newCell = gridView.GetCell(x, y);
+            var oldCell = gridView.GetCell(itemView.itemData.pivotX, itemView.itemData.pivotY);
+            oldCell.itemView = null;
+            
+            newCell.itemView = itemView;
+            itemView.itemData.pivotX = newCell.cell.x;
+            itemView.itemData.pivotY = newCell.cell.y;
+            itemView.MoveToPoint(newCell.ItemPoint, MergeConstants.MergeItemPutAnimationTime);
+        }
         
         public static void ClearCell(IGridView gridView, IItemView item)
         {
@@ -60,16 +78,16 @@ namespace RobotCastle.Merging
             grid.rows[item.pivotY].cells[item.pivotX].isOccupied = false;
         }
 
-        public static List<HeroItemData> TryMergeAll(List<HeroItemData> items, int maxLvl)
+        public static List<HeroWeaponData> TryMergeAll(List<HeroWeaponData> items, int maxLvl)
         {
-            var result = new List<HeroItemData>(items);
+            var result = new List<HeroWeaponData>(items);
             var can = true;
             while (can)
                 can = TryMergeInList(result, maxLvl);
             return result;
         }
 
-        public static bool TryMergeInList(List<HeroItemData> items, int maxLvl)
+        public static bool TryMergeInList(List<HeroWeaponData> items, int maxLvl)
         {
             for (var i = items.Count - 1; i >= 1; i--)
             {

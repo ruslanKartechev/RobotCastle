@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using TMPro;
@@ -17,13 +18,13 @@ namespace RobotCastle.Battling.MerchantOffer
         [SerializeField] private List<MerchantOfferButton> _buttons;
         [SerializeField] private MyButton _completedBtn;
         [SerializeField] private TextMeshProUGUI _moneyText;
-        [SerializeField] private FadeInOutAnimator _fadeAnimator;
+        [SerializeField] private BlackoutFadeScreen _fadeScreen;
 
         private PurchaseCallback _purchaseCallback;
         private Action _endCallback;
         private MerchantOfferData.GoodsPreset _preset;
         
-        public void Show(MerchantOfferData.GoodsPreset preset, PurchaseCallback purchaseCallback, Action completedCallback)
+        public void Show(MerchantOfferData.GoodsPreset preset, List<int> prices, PurchaseCallback purchaseCallback, Action completedCallback)
         {
             _preset = preset;
             _endCallback = completedCallback;
@@ -42,13 +43,13 @@ namespace RobotCastle.Battling.MerchantOffer
                 else
                 {
                     btn.SetNonAds();
-                    btn.SetCost(good.cost);
+                    btn.SetCost(prices[i]);
                 }
                 btn.activeBtn.SetInteractable(true);
                 switch (good.ItemData.type)
                 {
-                    case MergeConstants.TypeItems:
-                        _itemDescriptions[i].ShowItem(HeroItemData.GetDataWithDefaultModifiers(good.ItemData));
+                    case MergeConstants.TypeWeapons:
+                        _itemDescriptions[i].ShowItem(HeroWeaponData.GetDataWithDefaultModifiers(good.ItemData));
                         break;
                     case MergeConstants.TypeBonus:
                         _itemDescriptions[i].ShowBonus(good.ItemData);
@@ -59,8 +60,7 @@ namespace RobotCastle.Battling.MerchantOffer
             _buttons[1].activeBtn.OverrideMainCallback(OnBtn2);
             _buttons[2].activeBtn.OverrideMainCallback(OnBtn3);
             _completedBtn.AddMainCallback(Complete);
-            _fadeAnimator.On();
-            _fadeAnimator.FadeIn();
+            _fadeScreen.FadeInWithId(UIConstants.UIMerchantOffer);
         }
 
         private void TryPurchaseAtIndex(int index)
@@ -95,7 +95,7 @@ namespace RobotCastle.Battling.MerchantOffer
 
         private void Complete()
         {
-            gameObject.SetActive(false);
+            _fadeScreen.FadeOut();
             _endCallback?.Invoke();
         }
     }

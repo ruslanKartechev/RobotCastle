@@ -13,9 +13,6 @@ namespace RobotCastle.UI
         [Space(5)]
         [SerializeField] private Color _normalColor;
         [SerializeField] private Color _highlightColor;
-        [Space(5)]
-        [SerializeField] private Vector2 _sizeNormal;
-        [SerializeField] private Vector2 _sizeHighlight;
         
         [Space(5)]
         [SerializeField] private List<TabBtn> _highlights;
@@ -39,7 +36,7 @@ namespace RobotCastle.UI
                     break;
             }
             _current = type;
-            btn.Animate(_sizeHighlight, _highlightColor, _highlightIcon, _animationTime);
+            btn.Animate(true, _highlightColor, _highlightIcon, _animationTime);
         }
 
         public void OffCurrent()
@@ -58,7 +55,7 @@ namespace RobotCastle.UI
                     break;
                 default: return;
             }
-            btn.Animate(_sizeNormal, _normalColor, _normalIcon, _animationTime);
+            btn.Animate(false, _normalColor, _normalIcon, _animationTime);
         }
 
         private void OnEnable()

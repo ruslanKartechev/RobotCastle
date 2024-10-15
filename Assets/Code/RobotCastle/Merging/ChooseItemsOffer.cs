@@ -18,7 +18,7 @@ namespace RobotCastle.Merging
             _listener = listener;
         }
             
-        public void OfferChooseItems(List<HeroItemData> items)
+        public void OfferChooseItems(List<HeroWeaponData> items)
         {
             CLog.Log($"[ChooseItemsOffer] All items (total: {items.Count}) won't fit");
             var ui = ServiceLocator.Get<IUIManager>().Show<ChooseUnitItemsUI>(UIConstants.UIPickUnitItems, () => {});

@@ -4903,8 +4903,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6312482897469520174}
-  - component: {fileID: 3483216152624488802}
   - component: {fileID: 5297813647107125798}
+  - component: {fileID: 7268376752385709299}
   - component: {fileID: 7830653690792964109}
   - component: {fileID: 7771958084609662380}
   m_Layer: 5
@@ -4938,20 +4938,6 @@ RectTransform:
   m_AnchoredPosition: {x: 191, y: 308}
   m_SizeDelta: {x: 250, y: 251.8}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3483216152624488802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6696799557868650461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd6abe57389c4fbe904b4f4115ef6e20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _btn: {fileID: 7771958084609662380}
-  _doRespond: 0
 --- !u!222 &5297813647107125798
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4960,6 +4946,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6696799557868650461}
   m_CullTransparentMesh: 1
+--- !u!114 &7268376752385709299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6696799557868650461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15f7b2a12d5e4db2b1b9cf751fb162dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _btn: {fileID: 7771958084609662380}
+  _doRespond: 0
+  _text: {fileID: 2195869035065244342}
 --- !u!114 &7830653690792964109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6803,7 +6804,7 @@ MonoBehaviour:
   _troopsCount: {fileID: 7499780676767390323}
   _money: {fileID: 4934604157569635359}
   _btnStart: {fileID: 8936977011714365244}
-  _btnSpawn: {fileID: 3483216152624488802}
+  _btnPurchaseHero: {fileID: 7268376752385709299}
   _troopSizePurchaseUI: {fileID: 4985352666843910588}
   _levelUI: {fileID: 8772555054708606720}
   _blockYPositions: {x: -330, y: 0}

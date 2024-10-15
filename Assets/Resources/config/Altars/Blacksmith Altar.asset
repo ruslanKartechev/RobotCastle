@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c7afb96d1ca4a3daa8e4ab56c318c06, type: 3}
+  m_Name: Blacksmith Altar
+  m_EditorClassIdentifier: 
+  _id: blacksmith
+  _altarName: God of Blacksmith
+  _mod1:
+    _description: <val>% Lvl Up On Merge
+    _detailedDescription: 
+    _chances:
+    - 1
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+  _mod2:
+    _description: Smelt item lvl <val>
+    _detailedDescription: Chance to smelt a free item at the start of the game
+    _smeltChance: 0.1
+    _levels: 000000000000000000000000000000000000000000000000010000000100000001000000010000000200000002000000
+    _items:
+    - level: 0
+      id: armor
+      type: item
+    - level: 0
+      id: sword
+      type: item
+    - level: 0
+      id: bow
+      type: item
+    - level: 0
+      id: staff
+      type: item
+  _mod3:
+    _description: +<val> Smelt Reroll
+    _detailedDescription: Chance to reroll items during smelting
+    _chance: 0.1

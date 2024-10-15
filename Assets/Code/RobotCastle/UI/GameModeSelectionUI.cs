@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Core;
+using RobotCastle.Data;
 using UnityEngine;
 
 namespace RobotCastle.UI
@@ -7,11 +9,13 @@ namespace RobotCastle.UI
     {
         [SerializeField] private MyButton _btnChapters1;
         [SerializeField] private MyButton _btnChapters2;
+        [SerializeField] private MyButton _closeBtn;
         [SerializeField] private Canvas _selectionCanvas;
         [SerializeField] private List<Canvas> _otherCanvases;
         [Space(5)]
         [SerializeField] private InvasionChapterSelectionUI _chapters1;
         [SerializeField] private InvasionChapterSelectionUI _chapters2;
+        [SerializeField] private BlackoutFadeScreen _fadeScreen;
         
 
         public void Show()
@@ -21,9 +25,15 @@ namespace RobotCastle.UI
             _chapters1.Off();
             _chapters2.Off();
             _selectionCanvas.enabled = true;
-            gameObject.SetActive(true);
             _btnChapters1.AddMainCallback(ShowChapter1);
             _btnChapters2.AddMainCallback(ShowChapter2);
+            _closeBtn.AddMainCallback(Return);
+            _fadeScreen.FadeInWithId(UIConstants.UIGameModeSelection);
+        }
+
+        private void Return()
+        {
+            _fadeScreen.FadeOut();
         }
 
         private void ShowChapter1()

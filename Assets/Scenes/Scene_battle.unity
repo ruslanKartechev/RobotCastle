@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 15fea47f9e03765498eba2b4e543bf17, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -1068,7 +1068,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b0647114ae4d77856da48a48247890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitsParent: {fileID: 708967524}
 --- !u!114 &150904466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6872,6 +6871,7 @@ GameObject:
   - component: {fileID: 1417527705}
   - component: {fileID: 1417527704}
   - component: {fileID: 1417527703}
+  - component: {fileID: 1417527708}
   m_Layer: 0
   m_Name: 1 battle
   m_TagString: Untagged
@@ -6964,12 +6964,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b175aa2d5d44e59888e27d367d024d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startStage: 0
   _logRewardItems: 0
-  _startMoney: 10
   _fillActiveAreaBeforeStart: 1
   _endDelay: 1.4
   _startEnemyShowTime: 0.75
   _winFailDelay: 0.5
+  _startData:
+    _startMoney: 9
+    _startItems: []
   _battleManager: {fileID: 1417527705}
   _mergeManager: {fileID: 150904466}
   _enemiesManager: {fileID: 1103723251}
@@ -6998,6 +7001,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1417527708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417527702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7271c5ca4536497a96abf6e93905ece2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _possibleItems:
+    options:
+    - obj:
+        level: 0
+        id: aramis
+        type: unit
+      weight: 1
+    - obj:
+        level: 0
+        id: evan
+        type: unit
+      weight: 1
+    - obj:
+        level: 0
+        id: shelda
+        type: unit
+      weight: 1
+    - obj:
+        level: 0
+        id: alberon
+        type: unit
+      weight: 1
+    - obj:
+        level: 0
+        id: priya
+        type: unit
+      weight: 1
+    - obj:
+        level: 0
+        id: daniel
+        type: unit
+      weight: 1
 --- !u!1001 &1507791252
 PrefabInstance:
   m_ObjectHideFlags: 0

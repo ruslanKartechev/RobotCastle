@@ -17,7 +17,7 @@ namespace RobotCastle.UI
         public void Show(SpellProvider spell, GameObject hero)
         {
             _nameText.text = spell.GetName();
-            _tierText.text = $"Tier {spell.GetTier(hero) + 1}";
+            _tierText.text = $"Tier {(int)spell.GetTier(hero) + 1}";
             _descriptionText.text = spell.GetDescription(hero);
             _spellIcon.sprite = ServiceLocator.Get<ViewDataBase>().GetSpellIcon(spell.GetId());
         }
@@ -25,7 +25,7 @@ namespace RobotCastle.UI
         public void Show(SpellProvider spell)
         {
             _nameText.text = spell.GetName();
-            _tierText.text = $"Tier {spell.GetTier(null) + 1}";
+            _tierText.text = $"Tier {(int)spell.GetTier(null) + 1}";
             _descriptionText.text = spell.GetDescription(null);
             _spellIcon.sprite = ServiceLocator.Get<ViewDataBase>().GetSpellIcon(spell.GetId());
         }

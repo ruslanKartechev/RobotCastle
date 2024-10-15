@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
@@ -53,6 +51,8 @@ namespace RobotCastle.Battling
             var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
             foreach (var en in Enemies)
             {
+                var merge = en.View.gameObject.GetComponent<IItemView>();
+                MergeFunctions.ClearCell(_gridView.BuiltGrid, merge.itemData);
                 if (en.View.heroUI.gameObject.TryGetComponent<UnitUIWrapper>(out var wrapper))
                     barsPanel.ReturnToPool(wrapper);
             }

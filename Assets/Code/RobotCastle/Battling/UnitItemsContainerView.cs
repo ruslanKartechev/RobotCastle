@@ -13,7 +13,7 @@ namespace RobotCastle.Battling
         [SerializeField] private GameObject _viewBlock;
         [SerializeField] private List<Image> _icons;
 
-        public void ShowItems(List<HeroItemData> items)
+        public void ShowItems(List<HeroWeaponData> items)
         {
             On();
             var db = ServiceLocator.Get<ViewDataBase>();
@@ -27,7 +27,7 @@ namespace RobotCastle.Battling
                 _icons[i].gameObject.SetActive(false);
         }
 
-        public void UpdateMergedItem(List<HeroItemData> items, int index)
+        public void UpdateMergedItem(List<HeroWeaponData> items, int index)
         {
             On();
             var db = ServiceLocator.Get<ViewDataBase>();
@@ -36,7 +36,7 @@ namespace RobotCastle.Battling
             ShowOnlyUsedGameobjects(items);
         }
 
-        public void ShowLastAddedItem(List<HeroItemData> items)
+        public void ShowLastAddedItem(List<HeroWeaponData> items)
         {
             On();
             var db = ServiceLocator.Get<ViewDataBase>();
@@ -47,7 +47,7 @@ namespace RobotCastle.Battling
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void ShowOnlyUsedGameobjects(List<HeroItemData> items)
+        private void ShowOnlyUsedGameobjects(List<HeroWeaponData> items)
         {
             var itemsCount = items.Count;
             for (var ind = 0; ind < itemsCount; ind++)

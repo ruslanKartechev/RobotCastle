@@ -15,9 +15,18 @@ namespace RobotCastle.MainMenu
         [SerializeField] private Transform _camPointGate;
         [SerializeField] private Transform _camPointBarracks;
         [SerializeField] private Transform _camPointHeroView;
-        
         private MenuTabType _tabType;
 
+        public void SetNoneTab()
+        {
+            var ui = ServiceLocator.Get<IUIManager>();
+            ui.Show<GateTabUI>(UIConstants.UIGateTab, () => {}).Close();
+            ui.Show<PlayerDataPanelUI>(UIConstants.UIPlayerData, () => {}).Close();
+            ui.Show<MainMenuTabsUI>(UIConstants.UIMainMenuTabs, () => {}).Close();
+            CloseCurrent();
+            _tabType = MenuTabType.None;
+
+        }
         
         public void CloseCurrent()
         {

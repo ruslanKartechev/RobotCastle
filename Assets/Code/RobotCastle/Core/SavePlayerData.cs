@@ -1,4 +1,5 @@
-﻿using RobotCastle.Data;
+﻿using RobotCastle.Battling.Altars;
+using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 
 namespace RobotCastle.Core
@@ -6,6 +7,8 @@ namespace RobotCastle.Core
     [System.Serializable]
     public class SavePlayerData
     {
+        public bool soundOn;
+        public bool vibrOn;
         public int levelMoney;
         public int globalMoney;
         public int globalHardMoney;
@@ -18,11 +21,14 @@ namespace RobotCastle.Core
         public PlayerInventory inventory;
         public SaveInvasionProgression progression;
         public ChapterSelectionData chapterSelectionData;
+        public AltarsSave altars;
         
         public SavePlayerData(){}
 
         public SavePlayerData(SavePlayerData other)
         {
+            soundOn = other.soundOn;
+            vibrOn = other.vibrOn;
             levelMoney = other.levelMoney;
             globalMoney = other.globalMoney;
             globalHardMoney = other.globalHardMoney;
@@ -35,6 +41,7 @@ namespace RobotCastle.Core
             inventory = new PlayerInventory(other.inventory);
             progression = new SaveInvasionProgression(other.progression);
             chapterSelectionData = new ChapterSelectionData(other.chapterSelectionData);
+            altars = new AltarsSave(other.altars);
         }
     }
 }

@@ -149,7 +149,7 @@ namespace RobotCastle.UI
         private void OnNewTierPicked(Item item)
         {
             _data.tierIndex = item.NumberId;
-            CLog.Log($"Difficulty tier: {item.NumberId}");
+            // CLog.Log($"Difficulty tier: {item.NumberId}");
             UpdateTier();
         }
         

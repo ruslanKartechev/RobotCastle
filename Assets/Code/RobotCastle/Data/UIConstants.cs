@@ -16,15 +16,18 @@
         public const string UIHeroGrowth = "ui_hero_growth";
         public const string UISummon = "ui_summon";
         public const string UISummonCard = "ui_summon_cards";
+        public const string UISettings = "ui_settings";
+        public const string UIAltars = "ui_altars";
+        
 
         public const string DescriptionItemShort = "ui_item_description_short";
         public const string DescriptionItemLong = "ui_item_description_long";
 
         public const string UIGameModeSelection = "ui_game_mode_select";
 
-        public const string UISmeltingOffer = "ui_smelting_offer";
-        public const string UIDevilsOffer = "ui_devils_offer";
-        public const string UIMerchantOffer = "ui_merchant_offer";
+        public const string UISmeltingOffer = "ui_offer_smelting";
+        public const string UIDevilsOffer = "ui_offer_devils";
+        public const string UIMerchantOffer = "ui_offer_merchant";
         
 
     }

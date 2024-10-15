@@ -20,29 +20,26 @@ namespace RobotCastle.Battling.SmeltingOffer
         [SerializeField] private List<SmeltingItemUI> _itemsUI;
         [SerializeField] private InventoryController _inventory;
         [SerializeField] private MyButton _confirmButton;
-        [SerializeField] private FadeInOutAnimator _fadeAnimator;
-        private List<CoreItemData> _options;
-        private Action<CoreItemData> _callback;
+        [SerializeField] private TextMeshProUGUI _rerollsText;
+        [SerializeField] private MyButton _rerollsBtn;
+        [SerializeField] private BlackoutFadeScreen _fadeScreen;
 
-        public void ShowOffer(List<CoreItemData> options, Action<CoreItemData> callback)
+        private List<CoreItemData> _options;
+        private SmeltingOfferManager _manager;
+
+        public void ShowOffer(List<CoreItemData> options, SmeltingOfferManager manager)
         {
             if (options.Count != _itemsUI.Count)
             {
                 CLog.LogError($"Options count and ui elements count don't match!");
                 return;
             }
-            _fadeAnimator.On();
-            _fadeAnimator.FadeIn();
-            _callback = callback;
+            _fadeScreen.FadeInWithId(UIConstants.UISmeltingOffer);
+            _manager = manager;
             _options = options;
-            var viewDb = ServiceLocator.Get<ViewDataBase>();
-            for (var i = 0; i < options.Count; i++)
-            {
-                var option = options[i];
-                _itemsUI[i].icon.sprite = viewDb.GetItemSpriteByTypeAndLevel(option);
-                _itemsUI[i].NumberId = i;
-                _itemsUI[i].AnimateShow();
-            }
+
+            SetRerolls();
+            ShowOptions(options);
             SetClear();
             _confirmButton.SetInteractable(false);
             _confirmButton.AddMainCallback(OnConfirmBtn);
@@ -53,9 +50,48 @@ namespace RobotCastle.Battling.SmeltingOffer
             _inventory.OnNothingPicked += OnNothingPicked;
         }
 
+        private void ShowOptions(List<CoreItemData> options)
+        {
+            _options = options;
+            var viewDb = ServiceLocator.Get<ViewDataBase>();
+            for (var i = 0; i < options.Count; i++)
+            {
+                var option = options[i];
+                _itemsUI[i].icon.sprite = viewDb.GetItemSpriteByTypeAndLevel(option);
+                _itemsUI[i].NumberId = i;
+                _itemsUI[i].AnimateShow();
+            }
+        }
+
+        private void RerollBtn()
+        {
+            OnNothingPicked();
+            _inventory.SetNoItem();
+            var options = _manager.RerollItems();
+            if (options == null)
+            {
+                SetRerolls();
+                return;
+            }
+            ShowOptions(options);
+            SetRerolls();
+        }
+
+        private void SetRerolls()
+        {
+            var rerollsCount = _manager.Rerolls;
+            _rerollsText.text = $"Rerolls: {rerollsCount}";
+            if (rerollsCount > 0)
+            {
+                _rerollsBtn.gameObject.SetActive(true);
+                _rerollsBtn.AddMainCallback(RerollBtn);
+            }
+            else
+                _rerollsBtn.gameObject.SetActive(false);
+        }
+        
         private void OnNothingPicked()
         {
-            CLog.Log($"[OnNothingPicked]");
             SetClear();
             _confirmButton.SetInteractable(false);
         }
@@ -70,7 +106,7 @@ namespace RobotCastle.Battling.SmeltingOffer
 
         private void OnItemPicked(SleepDev.Inventory.Item item)
         {
-            CLog.Log($"[OnItemPicked] {item.NumberId}");
+            // CLog.Log($"[OnItemPicked] {item.NumberId}");
             var option = _options[item.NumberId];
             var descrDb = ServiceLocator.Get<DescriptionsDataBase>();
             var dd = descrDb.GetDescriptionByTypeAndLevel(option);
@@ -90,9 +126,8 @@ namespace RobotCastle.Battling.SmeltingOffer
                 CLog.LogError($"NO item picked");
                 return;
             }
-            _callback.Invoke(_options[_inventory.PickedItem.NumberId]);
-            gameObject.SetActive(false);
-            ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UISmeltingOffer);
+            _manager.OnChoiceConfirmed(_options[_inventory.PickedItem.NumberId]);
+            _fadeScreen.FadeOut();
         }
         
     }

@@ -23,7 +23,7 @@ namespace RobotCastle.Testing
         {
             if (_doSpawnHero)
             {
-                var item = CheatHeroAndItemsSpawner.SpawnHeroOrItem(_heroSpawnArgs.coreData, _heroSpawnArgs.usePreferredCoordinate,
+                var item = CheatItemsSpawner.SpawnHeroOrItem(_heroSpawnArgs.coreData, _heroSpawnArgs.usePreferredCoordinate,
                     _heroSpawnArgs.preferredCoordinated,
                     (_heroSpawnArgs.useAdditionalItems ? _heroSpawnArgs.additionalItems : null));
             }

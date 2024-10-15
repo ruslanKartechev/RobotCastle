@@ -28,7 +28,7 @@ namespace RobotCastle.UI
 
         private void Shop()
         {
-            ServiceLocator.Get<TabsSwitcher>().SetShopsTab();
+            // ServiceLocator.Get<TabsSwitcher>().SetShopsTab();
         }
 
         private void Gate()

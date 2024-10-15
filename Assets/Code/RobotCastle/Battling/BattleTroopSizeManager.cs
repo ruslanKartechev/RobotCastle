@@ -7,17 +7,18 @@ namespace RobotCastle.Battling
     public class BattleTroopSizeManager : ITroopSizeManager
     {
         private int _purchasesCount;
-        private int _startSize = 3;
         private int _addedPrice = 5;
         private int _price = 5;
         private ParticleSystem _particle;
-
+        private IGridSectionsController _sectionsController;
         private Battle _battle;
 
-        public BattleTroopSizeManager(Battle battle, ParticleSystem particle)
+        public BattleTroopSizeManager(Battle battle, IGridSectionsController sectionsController, ParticleSystem particle)
         {
             _particle = particle;
             _battle = battle;
+            _sectionsController = sectionsController;
+            _sectionsController.SetMaxCount(battle.troopSize);
         }
         
         public bool CanPurchase()
@@ -43,8 +44,7 @@ namespace RobotCastle.Battling
             _price += _addedPrice;
             _purchasesCount++;
             _battle.troopSize++;
-            var gridController = ServiceLocator.Get<IGridSectionsController>();
-            gridController.SetMaxCount(_battle.troopSize);
+            _sectionsController.SetMaxCount(_battle.troopSize);
             ServiceLocator.Get<GameMoney>().levelMoney = money;
             _particle.Play();
             return 0;

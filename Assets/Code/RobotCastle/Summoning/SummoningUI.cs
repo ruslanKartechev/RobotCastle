@@ -22,6 +22,7 @@ namespace RobotCastle.Summoning
         [SerializeField] private GameObject _freeLeftBadge;
         [SerializeField] private GameObject _freeRightBadge;
         [SerializeField] private Button _returnBtn;
+        [SerializeField] private BlackoutFadeScreen _fadeScreen;
         private SummoningManager _manager = new();
         private CancellationTokenSource _tokenSource;
         private bool _canTakeInput;
@@ -56,17 +57,18 @@ namespace RobotCastle.Summoning
             _scroller.OnNewItemChosen += OnNewItemPicked;
             AdCallbacks(currentUI);
             SetFreeBadgesOnScroll();
+            _fadeScreen.FadeInWithId(UIConstants.UISummon);
             _canTakeInput = true;
         }
 
-        public void Close()
-        {
-            _tokenSource?.Cancel();
-            _canTakeInput = false;
-            _scroller.OnNewItemChosen -= OnNewItemPicked;
-            gameObject.SetActive(false);
-            ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UISummon);
-        }
+        // public void Return()
+        // {
+        //     if (!_canTakeInput) return;
+        //     _tokenSource?.Cancel();
+        //     _canTakeInput = false;
+        //     _scroller.OnNewItemChosen -= OnNewItemPicked;
+        //     _fadeScreen.FadeOut();
+        // }
 
         private void SetFreeBadgesOnScroll()
         {
@@ -92,6 +94,8 @@ namespace RobotCastle.Summoning
         
         private void OnScrollAd()
         {
+            if (!_canTakeInput) return;
+
             CLog.Log($"[{nameof(SummoningUI)}] OnScrollAd. Id: {currentUI.id}. Count: {currentUI.multiplier_1}");
             // var results = SummoningManager.GetAndApplyResults(currentUI.id);
             if (SummoningManager.CanTakeForAds(currentUI.id))
@@ -120,6 +124,7 @@ namespace RobotCastle.Summoning
 
         private void OnScrollFree()
         {
+            if (!_canTakeInput) return;
             CLog.Log($"[{nameof(SummoningUI)}] OnScrollFree. Id: {currentUI.id}. Count: {currentUI.multiplier_1}");
             if (SummoningManager.CanTakeForFree(currentUI.id))
             {
@@ -229,20 +234,22 @@ namespace RobotCastle.Summoning
         {
             _tokenSource = new CancellationTokenSource();
             _canTakeInput = true;
-            _returnBtn.onClick.AddListener(ReturnFromScreen);
+            _returnBtn.onClick.AddListener(Return);
         }
         
         private void OnDisable()
         {
             _tokenSource?.Cancel();
-            _returnBtn.onClick.RemoveListener(ReturnFromScreen);
+            _returnBtn.onClick.RemoveListener(Return);
         }
         
-        private void ReturnFromScreen()
+        private void Return()
         {
             if (!_canTakeInput) return;
-            gameObject.SetActive(false);
-            ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UISummon);
+            _tokenSource?.Cancel();
+            _canTakeInput = false;
+            _scroller.OnNewItemChosen -= OnNewItemPicked;
+            _fadeScreen.FadeOut();
         }
 
 

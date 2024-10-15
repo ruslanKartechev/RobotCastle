@@ -90,9 +90,6 @@ namespace RobotCastle.Merging
                 CLog.Log("ITroopsCountView not setup yet!");
         }
 
-        public int GetMaxCount() => _maxCount;
-
-
         public bool IsCellAllowed(Vector2Int coord, ItemData item, bool promptUser = true)
         {
             if (coord.y < _minYIndex) // moving to lower region

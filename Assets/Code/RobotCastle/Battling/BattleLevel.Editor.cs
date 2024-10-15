@@ -18,7 +18,7 @@ namespace RobotCastle.Battling
         public void ForceShowTradeOffer()
         {
             AllowPlayerUIInput(false);
-            ShowTradeOffer();
+            ShowMerchantOffer();
         }
 
         [ContextMenu("Force DevilOffer")]

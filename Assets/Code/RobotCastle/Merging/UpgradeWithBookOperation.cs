@@ -1,7 +1,6 @@
 ﻿using System;
 using RobotCastle.Battling;
 using RobotCastle.Core;
-using RobotCastle.Data;
 
 namespace RobotCastle.Merging
 {
@@ -10,23 +9,28 @@ namespace RobotCastle.Merging
         private IItemView _bookItem;
         private IItemView _anotherItem;
         private IGridView _gridView;
+        private IMergeItemsContainer _itemsContainer;
+        private IMergeMaxLevelCheck _maxLevelCheck;
         private Action<EMergeResult, bool> _callback;
         private bool _isBookTaken;
 
-        public UpgradeWithBookOperation(IItemView bookItem, IItemView anotherItem, bool bookTaken, IGridView gridView, Action<EMergeResult, bool> callback)
+        public UpgradeWithBookOperation(IItemView bookItem, 
+            IItemView anotherItem, bool bookTaken, IGridView gridView,
+            IMergeItemsContainer itemsContainer, IMergeMaxLevelCheck maxLevelCheck, Action<EMergeResult, bool> callback)
         {
             _bookItem = bookItem;
             _anotherItem = anotherItem;
             _gridView = gridView;
             _callback = callback;
             _isBookTaken = bookTaken;
+            _itemsContainer = itemsContainer;
+            _maxLevelCheck = maxLevelCheck;
         }
 
         public void Process()
         {
             var anotherData = _anotherItem.itemData.core;
-            var maxLvl = ServiceLocator.Get<ViewDataBase>().GetMaxMergeLevel(anotherData.id);
-            if (anotherData.level >= maxLvl)
+            if (_maxLevelCheck.CanUpgradeFurther(anotherData) == false)
             {
                 Failed();
                 return;
@@ -47,7 +51,7 @@ namespace RobotCastle.Merging
             
             switch (anotherData.type)
             {
-                case MergeConstants.TypeItems:
+                case MergeConstants.TypeWeapons:
                     UpgradeAsItem();             
                     break;
                 case MergeConstants.TypeUnits:
@@ -61,23 +65,18 @@ namespace RobotCastle.Merging
 
             void UpgradeAsUnit()
             {
-                IItemView taken = null;
-                IItemView standing = null;
-                
-                if (_isBookTaken)
+                if (!_isBookTaken)
                 {
-                    taken = _bookItem;
-                    standing = _anotherItem;
+                    var x = _bookItem.itemData.pivotX;
+                    var y = _bookItem.itemData.pivotY;
+                    MergeFunctions.MoveToAnotherCell(_gridView, _anotherItem, x,y);
+                    _bookItem.Hide();
                 }
                 else
-                {
-                    taken = _anotherItem;
-                    standing = _bookItem;
-                }
-                anotherData.level++;
-                standing.UpdateViewToData();
-                standing.OnMerged();
-                MergeFunctions.ClearCellAndHideItem(_gridView, taken);
+                    MergeFunctions.ClearCellAndHideItem(_gridView, _bookItem);
+
+                MergeFunctions.AddLevelToItem(_anotherItem);
+                _itemsContainer.RemoveItem(_bookItem);
             }            
             
             void UpgradeAsItem()
@@ -97,10 +96,13 @@ namespace RobotCastle.Merging
                 }
                 var x = standing.itemData.pivotX;
                 var y = standing.itemData.pivotY;
+                _itemsContainer.RemoveItem(standing);
+                _itemsContainer.RemoveItem(taken);
                 MergeFunctions.ClearCellAndHideItem(_gridView, standing);
                 anotherData.level++;
-                ServiceLocator.Get<IMergeItemsFactory>().SpawnItemOnCell(_gridView.GetCell(x, y), new ItemData(anotherData));      
+                var newItem = ServiceLocator.Get<IMergeItemsFactory>().SpawnItemOnCell(_gridView.GetCell(x, y), new ItemData(anotherData));      
                 MergeFunctions.ClearCellAndHideItem(_gridView, taken);
+                _itemsContainer.AddNewItem(newItem);
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Battling.Altars;
 using RobotCastle.Core;
 using RobotCastle.InvasionMode;
-using RobotCastle.Merging;
 using RobotCastle.Saving;
 using UnityEngine;
 
@@ -45,6 +45,11 @@ namespace RobotCastle.Data
         public static PlayerInventory GetInventory()
         {
             return ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;
+        }
+
+        public static AltarsSave GetAltarsSave()
+        {
+            return ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().altars;
         }
     }
 }

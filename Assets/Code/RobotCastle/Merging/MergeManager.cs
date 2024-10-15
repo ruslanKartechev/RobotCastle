@@ -8,22 +8,40 @@ namespace RobotCastle.Merging
     [DefaultExecutionOrder(30)]
     public class MergeManager : MonoBehaviour
     {
+        public IGridView GridView => _gridView;
+        public IGridSectionsController SectionsController => _sectionsController;
+        public IMergeProcessor MergeProcessor => _mergeProcessor;
+        public IMergeItemsContainer Container => _itemsContainer;
+            
         [SerializeField] private bool _autoInit;
         [SerializeField] private bool _allowInputOnStart;
         [SerializeField] private GameObject _gridViewGo;
         [SerializeField] private MergeGridHighlighter _highlighter;
         [SerializeField] private SimplePoolsManager _mergeCellHighlight;
+        
         private IGridSectionsController _sectionsController;
         private IGridView _gridView;
         private IMergeProcessor _mergeProcessor;
+        private IMergeItemsFactory _itemsSpawner;
+        private IMergeItemsContainer _itemsContainer;
+        private IMergeMaxLevelCheck _maxLevelCheck;
         private MergeController _mergeController;
         private MergeInput _mergeInput;
-        private IMergeItemsFactory _itemsSpawner;
+        private GridViewsContainer _viewsContainer;
         private MergeGrid _grid;
         private bool _didInit;
 
-        public IGridView GridView => _gridView;
-        public IGridSectionsController SectionsController => _sectionsController;
+        //REMOVE THIS
+        [ContextMenu("LogAllItems")]
+        public void LogAllItems()
+        {
+            var msg = "All Player Items: ";
+            foreach (var itemView in _itemsContainer.allItems)
+            {
+                msg += $" {itemView.itemData.core.id}, ";
+            }
+            CLog.LogWhite(msg);
+        }
         
         public void Init()
         {
@@ -38,28 +56,24 @@ namespace RobotCastle.Merging
             _itemsSpawner = gameObject.GetComponent<IMergeItemsFactory>();
             _sectionsController = gameObject.GetComponent<IGridSectionsController>();
             _mergeInput = gameObject.GetComponent<MergeInput>();
-            _mergeProcessor = new ClassBasedMergeProcessor();
-            _mergeController = new MergeController(_mergeProcessor, _sectionsController, _gridView, new MergeSwapAllowedCheck());
+            _maxLevelCheck = new MergeMaxLevelCheck();
+            _itemsContainer = new PlayerMergeItemsContainer();
+            _mergeProcessor = new ClassBasedMergeProcessor(_itemsContainer, _maxLevelCheck);
+            // _mergeProcessor.AddModifier(this);
+            _mergeController = new MergeController(_mergeProcessor, _sectionsController, _gridView, new MergeSwapAllowedCheck(), _itemsContainer);
             _mergeInput.Init(_mergeController);
             _sectionsController.SetGridView(_gridView);
             _mergeCellHighlight.Init();
             _highlighter.Init(_gridView, _mergeProcessor);
             _mergeController.OnPutItem += OnItemPut;
             _mergeController.OnItemPicked += OnItemPicked;
-            _sectionsController.SetMaxCount(ServiceLocator.Get<Battle>().troopSize);
-            var gridViewContainer = new GridViewsContainer();
-            gridViewContainer.AddGridView(_gridView);
-            ServiceLocator.Bind<IGridSectionsController>(_sectionsController);
-            ServiceLocator.Bind<IMergeItemsFactory>(_itemsSpawner);
-            ServiceLocator.Bind<MergeController>(_mergeController);
-            ServiceLocator.Bind<SimplePoolsManager>(_mergeCellHighlight);
-            ServiceLocator.Bind<ISimplePoolsManager>(_mergeCellHighlight);
-            ServiceLocator.Bind<MergeManager>(this);
-            ServiceLocator.Bind<GridViewsContainer>(gridViewContainer);
+            _viewsContainer = new GridViewsContainer();
+            _viewsContainer.AddGridView(_gridView);
+            BindRefs();
             if(_allowInputOnStart)
                 _mergeInput.SetActive(true);
         }
-        
+
         public void AllowInput(bool active) => _mergeInput.SetActive(active);
 
         public void FillActiveArea()
@@ -135,6 +149,22 @@ namespace RobotCastle.Merging
         {
             HighlightMergeOptions();
         }
+        
+        private void BindRefs()
+        {
+            ServiceLocator.Bind<IGridSectionsController>(_sectionsController);
+            ServiceLocator.Bind<IMergeItemsFactory>(_itemsSpawner);
+            ServiceLocator.Bind<ISimplePoolsManager>(_mergeCellHighlight);
+            ServiceLocator.Bind<IMergeProcessor>(_mergeProcessor);
+            ServiceLocator.Bind<MergeManager>(this);
+            ServiceLocator.Bind<MergeController>(_mergeController);
+            ServiceLocator.Bind<SimplePoolsManager>(_mergeCellHighlight);
+            ServiceLocator.Bind<GridViewsContainer>(_viewsContainer);
+            ServiceLocator.Bind<IHeroWeaponsContainer>(_itemsContainer);
+            ServiceLocator.Bind<IMergeMaxLevelCheck>(_maxLevelCheck);
+        }
+
+
 
         private void Start()
         {
@@ -145,13 +175,14 @@ namespace RobotCastle.Merging
         private void OnDestroy()
         {
             ServiceLocator.Unbind<IGridSectionsController>();
-            ServiceLocator.Unbind<MergeController>();
             ServiceLocator.Unbind<IMergeItemsFactory>();
+            ServiceLocator.Unbind<ISimplePoolsManager>();
+            ServiceLocator.Unbind<MergeController>();
             ServiceLocator.Unbind<MergeManager>();
             ServiceLocator.Unbind<SimplePoolsManager>();
-            ServiceLocator.Unbind<ISimplePoolsManager>();
+            ServiceLocator.Unbind<GridViewsContainer>();
+            ServiceLocator.Unbind<IMergeMaxLevelCheck>();
         }
-        
+
     }
-    
 }

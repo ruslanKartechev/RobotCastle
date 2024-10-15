@@ -17,18 +17,10 @@ namespace RobotCastle.UI
 
         public void Animate(Ease ease)
         {
-            const float punch = .125f;
-            const float punchTime = .25f;
-            const float fadeTime = .3f;
-            // const float upPos = 50f;
             _canvasGroup.alpha = 1f;
-            transform.DOPunchScale(new Vector3(punch, punch, punch), punchTime).OnComplete(() =>
-            {
-                // var pos = transform.position;
-                // pos.y += upPos;
-                // transform.DOMove(pos, fadeTime);
-                _canvasGroup.DOFade(0f, fadeTime).SetEase(ease).OnComplete(Off);
-            });
+            transform.localScale = Vector3.one * 1.1f;
+            transform.DOScale(0.85f, .325f);
+            _canvasGroup.DOFade(0f, .82f).OnComplete(Off);
         }
 
         private void Off() => gameObject.SetActive(false);

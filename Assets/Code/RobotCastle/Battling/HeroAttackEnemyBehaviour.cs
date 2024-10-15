@@ -14,6 +14,8 @@ namespace RobotCastle.Battling
 
         private enum EAttackLogicStep { Waiting, Moving, Rotating, Attacking }
         
+        private const float DelayAfterTargetDied = .6f;
+
         private IHeroController _hero;
         private CancellationTokenSource _mainToken;
         private CancellationTokenSource _subToken;
@@ -107,69 +109,103 @@ namespace RobotCastle.Battling
             }
             if (token.IsCancellationRequested) return;
             var actionCall = CheckNextAction(enemy);
+            var prevStep = _logicStep;
             switch (actionCall)
             {
                 case 0: // should not move, straight to attack
-                    if (_logicStep == EAttackLogicStep.Attacking)
-                        return;
-                    StopSubProc();
-                    _logicStep = EAttackLogicStep.Attacking;
-                    BeginAttackAndCheckIfDead(_subToken.Token);
+                    BeginAttack(prevStep);
                     return;
                 case 1: // should move to target cell
-                    if (_logicStep == EAttackLogicStep.Attacking)
-                    {
-                        StopSubProc();
-                        StopAttack();
-                    }
-                    _logicStep = EAttackLogicStep.Waiting;
-                    myState.SetTargetCellToSelf();
-                    
-                    var shouldMove = _hero.Battle.AttackPositionCalculator.GetPositionToAttack(
-                        _hero, enemy, out var attackCell, out var distance);
-                    if (!shouldMove)
-                    {
-                        CLog.LogRed($"[DecideNextStep] Wierd case");
-                        await Task.Yield();
-                        if (token.IsCancellationRequested) return;
-                        DecideNextStep(_mainToken.Token);
-                        return;
-                    }
-                    // CLog.LogYellow($"[{_hero.View.gameObject.name}] DuelDistance {distance <= HeroesConstants.DuelMaxDistance} (dist: {distance}. max: {HeroesConstants.DuelMaxDistance})" +
-                    //                $"\nEnemy is me: {enemyState.attackData.CurrentEnemy == _hero}, Enemy state: {enemyState.GetStr()}");
-                    if (distance <= HeroesConstants.DuelMaxDistance 
-                        && enemyState.attackData.CurrentEnemy == _hero 
-                        && enemyState.isMoving)
-                    {
-                        // CLog.LogGreen($"[{_hero.View.gameObject.name}] Duel case! Enemy: {enemyState.attackData.IsMovingForDuel}.");
-                        if (enemyState.attackData.IsMovingForDuel)
-                        {
-                            myState.attackData.IsMovingForDuel = false;
-                            for(var i = 0; i < 3; i++)
-                                await Task.Yield();
-                            if (token.IsCancellationRequested)
-                                return;
-                            DecideNextStep(_mainToken.Token);
-                            return;
-                        }
-                        else
-                            myState.attackData.IsMovingForDuel = true;
-                    }
-                    _logicStep = EAttackLogicStep.Moving;
-                    myState.TargetCell = attackCell;
-                    StopSubProc();
-                    WaitingForMovement(attackCell, _subToken.Token);
+                    MoveToEnemy(prevStep, token);
                     return;
                 case 2:
-                    StopSubProc();
-                    if (_logicStep == EAttackLogicStep.Attacking)
-                        StopAttack();
-                    _logicStep = EAttackLogicStep.Rotating;
-                    movement.RotateIfNecessary(enemy.View.agent.CurrentCell, _subToken.Token, OnRotated);
+                    RotateToEnemy(prevStep);
                     return;
             }
         }
 
+        private async void RotateToEnemy(EAttackLogicStep prevStep)
+        {
+            StopSubProc();
+            if (prevStep == EAttackLogicStep.Attacking)
+                StopAttack();
+            _logicStep = EAttackLogicStep.Rotating;
+            movement.RotateIfNecessary(enemy.View.agent.CurrentCell, _subToken.Token, OnRotated);
+        }        
+        
+        private async void BeginAttack(EAttackLogicStep prevStep)
+        {
+            if (_logicStep == EAttackLogicStep.Attacking)
+                return;
+            movement.OnMovementStopped();
+            StopSubProc();
+            _logicStep = EAttackLogicStep.Attacking;
+            await BeginAttackAndCheckIfDead(_subToken.Token);
+        }
+
+        private async void MoveToEnemy(EAttackLogicStep prevStep, CancellationToken token)
+        {
+            if (prevStep == EAttackLogicStep.Attacking)
+            {
+                StopSubProc();
+                StopAttack();
+            }
+            _logicStep = EAttackLogicStep.Waiting;
+            myState.SetTargetCellToSelf();
+            var shouldMove = _hero.Battle.AttackPositionCalculator.GetPositionToAttack(
+                _hero, enemy, out var attackCell, out var distance);
+            if (!shouldMove)
+            {
+                CLog.LogRed($"[DecideNextStep] Wierd case");
+                await Task.Yield();
+                if (token.IsCancellationRequested) return;
+                DecideNextStep(_mainToken.Token);
+                return;
+            }
+            // CLog.LogYellow($"[{_hero.View.gameObject.name}] DuelDistance {distance <= HeroesConstants.DuelMaxDistance} (dist: {distance}. max: {HeroesConstants.DuelMaxDistance})" +
+            //                $"\nEnemy is me: {enemyState.attackData.CurrentEnemy == _hero}, Enemy state: {enemyState.GetStr()}");
+            if (distance <= HeroesConstants.DuelMaxDistance 
+                && enemyState.attackData.CurrentEnemy == _hero 
+                && enemyState.isMoving)
+            {
+                // CLog.LogGreen($"[{_hero.View.gameObject.name}] Duel case! Enemy: {enemyState.attackData.IsMovingForDuel}.");
+                if (enemyState.attackData.IsMovingForDuel)
+                {
+                    myState.attackData.IsMovingForDuel = false;
+                    for(var i = 0; i < 3; i++)
+                        await Task.Yield();
+                    if (token.IsCancellationRequested)
+                        return;
+                    DecideNextStep(_mainToken.Token);
+                    return;
+                }
+                else
+                    myState.attackData.IsMovingForDuel = true;
+            }
+            _logicStep = EAttackLogicStep.Moving;
+            myState.TargetCell = attackCell;
+            StopSubProc();
+            movement.OnMovementBegan();
+            // WaitForMovement(attackCell, _subToken.Token);
+            const int waitTimeMs = (int)(1000 * .25f);
+            var result = await movement.MoveToCell(attackCell, token);
+            if (token.IsCancellationRequested)
+                return;
+            switch (result)
+            {
+                case EPathMovementResult.IsBlockedOnTheWay:
+                    // CLog.LogRed($"[{_hero.gameObject.name}] IsBlockedOnTheWay moving to {targetCell.ToString()}");
+                    await Task.Delay(waitTimeMs, token);
+                    break;
+                case EPathMovementResult.FailedToBuild:
+                    CLog.LogRed($"[{_hero.View.gameObject.name}] FailedToBuild moving to {attackCell.ToString()}");
+                    await Task.Delay(waitTimeMs, token);
+                    break;
+            }
+            DecideNextStep(_mainToken.Token);
+        }
+        
+        
         private void OnRotated()
         {
             DecideNextStep(_mainToken.Token);
@@ -187,7 +223,7 @@ namespace RobotCastle.Battling
             DecideNextStep(_mainToken.Token);
         }
 
-        private async void WaitingForMovement(Vector2Int targetCell, CancellationToken token)
+        private async void WaitForMovement(Vector2Int targetCell, CancellationToken token)
         {
             const int waitTimeMs = (int)(1000 * .25f);
             var result = await movement.MoveToCell(targetCell, token);
@@ -227,7 +263,7 @@ namespace RobotCastle.Battling
             _hero.View.attackManager.Stop();
             // CLog.Log($"[{_hero.gameObject.name}] Stop Attack Behaviour");
         }
-        
+
         private async Task BeginAttackAndCheckIfDead(CancellationToken token)
         {
             _hero.View.attackManager.BeginAttack(enemy.View.damageReceiver);
@@ -236,6 +272,8 @@ namespace RobotCastle.Battling
             {
                 if (enemy.IsDead)
                 {
+                    enemy.View.attackManager.Stop();
+                    await Task.Delay((int)(DelayAfterTargetDied), token);
                     DecideNextStep(_mainToken.Token);
                     return;
                 }

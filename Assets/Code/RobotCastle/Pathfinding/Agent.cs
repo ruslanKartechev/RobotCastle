@@ -226,13 +226,13 @@ namespace Bomber
             }
             State = AgentState.IsMoving;
             SetCurrentCellFromWorldPosition();
-            if(!alreadyMoving)
-                _agentAnimator?.OnMovementBegan();
+            // if(!alreadyMoving)
+            //     _agentAnimator?.OnMovementBegan();
             var result = await MoveToCell(path.points[1], token);
             if (!token.IsCancellationRequested)
             {
                 State = AgentState.NotMoving;
-                _agentAnimator?.OnMovementStopped();
+                // _agentAnimator?.OnMovementStopped();
                 // SetCurrentCellFromWorldPosition();
             }
             return result;
