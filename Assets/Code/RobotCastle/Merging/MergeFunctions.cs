@@ -1,16 +1,30 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Battling;
+using RobotCastle.Core;
 using UnityEngine;
 
 namespace RobotCastle.Merging
 {
     public static class MergeFunctions
     {
+        public static void AddLevelWithFX(IItemView view)
+        {
+            AddLevelToItem(view);
+            PlayMergeFX(view);
+        }
+        
         public static void AddLevelToItem(IItemView view)
         {
             view.itemData.core.level++;
             view.UpdateViewToData();
             view.OnMerged();
+        }
+        
+
+        public static void PlayMergeFX(IItemView view)
+        {
+            var fx = ServiceLocator.Get<ISimplePoolsManager>().GetOne("merge");
+            ((OneTimeParticles)fx).Show(view.Transform.position);
         }
         
         public static ICellView RaycastUnderItem(GameObject item)

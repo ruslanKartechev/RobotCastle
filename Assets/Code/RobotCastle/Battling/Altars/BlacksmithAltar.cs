@@ -46,21 +46,22 @@ namespace RobotCastle.Battling.Altars
 
         public override string GetDetailedDescription() => _detailedDescription;
         
-        public void OnSmeltedWeapon(IItemView view)
+        public CoreItemData ModifySmeltItemBeforeApplied(CoreItemData itemData)
         {
-            if (view.itemData.core.type != MergeConstants.TypeWeapons)
-                return;
+            if (itemData.type != MergeConstants.TypeWeapons)
+                return itemData;
             var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
             var chance = _chances[tier];
             var r = UnityEngine.Random.Range(0f, 1f);
             if (r < chance)
             {
                 var maxLvl = ServiceLocator.Get<IMergeMaxLevelCheck>();
-                if (maxLvl.CanUpgradeFurther(view.itemData.core))
+                if (maxLvl.CanUpgradeFurther(itemData))
                 {
-                    MergeFunctions.AddLevelToItem(view);
+                    itemData.level++;
                 }
             }
+            return itemData;
         }
     }
     

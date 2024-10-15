@@ -5,10 +5,10 @@ namespace RobotCastle.Battling
 {
     public class HeroesConstants
     {
+        public const int HeroRefundMoney = 2;
         public const int PartySize = 6;
         public const int PlayerHealthStart = 3;
         public const int PlayerTroopsStart = 3;
-        public const float ManaGainDamageMultiplier = .2f;
         
         public const int DuelMaxDistance = 3;
         
@@ -16,8 +16,8 @@ namespace RobotCastle.Battling
         public const float SpeedStatToAnimationFactor = 1f / 150;
         public const float AddedMana = 18;
 
-        public const float RotationSpeed = 900f;
-        public const float ProjectileSpeed = 4.2f;
+        public const float RotationSpeed = 600f;
+        public const float ProjectileSpeed = 4.5f;
         
         public const string AnimId_Move = "Run";
         public const string AnimId_Idle = "Idle";

@@ -111,14 +111,16 @@ namespace RobotCastle.Battling.SmeltingOffer
         public void OnChoiceConfirmed(CoreItemData data)
         {
             // CLog.Log($"Choice confirmed: {data.AsStr()}");
+            var originalLevel = data.level;
+            foreach (var mod in _smeltModifiers)
+                data = mod.ModifySmeltItemBeforeApplied(data);
             switch (data.type)
             {
                 case MergeConstants.TypeWeapons:
                     var factory = ServiceLocator.Get<IPlayerMergeItemsFactory>();
                     var view = factory.SpawnHeroOrItem(new SpawnMergeItemArgs(data));
-                    
-                    foreach (var mod in _smeltModifiers)
-                        mod.OnSmeltedWeapon(view);
+                    if(data.level > originalLevel)
+                        MergeFunctions.PlayMergeFX(view);
                     break;
                 case MergeConstants.TypeBonus:
                     switch (data.id)

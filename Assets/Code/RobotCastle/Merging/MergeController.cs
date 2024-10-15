@@ -50,14 +50,14 @@ namespace RobotCastle.Merging
             var cell = RaycastForCellView(screenPosition);
             if (cell == null)
             {
-                PutDown();
+                NullDragged();
                 return;
             }
             if (cell.GridId != _gridView.GridId)
                 return;
             if (!cell.cell.isOccupied)
             {
-                PutDown();
+                NullDragged();
                 return;
             }
             var item = cell.itemView;
@@ -66,6 +66,13 @@ namespace RobotCastle.Merging
             item.OnPicked();
             _draggedItem.SetUnderCell(cell);
             OnItemPicked?.Invoke(item.itemData);
+        }
+
+        public void DropAndHideCurrent()
+        {
+            _draggedItem.itemView.Hide();
+            NullDragged();
+            _isProcessingPut = false;
         }
 
         public void OnUp(Vector3 _)
@@ -181,7 +188,7 @@ namespace RobotCastle.Merging
             UpdateGridAndNullDragged();
         }
         
-        private void PutDown()
+        private void NullDragged()
         {
             if(_draggedItem != null)
                 _draggedItem.OnDraggingEnd();
@@ -192,7 +199,7 @@ namespace RobotCastle.Merging
         {
             _isProcessingPut = false;
             _sectionsController.OnItemPut(_draggedItem.itemView.itemData);
-            PutDown();
+            NullDragged();
             CLog.Log($"[{nameof(MergeController)}] Put Result: {_lastPutResult.ToString()}");
             OnPutItem?.Invoke(_lastPutResult);
         }

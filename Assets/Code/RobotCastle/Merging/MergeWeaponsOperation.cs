@@ -53,6 +53,7 @@ namespace RobotCastle.Merging
             foreach (var mod in _modifiers)
                 mod.OnNewItemSpawnDuringMerge(newItemView, _itemStanding, _itemMoving);
             
+            MergeFunctions.PlayMergeFX(_itemStanding);
             _callback?.Invoke(EMergeResult.MergedIntoNew, true);
         }
     }

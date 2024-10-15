@@ -11,7 +11,7 @@ namespace RobotCastle.Merging
         public IGridView GridView => _gridView;
         public IGridSectionsController SectionsController => _sectionsController;
         public IMergeProcessor MergeProcessor => _mergeProcessor;
-        public IMergeItemsContainer Container => _itemsContainer;
+        public PlayerMergeItemsContainer Container => _itemsContainer;
             
         [SerializeField] private bool _autoInit;
         [SerializeField] private bool _allowInputOnStart;
@@ -23,8 +23,8 @@ namespace RobotCastle.Merging
         private IGridView _gridView;
         private IMergeProcessor _mergeProcessor;
         private IMergeItemsFactory _itemsSpawner;
-        private IMergeItemsContainer _itemsContainer;
         private IMergeMaxLevelCheck _maxLevelCheck;
+        private PlayerMergeItemsContainer _itemsContainer;
         private MergeController _mergeController;
         private MergeInput _mergeInput;
         private GridViewsContainer _viewsContainer;

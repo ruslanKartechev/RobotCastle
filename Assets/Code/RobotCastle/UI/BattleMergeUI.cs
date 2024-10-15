@@ -2,6 +2,7 @@
 using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.InvasionMode;
+using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
 
@@ -16,7 +17,8 @@ namespace RobotCastle.UI
         public IButtonInput BtnStart => _btnStart;
         public IButtonInput BtnStart2 => _btnStartTop;
         public PurchaseNewHeroButton BtnPurchaseHero => _btnPurchaseHero;
-        
+        public ReturnItemButton ReturnItemButton => _returnItemButton;
+
         
         [SerializeField] private TroopsCountUI _troopsCount;
         [SerializeField] private LevelMoneyUI _money;
@@ -27,6 +29,7 @@ namespace RobotCastle.UI
         [SerializeField] private Vector2 _blockYPositions;
         [SerializeField] private RectTransform _mainRect;
         [SerializeField] private MyButton _btnStartTop;
+        [SerializeField] private ReturnItemButton _returnItemButton;
         [SerializeField] private FadeInOutAnimator _startTopBtnAnimator;
         [SerializeField] private FadePopAnimator _winAnimator;
         [SerializeField] private FadePopAnimator _lostAnimator;

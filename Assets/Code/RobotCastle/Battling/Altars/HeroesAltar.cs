@@ -56,7 +56,7 @@ namespace RobotCastle.Battling.Altars
                 var maxLvl = ServiceLocator.Get<IMergeMaxLevelCheck>();
                 if(maxLvl.CanUpgradeFurther(view.itemData.core))
                 {
-                    MergeFunctions.AddLevelToItem(view);
+                    MergeFunctions.AddLevelWithFX(view);
                 }
             }
         }

@@ -1716,8 +1716,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4100291029428060957}
+  - component: {fileID: 958264571065712669}
   - component: {fileID: 8448249066644411937}
-  - component: {fileID: 7997473391559922244}
   - component: {fileID: 6378755380090670487}
   - component: {fileID: 5782732439752609722}
   m_Layer: 5
@@ -1726,7 +1726,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4100291029428060957
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1748,15 +1748,7 @@ RectTransform:
   m_AnchoredPosition: {x: 111, y: 252}
   m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &8448249066644411937
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1620714917103000593}
-  m_CullTransparentMesh: 1
---- !u!114 &7997473391559922244
+--- !u!114 &958264571065712669
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1765,12 +1757,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1620714917103000593}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15f7b2a12d5e4db2b1b9cf751fb162dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 6554611d669f4d5f8990ac26dc5447e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _btn: {fileID: 5782732439752609722}
-  _doRespond: 0
-  _text: {fileID: 4041903210714953975}
+  _costText: {fileID: 5981084679731741057}
+  _rect: {fileID: 4100291029428060957}
+  _go: {fileID: 1620714917103000593}
+--- !u!222 &8448249066644411937
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620714917103000593}
+  m_CullTransparentMesh: 1
 --- !u!114 &6378755380090670487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7369,6 +7369,7 @@ MonoBehaviour:
   _blockYPositions: {x: -330, y: 0}
   _mainRect: {fileID: 4633957967693267674}
   _btnStartTop: {fileID: 7937146334601357039}
+  _returnItemButton: {fileID: 958264571065712669}
   _startTopBtnAnimator: {fileID: 6854105077633601316}
   _winAnimator: {fileID: 8110702321194738043}
   _lostAnimator: {fileID: 6935025059936551172}

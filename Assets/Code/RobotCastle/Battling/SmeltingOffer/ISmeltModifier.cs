@@ -1,9 +1,9 @@
-﻿using RobotCastle.Merging;
+﻿using RobotCastle.Data;
 
 namespace RobotCastle.Battling.SmeltingOffer
 {
     public interface ISmeltModifier
     {
-        void OnSmeltedWeapon(IItemView view);
+        CoreItemData ModifySmeltItemBeforeApplied(CoreItemData itemData);
     }
 }

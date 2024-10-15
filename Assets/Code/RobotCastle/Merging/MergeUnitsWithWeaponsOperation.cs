@@ -138,7 +138,7 @@ namespace RobotCastle.Merging
             _unitStanding.itemData.core.level++;
             _unitStanding.UpdateViewToData();
             _unitStanding.OnMerged();
-            
+            MergeFunctions.PlayMergeFX(_unitStanding);
             foreach (var mod in _modifiers)
                 mod.OnMergedOneIntoAnother(_unitMoving, _unitStanding);
             

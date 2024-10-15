@@ -75,7 +75,7 @@ namespace RobotCastle.Merging
                 else
                     MergeFunctions.ClearCellAndHideItem(_gridView, _bookItem);
 
-                MergeFunctions.AddLevelToItem(_anotherItem);
+                MergeFunctions.AddLevelWithFX(_anotherItem);
                 _itemsContainer.RemoveItem(_bookItem);
             }            
             

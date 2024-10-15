@@ -7,6 +7,6 @@ namespace RobotCastle.Merging
         void RemoveItem(IItemView view);
         void AddNewItem(IItemView view);
         List<IItemView> allItems { get; }
-        
+
     }
 }
