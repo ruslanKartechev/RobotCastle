@@ -14,15 +14,15 @@ namespace RobotCastle.Battling
             _pool.Init();
         }
 
-        public void AssignEnemyUI(HeroView view)
+        public void AssignEnemyUI(HeroComponents view)
         {
-            var wrapper = ((UnitUIWrapper)_pool.GetOne("enemy"));
+            var wrapper = ((HeroUIWrapper)_pool.GetOne("enemy"));
             wrapper.tracker.SetTarget(view.UITrackingPoint);
+            wrapper.transform.position = new Vector3(-1000, -1000, 0);
             view.heroUI = (BattleUnitUI)wrapper.ui;
-            CLog.LogBlue($"Assigned enemy UI to {view.gameObject.name}");
         }
 
-        public void AssignBossUI(HeroView view)
+        public void AssignBossUI(HeroComponents view)
         {
             var bossUI = ((BossHealthBar)_pool.GetOne("boss"));
             bossUI.tracker.SetTarget(view.UITrackingPoint);
@@ -30,14 +30,15 @@ namespace RobotCastle.Battling
             bossUI.AnimateIn();
         }
         
-        public void AssignHeroUI(HeroView view)
+        public void AssignHeroUI(HeroComponents view)
         {
-            var wrapper = ((UnitUIWrapper)_pool.GetOne("player"));
+            var wrapper = ((HeroUIWrapper)_pool.GetOne("player"));
             wrapper.tracker.SetTarget(view.UITrackingPoint);
+            wrapper.transform.position = new Vector3(-1000, -1000, 0);
             view.heroUI = (BattleUnitUI)wrapper.ui;
         }
 
-        public void ReturnToPool(UnitUIWrapper uiWrapper)
+        public void ReturnToPool(HeroUIWrapper uiWrapper)
         {
             _pool.ReturnOne(uiWrapper);
         }

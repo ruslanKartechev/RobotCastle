@@ -4,10 +4,10 @@ namespace RobotCastle.Battling
 {
     public class HeroAnimationToStatsSync
     {
-        private HeroView _view;
+        private HeroComponents _view;
         private bool _inited;
         
-        public HeroAnimationToStatsSync(HeroView view)
+        public HeroAnimationToStatsSync(HeroComponents view)
         {
             _view = view;
         }

@@ -19,7 +19,7 @@ namespace RobotCastle.Battling
         /// Adds the spell, stat modifier, etc., to given target (hero) 
         /// </summary>
         public abstract void AddTo(GameObject target);
-        public abstract void AddToHero(HeroView view);
+        public abstract void AddToHero(HeroComponents view);
 
         /// <summary>
         /// Gives a detailed description based on all applied modifiers.

@@ -13,20 +13,26 @@ namespace RobotCastle.Battling
         public static void ResetHeroAfterBattle(IHeroController hero)
         {
             hero.IsDead = false;
-            var view = hero.View;
-            view.stats.ClearDecorators();
+            var components = hero.View;
+            components.stats.ClearDecorators();
+            components.healthManager.ClearAllModifiers();
             
-            view.stats.Shield = 0f;
-            view.heroUI.ShieldBar.Hide();
-            view.stats.HealthReset.Reset(view);
-            view.stats.ManaResetAfterBattle.Reset(view);
-            view.heroUI.UpdateStatsView(view);
+            components.heroUI.ShieldBar.Hide();
+            components.stats.HealthReset.Reset(components);
+            components.stats.ManaResetAfterBattle.Reset(components);
+            components.heroUI.UpdateStatsView(components);
             
-            view.healthManager.SetDamageable(false);
-            view.state.Reset();
-            view.gameObject.SetActive(true);
-            view.heroUI.Show();
-            view.processes.StopAll();
+            components.healthManager.SetDamageable(false);
+            components.state.Reset();
+            components.gameObject.SetActive(true);
+            components.heroUI.Show();
+            components.processes.StopAll();
+            
+            components.damageSource.ClearDamageCalculationModifiers();
+            components.damageSource.ClearPostDamageModifiers();
+            foreach (var mod in components.preBattleRecurringMods)
+                mod.Deactivate();
+            
             hero.SetBehaviour(new HeroIdleBehaviour());
         }
 
@@ -35,27 +41,24 @@ namespace RobotCastle.Battling
             var modsDb = ServiceLocator.Get<ModifiersDataBase>();
             foreach (var hero in heroes)
             {
-                var view = hero.View;
-                view.movement.SetupAgent();
-                view.stats.ManaResetAfterBattle.Reset(view);
-                view.heroUI.AssignStatsTracking(view);
-                view.healthManager.SetDamageable(true);
-                view.statAnimationSync.Init(true);
-                foreach (var itemData in view.heroItemsContainer.Items)
+                var components = hero.View;
+                components.movement.SetupAgent();
+                components.stats.ManaResetAfterBattle.Reset(components);
+                components.heroUI.AssignStatsTracking(components);
+                components.healthManager.SetDamageable(true);
+                components.statAnimationSync.Init(true);
+                foreach (var itemData in components.heroItemsContainer.Items)
                 {
                     foreach (var id in itemData.modifierIds)
                     {
                         var mod = modsDb.GetModifier(id);
-                        mod.AddToHero(view);
+                        mod.AddToHero(components);
                     }
                 }
-            }
-        }
 
-        private class HeroAttackPoints
-        {
-            public IHeroController hero;
-            public int points;
+                foreach (var mod in components.preBattleRecurringMods)
+                    mod.Activate();
+            }
         }
 
         public static IHeroController GetBestTargetForAttack(IHeroController hero)

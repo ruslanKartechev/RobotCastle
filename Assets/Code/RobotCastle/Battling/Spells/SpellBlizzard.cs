@@ -9,13 +9,13 @@ namespace RobotCastle.Battling
     {
         public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         public string name => "spell";
-        public int priority => 10;
+        public int order => 10;
         public float Decorate(float val)
         {
             return val + BaseSpellPower;
         }
         
-        public SpellBlizzard(HeroView view, SpellConfigBlizzard config)
+        public SpellBlizzard(HeroComponents view, SpellConfigBlizzard config)
         {
             _view = view;
             _config = config;
@@ -50,8 +50,8 @@ namespace RobotCastle.Battling
             var map = _view.agent.Map;
             var (heroesAffected, cells) = HeroesManager.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
                 target.transform.position, map, enemies);
-            var args = _view.damageSource.CalculateSpellAndPhysDamage();
-            args.physDamage = _config.physDamage[lvl];
+            var args = _view.damageSource.CalculateSpellDamage();
+            args.amount = _config.physDamage[lvl];
             
             foreach (var hero in heroesAffected)
             {

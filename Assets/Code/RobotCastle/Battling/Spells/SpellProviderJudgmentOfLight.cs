@@ -13,7 +13,7 @@ namespace RobotCastle.Battling
         public override void AddTo(GameObject target)
         { }
         
-        public override void AddToHero(HeroView view)
+        public override void AddToHero(HeroComponents view)
         {
             view.stats.FullManaListener = new SpellJudgementOfLight(view, _config);
         }

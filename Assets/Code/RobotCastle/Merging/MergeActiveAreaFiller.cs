@@ -24,7 +24,7 @@ namespace RobotCastle.Merging
             var heroes = new List<IItemView>(items.Count);
             foreach (var vv in items)
             {
-                if(vv.itemData.core.type == MergeConstants.TypeUnits)
+                if(vv.itemData.core.type == MergeConstants.TypeHeroes)
                     heroes.Add(vv);
             }
             if (heroes.Count == 0)

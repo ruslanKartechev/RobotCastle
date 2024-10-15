@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using RobotCastle.Battling;
 using RobotCastle.Core;
@@ -8,29 +9,39 @@ namespace RobotCastle.UI
 {
     public class BattleDamagePanelUI : MonoBehaviour, IDamageDisplay, IScreenUI
     {
-        [SerializeField] private float _animateTime;
         [SerializeField] private Ease _ease;
         
-        [SerializeField] private Data _physical;
-        [SerializeField] private Data _magical;
-        
-        
+        [SerializeField] private Pool _physical;
+        [SerializeField] private Pool _magical;
+        [SerializeField] private Pool _mightyBlock;
+        [SerializeField] private Pool _vampirism;
+
+        private void Start()
+        {
+            _physical.Init();
+            _magical.Init();
+            _mightyBlock.Init();
+            _vampirism.Init();
+        }
+
         public void ShowAt(int amount, EDamageType type, Vector3 worldPosition)
         {
             DamageUI ui = null;
             switch (type)
             {
                 case EDamageType.Magical:
-                    ui = _magical.GetOne();
+                    ui = (DamageUI)_magical.GetOne();
+                    ui.pool = _magical;
                     break;
                 case EDamageType.Physical:
-                    ui = _physical.GetOne();
+                    ui = (DamageUI)_physical.GetOne();
+                    ui.pool = _physical;
                     break;
             }
             
             ui.transform.position = Camera.main.WorldToScreenPoint(worldPosition);
             ui.Show(amount);
-            ui.Animate(_ease);
+            ui.AnimateDamage(_ease);
         }
         
         public void ShowAtScreenPos(int amount, EDamageType type, Vector3 screenPos)
@@ -39,18 +50,37 @@ namespace RobotCastle.UI
             switch (type)
             {
                 case EDamageType.Magical:
-                    ui = _magical.GetOne();
+                    ui = (DamageUI)_magical.GetOne();
+                    ui.pool = _magical;
                     break;
                 case EDamageType.Physical:
-                    ui = _physical.GetOne();
+                    ui = (DamageUI)_physical.GetOne();
+                    ui.pool = _physical;
                     break;
             }
 
             ui.transform.position = screenPos;
             ui.Show(amount);
-            ui.Animate(_ease);
+            ui.AnimateDamage(_ease);
         }
 
+        public void ShowMightyBlock(Vector3 worldPosition)
+        {
+            var ui = (DamageUI)_mightyBlock.GetOne();
+            ui.pool = _mightyBlock;
+            ui.transform.position = Camera.main.WorldToScreenPoint(worldPosition);
+            ui.ShowMightyBlock();
+        }
+
+        public void ShowVampirism(int amount, Vector3 worldPosition)
+        {
+            var ui = (DamageUI)_vampirism.GetOne();
+            ui.pool = _vampirism;
+            ui.transform.position = Camera.main.WorldToScreenPoint(worldPosition);
+            ui.ShowVampirism(amount);
+        }
+  
+        
         private void OnEnable()
         {
             ServiceLocator.Bind<IDamageDisplay>(this);
@@ -77,5 +107,7 @@ namespace RobotCastle.UI
             }
 
         }
+        
+        
     }
 }

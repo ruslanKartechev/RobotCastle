@@ -2,7 +2,7 @@
 {
     public static class MergeConstants
     {
-        public const string TypeUnits = "unit";
+        public const string TypeHeroes = "unit";
         public const string TypeWeapons = "item";
         public const string TypeBonus = "bonus";
         

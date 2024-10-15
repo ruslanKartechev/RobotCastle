@@ -9,14 +9,14 @@ namespace RobotCastle.Battling
 {
     public class HeroMovementManager : MonoBehaviour, IPathfindingAgentAnimator
     {
-        public HeroView UnitView
+        public HeroComponents UnitView
         {
             get => _unitView;
             set => _unitView = value;
         }
         
         private const float AngleThreshold = 2;
-        [SerializeField] private HeroView _unitView;
+        [SerializeField] private HeroComponents _unitView;
         private bool _didSetup;
         private bool _isRunning;
         

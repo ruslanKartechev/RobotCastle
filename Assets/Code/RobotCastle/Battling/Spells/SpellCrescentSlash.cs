@@ -11,13 +11,13 @@ namespace RobotCastle.Battling
         
         public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         public string name => "spell";
-        public int priority => 10;
+        public int order => 10;
         public float Decorate(float val)
         {
             return val + BaseSpellPower;
         }
         
-        public SpellCrescentSlash(HeroView view, SpellConfigCrescentSlash config)
+        public SpellCrescentSlash(HeroComponents view, SpellConfigCrescentSlash config)
         {
             _view = view;
             _config = config;
@@ -65,8 +65,8 @@ namespace RobotCastle.Battling
             var lvl = (int)HeroesManager.GetSpellTier(_view.stats.MergeTier);
             var hero = _view.GetComponent<IHeroController>();
             fx.transform.SetPositionAndRotation(_view.transform.position, _view.transform.rotation);
-            fx.Launch(lvl, _config.cellsMasksByTear[lvl], _view.stats.SpellPower.Get(), 
-                _config.speed, hero.Battle.GetTeam(hero.TeamNum).enemyUnits, _view.damageSource);
+            fx.Launch(lvl, _config.cellsMasksByTear[lvl], _config.speed, 
+                hero.Battle.GetTeam(hero.TeamNum).enemyUnits, _view.damageSource);
         }
 
         private CrescentSlashView GetFxView()

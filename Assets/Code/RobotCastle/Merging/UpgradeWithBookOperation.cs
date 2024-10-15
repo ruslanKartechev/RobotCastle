@@ -54,7 +54,7 @@ namespace RobotCastle.Merging
                 case MergeConstants.TypeWeapons:
                     UpgradeAsItem();             
                     break;
-                case MergeConstants.TypeUnits:
+                case MergeConstants.TypeHeroes:
                     UpgradeAsUnit();
                     break;
                 default:

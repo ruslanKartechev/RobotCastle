@@ -13,7 +13,7 @@ namespace RobotCastle.Testing
             
         public bool IsDamageable => true;
 
-        public DamageArgs TakeDamage(DamageArgs args)
+        public DamageReceivedArgs TakeDamage(HeroDamageArgs args)
         {
             return default;
         }

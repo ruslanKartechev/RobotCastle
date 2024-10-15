@@ -52,13 +52,13 @@ namespace RobotCastle.Battling
             return list;
         }
 
-        public static List<IHeroController> GetHeroesEnemies(HeroView view)
+        public static List<IHeroController> GetHeroesEnemies(HeroComponents view)
         {
             var cc = view.gameObject.GetComponent<IHeroController>();
             return cc.Battle.GetTeam(cc.TeamNum).enemyUnits;
         }
 
-        public static List<IHeroController> GetHeroesAllies(HeroView view)
+        public static List<IHeroController> GetHeroesAllies(HeroComponents view)
         {
             var cc = view.gameObject.GetComponent<IHeroController>();
             return cc.Battle.GetTeam(cc.TeamNum).ourUnits;

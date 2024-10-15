@@ -91,7 +91,7 @@ namespace RobotCastle.Merging
                     var operation1 = new MergeWeaponsOperation(itemViewTaken, itemViewInto, gridView, _container, _maxLevelCheck, callback, _modifiers);
                     operation1.Process();
                     break;
-                case MergeConstants.TypeUnits:
+                case MergeConstants.TypeHeroes:
                     var operation2 = new MergeUnitsWithWeaponsOperation(itemViewTaken, itemViewInto, _gridView, _container, _maxLevelCheck, _callback, _modifiers);
                     operation2.Process();
                     return;
@@ -158,7 +158,7 @@ namespace RobotCastle.Merging
                         {
                             switch (data1.type)
                             {
-                                case MergeConstants.TypeUnits:
+                                case MergeConstants.TypeHeroes:
                                     var itemsCont1 = allItems[indOne].Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
                                     var itemsCont2 = allItems[indTwo].Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
                                     if (itemsCont1.ItemsCount + itemsCont2.ItemsCount > 0)
@@ -214,7 +214,7 @@ namespace RobotCastle.Merging
                     else
                         return String.Compare(core2.id, core1.id, StringComparison.Ordinal);
                 }
-                if (core1.type == MergeConstants.TypeUnits || core2.type == MergeConstants.TypeWeapons)
+                if (core1.type == MergeConstants.TypeHeroes || core2.type == MergeConstants.TypeWeapons)
                     return -1;
                 else
                     return 1;

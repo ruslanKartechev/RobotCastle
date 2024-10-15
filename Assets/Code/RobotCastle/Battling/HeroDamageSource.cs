@@ -1,23 +1,19 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Core;
+using RobotCastle.UI;
 using SleepDev;
 
 namespace RobotCastle.Battling
 {
     public class HeroDamageSource : IDamageSource
     {
-        private HeroView _view;
-        private HeroStatsManager _stats;
-
-        private List<IDamageDecorator> _decorators;
-
-        public HeroDamageSource(HeroView view)
+        public HeroDamageSource(HeroComponents components)
         {
-            _view = view;
-            _stats = view.stats;
-            _decorators = new(10);
+            _components = components;
+            _stats = components.stats;
         }
         
-        public DamageArgs CalculatePhysDamage()
+        public HeroDamageArgs CalculatePhysDamage()
         {
             var physDamage = _stats.Attack.Get();
             var chance = _stats.PhysicalCritChance.Get(); 
@@ -27,57 +23,28 @@ namespace RobotCastle.Battling
                 if (rand <= chance)
                     physDamage *= 1 + _stats.PhysicalCritDamage.Get();
             }
-            var args = new DamageArgs(physDamage, 0f, this);
-            for (var ind = 0; ind < _decorators.Count; ind++)
-            {
-                var dec = _decorators[ind];
-                args = dec.Apply(args);
-            }
+            var args = new HeroDamageArgs(physDamage, EDamageType.Physical, _components);
+            for (var i = 0; i < _calculationModifiers.Count; i++)
+                args = _calculationModifiers[i].Apply(args);
             return args;
         }
 
-        public DamageArgs CalculateSpellAndPhysDamage()
+        public HeroDamageArgs CalculateSpellDamage()
         {
-            var physDamage = _stats.Attack.Get();
-            var chance = _stats.PhysicalCritChance.Get(); 
-            if (chance > 0)
-            {
-                var rand = UnityEngine.Random.Range(0f, 1f);
-                if (rand <= chance)
-                    physDamage *= 1 + _stats.PhysicalCritDamage.Get();
-            }
             var magicDamage = _stats.SpellPower.Get();
-            chance = _stats.MagicalCritChance.Get();
+            var chance = _stats.MagicalCritChance.Get();
             if (chance > 0)
             {
                 var rand = UnityEngine.Random.Range(0f, 1f);
                 if (rand <= chance)
-                    physDamage *= 1 + _stats.MagicalCritDamage.Get();
+                    magicDamage *= 1 + _stats.MagicalCritDamage.Get();
             }
-            var args = new DamageArgs(physDamage, magicDamage, this);
-            for (var ind = 0; ind < _decorators.Count; ind++)
-            {
-                var dec = _decorators[ind];
-                args = dec.Apply(args);
-            }
-
+            var args = new HeroDamageArgs(magicDamage, EDamageType.Magical, _components);
+            for (var i = 0; i < _calculationModifiers.Count; i++)
+                args = _calculationModifiers[i].Apply(args);
             return args;
         }
         
-        public void AddDecorator(IDamageDecorator decorator)
-        {
-            _decorators.Add(decorator);
-        }
-
-        public void RemoveDecorator(IDamageDecorator decorator)
-        {
-            _decorators.Remove(decorator);
-        }
-
-        public void ClearAllDecorators()
-        {
-            _decorators.Clear();
-        }
 
         public void DamagePhys(IDamageReceiver receiver)
         {
@@ -87,21 +54,65 @@ namespace RobotCastle.Battling
 
         public void DamageSpellAndPhys(IDamageReceiver receiver)
         {
-            var damage = CalculateSpellAndPhysDamage();
-            Damage(receiver, damage);
+            var physDam = CalculatePhysDamage();
+            var spellDam = CalculateSpellDamage();
+            Damage(receiver, physDam);
+            Damage(receiver, spellDam);
         }
 
-        private void Damage(IDamageReceiver receiver, DamageArgs args)
+        private void Damage(IDamageReceiver receiver, HeroDamageArgs args)
         {
-            var received = receiver.TakeDamage(args);
-            CLog.LogGreen($"Actually received: {received.physDamage}, {received.magicDamage}");
-            
+            var receivedArgs = receiver.TakeDamage(args);
+            var vamp = _components.stats.Vampirism.Get();
+            if (vamp > 0)
+            {
+                var healthAdded = (int)(vamp * receivedArgs.amountReceived);
+                CLog.Log($"Vampirism health: {healthAdded}");
+                _components.stats.HealthCurrent.Val += healthAdded;
+                ServiceLocator.Get<IDamageDisplay>().ShowVampirism(healthAdded, _components.pointVamp.position);
+            }
+
+            foreach (var mod in _postDamageModifiers)
+                mod.Apply(receivedArgs);
         }
 
-        public void ReflectDamageBack()
+        public void AddModifier(IDamageCalculationModifier mod)
         {
-            CLog.Log($"Damage reflected back !!!");
-            
+            if(_calculationModifiers.Contains(mod) == false)
+                _calculationModifiers.Add(mod);
         }
+
+        public void RemoveModifier(IDamageCalculationModifier mod)
+        {
+            _calculationModifiers.Remove(mod);
+        }
+
+        public void AddModifier(IPostDamageModifier mod)
+        {
+            if(_postDamageModifiers.Contains(mod) == false)
+                _postDamageModifiers.Add(mod);
+        }
+
+        public void RemoveModifier(IPostDamageModifier mod)
+        {
+            _postDamageModifiers.Remove(mod);
+        }
+
+        public void ClearDamageCalculationModifiers()
+        {
+            _calculationModifiers.Clear();
+        }
+
+        public void ClearPostDamageModifiers()
+        {
+            _postDamageModifiers.Clear();
+        }
+        
+        
+        private HeroComponents _components;
+        private HeroStatsManager _stats;
+        private List<IDamageCalculationModifier> _calculationModifiers = new (5);
+        private List<IPostDamageModifier> _postDamageModifiers = new (5);
+
     }
 }

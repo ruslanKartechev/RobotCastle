@@ -13,7 +13,7 @@ namespace RobotCastle.Battling
         
         private const int MaxSize = 3;
         
-        [SerializeField] private HeroView _view;
+        [SerializeField] private HeroComponents _view;
         private readonly List<HeroWeaponData> _items = new (MaxSize);
 
         public void UpdateItems(List<HeroWeaponData> items)

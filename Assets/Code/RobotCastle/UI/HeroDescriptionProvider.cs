@@ -5,7 +5,7 @@ namespace RobotCastle.UI
 {
     public class HeroDescriptionProvider : MonoBehaviour, IItemDescriptionProvider
     {
-        [SerializeField] private HeroView _heroView;
+        [SerializeField] private HeroComponents _heroView;
         
         public string GetIdForUI() => "ui_hero_description";
 
@@ -13,6 +13,6 @@ namespace RobotCastle.UI
         
         public Vector3 WorldPosition => transform.position;
 
-        public HeroView HeroView => _heroView;
+        public HeroComponents HeroView => _heroView;
     }
 }

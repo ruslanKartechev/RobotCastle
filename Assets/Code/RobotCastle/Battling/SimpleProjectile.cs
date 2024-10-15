@@ -32,17 +32,18 @@ namespace RobotCastle.Battling
         private IEnumerator Moving(Transform startPoint, Transform endPoint, float speed)
         {
             var elapsed = 0f;
+            var startPos = startPoint.position;
             var endPos = endPoint.position;
             endPos.y = startPoint.position.y;
             
-            var distance = (endPos - startPoint.position).magnitude / speed;
+            var distance = (endPos - startPos).magnitude / speed;
             var time = distance / speed;
             
             while (elapsed <= time)
             {
                 // endPos = endPoint.position;
                 // endPos.y = startPoint.position.y;
-                transform.position = Vector3.Lerp(startPoint.position, endPos, elapsed / time);
+                transform.position = Vector3.Lerp(startPos, endPos, elapsed / time);
                 elapsed += Time.deltaTime;
                 yield return null;
             }

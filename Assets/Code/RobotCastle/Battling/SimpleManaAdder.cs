@@ -2,10 +2,10 @@
 {
     public class SimpleManaAdder : IManaAdder
     {
-        private HeroView _heroView;
+        private HeroComponents _heroView;
         private HeroStatsManager _stats;
 
-        public SimpleManaAdder(HeroView heroView)
+        public SimpleManaAdder(HeroComponents heroView)
         {
             _heroView = heroView;
             _stats = _heroView.stats;

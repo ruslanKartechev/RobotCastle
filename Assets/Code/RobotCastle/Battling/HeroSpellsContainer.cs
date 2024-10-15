@@ -40,7 +40,7 @@ namespace RobotCastle.Battling
 
         public void ClearModifiers() => _modifiers.Clear();
         
-        public void ApplyAllModifiers(HeroView view)
+        public void ApplyAllModifiers(HeroComponents view)
         {
             foreach (var mod in _modifiers)
             {

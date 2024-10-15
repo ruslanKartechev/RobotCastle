@@ -10,7 +10,7 @@ namespace RobotCastle.Battling
 {
     public class MergeView_Hero : MonoBehaviour, IItemView
     {
-        [SerializeField] private HeroView _view;
+        [SerializeField] private HeroComponents _view;
         private ItemData _data;
         private Tween _tweenScale;
         private Tween _tweenMove;
@@ -87,7 +87,7 @@ namespace RobotCastle.Battling
 
         public void Hide()
         {
-            _view.heroUI.GetComponent<UnitUIWrapper>().ReturnBack();
+            _view.heroUI.GetComponent<HeroUIWrapper>().ReturnBack();
             gameObject.SetActive(false);
         }
     }

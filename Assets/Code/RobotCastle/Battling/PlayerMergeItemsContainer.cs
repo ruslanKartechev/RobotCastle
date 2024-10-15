@@ -18,7 +18,7 @@ namespace RobotCastle.Battling
         {
             // CLog.Log($"Added item: {view.itemData.core.id}");
             _allItems.Add(view);
-            if (view.itemData.core.type == MergeConstants.TypeUnits)
+            if (view.itemData.core.type == MergeConstants.TypeHeroes)
             {
                 var h = view.Transform.gameObject.GetComponent<IHeroController>();
                 _heroes.Add(h);

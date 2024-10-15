@@ -96,7 +96,7 @@ namespace RobotCastle.Merging
                 return true;
             if (item.pivotY >= _minYIndex && coord.y >= _minYIndex) // already in the upper region and moving to upper region
                 return true;
-            if (item.core.type != MergeConstants.TypeUnits && coord.y >= _minYIndex) // moving non-unit to upper zone
+            if (item.core.type != MergeConstants.TypeHeroes && coord.y >= _minYIndex) // moving non-unit to upper zone
                 return false;
             
             var allowed = _currentCount < _maxCount;
@@ -110,7 +110,7 @@ namespace RobotCastle.Merging
 
         public bool GetFreeAllowedCell(MergeGrid grid, ItemData itemData, out Vector2Int coordinates)
         {
-            if (itemData.core.type == MergeConstants.TypeUnits)
+            if (itemData.core.type == MergeConstants.TypeHeroes)
                 return GetFreeCell(grid, out coordinates);
             for (var y = _minYIndex - 1; y >= 0; y--)
             {
@@ -145,9 +145,9 @@ namespace RobotCastle.Merging
             if (!cell.cell.isOccupied)
                 return;
             var itemView = cell.itemView;
-            if (item.core.type == MergeConstants.TypeUnits)
+            if (item.core.type == MergeConstants.TypeHeroes)
             {
-                var ui = itemView.Transform.GetComponent<HeroView>().heroUI;
+                var ui = itemView.Transform.GetComponent<HeroComponents>().heroUI;
                 if(item.pivotY >= _minYIndex)
                     ui.SetBattleMode();
                 else

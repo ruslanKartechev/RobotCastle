@@ -9,6 +9,6 @@ namespace RobotCastle.Battling
         void AddModifierProvider(ModifierProvider modifierProvider);
         void AddModifierProviders(List<ModifierProvider> modifierProviders);
         void ClearModifiers();
-        void ApplyAllModifiers(HeroView view);
+        void ApplyAllModifiers(HeroComponents view);
     }
 }

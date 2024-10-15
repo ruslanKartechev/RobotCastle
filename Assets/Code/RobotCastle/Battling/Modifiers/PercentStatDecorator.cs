@@ -9,7 +9,7 @@
         
         public float percent;
         
-        public int priority => 1;
+        public int order => 1;
         
         public string name => $"stat_decorator_+{percent}%";
         

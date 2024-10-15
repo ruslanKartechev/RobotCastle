@@ -2,6 +2,6 @@
 {
     public interface IHealthReset
     {
-        void Reset(HeroView heroView);
+        void Reset(HeroComponents heroView);
     }
 }

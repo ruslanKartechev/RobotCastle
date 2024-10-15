@@ -13,7 +13,7 @@ namespace RobotCastle.Testing
 #if UNITY_EDITOR
         [SerializeField] private MapBuilder _mapBuilder;
         [SerializeField] private Transform _transform;
-        [SerializeField] private List<HeroView> _units;
+        [SerializeField] private List<HeroComponents> _units;
         private List<HeroController> _initedUnits = new();
         
 
@@ -30,7 +30,7 @@ namespace RobotCastle.Testing
         
         public void GetUnits()
         {
-            _units = new List<HeroView>(FindObjectsOfType<HeroView>());
+            _units = new List<HeroComponents>(FindObjectsOfType<HeroComponents>());
             var heroes = new List<IHeroController>(_units.Count);
             foreach (var unit in _units)
             {

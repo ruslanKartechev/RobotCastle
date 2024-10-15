@@ -36,7 +36,7 @@ namespace RobotCastle.UI
             var provider = source.GetComponent<HeroDescriptionProvider>();
             var stats = provider.HeroView.stats;
             var info = ServiceLocator.Get<HeroesDatabase>().GetHeroViewInfo(stats.HeroId);
-            var spells = source.GetComponent<HeroView>().spellsContainer;
+            var spells = source.GetComponent<HeroComponents>().spellsContainer;
             var spell = (SpellProvider)spells.GetCurrentSpell();
             if (spell == null)
             {

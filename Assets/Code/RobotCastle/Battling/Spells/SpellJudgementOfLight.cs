@@ -9,13 +9,13 @@ namespace RobotCastle.Battling
     {
         public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         public string name => "spell";
-        public int priority => 10;
+        public int order => 10;
         public float Decorate(float val)
         {
             return val + BaseSpellPower;
         }
 
-        public SpellJudgementOfLight(HeroView view, SpellConfigJudgementOfLight config)
+        public SpellJudgementOfLight(HeroComponents view, SpellConfigJudgementOfLight config)
         {
             _view = view;
             _config = config;
@@ -27,7 +27,7 @@ namespace RobotCastle.Battling
         }
         
         private SpellConfigJudgementOfLight _config;
-        private HeroView _view;
+        private HeroComponents _view;
         private SpellParticlesByLevel _fxView;
         private CancellationTokenSource _token;
         private ConditionedManaAdder _manaAdder;
@@ -61,8 +61,8 @@ namespace RobotCastle.Battling
                     var fx = GetFxView();
                     fx.transform.position = map.GetWorldFromCell(_view.state.currentCell);
                     fx.Show(lvl);
-                    var args = _view.damageSource.CalculateSpellAndPhysDamage();
-                    args.physDamage = _config.physDamage[lvl];
+                    var args = _view.damageSource.CalculateSpellDamage();
+                    args.amount = _config.physDamage[lvl];
                     for (var i = affectedEnemies.Count - 1; i >= 0; i--)
                         allEnemies[i].View.damageReceiver.TakeDamage(args);
                     _isActive = false;

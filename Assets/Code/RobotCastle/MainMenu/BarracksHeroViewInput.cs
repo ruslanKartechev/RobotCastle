@@ -44,7 +44,7 @@ namespace RobotCastle.MainMenu
 
             void TryOpen(IItemView itemView)
             {
-                if (itemView.itemData.core.type == MergeConstants.TypeUnits)
+                if (itemView.itemData.core.type == MergeConstants.TypeHeroes)
                 {
                     var id = itemView.itemData.core.id;
                     ServiceLocator.Get<TabsSwitcher>().SetHeroView();

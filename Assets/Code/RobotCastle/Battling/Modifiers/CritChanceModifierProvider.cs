@@ -10,7 +10,7 @@ namespace RobotCastle.Battling
         [SerializeField] private float _addedPercent;
         [SerializeField] private EStatType _statType;
         
-        public int priority => 1;
+        public int order => 1;
         
         public float Decorate(float val)
         {
@@ -20,7 +20,7 @@ namespace RobotCastle.Battling
         public override void AddTo(GameObject target)
         { }
 
-        public override void AddToHero(HeroView view)
+        public override void AddToHero(HeroComponents view)
         {
             if (_statType == EStatType.CritChance)
             {

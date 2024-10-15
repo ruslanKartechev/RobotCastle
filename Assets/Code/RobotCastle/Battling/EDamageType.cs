@@ -1,4 +1,4 @@
 ﻿namespace RobotCastle.Battling
 {
-    public enum EDamageType {Physical, Magical}
+    public enum EDamageType { Physical, Magical }
 }

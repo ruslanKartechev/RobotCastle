@@ -53,7 +53,7 @@ namespace RobotCastle.Battling
             {
                 var merge = en.View.gameObject.GetComponent<IItemView>();
                 MergeFunctions.ClearCell(_gridView.BuiltGrid, merge.itemData);
-                if (en.View.heroUI.gameObject.TryGetComponent<UnitUIWrapper>(out var wrapper))
+                if (en.View.heroUI.gameObject.TryGetComponent<HeroUIWrapper>(out var wrapper))
                     barsPanel.ReturnToPool(wrapper);
             }
             for (var i = Enemies.Count - 1; i >= 0; i--)

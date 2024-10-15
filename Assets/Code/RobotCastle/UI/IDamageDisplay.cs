@@ -7,5 +7,10 @@ namespace RobotCastle.UI
     {
         void ShowAt(int amount, EDamageType type, Vector3 worldPosition);
         void ShowAtScreenPos(int amount, EDamageType type, Vector3 screenPos);
+        
+        void ShowMightyBlock(Vector3 worldPosition);
+        
+        void ShowVampirism(int amount, Vector3 worldPosition);
+        
     }
 }

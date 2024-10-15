@@ -52,7 +52,7 @@ namespace RobotCastle.Battling
         {
             var spawner = ServiceLocator.Get<IMergeItemsFactory>();
             spawnedItem = spawner.SpawnItemOnCell(cellView, args.ItemData);
-            if (args.coreData.type is MergeConstants.TypeUnits)
+            if (args.coreData.type is MergeConstants.TypeHeroes)
             {
                 var heroGo = spawnedItem.Transform.gameObject;
                 var hero = heroGo.GetComponent<IHeroController>();

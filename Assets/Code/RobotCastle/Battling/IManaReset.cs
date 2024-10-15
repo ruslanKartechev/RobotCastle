@@ -2,6 +2,6 @@
 {
     public interface IManaReset
     {
-        void Reset(HeroView heroView);
+        void Reset(HeroComponents heroView);
     }
 }

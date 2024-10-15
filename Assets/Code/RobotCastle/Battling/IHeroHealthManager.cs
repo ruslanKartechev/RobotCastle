@@ -1,15 +1,10 @@
-﻿using System;
+﻿using RobotCastle.Core;
 
 namespace RobotCastle.Battling
 {
-    public interface IHeroHealthManager
+    public interface IHeroHealthManager : IModifiable<IDamageTakenModifiers>
     {
-        event Action OnAfterDamage;
-        event Action OnDamagePreApplied;
-        event Action OnDamageAttempted;
-        
-        
         void SetDamageable(bool damageable);
-
+  
     }
 }

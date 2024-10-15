@@ -21,7 +21,7 @@ namespace RobotCastle.Testing
         
         private void Awake()
         {
-            _animator = gameObject.GetComponent<HeroView>().animator;
+            _animator = gameObject.GetComponent<HeroComponents>().animator;
             
             var attack = gameObject.GetComponent<IHeroAttackManager>();
             if (attack == null)

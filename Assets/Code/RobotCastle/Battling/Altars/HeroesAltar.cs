@@ -89,7 +89,7 @@ namespace RobotCastle.Battling.Altars
         {
             CLog.LogRed("!! On merged received");
             var view = itemMergedInto;
-            if (view.itemData.core.type == MergeConstants.TypeUnits)
+            if (view.itemData.core.type == MergeConstants.TypeHeroes)
             {
                 var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
                 var chance = _chances[tier];

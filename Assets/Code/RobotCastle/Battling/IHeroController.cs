@@ -7,7 +7,7 @@ namespace RobotCastle.Battling
         bool IsDead { get; set; }
         int TeamNum { get; set; }
         Battle Battle { get; set; }
-        HeroView View { get; }
+        HeroComponents View { get; }
         void InitHero(string id, int heroLevel, int mergeLevel, List<ModifierProvider> spells);
         void SetBehaviour(IHeroBehaviour behaviour);
         void StopCurrentBehaviour();

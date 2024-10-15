@@ -6906,38 +6906,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cost: 3
-  _possibleItems:
-    options:
-    - obj:
-        level: 0
-        id: aramis
-        type: unit
-      weight: 1
-    - obj:
-        level: 0
-        id: evan
-        type: unit
-      weight: 1
-    - obj:
-        level: 0
-        id: shelda
-        type: unit
-      weight: 1
-    - obj:
-        level: 0
-        id: alberon
-        type: unit
-      weight: 1
-    - obj:
-        level: 0
-        id: priya
-        type: unit
-      weight: 1
-    - obj:
-        level: 0
-        id: daniel
-        type: unit
-      weight: 1
 --- !u!114 &1417527705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6964,12 +6932,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b175aa2d5d44e59888e27d367d024d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startStage: 0
+  _startRoundIndex: 0
   _logRewardItems: 0
   _fillActiveAreaBeforeStart: 1
   _endDelay: 1.4
   _startEnemyShowTime: 0.75
   _winFailDelay: 0.5
+  _delayBetweenOffers: 0.6
   _startData:
     _startMoney: 9
     _startItems: []

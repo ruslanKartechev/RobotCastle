@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Core;
+using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
 
@@ -19,40 +21,62 @@ namespace RobotCastle.Battling.Altars
 
 
     [System.Serializable]
-    public class AltarMp_InitialMp : AltarMP
+    public class AltarMp_InitialMp : AltarMP, IPlayerItemSpawnModifier, IStatDecorator
     {
         [SerializeField] private List<float> _percentage;
+        private float _val;
 
         public override void Apply()
         {
+            if (_tier < 1) return;
+
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
-            var val = _percentage[tier];
-            CLog.Log($"[AltarMp_DamageHPDrain] Tier {tier}, initial mp percentage: {val*100}%");
+            _val = _percentage[tier];
+            CLog.Log($"[AltarMp_InitialMp] Tier {tier}, initial mp percentage: {_val * 100}%");
+            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()
         {
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
             var val = _percentage[tier];
-            var d = _description.Replace("<val>", $"{val*100}");
+            var d = _description.Replace("<val>", $"{val * 100}");
             return d;
         }
 
         public override string GetDetailedDescription() => _detailedDescription;
+        
+        public void OnNewItemSpawned(IItemView view)
+        {
+            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            {
+                var components = view.Transform.GetComponent<HeroComponents>();
+                components.stats.ManaMax.AddPermanentDecorator(this);
+                components.stats.ManaResetAfterBattle.Reset(components);
+            }
+        }
+
+        public string name => "mp_from_altar";
+
+        public int order => 100;
+        
+        public float Decorate(float val) => val * (1 + _val);
     }
     
     
     [System.Serializable]
-    public class AltarMp_FinalSp : AltarMP
+    public class AltarMp_FinalSp : AltarMP, IPlayerItemSpawnModifier, IStatDecorator
     {
         [SerializeField] private List<float> _percentage;
+        private float _val;
 
 
         public override void Apply()
         {
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
-            var val = _percentage[tier];
-            CLog.Log($"[AltarMp_FinalSp] Tier {tier}, final spell power: {val*100}%");
+            _val = _percentage[tier];
+            CLog.Log($"[AltarMp_FinalSp] Tier {tier}, final spell power: {_val * 100}%");
+            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()
@@ -64,21 +88,37 @@ namespace RobotCastle.Battling.Altars
         }
 
         public override string GetDetailedDescription() => _detailedDescription;
+        
+        public void OnNewItemSpawned(IItemView view)
+        {
+            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            {
+                var components = view.Transform.GetComponent<HeroComponents>();
+                components.stats.SpellPower.AddPermanentDecorator(this);
+            }
+        }
+
+        public string name => "sp_from_altar";
+
+        public int order => 100;
+        
+        public float Decorate(float val) => val * (1 + _val);
     }
     
     
        
     [System.Serializable]
-    public class AltarMp_MpUponKill : AltarMP
+    public class AltarMp_MpUponKill : AltarMP, IPlayerItemSpawnModifier
     {
         [SerializeField] private List<float> _percentage;
+        private float _val;
 
 
         public override void Apply()
         {
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
-            var val = _percentage[tier];
-            CLog.Log($"[AltarMp_MpUponKill] Tier {tier}, mp upon kill percentage: {val*100}%");
+            _val = _percentage[tier];
+            CLog.Log($"[AltarMp_MpUponKill] Tier {tier}, mp upon kill percentage: {_val * 100}%");
         }
 
         public override string GetShortDescription()
@@ -90,7 +130,15 @@ namespace RobotCastle.Battling.Altars
         }
 
         public override string GetDetailedDescription() => _detailedDescription;
+        
+        public void OnNewItemSpawned(IItemView view)
+        {
+            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            {
+                var components = view.Transform.GetComponent<HeroComponents>();
+                components.preBattleRecurringMods.Add(new RecurringPostDamageModAddMpPercentOnKill(components, _val));
+            }
+        }
     }
-    
     
 }

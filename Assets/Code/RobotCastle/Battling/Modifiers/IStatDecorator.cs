@@ -3,7 +3,7 @@
     public interface IStatDecorator
     {
         string name { get; }
-        int priority { get; }
+        int order { get; }
         float Decorate(float val);
     }
 }

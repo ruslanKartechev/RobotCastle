@@ -8,11 +8,11 @@ namespace RobotCastle.Battling
     public class HeroController : MonoBehaviour, IHeroController
     {
         public bool IsDead { get; set; }
-        public HeroView View => _view;
+        public HeroComponents View => _view;
         public Battle Battle { get; set; }
         public int TeamNum { get; set; }
         
-        [SerializeField] private HeroView _view;
+        [SerializeField] private HeroComponents _view;
         private HeroStatsManager _stats;
         private IHeroBehaviour _currentBehaviour;
         private bool _didSetMap;

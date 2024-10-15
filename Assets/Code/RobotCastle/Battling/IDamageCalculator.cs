@@ -2,12 +2,9 @@
 {
     public interface IDamageCalculator
     {
-        DamageArgs CalculatePhysDamage();
+        HeroDamageArgs CalculatePhysDamage();
         
-        DamageArgs CalculateSpellAndPhysDamage();
+        HeroDamageArgs CalculateSpellDamage();
         
-        void AddDecorator(IDamageDecorator decorator);
-        void RemoveDecorator(IDamageDecorator decorator);
-        void ClearAllDecorators();
     }
 }

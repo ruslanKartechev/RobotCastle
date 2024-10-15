@@ -39,6 +39,13 @@ namespace RobotCastle.Battling
             }
         }
 
+        public void AddBaseAndCurrent(float added)
+        {
+            _val += added;
+            _base += added;
+            OnValueChange?.Invoke(this);
+        }
+
         public void SetBase() => Val = BaseVal;
 
         public void SetBaseAndCurrent(float val)

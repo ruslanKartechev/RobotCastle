@@ -9,13 +9,13 @@ namespace RobotCastle.Battling
         public float BaseSpellPower => _config.healAmount[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         
         public string name => "spell";
-        public int priority => 10;
+        public int order => 10;
         public float Decorate(float val)
         {
             return val + BaseSpellPower;
         }
         
-        public SpellRadianceOfLife(HeroView view, SpellConfigRadianceOfLife config)
+        public SpellRadianceOfLife(HeroComponents view, SpellConfigRadianceOfLife config)
         {
             _view = view;
             _config = config;

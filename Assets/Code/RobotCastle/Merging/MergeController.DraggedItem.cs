@@ -16,7 +16,7 @@
                 originalCellView = cell;
                 itemView = item;
                 underCell = null;
-                if(highlightUnder && item.itemData.core.type == MergeConstants.TypeUnits)
+                if(highlightUnder && item.itemData.core.type == MergeConstants.TypeHeroes)
                     rangeHighlighter = new MergeUnitRangeHighlighter(item.Transform.gameObject, grid);
             }
 

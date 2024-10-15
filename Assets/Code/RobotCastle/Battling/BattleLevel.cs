@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Bomber;
@@ -20,11 +19,6 @@ using UnityEngine.SceneManagement;
 
 namespace RobotCastle.Battling
 {
-    public interface INewRoundModifier
-    {
-        Task OnNewRoundSet(Battle battle, RoundData round);
-    }
-    
     [DefaultExecutionOrder(35)]
     public partial class BattleLevel : MonoBehaviour, IBattleStartedProcessor, IBattleEndProcessor
     {

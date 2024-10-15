@@ -59,13 +59,13 @@ namespace RobotCastle.Testing
         [ContextMenu("Spawn Chosen Hero")]
         public void SpawnChosenHero()
         {
-            var coreItem = new CoreItemData(HeroLvl, HeroID, MergeConstants.TypeUnits);
+            var coreItem = new CoreItemData(HeroLvl, HeroID, MergeConstants.TypeHeroes);
             SpawnMergeItem(coreItem, null);
         }
 
         public void SpawnChosenHero(Vector2Int cell)
         {
-            var coreItem = new CoreItemData(HeroLvl, HeroID, MergeConstants.TypeUnits);
+            var coreItem = new CoreItemData(HeroLvl, HeroID, MergeConstants.TypeHeroes);
             var view = SpawnMergeItem(coreItem, null);
             var mergeManager = ServiceLocator.Get<MergeManager>();
             

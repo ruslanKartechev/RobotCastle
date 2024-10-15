@@ -5,9 +5,9 @@ namespace RobotCastle.Battling
 {
     public class HeroDeathProcessor : IKillProcessor
     {
-        private HeroView _heroView;
+        private HeroComponents _heroView;
 
-        public HeroDeathProcessor(HeroView heroView)
+        public HeroDeathProcessor(HeroComponents heroView)
         {
             _heroView = heroView;
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RobotCastle.UI
 {
-    public class BossHealthBar : UnitUIWrapper
+    public class BossHealthBar : HeroUIWrapper
     {
         public BattleUnitUI unitUI => _ui;
         

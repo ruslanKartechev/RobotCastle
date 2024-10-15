@@ -25,7 +25,7 @@ namespace RobotCastle.Battling.Altars
         {
             var prevPoints = _points;
             _points = points;
-            CLog.Log($"== [{name}] Prev points {prevPoints}, new points: {points}");
+            // CLog.Log($"== [{name}] Prev points {prevPoints}, new points: {points}");
             if (points == 0)
             {
                 foreach (var mod in _modifiers)
@@ -34,7 +34,7 @@ namespace RobotCastle.Battling.Altars
             else
             {
                 const int max = 5;
-                var msg = $"[SetPoints] Altar: {ViewName}";
+                // var msg = $"[SetPoints] Altar: {ViewName}";
                 for (var modId = 0; modId < _modifiers.Count; modId++)
                 {
                     var pointsLeft = points - modId * max;
@@ -43,10 +43,10 @@ namespace RobotCastle.Battling.Altars
                     if(pointsLeft < 0)
                         pointsLeft = 0;
                     var mod = _modifiers[modId];
-                    msg += $"\nMod_{modId + 1}, tier_{pointsLeft}";
+                    // msg += $"\nMod_{modId + 1}, tier_{pointsLeft}";
                     mod.SetTier(pointsLeft);
                 }
-                CLog.Log(msg);
+                // CLog.Log(msg);
             }
             RaisePointsUpdated(prevPoints, points);
         }

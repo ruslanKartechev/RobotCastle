@@ -9,17 +9,16 @@ namespace RobotCastle.Battling
     public class CrescentSlashView : MonoBehaviour
     {
         private const float cellRadius = 1f;
+        
         [SerializeField] private List<ParticleSystem> _particles;
         private IMap _map;
         private float _speed;
-        private float _damage;
         
         
-        public void Launch(int level, CellsMask cellMask, float damage, float speed, 
+        public void Launch(int level, CellsMask cellMask, float speed, 
             List<IHeroController> enemies, IDamageSource damageSource)
         {
             _map = ServiceLocator.Get<IMap>();
-            _damage = damage;
             _speed = speed;
             gameObject.SetActive(true);
             for (var i = 0; i < _particles.Count; i++)
@@ -50,6 +49,8 @@ namespace RobotCastle.Battling
             var cells = new List<Vector2Int>(5);
             var distances = new List<float>(5);
             var alreadyDamaged = new List<IDamageReceiver>(10);
+            var damageArgs = damageSource.CalculateSpellDamage();
+
             for (var i = 0; i < SpellCrescentSlash.MaxDistance; i++)
             {
                 cell += cellDir;
@@ -59,7 +60,6 @@ namespace RobotCastle.Battling
                 cells.Add(cell);
                 distances.Add(i + 1);
             }
-            var damageArgs = new DamageArgs(0, _damage, damageSource);
             var pos = transform.position;
             var doMove = true;
             var totalDistance = 0f;
@@ -102,6 +102,7 @@ namespace RobotCastle.Battling
                     }
                 }
             }
+            
         }
         
     }

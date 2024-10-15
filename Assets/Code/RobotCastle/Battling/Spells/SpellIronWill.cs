@@ -9,13 +9,13 @@ namespace RobotCastle.Battling
         public float BaseSpellPower => _config.spellResist[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         
         public string name => "spell";
-        public int priority => 10;
+        public int order => 10;
         public float Decorate(float val)
         {
             return val + BaseSpellPower;
         }
         
-        public SpellIronWill(HeroView view, SpellConfigIronWill config)
+        public SpellIronWill(HeroComponents view, SpellConfigIronWill config)
         {
             _view = view;
             _config = config;
@@ -24,28 +24,31 @@ namespace RobotCastle.Battling
             _view.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
             _view.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(_view);
             _view.stats.SpellPower.AddPermanentDecorator(this);
+            _modShield = new DamageTakeModShield(0f, view);
         }
         
         public void Stop()
         {
             _isActive = false;
         }
-        
+
         public void OnFullMana(GameObject heroGo)
         {
             CLog.LogGreen($"[{_view.gameObject.name}] [{nameof(SpellIronWill)}] Adding shield bonus");
             _view.processes.Add(this);
             _view.stats.ManaCurrent.Val = 0;
-            _view.stats.Shield = _view.stats.SpellPower.Get();
-            _view.heroUI.ShieldBar.TrackUntilZero(_view.stats);
+            _modShield.AddToHero(_view.stats.SpellPower.Get());
+            _view.heroUI.ShieldBar.TrackUntilZero(_modShield);
             var fx = GetFxView();
             fx.Show(_view.transform);
         }
         
         private SpellConfigIronWill _config;
-        private ConditionedManaAdder _manaAdder;
         private CancellationTokenSource _token;
         private SpellParticlesOnHero _fxView;
+        private DamageTakeModShield _modShield;
+        private ConditionedManaAdder _manaAdder;
+
 
         private SpellParticlesOnHero GetFxView()
         {
@@ -56,18 +59,6 @@ namespace RobotCastle.Battling
             return instance;
         }
 
-
-        
-        private void OnAfterDamage()
-        {
-            if (!_isActive) return;
-            CLog.LogGreen($"[{nameof(SpellIronWill)}] Reverting defence bonus");
-            _view.healthManager.OnAfterDamage -= OnAfterDamage;
-            _view.stats.PhysicalResist.SetBase();
-            _view.stats.MagicalResist.SetBase();
-            _isActive = false;
-            _view.processes.Remove(this);
-        }
         
     }
 }

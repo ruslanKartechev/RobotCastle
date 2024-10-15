@@ -54,7 +54,7 @@ namespace RobotCastle.UI
             gameObject.SetActive(true);
         }
         
-        public void AssignStatsTracking(HeroView view)
+        public void AssignStatsTracking(HeroComponents view)
         {
             _healthUI.AssignStats(view.stats.HealthCurrent, view.stats.HealthMax);
             if(view.stats.ManaMax.Get() > 0)
@@ -63,7 +63,7 @@ namespace RobotCastle.UI
                 _manaUI.SetVal(0f);
         }
 
-        public void UpdateStatsView(HeroView view)
+        public void UpdateStatsView(HeroComponents view)
         {
             _healthUI.DisplayStats(view.stats.HealthCurrent, view.stats.HealthMax);
             if(view.stats.ManaMax.Get() > 0)

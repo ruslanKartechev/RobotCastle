@@ -12,11 +12,11 @@
         }
         
         
-        private HeroView _heroView;
+        private HeroComponents _heroView;
         private HeroStatsManager _stats;
         private bool _canAdd = true;
 
-        public ConditionedManaAdder(HeroView heroView)
+        public ConditionedManaAdder(HeroComponents heroView)
         {
             _heroView = heroView;
             _stats = _heroView.stats;

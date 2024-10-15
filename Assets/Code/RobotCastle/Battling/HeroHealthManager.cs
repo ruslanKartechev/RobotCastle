@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.UI;
 using SleepDev;
@@ -6,99 +6,68 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class HeroHealthManager : IHeroHealthManager, IHeroDamageReceiver
+    public class HeroHealthManager : IHeroHealthManager, IDamageReceiver
     {
-        
-        public bool LogDamage { get; set; }
-        
-        public event Action OnAfterDamage;
-        public event Action OnDamagePreApplied;
-        public event Action OnDamageAttempted;
-        
-        public GameObject GetGameObject() => _view.gameObject;
-
-        public HeroHealthManager(HeroView heroView)
+        public HeroHealthManager(HeroComponents heroComponents)
         {
-            _view = heroView;
+            _components = heroComponents;
         }
         
-        private HeroView _view;
-        private bool _isDamageable = true;
+        public GameObject GetGameObject() => _components.gameObject;
         
-        public DamageArgs TakeDamage(DamageArgs args)
+        public DamageReceivedArgs TakeDamage(HeroDamageArgs args)
         {
-            OnDamageAttempted?.Invoke();
             if (!_isDamageable)
                 return default;
-            OnDamagePreApplied?.Invoke();
-            var stats = _view.stats;
-            var physDam = HeroesManager.ReduceDamageByDef(args.physDamage, stats.PhysicalResist.Val);
-            var spDam = HeroesManager.ReduceDamageByDef(args.magicDamage, stats.MagicalResist.Val);
-            if (LogDamage)
+            var stats = _components.stats;
+            var DEF = 0f;
+            switch (args.type)
             {
-                CLog.Log($"[{_view.gameObject.name}] Took Damage {physDam}, {spDam}. " +
-                         $"Defence: {HeroesManager.GetDef(stats.PhysicalResist.Val)}, {HeroesManager.GetDef(stats.MagicalResist.Val)}");
+                case EDamageType.Magical:
+                    DEF = stats.PhysicalResist.Val;
+                    break;
+                case EDamageType.Physical:
+                    DEF = stats.MagicalResist.Val;
+                    break;
             }
-            var shield = stats.Shield;
-            var health = stats.HealthCurrent.Get();
-            var didDamageShield = false;
-            if(physDam > 0)
-            {
-                var startHealth = health;
-                if (stats.Shield > 0)
-                {
-                    shield -= physDam;
-                    didDamageShield = true;
-                    if (shield < 0)
-                    {
-                        shield = 0;
-                        health += shield; // left over damage (negative value)
-                    }
-                }
-                else
-                    health -= physDam;
+            args.amount = HeroesManager.ReduceDamageByDef(args.amount, DEF);
 
-                physDam = (startHealth - health);
-                ServiceLocator.Get<IDamageDisplay>().ShowAtScreenPos((int)physDam, EDamageType.Physical, _view.heroUI.DamagePoint.position);
-            }
-            
-            if(spDam > 0)
+            foreach (var mod in _modifiers)
             {
-                var startHealth = health;
-                if (stats.Shield > 0)
-                {
-                    shield -= spDam;
-                    didDamageShield = true;
-                    if (shield < 0)
-                    {
-                        shield = 0;
-                        health += shield; // left over damage
-                    }
-                }
-                else
-                    health -= spDam;
-                spDam = (startHealth - health);
-                ServiceLocator.Get<IDamageDisplay>().ShowAtScreenPos((int)spDam, EDamageType.Magical, _view.heroUI.DamagePoint.position);
+                args = mod.Apply(args);
+                if (args.amount <= 0)
+                    break;
+            }
+
+            foreach (var mod in _deleteQueue)
+                _modifiers.Remove(mod);
+            _deleteQueue.Clear();
+            
+            var damageAmount = args.amount;
+            var health = stats.HealthCurrent.Get();
+
+            if (damageAmount > 0)
+            {
+                ServiceLocator.Get<IDamageDisplay>().ShowAtScreenPos((int)damageAmount, args.type, _components.heroUI.DamagePoint.position);
+                health -= damageAmount;
+                if (health < 0) 
+                    health = 0;
             }
             
-            if(didDamageShield)
-                stats.Shield = shield;
-            if (health < 0)
-                health = 0;
             stats.HealthCurrent.Val = health;
-            
-            if(_view.Flicker != null)
-                _view.Flicker.Flick();
-            // CLog.Log($"[{_view.gameObject.name}] Damaged. Phys: {args.physDamage}. Magic: {args.magicDamage}");
             if (health <= 0)
             {
-                if(_view.killProcessor != null)
-                    _view.killProcessor.OnKilled();
+                if(_components.killProcessor != null)
+                    _components.killProcessor.OnKilled();
                 else
-                    CLog.LogRed($"[{nameof(HeroHealthManager)}] IKillProcessor is null {_view.name}");
+                    CLog.LogRed($"[{nameof(HeroHealthManager)}] IKillProcessor is null {_components.name}");
             }
-            OnAfterDamage?.Invoke();
-            return new DamageArgs(physDam, spDam, default);
+            else
+            {
+                if(_components.Flicker != null)
+                    _components.Flicker.Flick();
+            }
+            return new DamageReceivedArgs(damageAmount, health <= 0);
         }
 
 
@@ -106,6 +75,33 @@ namespace RobotCastle.Battling
         {
             _isDamageable = damageable;
         }
+
+        public void AddModifier(IDamageTakenModifiers mod)
+        {
+            if (_modifiers.Contains(mod) == false)
+            {
+                _modifiers.Add(mod);
+                _modifiers.Sort((a, b) => a.priority.CompareTo(b.priority));
+            }
+        }
+
+        public void RemoveModifier(IDamageTakenModifiers mod)
+        {
+            _deleteQueue.Add(mod);   
+        }
+
+        public void ClearAllModifiers()
+        {
+            // for (var i = _modifiers.Count - 1; i >= 0; i++)
+                    // _modifiers.RemoveAt(i);
+            _modifiers.Clear();
+            _deleteQueue.Clear();
+        }
+        
+        private bool _isDamageable = true;
+        private HeroComponents _components;
+        private List<IDamageTakenModifiers> _modifiers = new (10);
+        private List<IDamageTakenModifiers> _deleteQueue = new (5);
 
     }
 }

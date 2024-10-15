@@ -28,10 +28,10 @@ namespace RobotCastle.Battling
 
         public override void AddTo(GameObject target)
         {
-            AddToHero(target.GetComponent<HeroView>());
+            AddToHero(target.GetComponent<HeroComponents>());
         }
         
-        public override void AddToHero(HeroView view)
+        public override void AddToHero(HeroComponents view)
         {
             var stats = view.stats;
             switch (_statType)

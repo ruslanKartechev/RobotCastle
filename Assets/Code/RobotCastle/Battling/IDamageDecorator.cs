@@ -1,8 +1,14 @@
 ﻿namespace RobotCastle.Battling
 {
-    public interface IDamageDecorator
+
+    public interface IDamageCalculationModifier
     {
-        string id { get; }
-        DamageArgs Apply(DamageArgs damageArgs);
+        int order { get; }
+        HeroDamageArgs Apply(HeroDamageArgs damageArgs);
+    }
+
+    public interface IPostDamageModifier
+    {
+        void Apply(DamageReceivedArgs receivedArgs);
     }
 }

@@ -26,7 +26,7 @@ namespace RobotCastle.Merging
                 case MergeConstants.TypeWeapons:
                     prefab = db.viewDb.GetMergePrefabAtLevel(itemData.core.id, itemData.core.level);
                     break;
-                case MergeConstants.TypeUnits:
+                case MergeConstants.TypeHeroes:
                     prefab = db.viewDb.GetMergePrefab(itemData.core.id);
                     break;
                 default:
@@ -56,7 +56,7 @@ namespace RobotCastle.Merging
                     case MergeConstants.TypeWeapons:
                         prefab = db.viewDb.GetMergePrefabAtLevel(itemData.id, itemData.level);
                         break;
-                    case MergeConstants.TypeUnits:
+                    case MergeConstants.TypeHeroes:
                         prefab = db.viewDb.GetMergePrefab(itemData.id);
                         break;
                     default:
