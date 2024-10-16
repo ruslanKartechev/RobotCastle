@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4560926120565050433}
     m_Modifications:
+    - target: {fileID: -7616709728048089365, guid: b2fd77fa442ce07469776b88155d0e18, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 929beac485f8003489b024060ce5cd9b, type: 2}
     - target: {fileID: 1387269260332207979, guid: b2fd77fa442ce07469776b88155d0e18, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.85
@@ -227,6 +231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58110171326f4872acbf1725c3caba12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _doOverrideAnimations: 0
+  _overrideControllers: []
 --- !u!4 &4560926120565050433 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5789542847351762091, guid: e1e749cd7eaa3174e961982fd199008e, type: 3}
