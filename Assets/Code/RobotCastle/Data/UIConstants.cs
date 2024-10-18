@@ -18,6 +18,7 @@
         public const string UISummonCard = "ui_summon_cards";
         public const string UISettings = "ui_settings";
         public const string UIAltars = "ui_altars";
+        public const string UIShop = "ui_shop";
         
 
         public const string DescriptionItemShort = "ui_item_description_short";

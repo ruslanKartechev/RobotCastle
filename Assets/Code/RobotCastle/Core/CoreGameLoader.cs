@@ -1,7 +1,9 @@
 ﻿using System.Collections;
+using MadPixel.InApps;
 using MAXHelper;
 using RobotCastle.MainMenu;
 using RobotCastle.Saving;
+using RobotCastle.Shop;
 using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
@@ -17,6 +19,9 @@ namespace RobotCastle.Core
         [SerializeField] private bool _initSdk = true;
         [SerializeField] private DataInitializer _dataInitializer;
         [SerializeField] private GameInput _gameInput;
+        [Header("In app data")]
+        [SerializeField] private bool _logSkus;
+        [SerializeField] private InAppsSKUDataBase _inAppsData;
         [Header("Ads")]
         [SerializeField] private AdsPlayer.AdPlayMode _adPlayMode;
         [SerializeField] private float _intersReloadtime = 30f;
@@ -69,6 +74,8 @@ namespace RobotCastle.Core
             ServiceLocator.Bind<CastleXpManager>(CastleXpManager.Create());
             ServiceLocator.Bind<PlayerEnergyManager>(PlayerEnergyManager.Create());
             
+            _inAppsData.Init();
+            ServiceLocator.Bind<InAppsSKUDataBase>(_inAppsData);
             
             if(_initSdk)
                 InitSdk();
@@ -96,6 +103,23 @@ namespace RobotCastle.Core
             var analytics = go.transform.GetChild(1).GetComponent<MadPixelAnalytics.AnalyticsManager>();
             analytics.Init();
             analytics.SubscribeToAdsManager();
+            
+            var purchaser = go.transform.GetComponentInChildren<MobileInAppPurchaser>();
+            if (purchaser == null)
+            {
+                CLog.LogRed($"IN APP PURCHASER IS NULL!");
+                yield break;
+            }
+            
+            if (_logSkus)
+            {
+                foreach (var ss in _inAppsData.consumables)
+                    CLog.Log($"Consumable: {ss}");    
+                foreach (var ss in _inAppsData.nonConsumables)
+                    CLog.Log($"NonConsumable: {ss}");    
+            }
+            // purchaser.OnPurchaseResult += OnPurchaseResult;
+            purchaser.Init(_inAppsData.nonConsumables, _inAppsData.consumables);
         }
         
     }

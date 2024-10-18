@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Merging;
+using RobotCastle.Shop;
 using SleepDev;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -27,6 +28,7 @@ namespace RobotCastle.Saving
                 saver.Delete<SavePlayerHeroes>();
             }
             saver.LoadSave<SavePlayerData>(new SavePlayerData(_initialSaves.PlayerData));
+            saver.LoadSave<ShopSaveData>(new ShopSaveData());
             var heroes = saver.LoadSave<SavePlayerHeroes>(new SavePlayerHeroes(_initialSaves.PlayerHeroes));
             heroes.Init();
             if (_useCheat)

@@ -7,9 +7,9 @@ namespace RobotCastle.UI
 {
     public class MyButton : MonoBehaviour, IButtonInput
     {
-        [SerializeField] private Button _btn;
-        [SerializeField] private bool _doRespond;
-        private readonly List<Action> _callbacks = new List<Action>(5);
+        [SerializeField] protected Button _btn;
+        [SerializeField] protected bool _doRespond;
+        protected readonly List<Action> _callbacks = new List<Action>(5);
 
         private  void OnEnable()
         {

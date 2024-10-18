@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.Shop;
 using RobotCastle.UI;
 using UnityEngine;
 
@@ -105,6 +106,8 @@ namespace RobotCastle.MainMenu
         {
             ServiceLocator.Get<TabsHighlighterUI>().HighlightTab(MenuTabType.Shop);
             var ui = ServiceLocator.Get<IUIManager>();
+            var shop = ui.Show<ShopUI>(UIConstants.UIShop, () => {});
+            shop.Show();
         }
 
         private void ShowHeroView()
@@ -131,6 +134,9 @@ namespace RobotCastle.MainMenu
         
         private void CloseShop()
         {
+            var ui = ServiceLocator.Get<IUIManager>();
+            var shop = ui.Show<ShopUI>(UIConstants.UIShop, () => {});
+            shop.Hide();
         }
 
         private void CloseHeroView()

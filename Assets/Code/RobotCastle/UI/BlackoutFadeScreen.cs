@@ -13,8 +13,10 @@ namespace RobotCastle.UI
         
         [SerializeField] private float _durationIn = .3f;
         [SerializeField] private float _durationOut = .21f;
+        [SerializeField] private float _maxAlpha = 1f;
 
         [SerializeField] private Image _image;
+        [SerializeField] private GameObject _goToDisable;
         private Coroutine _working;
 
 
@@ -67,17 +69,19 @@ namespace RobotCastle.UI
         private IEnumerator FadingIn()
         {
             _image.enabled = true;
-            _image.SetAlpha(1f);
-            yield return AlphaChange(1f, 0f, _durationIn);
+            _image.SetAlpha(_maxAlpha);
+            yield return AlphaChange(_maxAlpha, 0f, _durationIn);
             _image.enabled = false;
         }
 
         private IEnumerator FadingOut()
         {
             _image.enabled = true;
-            yield return AlphaChange(0f, 1f, _durationOut);
-            ServiceLocator.Get<IUIManager>().OnClosed(Id);            
-            transform.parent.gameObject.SetActive(false);
+            yield return AlphaChange(0f, _maxAlpha, _durationOut);
+            ServiceLocator.Get<IUIManager>().OnClosed(Id);
+            if (_goToDisable == null)
+                _goToDisable = transform.parent.gameObject;
+            _goToDisable.gameObject.SetActive(false);
         }
         
         private IEnumerator AlphaChange(float from, float to, float time)

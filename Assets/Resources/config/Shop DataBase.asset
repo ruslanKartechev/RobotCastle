@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2933e3efe902462889703ffb46322f04, type: 3}
+  m_Name: Shop DataBase
+  m_EditorClassIdentifier: 
+  dataBaseEDITOR:
+    dailyOffers:
+    - cost: 1
+      currency: 3
+      itemData:
+        level: 5
+        id: book
+        type: bonus
+      isAvailable: 1
+      isTimed: 0
+    - cost: 100
+      currency: 0
+      itemData:
+        level: 5
+        id: shelda
+        type: unit
+      isAvailable: 1
+      isTimed: 0
+    - cost: 180
+      currency: 0
+      itemData:
+        level: 10
+        id: aramis
+        type: unit
+      isAvailable: 1
+      isTimed: 0
+    resources: []
+    otherOffers: []
