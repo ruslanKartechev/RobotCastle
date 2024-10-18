@@ -167,7 +167,7 @@ namespace RobotCastle.Battling
         private void SetStartData()
         {
             CLog.Log($"[{nameof(BattleLevel)}] Start money: {_startData.StartMoney}. Start items: {_startData.StartItems.Count}");
-            ServiceLocator.Get<GameMoney>().levelMoney = _startData.StartMoney;
+            ServiceLocator.Get<GameMoney>().levelMoney.SetValue(_startData.StartMoney);
             foreach (var item in _startData.StartItems)
             {
                 _mergeManager.SpawnNewMergeItem(new SpawnMergeItemArgs(item));
@@ -182,10 +182,8 @@ namespace RobotCastle.Battling
             damageUI.gameObject.SetActive(true);
             
             _mainUI = uiManager.Show<BattleMergeUI>(UIConstants.UIBattleMerge, () => { });
-            _mainUI.BtnPurchaseHero.AddMainCallback(BuyNewItem);
             _mainUI.BtnStart.AddMainCallback(StartBattle);
             _mainUI.BtnStart2.AddMainCallback(StartBattle);
-            _mainUI.TroopSizePurchaseUI.Init(_troopSizeManager);
             _mainUI.TroopSizePurchaseUI.SetInteractable(true);
             _mainUI.Init(_battleManager.battle, _chapter);
             InitCurrentRound();
@@ -284,10 +282,6 @@ namespace RobotCastle.Battling
             _battleManager.BeginBattle();
         }
 
-        private void BuyNewItem()
-        {
-            _playerMergeFactory.TryPurchaseItem();
-        }
 
         private async Task BattleRoundCompletion(Battle battle, CancellationToken token)
         {
@@ -392,14 +386,8 @@ namespace RobotCastle.Battling
             _battleCamera.AllowPlayerInput(true);
         }
 
-        private void AllowPlayerUIInput(bool allow)
-        {
-            _mainUI.BtnPurchaseHero.SetInteractable(allow);
-            _mainUI.BtnStart.SetInteractable(allow);
-            _mainUI.BtnStart2.SetInteractable(allow);
-            _mainUI.TroopSizePurchaseUI.SetInteractable(allow);
-        }
-        
+        private void AllowPlayerUIInput(bool allow) => _mainUI.AllowButtonsInput(allow);
+
         private void ShowFailedScreen()
         {
             _mergeManager.AllowInput(false);
@@ -463,7 +451,8 @@ namespace RobotCastle.Battling
                 heroesSaves.GetSave(id).xp += addedHeroesXp;
 
             var gm = ServiceLocator.Get<GameMoney>();
-            gm.globalMoney += goldReward;
+            gm.globalMoney.AddValue(goldReward);
+            
             var newPlayerXp = ServiceLocator.Get<CastleXpManager>().AddXp(xpReward);
             
             var rewardsList = new List<CoreItemData>(5);

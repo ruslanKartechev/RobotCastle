@@ -9,6 +9,7 @@ namespace RobotCastle.Battling
     {
         [SerializeField] private List<ModifierProvider> _modifiers;
         [SerializeField] private List<ModifierProvider> _spells;
+        
         private readonly Dictionary<string, ModifierProvider> _map = new(100);
    
         public void Load()

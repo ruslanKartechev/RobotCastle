@@ -63,7 +63,7 @@ namespace RobotCastle.Merging
             if (_refundMode)
             {
                 CLog.LogRed($"Refunded money =========");
-                ServiceLocator.Get<GameMoney>().AddMoney(HeroesConstants.HeroRefundMoney);
+                ServiceLocator.Get<GameMoney>().levelMoney.AddValue(HeroesConstants.HeroRefundMoney);
                 _mergeController.DropAndHideCurrent();
                 _battleUI.ReturnItemButton.Hide();
                 _refundMode = false;

@@ -2,6 +2,7 @@
 using RobotCastle.Data;
 using RobotCastle.Saving;
 using SleepDev;
+using SleepDev.Data;
 
 namespace RobotCastle.MainMenu
 {
@@ -23,8 +24,8 @@ namespace RobotCastle.MainMenu
             return me;
         }
         
-        public event MoneyUpdateDelegate OnXpSet;
-        public event MoneyUpdateDelegate OnLevelSet;
+        public event UpdateDelegate<int> OnXpSet;
+        public event UpdateDelegate<int> OnLevelSet;
 
 
         private SavePlayerData _playerData;
@@ -32,10 +33,7 @@ namespace RobotCastle.MainMenu
         
         public int GetLevel() => _playerData.playerLevel;
 
-        public int GetXp()
-        {
-            return _playerData.playerXp;
-        }
+        public int GetXp() => _playerData.playerXp;
 
         public int GetMaxXp()
         {

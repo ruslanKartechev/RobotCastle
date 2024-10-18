@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace RobotCastle.UI
@@ -9,7 +10,6 @@ namespace RobotCastle.UI
     {
         [SerializeField] private float _clickMaxDelay = .1f;
         [SerializeField] private Transform _parent;
-        [SerializeField] private GraphicRaycaster _raycaster;
         private Dictionary<string, DescriptionUI> _spawned = new (5);
         private DescriptionUI _currentDescription;
         private IItemDescriptionProvider _provider;
@@ -41,14 +41,9 @@ namespace RobotCastle.UI
         {
             if (Time.time - _clickTime < _clickMaxDelay)
             {
-                if (TryRaycastWorld(screenPos))
-                {
-                    return;
-                }
                 if (TryRaycastUI())
-                {
                     return;
-                }
+                TryRaycastWorld(screenPos);
             }
         }
         
@@ -83,7 +78,28 @@ namespace RobotCastle.UI
 
         private bool TryRaycastUI()
         {
-            
+            var casters = gameObject.GetComponentsInChildren<GraphicRaycaster>();
+            for (var k = casters.Length - 1; k >= 0; k--)
+            {
+                var raycaster = casters[k];
+                var pointerData = new PointerEventData(EventSystem.current);
+                pointerData.position = Input.mousePosition;
+                var hits = new List<RaycastResult>();
+                raycaster.Raycast(pointerData, hits);
+                if (hits.Count == 0)
+                    continue;
+                for (var i = 0; i < hits.Count; i++)
+                {
+                    var hit = hits[i];
+                    if (hit.gameObject.gameObject.TryGetComponent<IItemDescriptionProvider>(out var provider))
+                    {
+                        _provider = provider;
+                        _currentDescription = GetUIForType(provider.GetIdForUI());
+                        _currentDescription.Show(provider.GetGameObject());
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 

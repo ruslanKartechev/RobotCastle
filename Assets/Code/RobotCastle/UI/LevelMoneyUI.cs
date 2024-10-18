@@ -1,15 +1,14 @@
 ﻿using DG.Tweening;
-using RobotCastle.Battling;
 using RobotCastle.Core;
-using RobotCastle.Merging;
 using SleepDev;
+using SleepDev.UIElements;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RobotCastle.UI
 {
-    public class LevelMoneyUI : MonoBehaviour
+    public class LevelMoneyUI : MoneyToBuyUI
     {
         [System.Serializable]
         private class AddedMoneyAnimator
@@ -42,30 +41,19 @@ namespace RobotCastle.UI
 
         [SerializeField] private float _splashTime = .15f;
         [SerializeField] private float _splashAlphaMax = .5f;
-        [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _fadeImage;
         [SerializeField] private AddedMoneyAnimator _addedMoneyAnimator;
 
-        public void DoReact(bool react)
+        protected override void OnUpdated(int newVal, int prevVal)
         {
-            var gm = ServiceLocator.Get<GameMoney>();
-            if (react)
+            base.OnUpdated(newVal, prevVal);
+            if (newVal > prevVal)
             {
-                gm.OnMoneySet += UpdateValue;
-                _text.text = $"{gm.levelMoney}";
+                AddMoney(newVal, prevVal);
+                _fadeImage.DOKill();
+                _fadeImage.SetAlpha(_splashAlphaMax);
+                _fadeImage.DOFade(0f, _splashTime);
             }
-            else
-            {
-                gm.OnMoneySet -= UpdateValue;
-            }
-        }
-        
-        public void UpdateValue(int newVal, int prevVal)
-        {
-            _fadeImage.DOKill();
-            _fadeImage.SetAlpha(_splashAlphaMax);
-            _fadeImage.DOFade(0f, _splashTime);
-            _text.text = newVal.ToString();
         }
 
         public void AddMoney(int newVal, int added)
@@ -73,25 +61,5 @@ namespace RobotCastle.UI
             _addedMoneyAnimator.Animate(added);
         }
 
-        private void OnEnable()
-        {
-            if (ServiceLocator.GetIfContains<GameMoney>(out var gm))
-            {
-                gm.OnMoneySet += UpdateValue;
-                gm.OnMoneyAdded += AddMoney;
-                _text.text = $"{gm.levelMoney}";
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (ServiceLocator.GetIfContains<GameMoney>(out var gm))
-            {
-                gm.OnMoneySet -= UpdateValue;
-                gm.OnMoneyAdded -= AddMoney;        
-            }
-        }
-
-     
     }
 }

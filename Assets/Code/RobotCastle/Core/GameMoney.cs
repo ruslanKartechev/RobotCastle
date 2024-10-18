@@ -1,11 +1,10 @@
 ﻿using RobotCastle.Saving;
 using SleepDev;
+using SleepDev.Data;
 using UnityEngine;
 
 namespace RobotCastle.Core
 {
-    public delegate void MoneyUpdateDelegate(int newVal , int prevVal);
-    
     public class GameMoney : MonoBehaviour
     {
         public static GameMoney Create()
@@ -17,104 +16,43 @@ namespace RobotCastle.Core
             if (me._playerData == null)
             {
                 CLog.LogRed("ERROR player data is null ------------");
+                me.levelMoney = new ReactiveInt();
+                me.globalMoney = new ReactiveInt();
+                me.globalHardMoney = new ReactiveInt();
+                return me;
             }
+            else
+            {
+                me.levelMoney = new ReactiveInt(me._playerData.levelMoney);
+                me.globalMoney = new ReactiveInt(me._playerData.globalMoney);
+                me.globalHardMoney = new ReactiveInt(me._playerData.globalHardMoney);
+            }
+            
             return me;
         }
-        
-        /// <summary>
-        /// Passes (newVal, previousValue)
-        /// </summary>
-        public event MoneyUpdateDelegate OnMoneySet;
-        /// <summary>
-        /// Passes (newVal, addedValue)
-        /// </summary>
-        public event MoneyUpdateDelegate OnMoneyAdded;
-        
-        /// <summary>
-        /// Passes (newVal, previousValue)
-        /// </summary>
-        public event MoneyUpdateDelegate OnGlobalMoneySet;
-        /// <summary>
-        /// Passes (newVal, addedValue)
-        /// </summary>
-        public event MoneyUpdateDelegate OnGlobalMoneyAdded;
-        
-        /// <summary>
-        /// Passes (newVal, previousValue)
-        /// </summary>
-        public event MoneyUpdateDelegate OnGlobalHardMoneySet;
-        /// <summary>
-        /// Passes (newVal, addedValue)
-        /// </summary>
-        public event MoneyUpdateDelegate OnGlobalHardMoneyAdded;
 
-        public int levelMoney
+        public ReactiveInt levelMoney;
+        
+        public ReactiveInt globalMoney;
+        
+        public ReactiveInt globalHardMoney;
+
+        public void SyncSaves()
         {
-            get => _playerData.levelMoney;
-            set
-            {
-                var prev = _playerData.levelMoney;
-                _playerData.levelMoney = value;
-                OnMoneySet?.Invoke(value, prev);
-            }
+            _playerData.levelMoney = levelMoney.Val;
+            _playerData.globalMoney = globalMoney.Val;
+            _playerData.globalHardMoney = globalHardMoney.Val;
         }
         
-        public int globalMoney
-        {
-            get => _playerData.globalMoney;
-            set
-            {
-                var prev = _playerData.globalMoney;
-                _playerData.globalMoney = value;
-                OnGlobalMoneySet?.Invoke(value, prev);
-            }
-        }
-
-        public int globalHardMoney
-        {
-            get => _playerData.globalHardMoney;
-            set
-            {
-                var prev = _playerData.globalHardMoney;
-                _playerData.globalHardMoney = value;
-                OnGlobalHardMoneySet?.Invoke(value, prev);
-            }
-        }
+        public SavePlayerData playerData => _playerData;
         
-        public SavePlayerData PlayerData
-        {
-            get => _playerData;
-            set => _playerData = value;
-        }
-
         private SavePlayerData _playerData;
 
-        public int AddMoney(int added)
-        {
-            var prev = _playerData.levelMoney;
-            _playerData.levelMoney += added;
-            OnMoneyAdded?.Invoke(_playerData.levelMoney, added);
-            OnMoneySet?.Invoke(_playerData.levelMoney, prev);
-            return _playerData.levelMoney;
-        }
+        public int AddMoney(int added) => levelMoney.AddValue(added);
+ 
+        public int AddGlobalMoney(int added) => globalMoney.AddValue(added);
         
-        public int AddGlobalMoney(int added)
-        {
-            var prev = _playerData.globalMoney;
-            _playerData.globalMoney += added;
-            OnGlobalMoneyAdded?.Invoke(_playerData.globalMoney, added);
-            OnGlobalMoneySet?.Invoke(_playerData.globalMoney, prev);
-            return _playerData.globalMoney;
-        }
-
-        public int AddGlobalHardMoney(int added)
-        {
-            var prev = _playerData.globalHardMoney;
-            _playerData.globalHardMoney += added;
-            OnGlobalHardMoneyAdded?.Invoke(_playerData.globalHardMoney, added);
-            OnGlobalHardMoneySet?.Invoke(_playerData.globalHardMoney, prev);
-            return _playerData.globalHardMoney;
-        }
+        public int AddGlobalHardMoney(int added) => globalHardMoney.AddValue(added);
     }
     
 }

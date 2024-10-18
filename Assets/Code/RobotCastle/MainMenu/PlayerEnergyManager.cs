@@ -1,6 +1,7 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Saving;
 using SleepDev;
+using SleepDev.Data;
 
 namespace RobotCastle.MainMenu
 {
@@ -20,7 +21,7 @@ namespace RobotCastle.MainMenu
         /// <summary>
         /// Passes current and max
         /// </summary>
-        public event MoneyUpdateDelegate OnEnergySet;
+        public event UpdateDelegate<int> OnEnergySet;
         
         private SavePlayerData _playerData;
         
@@ -34,10 +35,10 @@ namespace RobotCastle.MainMenu
             return _playerData.playerEnergyMax;
         }
 
-        public void Set(int val)
+        public void Set(int energy)
         {
-            _playerData.playerEnergy = val;
-            OnEnergySet?.Invoke(val, GetMax());
+            _playerData.playerEnergy = energy;
+            OnEnergySet?.Invoke(energy, GetMax());
         }
         
         private PlayerEnergyManager(){}

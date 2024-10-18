@@ -3,6 +3,7 @@ using Bomber;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Saving;
+using SleepDev.Data;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -194,13 +195,13 @@ namespace RobotCastle.Battling
             if(heroSave.xpForNext > heroSave.xp)
                 return 1;
             var gm = ServiceLocator.Get<GameMoney>();
-            var money = gm.globalMoney;
+            var money = gm.globalMoney.Val;
             var db = ServiceLocator.Get<XpDatabase>();
             var cost = db.heroesUpgradeCosts[heroSave.level];
             if (cost > money)
                 return 2;
             money -= cost;
-            gm.globalMoney = money;
+            gm.globalMoney.UpdateWithContext(money, (int)EMoneyChangeContext.AfterPurchase);
             heroSave.xp -= heroSave.xpForNext;
             heroSave.level++;
             if (heroSave.level < MaxHeroLevel)

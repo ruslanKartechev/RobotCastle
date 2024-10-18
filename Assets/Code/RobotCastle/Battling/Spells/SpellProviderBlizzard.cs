@@ -22,12 +22,21 @@ namespace RobotCastle.Battling
         public override string GetDescription(GameObject target)
         {
             var str = base.GetDescription(target);
-            var stats = target.GetComponent<HeroStatsManager>();
-            var lvl = stats.MergeTier;
-            str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
-            str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
-
+            var lvl = 0;
+            if (target != null)
+            {
+                var stats = target.GetComponent<HeroStatsManager>();
+                lvl = stats.MergeTier;
+                str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
+                str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
+            }
+            else
+            {
+                str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
+                str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{_config.spellDamage[lvl]}</color>");
+            }
             return str;
         }
+
     }
 }

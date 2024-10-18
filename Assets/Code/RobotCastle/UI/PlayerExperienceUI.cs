@@ -14,6 +14,7 @@ namespace RobotCastle.UI
             _lvlText.text = (level + 1).ToString();
             _fillImage.fillAmount = progress;
         }
+        
     }
 
 }

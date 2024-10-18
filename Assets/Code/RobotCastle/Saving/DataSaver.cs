@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using RobotCastle.Core;
 using UnityEngine;
 
 namespace RobotCastle.Saving
@@ -29,6 +30,10 @@ namespace RobotCastle.Saving
 	    
         public void SaveAll()
         {
+            if (ServiceLocator.GetIfContains<GameMoney>(out var gm))
+            {
+                gm.SyncSaves();
+            }
             foreach (var (type, obj) in _loadedData)
             {
                 var typeName = type.ToString();

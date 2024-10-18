@@ -122,7 +122,7 @@ namespace RobotCastle.UI
 
         private void SetAppropriateMode()
         {
-            var money = ServiceLocator.Get<GameMoney>().globalMoney;
+            var money = ServiceLocator.Get<GameMoney>().globalMoney.Val;
             var canUpgr = HeroesManager.CanUpgrade(_heroSave, money, out var cost);
             switch (canUpgr)
             {

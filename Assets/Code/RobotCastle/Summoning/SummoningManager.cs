@@ -5,6 +5,7 @@ using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Saving;
 using SleepDev;
+using SleepDev.Data;
 using UnityEngine;
 
 namespace RobotCastle.Summoning
@@ -95,7 +96,7 @@ namespace RobotCastle.Summoning
             }
             CLog.Log($"[{nameof(TryGetOutputFromScroll)}] Enough money to purchase: x{scrollsCount} of {scrollId}");
             money -= cost;
-            SetMoneyAmount(config.currencyId, money);
+            SetMoneyAmountAfterPurchase(config.currencyId, money);
             output = GetRandomItemsAndApply(scrollId, multiplier);
             return true;
         }
@@ -125,15 +126,15 @@ namespace RobotCastle.Summoning
             return GetMoneyAmount(config.currencyId) >= cost;
         }
 
-        public static void SetMoneyAmount(string currencyId, int amount)
+        public static void SetMoneyAmountAfterPurchase(string currencyId, int amount)
         {
             switch (currencyId)
             {
                 case ItemsIds.IdMoney:
-                    ServiceLocator.Get<GameMoney>().globalMoney = amount;
+                    ServiceLocator.Get<GameMoney>().globalMoney.UpdateWithContext(amount, (int)EMoneyChangeContext.AfterPurchase);
                     break;
                 case ItemsIds.IdHardMoney:
-                    ServiceLocator.Get<GameMoney>().globalHardMoney = amount;
+                    ServiceLocator.Get<GameMoney>().globalHardMoney.UpdateWithContext(amount, (int)EMoneyChangeContext.AfterPurchase);
                     break;
                 case ItemsIds.IdKingMedal or ItemsIds.IdHeroMedal:
                     DataHelpers.GetInventory().SetCount(currencyId, amount);
@@ -150,10 +151,10 @@ namespace RobotCastle.Summoning
             switch (currencyId)
             {
                 case ItemsIds.IdMoney:
-                    money = ServiceLocator.Get<GameMoney>().globalMoney;
+                    money = ServiceLocator.Get<GameMoney>().globalMoney.Val;
                     break;
                 case ItemsIds.IdHardMoney:
-                    money = ServiceLocator.Get<GameMoney>().globalHardMoney;
+                    money = ServiceLocator.Get<GameMoney>().globalHardMoney.Val;
                     break;
                 case ItemsIds.IdKingMedal or ItemsIds.IdHeroMedal:
                     money = DataHelpers.GetInventory().GetCount(currencyId);

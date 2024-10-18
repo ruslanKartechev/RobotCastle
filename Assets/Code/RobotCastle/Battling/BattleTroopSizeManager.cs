@@ -1,17 +1,12 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Merging;
+using SleepDev.Data;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
     public class BattleTroopSizeManager : ITroopSizeManager
     {
-        private int _purchasesCount;
-        private int _addedPrice = 5;
-        private int _price = 5;
-        private ParticleSystem _particle;
-        private IGridSectionsController _sectionsController;
-        private Battle _battle;
 
         public BattleTroopSizeManager(Battle battle, IGridSectionsController sectionsController, ParticleSystem particle)
         {
@@ -19,33 +14,35 @@ namespace RobotCastle.Battling
             _battle = battle;
             _sectionsController = sectionsController;
             _sectionsController.SetMaxCount(battle.troopSize);
-        }
-        
-        public bool CanPurchase()
-        {
-            var money = ServiceLocator.Get<GameMoney>().levelMoney;
-            return money >= _price;
+            _costReact = new ReactiveInt(startCost);
         }
 
-        public int GetCost()
+        public ReactiveInt NextCost => _costReact;
+
+        public bool CanPurchase()
         {
-            return _price;
+            var money = ServiceLocator.Get<GameMoney>().levelMoney.Val;
+            return money >= _costReact.Val;
         }
+
+        public int GetCost() => _costReact.Val;
 
         /// <summary>
         /// </summary>
         /// <returns>0 if success. 1 if not enough money</returns>
         public int TryPurchase()
         {
-            var money = ServiceLocator.Get<GameMoney>().levelMoney;
-            if (money < _price)
+            var money = ServiceLocator.Get<GameMoney>().levelMoney.Val;
+            var cost = _costReact.Val;
+            if (money < cost)
                 return 1;
-            money -= _price;
-            _price += _addedPrice;
+            money -= cost;
+            cost += costAddedPerPurchase;
             _purchasesCount++;
             _battle.troopSize++;
+            _costReact.SetValueOnEvent(cost);
             _sectionsController.SetMaxCount(_battle.troopSize);
-            ServiceLocator.Get<GameMoney>().levelMoney = money;
+            ServiceLocator.Get<GameMoney>().levelMoney.SetValue(money);
             _particle.Play();
             return 0;
         }
@@ -56,7 +53,16 @@ namespace RobotCastle.Battling
             var gridController = ServiceLocator.Get<IGridSectionsController>();
             gridController.SetMaxCount(_battle.troopSize);
             _particle.Play();
-
         }
+
+        private const int startCost = 10;
+        private const int costAddedPerPurchase = 5;
+        
+        private int _purchasesCount;
+        private ParticleSystem _particle;
+        private IGridSectionsController _sectionsController;
+        private Battle _battle;
+        private ReactiveInt _costReact;
+
     }
 }

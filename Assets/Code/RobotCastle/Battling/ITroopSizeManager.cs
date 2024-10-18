@@ -1,7 +1,10 @@
-﻿namespace RobotCastle.Battling
+﻿using SleepDev.Data;
+
+namespace RobotCastle.Battling
 {
     public interface ITroopSizeManager
     {
+        ReactiveInt NextCost { get;}
         bool CanPurchase();
         int GetCost();
         void ExtendBy(int count);

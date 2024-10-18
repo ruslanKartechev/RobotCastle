@@ -4,28 +4,31 @@ using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
+using SleepDev.Data;
 using UnityEngine;
 
 namespace RobotCastle.Battling
 {
     public class PlayerMergeItemsFactory : MonoBehaviour, IPlayerMergeItemsFactory
     {
-        public int NextCost => _cost;
+        public ReactiveInt NextCost => _costReact;
         
         [SerializeField] private int _cost = 3;
         private IPlayerSummonItemPicker _itemsPicker;
         private List<IPlayerItemSpawnModifier> _modifiers = new(10);
+        private ReactiveInt _costReact;
 
         private void Awake()
         {
+            _costReact = new ReactiveInt(_cost);
             _itemsPicker = gameObject.GetComponent<IPlayerSummonItemPicker>();
         }
 
         public void TryPurchaseItem(bool promptUser = true)
         {
             var gameMoney = ServiceLocator.Get<GameMoney>();
-            var money = gameMoney.levelMoney;
-            if (money < _cost)
+            var money = gameMoney.levelMoney.Val;
+            if (money < _costReact.Val)
             {
                 CLog.Log($"[{nameof(PlayerMergeItemsFactory)}] Not enough money");
                 if (promptUser)
@@ -44,7 +47,7 @@ namespace RobotCastle.Battling
             if (newItem != null)
             {
                 money -= _cost;
-                gameMoney.levelMoney = money;
+                gameMoney.levelMoney.UpdateWithContext(money, (int)EMoneyChangeContext.AfterPurchase);
                 merge.HighlightMergeOptions();
                 var particles = ServiceLocator.Get<SimplePoolsManager>();
                 var p = particles.GetOne("hero_spawn") as OneTimeParticles;

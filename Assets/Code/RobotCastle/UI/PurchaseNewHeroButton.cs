@@ -1,28 +1,28 @@
 ﻿using RobotCastle.Battling;
 using RobotCastle.Core;
-using TMPro;
+using SleepDev.UIElements;
 using UnityEngine;
 
 namespace RobotCastle.UI
 {
     public class PurchaseNewHeroButton : MyButton
     {
-        [SerializeField] private TextMeshProUGUI _text;
-        
-        public void Init()
+        [SerializeField] private CostViewUI _costView;
+        private IPlayerMergeItemsFactory _factory;
+
+        private void Start()
         {
             var gm = ServiceLocator.Get<GameMoney>();
-            gm.OnMoneySet += OnMoneyUpdated;
-            OnMoneyUpdated(gm.levelMoney, 0);
+            _factory = ServiceLocator.Get<IPlayerMergeItemsFactory>();
+            _costView.InitWithCost(gm.levelMoney, _factory.NextCost);
+            _costView.DoReact(true);   
+            AddMainCallback(Purchase);
         }
-        
-        private void OnMoneyUpdated(int newval, int prevval)
+
+        private void Purchase()
         {
-            var cost = ServiceLocator.Get<IPlayerMergeItemsFactory>().NextCost;
-            if (newval >= cost)
-                _text.text = $"<color=#FFFFFF>{newval}</color>";
-            else
-                _text.text = $"<color=#FF1111>{newval}</color>";
+            _factory.TryPurchaseItem();
         }
+
     }
 }

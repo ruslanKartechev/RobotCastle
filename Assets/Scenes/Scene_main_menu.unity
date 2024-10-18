@@ -1864,10 +1864,10 @@ PrefabInstance:
       addedObject: {fileID: 1813826278}
     - targetCorrespondingSourceObject: {fileID: 8674299170616164390, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3891447196733847707}
+      addedObject: {fileID: 188998021}
     - targetCorrespondingSourceObject: {fileID: 8674299170616164390, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 188998021}
+      addedObject: {fileID: 3891447196733847707}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       insertIndex: 1
@@ -1878,17 +1878,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8674299170616164390, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
   m_PrefabInstance: {fileID: 989988481}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &989988483 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1262390155436859529, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
-  m_PrefabInstance: {fileID: 989988481}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 799536067}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &989988486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1903,7 +1892,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _clickMaxDelay: 0.125
   _parent: {fileID: 989988482}
-  _raycaster: {fileID: 989988483}
 --- !u!223 &989988488 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 697934586019279730, guid: a56e60ed413cc36448e32752cedf1923, type: 3}

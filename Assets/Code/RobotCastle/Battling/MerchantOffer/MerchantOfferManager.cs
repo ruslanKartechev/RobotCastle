@@ -4,6 +4,7 @@ using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
+using SleepDev.Data;
 using UnityEngine;
 
 namespace RobotCastle.Battling.MerchantOffer
@@ -85,12 +86,12 @@ namespace RobotCastle.Battling.MerchantOffer
             else
             {
                 var gm = ServiceLocator.Get<GameMoney>();
-                var money = gm.levelMoney;
+                var money = gm.levelMoney.Val;
                 var cost = Mathf.RoundToInt(goods.cost * (1 - _sale));
                 if (money < cost)
                     return false;
                 money -= cost;
-                gm.levelMoney = money;
+                gm.levelMoney.UpdateWithContext(money, (int)EMoneyChangeContext.AfterPurchase);
                 GrantGoods(goods);
                 return true;
             }

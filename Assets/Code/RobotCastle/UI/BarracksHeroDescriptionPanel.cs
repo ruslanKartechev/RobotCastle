@@ -28,7 +28,7 @@ namespace RobotCastle.UI
         [SerializeField] private Image _xpFill;
         [SerializeField] private Image _heroIcon;
         [Space(10)]
-        [SerializeField] private Image _spellIcon;
+        [SerializeField] private BarracksHeroSpellView _spellView;
         [Space(10)] 
         [SerializeField] private MyButton _btnGrowth;
         [SerializeField] private MyButton _btnBack;
@@ -47,18 +47,18 @@ namespace RobotCastle.UI
 
         private void UpdateStats()
         {
-            var viewDb = ServiceLocator.Get<ViewDataBase>();
+            // var viewDb = ServiceLocator.Get<ViewDataBase>();
             var heroesDb = ServiceLocator.Get<HeroesDatabase>();
             var save = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerHeroes>().GetSave(_heroId);
-            var heroData = heroesDb.GetHeroInfo(_heroId);
-            var stats = heroData.stats;
+            var heroInfo = heroesDb.GetHeroInfo(_heroId);
+            var stats = heroInfo.stats;
             var lvl = save.level;
-            _heroIcon.sprite = ViewDataBase.GetHeroSprite(heroData.viewInfo.iconId);
-            _txtHeroName.text = heroData.viewInfo.name;
+            _heroIcon.sprite = ViewDataBase.GetHeroSprite(heroInfo.viewInfo.iconId);
+            _txtHeroName.text = heroInfo.viewInfo.name;
             _txtHeroLevel.text = (lvl + 1).ToString();
             _txtHeroXp.text = $"{save.xp}/{save.xpForNext}";
             _xpFill.fillAmount = (float)save.xp / save.xpForNext;
-            _spellIcon.sprite = viewDb.GetSpellIcon(heroData.spellInfo.mainSpellId);
+            _spellView.Init(_heroId, heroInfo);
 
             _statTxtAttack.text = ((int)HeroStatsManager.GetStatByLevel(stats.attack, lvl, 1)).ToString();
             _statTxtSpellPower.text = ((int)HeroStatsManager.GetStatByLevel(stats.spellPower, lvl, 1)).ToString();

@@ -4,4 +4,9 @@
     {
         float Get();
     }
+
+    public interface IValueGetter<T>
+    {
+        T Get();
+    }
 }

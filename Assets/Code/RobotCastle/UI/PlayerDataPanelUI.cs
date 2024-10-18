@@ -1,13 +1,14 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.MainMenu;
+using SleepDev.UIElements;
 using UnityEngine;
 
 namespace RobotCastle.UI
 {
     public class PlayerDataPanelUI : MonoBehaviour, IScreenUI
     {
-        [SerializeField] private StatValueUI _globalMoney;
-        [SerializeField] private StatValueUI _hardMoney;
+        [SerializeField] private MoneyUI _globalMoney;
+        [SerializeField] private MoneyUI _hardMoney;
         [SerializeField] private PlayerExperienceUI _experience;
         [SerializeField] private ValueCurrentAndMaxUI _energy;
         
@@ -15,26 +16,22 @@ namespace RobotCastle.UI
         private void OnEnable()
         {
             var gm = ServiceLocator.Get<GameMoney>();
-            _globalMoney.Set(gm.globalMoney);
-            _hardMoney.Set(gm.globalHardMoney);
-            gm.OnGlobalMoneySet += _globalMoney.OnNewValueSet;
-            gm.OnGlobalHardMoneySet += _hardMoney.OnNewValueSet;
+            _globalMoney.Init(gm.globalMoney);
+            _globalMoney.DoReact(true);
+            _hardMoney.Init(gm.globalHardMoney);
+            _hardMoney.DoReact(true);
             
             var xp = ServiceLocator.Get<CastleXpManager>();
+            
             _experience.SetPlayerXp(xp.GetLevel(), xp.GetProgressToNextLvl());
 
             var energy = ServiceLocator.Get<PlayerEnergyManager>();
             _energy.SetValue(energy.GetCurrent(), energy.GetMax());
             energy.OnEnergySet += _energy.SetValue;
-
         }
 
         private void OnDisable()
         {
-            var gm = ServiceLocator.Get<GameMoney>();
-            gm.OnGlobalMoneySet -= _globalMoney.OnNewValueSet;
-            gm.OnGlobalHardMoneySet -= _hardMoney.OnNewValueSet;
-            
             var energy = ServiceLocator.Get<PlayerEnergyManager>();
             energy.OnEnergySet -= _energy.SetValue;
         }
