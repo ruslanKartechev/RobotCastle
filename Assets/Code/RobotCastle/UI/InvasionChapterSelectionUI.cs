@@ -66,13 +66,12 @@ namespace RobotCastle.UI
                 _inventory.AllItems[i].Id = i.ToString();
             if (_data == null)
             {
-                _data = new ChapterSelectionData()
-                {
-                    chapterIndex = _progresSave.chapterIndex,
-                    tierIndex = _progresSave.tierLevel
-                };
+                _data = new ChapterSelectionData();
             }
 
+            _data.chapterIndex = _progresSave.chapterIndex;
+            _data.tierIndex = _progresSave.tierLevel;
+            
             for (var i = 0; i < _inventory.AllItems.Count; i++)
             {
                 var it = _inventory.AllItems[i];
