@@ -81,6 +81,10 @@ PrefabInstance:
       value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _flicker
+      value: 
+      objectReference: {fileID: 8254960296980621399}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       propertyPath: _animator
       value: 
       objectReference: {fileID: 7598925721859830562}
@@ -132,6 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58110171326f4872acbf1725c3caba12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _doOverrideAnimations: 0
+  _overrideControllers: []
 --- !u!1001 &6848942291684355964
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1355,10 +1361,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3925056490110922654, guid: eb44c0459dbc5ac4a8df592ecacbead3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4930451139924160498}
+    - targetCorrespondingSourceObject: {fileID: 3925056490110922654, guid: eb44c0459dbc5ac4a8df592ecacbead3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8254960296980621399}
   m_SourcePrefab: {fileID: 100100000, guid: eb44c0459dbc5ac4a8df592ecacbead3, type: 3}
 --- !u!95 &7598925721859830562 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3925056490120305758, guid: eb44c0459dbc5ac4a8df592ecacbead3, type: 3}
+  m_PrefabInstance: {fileID: 6848942291684355964}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &7598925721864064482 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3925056490116194974, guid: eb44c0459dbc5ac4a8df592ecacbead3, type: 3}
   m_PrefabInstance: {fileID: 6848942291684355964}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7598925721869336802 stripped
@@ -1378,6 +1392,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ff2bd602d54997a583d9ad73c281e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8254960296980621399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7598925721869336802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b409d1136d9f4bbbb53ab6dafe7370d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultFlickCount: 2
+  _defaultFlickTime: 0.08
+  _renderers:
+  - {fileID: 7598925721864064482}
+  _normalColor: {r: 1, g: 1, b: 1, a: 1}
+  _flickColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &7598925721869638850 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3925056490110497726, guid: eb44c0459dbc5ac4a8df592ecacbead3, type: 3}

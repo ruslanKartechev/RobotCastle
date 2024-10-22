@@ -8,7 +8,7 @@ namespace SleepDev.UIElements
 
         public virtual void InitWithCost(ReactiveInt moneySource, ReactiveInt costSource)
         {
-            base.Init(moneySource);
+            this.moneySource = moneySource;
             this.costSource = costSource;
             SetMoneyColorToCost(base.moneySource.Val, costSource.Val);
         }

@@ -15,11 +15,11 @@ MonoBehaviour:
   database:
     chapters:
     - id: chapter_1
-      viewName: Golblins
+      viewName: Mushroom Fields
       moneyGoldReward: 100
       playerXpReward: 10
       heroXpReward: 3
-      location: Env_Forest
+      location: Env_1MushroomFields
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -37,42 +37,42 @@ MonoBehaviour:
         type: item
       levelData:
         levels:
-        - enemyPreset: mushrooms_1
+        - enemyPreset: mushroom_fields_1
           reward: 10
           roundType: 0
-        - enemyPreset: mushrooms_2
+        - enemyPreset: mushroom_fields_2
           reward: 10
           roundType: 0
-        - enemyPreset: mushrooms_3
+        - enemyPreset: mushroom_fields_3
           reward: 10
           roundType: 0
-        - enemyPreset: mushrooms_4
+        - enemyPreset: mushroom_fields_4
           reward: 10
           roundType: 1
-        - enemyPreset: mushrooms_5
+        - enemyPreset: mushroom_fields_5
           reward: 10
           roundType: 2
-        - enemyPreset: mushrooms_6
+        - enemyPreset: mushroom_fields_6
           reward: 10
           roundType: 0
-        - enemyPreset: mushrooms_7
+        - enemyPreset: mushroom_fields_7
           reward: 10
           roundType: 0
-        - enemyPreset: mushrooms_8
+        - enemyPreset: mushroom_fields_8
           reward: 10
           roundType: 0
-        - enemyPreset: mushrooms_9
+        - enemyPreset: mushroom_fields_9
           reward: 10
           roundType: 1
-        - enemyPreset: mushrooms_10
+        - enemyPreset: mushroom_fields_10
           reward: 10
           roundType: 3
     - id: chapter_2
-      viewName: Bandits
+      viewName: Graveyard
       moneyGoldReward: 120
       playerXpReward: 10
       heroXpReward: 10
-      location: Env_Graveyard
+      location: ENV_2Graveyard
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -87,42 +87,42 @@ MonoBehaviour:
       chapterCompletedRewards: []
       levelData:
         levels:
-        - enemyPreset: chapter_2_1
+        - enemyPreset: graveyard_1
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_2_2
+        - enemyPreset: graveyard_2
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_2_3
+        - enemyPreset: graveyard_3
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_2_4
+        - enemyPreset: graveyard_4
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_2_5
+        - enemyPreset: graveyard_5
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_2_6
+        - enemyPreset: graveyard_6
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_2_7
+        - enemyPreset: graveyard_7
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_2_8
+        - enemyPreset: graveyard_8
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_2_9
+        - enemyPreset: graveyard_9
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_2_10
+        - enemyPreset: graveyard_10
           reward: 10
           roundType: 3
     - id: chapter_3
-      viewName: Slimes
+      viewName: Spirders Cave
       moneyGoldReward: 160
       playerXpReward: 10
       heroXpReward: 10
-      location: Env_Desert
+      location: ENV_3SpiderCave
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -137,57 +137,57 @@ MonoBehaviour:
       chapterCompletedRewards: []
       levelData:
         levels:
-        - enemyPreset: chapter_3_1
+        - enemyPreset: spirders_cave_1
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_3_2
+        - enemyPreset: spirders_cave_2
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_3_3
+        - enemyPreset: spirders_cave_3
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_3_4
+        - enemyPreset: spirders_cave_4
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_3_5
+        - enemyPreset: spirders_cave_5
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_3_6
+        - enemyPreset: spirders_cave_6
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_3_7
+        - enemyPreset: spirders_cave_7
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_3_8
+        - enemyPreset: spirders_cave_8
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_3_9
+        - enemyPreset: spirders_cave_9
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_3_10
+        - enemyPreset: spirders_cave_10
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_3_11
+        - enemyPreset: spirders_cave_11
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_3_12
+        - enemyPreset: spirders_cave_12
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_3_13
+        - enemyPreset: spirders_cave_13
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_3_14
+        - enemyPreset: spirders_cave_14
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_3_15
+        - enemyPreset: spirders_cave_15
           reward: 10
           roundType: 3
     - id: chapter_4
-      viewName: Undead
+      viewName: Winter Forest
       moneyGoldReward: 191
       playerXpReward: 10
       heroXpReward: 10
-      location: Env_Winter
+      location: ENV_4WinterPole
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -202,57 +202,57 @@ MonoBehaviour:
       chapterCompletedRewards: []
       levelData:
         levels:
-        - enemyPreset: chapter_4_1
+        - enemyPreset: winter_forest_1
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_4_2
+        - enemyPreset: winter_forest_2
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_4_3
+        - enemyPreset: winter_forest_3
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_4_4
+        - enemyPreset: winter_forest_4
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_4_5
+        - enemyPreset: winter_forest_5
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_4_6
+        - enemyPreset: winter_forest_6
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_4_7
+        - enemyPreset: winter_forest_7
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_4_8
+        - enemyPreset: winter_forest_8
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_4_9
+        - enemyPreset: winter_forest_9
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_4_10
+        - enemyPreset: winter_forest_10
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_4_11
+        - enemyPreset: winter_forest_11
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_4_12
+        - enemyPreset: winter_forest_12
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_4_13
+        - enemyPreset: winter_forest_13
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_4_14
+        - enemyPreset: winter_forest_14
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_4_15
+        - enemyPreset: winter_forest_15
           reward: 10
           roundType: 3
     - id: chapter_5
-      viewName: Elf
+      viewName: The Underworld
       moneyGoldReward: 208
       playerXpReward: 10
       heroXpReward: 10
-      location: Env_Forest
+      location: ENV_5Underworld
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -267,72 +267,72 @@ MonoBehaviour:
       chapterCompletedRewards: []
       levelData:
         levels:
-        - enemyPreset: chapter_5_1
+        - enemyPreset: the_underworld_1
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_2
+        - enemyPreset: the_underworld_2
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_3
+        - enemyPreset: the_underworld_3
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_4
+        - enemyPreset: the_underworld_4
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_5_5
+        - enemyPreset: the_underworld_5
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_5_6
+        - enemyPreset: the_underworld_6
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_7
+        - enemyPreset: the_underworld_7
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_8
+        - enemyPreset: the_underworld_8
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_9
+        - enemyPreset: the_underworld_9
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_5_10
+        - enemyPreset: the_underworld_10
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_5_11
+        - enemyPreset: the_underworld_11
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_12
+        - enemyPreset: the_underworld_12
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_13
+        - enemyPreset: the_underworld_13
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_14
+        - enemyPreset: the_underworld_14
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_5_15
+        - enemyPreset: the_underworld_15
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_5_16
+        - enemyPreset: the_underworld_16
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_17
+        - enemyPreset: the_underworld_17
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_18
+        - enemyPreset: the_underworld_18
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_5_19
+        - enemyPreset: the_underworld_19
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_5_20
+        - enemyPreset: the_underworld_20
           reward: 10
           roundType: 3
     - id: chapter_6
-      viewName: Orc
+      viewName: Desert
       moneyGoldReward: 250
       playerXpReward: 10
       heroXpReward: 10
-      location: Env_Forest
+      location: Env_6DangerousDesert
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -347,72 +347,72 @@ MonoBehaviour:
       chapterCompletedRewards: []
       levelData:
         levels:
-        - enemyPreset: chapter_6_1
+        - enemyPreset: desert_1
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_2
+        - enemyPreset: desert_2
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_3
+        - enemyPreset: desert_3
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_4
+        - enemyPreset: desert_4
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_6_5
+        - enemyPreset: desert_5
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_6_6
+        - enemyPreset: desert_6
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_7
+        - enemyPreset: desert_7
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_8
+        - enemyPreset: desert_8
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_9
+        - enemyPreset: desert_9
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_6_10
+        - enemyPreset: desert_10
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_6_11
+        - enemyPreset: desert_11
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_12
+        - enemyPreset: desert_12
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_13
+        - enemyPreset: desert_13
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_14
+        - enemyPreset: desert_14
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_6_15
+        - enemyPreset: desert_15
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_6_16
+        - enemyPreset: desert_16
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_17
+        - enemyPreset: desert_17
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_18
+        - enemyPreset: desert_18
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_6_19
+        - enemyPreset: desert_19
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_6_20
+        - enemyPreset: desert_20
           reward: 10
           roundType: 3
     - id: chapter_7
-      viewName: Wraith
+      viewName: Mystic Forest
       moneyGoldReward: 300
       playerXpReward: 10
       heroXpReward: 10
-      location: Env_Forest
+      location: Env_7MysticForest
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -427,72 +427,72 @@ MonoBehaviour:
       chapterCompletedRewards: []
       levelData:
         levels:
-        - enemyPreset: chapter_7_1
+        - enemyPreset: mystic_forest_1
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_2
+        - enemyPreset: mystic_forest_2
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_3
+        - enemyPreset: mystic_forest_3
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_4
+        - enemyPreset: mystic_forest_4
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_7_5
+        - enemyPreset: mystic_forest_5
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_7_6
+        - enemyPreset: mystic_forest_6
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_7
+        - enemyPreset: mystic_forest_7
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_8
+        - enemyPreset: mystic_forest_8
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_9
+        - enemyPreset: mystic_forest_9
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_7_10
+        - enemyPreset: mystic_forest_10
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_7_11
+        - enemyPreset: mystic_forest_11
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_12
+        - enemyPreset: mystic_forest_12
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_13
+        - enemyPreset: mystic_forest_13
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_14
+        - enemyPreset: mystic_forest_14
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_7_15
+        - enemyPreset: mystic_forest_15
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_7_16
+        - enemyPreset: mystic_forest_16
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_17
+        - enemyPreset: mystic_forest_17
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_18
+        - enemyPreset: mystic_forest_18
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_7_19
+        - enemyPreset: mystic_forest_19
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_7_20
+        - enemyPreset: mystic_forest_20
           reward: 10
           roundType: 3
     - id: chapter_8
-      viewName: Vampire
+      viewName: Goblins Grot
       moneyGoldReward: 360
       playerXpReward: 10
       heroXpReward: 10
-      location: Env_Forest
+      location: Env_8GoblinsGrot
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -507,72 +507,72 @@ MonoBehaviour:
       chapterCompletedRewards: []
       levelData:
         levels:
-        - enemyPreset: chapter_8_1
+        - enemyPreset: goblins_grot_1
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_2
+        - enemyPreset: goblins_grot_2
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_3
+        - enemyPreset: goblins_grot_3
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_4
+        - enemyPreset: goblins_grot_4
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_8_5
+        - enemyPreset: goblins_grot_5
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_8_6
+        - enemyPreset: goblins_grot_6
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_7
+        - enemyPreset: goblins_grot_7
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_8
+        - enemyPreset: goblins_grot_8
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_9
+        - enemyPreset: goblins_grot_9
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_10
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_11
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_12
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_13
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_14
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_15
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_16
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_17
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_18
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_19
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_8_10
+        - enemyPreset: goblins_grot_20
           reward: 10
           roundType: 3
     - id: chapter_9
-      viewName: Frost
+      viewName: Dragon's Lair
       moneyGoldReward: 431
       playerXpReward: 10
       heroXpReward: 10
-      location: Env_Forest
+      location: Env_10DragonsLair
       tiers:
       - multiplier: 1
         additionalRewards: []
@@ -587,64 +587,64 @@ MonoBehaviour:
       chapterCompletedRewards: []
       levelData:
         levels:
-        - enemyPreset: chapter_9_1
+        - enemyPreset: dragon's_lair_1
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_2
+        - enemyPreset: dragon's_lair_2
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_3
+        - enemyPreset: dragon's_lair_3
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_4
+        - enemyPreset: dragon's_lair_4
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_9_5
+        - enemyPreset: dragon's_lair_5
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_9_6
+        - enemyPreset: dragon's_lair_6
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_7
+        - enemyPreset: dragon's_lair_7
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_8
+        - enemyPreset: dragon's_lair_8
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_9
+        - enemyPreset: dragon's_lair_9
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_9_10
+        - enemyPreset: dragon's_lair_10
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_9_11
+        - enemyPreset: dragon's_lair_11
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_12
+        - enemyPreset: dragon's_lair_12
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_13
+        - enemyPreset: dragon's_lair_13
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_14
+        - enemyPreset: dragon's_lair_14
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_9_15
+        - enemyPreset: dragon's_lair_15
           reward: 10
           roundType: 2
-        - enemyPreset: chapter_9_16
+        - enemyPreset: dragon's_lair_16
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_17
+        - enemyPreset: dragon's_lair_17
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_18
+        - enemyPreset: dragon's_lair_18
           reward: 10
           roundType: 0
-        - enemyPreset: chapter_9_19
+        - enemyPreset: dragon's_lair_19
           reward: 10
           roundType: 1
-        - enemyPreset: chapter_9_20
+        - enemyPreset: dragon's_lair_20
           reward: 10
           roundType: 3
     corruptionChapters: []

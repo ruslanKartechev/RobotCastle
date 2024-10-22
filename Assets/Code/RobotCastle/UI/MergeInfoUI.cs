@@ -10,6 +10,7 @@ namespace RobotCastle.UI
         [SerializeField] private FadePopAnimator _notEnoughTroopSizeBlock;
         [SerializeField] private FadePopAnimator _notEnoughMoneyBlock;
         [SerializeField] private FadePopAnimator _notEnoughSpaceBlock;
+        [SerializeField] private FadePopAnimator _noHeroesOnGrid;
 
         public void ShowNotEnoughTroopSize(int count, int max)
         {
@@ -27,12 +28,18 @@ namespace RobotCastle.UI
             _notEnoughSpaceBlock.Animate();
         }
 
+        public void ShowNoHeroesOnGrid()
+        {
+            _noHeroesOnGrid.Animate();
+        }
+        
         public void ShowIdle()
         {
             gameObject.SetActive(true);
             _notEnoughTroopSizeBlock.gameObject.SetActive(false);
             _notEnoughMoneyBlock.gameObject.SetActive(false);
             _notEnoughSpaceBlock.gameObject.SetActive(false);
+            _noHeroesOnGrid.gameObject.SetActive(false);
         }
 
         public void On() => gameObject.SetActive(true);

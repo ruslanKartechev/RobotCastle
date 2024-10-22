@@ -13,9 +13,9 @@ namespace RobotCastle.UI
         [SerializeField] private ShieldStatBar _shieldStatBar;
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private RectTransform _damagePoint;
-        [SerializeField] private UnitItemsContainerView _unitItemsContainer;
+        [SerializeField] private HeroWeaponsContainerUI _unitItemsContainer;
 
-        public UnitItemsContainerView Items => _unitItemsContainer;
+        public HeroWeaponsContainerUI Weapons => _unitItemsContainer;
         public RectTransform DamagePoint => _damagePoint;
         public StarsLevelView Level => _levelView;
         public BarTrackerUI HealthUI => _healthUI;

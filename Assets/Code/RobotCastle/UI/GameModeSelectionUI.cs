@@ -20,6 +20,7 @@ namespace RobotCastle.UI
 
         public void Show()
         {
+            gameObject.SetActive(true);
             foreach (var canvas in _otherCanvases)
                 canvas.enabled = false;
             _chapters1.Off();

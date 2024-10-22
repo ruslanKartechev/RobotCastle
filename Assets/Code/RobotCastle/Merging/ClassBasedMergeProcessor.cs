@@ -88,11 +88,11 @@ namespace RobotCastle.Merging
             switch (itemInto.core.type)
             {
                 case MergeConstants.TypeWeapons:
-                    var operation1 = new MergeWeaponsOperation(itemViewTaken, itemViewInto, gridView, _container, _maxLevelCheck, callback, _modifiers);
+                    var operation1 = new MergeWeaponsOperation(itemViewTaken, itemViewInto, gridView, _container, _maxLevelCheck, _callback, _modifiers);
                     operation1.Process();
-                    break;
+                    return;
                 case MergeConstants.TypeHeroes:
-                    var operation2 = new MergeUnitsWithWeaponsOperation(itemViewTaken, itemViewInto, _gridView, _container, _maxLevelCheck, _callback, _modifiers);
+                    var operation2 = new MergeUnitsOperation(itemViewTaken, itemViewInto, _gridView, _container, _maxLevelCheck, _callback, _modifiers);
                     operation2.Process();
                     return;
             }
@@ -103,7 +103,7 @@ namespace RobotCastle.Merging
         public List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem)
         {
             var db = ServiceLocator.Get<ViewDataBase>();
-            var maxLvl = db.GetMaxMergeLevel(srcItem.core.id);
+            var maxLvl = db.GetMaxMergeLevel(srcItem.core.id) - 1;
             if (srcItem.core.level >= maxLvl)
                 return null;
             var list = new List<Vector2Int>(3);
@@ -120,7 +120,7 @@ namespace RobotCastle.Merging
         public List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, IGridView gridView)
         {
             if (allItems.Count < 2)
-                            return allItems;
+                return allItems;
             var db = ServiceLocator.Get<ViewDataBase>();
             var it = 0;
             const int itMax = 100;
@@ -145,7 +145,7 @@ namespace RobotCastle.Merging
                     if (allItems[indOne] == null)
                         continue;
                     var data1 = allItems[indOne].itemData.core;
-                    var maxLvl = db.GetMaxMergeLevel(data1.id);
+                    var maxLvl = db.GetMaxMergeLevel(data1.id) - 1; // (not indexed)
                     if (data1.level >= maxLvl)
                         continue;
                     var cellOne = gridView.GetCell(allItems[indOne].itemData.pivotX, allItems[indOne].itemData.pivotY);

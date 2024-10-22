@@ -2,7 +2,7 @@
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/SpellProvider CrescentSlash", fileName = "crescent_slash", order = 0)]
+    [CreateAssetMenu(menuName = "SO/Spells/CrescentSlash", fileName = "crescent_slash", order = 0)]
     public class SpellProviderCrescentSlash : SpellProvider
     {
         public override float manaMax => _config.manaMax;

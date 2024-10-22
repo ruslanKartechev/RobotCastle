@@ -32,7 +32,7 @@ namespace RobotCastle.Core
         private float _mainClickTime;
         private bool _didSlide;
         private Vector3 _slide;
-        private float _slideMinD2 = 100f * 100f;
+        private float _slideMinD2 = 200f * 200f;
         
         public bool InputAllowed { get; set; } = true;
         

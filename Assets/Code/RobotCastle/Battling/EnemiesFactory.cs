@@ -13,10 +13,6 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public interface IHeroInitializer
-    {
-        void InitHero(IHeroController hero);
-    }
     public class EnemiesFactory : MonoBehaviour
     {
         [SerializeField] private string _presetsDirectory;
@@ -27,7 +23,7 @@ namespace RobotCastle.Battling
         public IGridView GridView { get; set; }
         
         
-        public async Task SpawnPreset(string presetPath, bool bossMode, CancellationToken token)
+        public async Task SpawnPreset(string presetPath, CancellationToken token)
         {
             var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
             if (asset == null)
@@ -43,68 +39,69 @@ namespace RobotCastle.Battling
                 CLog.LogError($"[{nameof(EnemiesFactory)}] Cannot Deserialize preset at {presetPath}");
             }
 
-            if (bossMode)
-                await SpawnBossPreset(preset, token);
-            else
-                await SpawnPreset(preset, token);
+            await SpawnPresetAndBoss(preset, token);
         }
 
-        public async Task SpawnBossPreset(EnemyPackPreset packPreset, CancellationToken token)
+        private async Task SpawnPresetAndBoss(EnemyPackPreset packPreset, CancellationToken token)
         {
             _spawnedEnemies = new List<IHeroController>(packPreset.enemies.Count);
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
             var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
-            var bossPreset = packPreset.enemies[0];
-            {
-                var cellView = GridView.GetCell(bossPreset.gridPos.x, bossPreset.gridPos.y);
-                var itemView = factory.SpawnItemOnCell(cellView, new ItemData(bossPreset.enemy));
-                var hero = itemView.Transform.GetComponent<IHeroController>();
-                barsPanel.AssignBossUI(hero.View);
-                                
-                var modifiers = HeroesManager.GetModifiers(bossPreset.modifiers);
-                hero.InitHero(bossPreset.enemy.id, bossPreset.heroLevel, bossPreset.enemy.level, modifiers);
-                hero.View.heroUI.AssignStatsTracking(hero.View);
-                _spawnedEnemies.Add(hero);
-                hero.View.animator.Play("Appear", 0, 0);
-            }
-            for (var ind = 1; ind < packPreset.enemies.Count; ind++)
+            var startInd = 0;
+            
+            // if (isBoss)
+            // {
+            //     startInd = 1;
+            //     var bossPreset = packPreset.enemies[0];
+            //     {
+            //         var cellView = GridView.GetCell(bossPreset.gridPos.x, bossPreset.gridPos.y);
+            //         var itemView = factory.SpawnItemOnCell(cellView, new ItemData(bossPreset.enemy));
+            //         var hero = itemView.Transform.GetComponent<IHeroController>();
+            //         barsPanel.AssignBossUI(hero.Components);
+            //                         
+            //         var modifiers = HeroesManager.GetModifiers(bossPreset.modifiers);
+            //         hero.InitHero(bossPreset.enemy.id, bossPreset.heroLevel, bossPreset.enemy.level, modifiers);
+            //         hero.Components.heroUI.AssignStatsTracking(hero.Components);
+            //         _spawnedEnemies.Add(hero);
+            //         hero.Components.animator.Play("Appear", 0, 0);
+            //     }
+            // }
+            for (var ind = startInd; ind < packPreset.enemies.Count; ind++)
             {
                 var enemyPreset = packPreset.enemies[ind];
                 var cellView = GridView.GetCell(enemyPreset.gridPos.x, enemyPreset.gridPos.y);
                 var itemView = factory.SpawnItemOnCell(cellView, new ItemData(enemyPreset.enemy));
                 var hero = itemView.Transform.GetComponent<IHeroController>();
-                barsPanel.AssignEnemyUI(hero.View);
-                var modifiers = HeroesManager.GetModifiers(enemyPreset.modifiers);
-                hero.InitHero(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
-                hero.View.heroUI.AssignStatsTracking(hero.View);
+                switch (enemyPreset.unitType)
+                {
+                    case EUnitType.Default or EUnitType.Elite:
+                        barsPanel.AssignEnemyUI(hero.Components);
+                        AnimateSpawn(hero);
+                        break;
+                    case EUnitType.Boss:
+                        barsPanel.AssignBossUI(hero.Components);
+                        hero.Components.animator.Play("Appear", 0, 0);
+                        break;
+                }
+                var spells = HeroesManager.GetModifiers(enemyPreset.modifiers);
+                hero.InitHero(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level, spells);
+                hero.Components.heroUI.AssignStatsTracking(hero.Components);
                 _spawnedEnemies.Add(hero);
-                AnimateSpawn(hero);
+                
+                if (enemyPreset.items is {Count: > 0})
+                {
+                    var weaponsData = HeroWeaponData.GetDataWithDefaultModifiers(enemyPreset.items);
+                    hero.Components.weaponsContainer.SetItems(weaponsData);
+                    hero.Components.weaponsContainer.AddAllModifiersToHero(hero.Components);
+                }
+                else
+                    hero.Components.weaponsContainer.SetEmpty();
+                
                 await Task.Yield();
                 if (token.IsCancellationRequested) return;
             }
         }
         
-        public async Task SpawnPreset(EnemyPackPreset packPreset, CancellationToken token)
-        {
-            _spawnedEnemies = new List<IHeroController>(packPreset.enemies.Count);
-            var factory = ServiceLocator.Get<IMergeItemsFactory>();
-            var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
-            foreach (var enemyPreset in packPreset.enemies)
-            {
-                var cellView = GridView.GetCell(enemyPreset.gridPos.x, enemyPreset.gridPos.y);
-                var itemView = factory.SpawnItemOnCell(cellView, new ItemData(enemyPreset.enemy));
-                var hero = itemView.Transform.GetComponent<IHeroController>();
-                barsPanel.AssignEnemyUI(hero.View);
-                var modifiers = HeroesManager.GetModifiers(enemyPreset.modifiers);
-                hero.InitHero(enemyPreset.enemy.id,enemyPreset.heroLevel, enemyPreset.enemy.level, modifiers);
-                hero.View.heroUI.AssignStatsTracking(hero.View);
-                _spawnedEnemies.Add(hero);
-                AnimateSpawn(hero);
-                await Task.Yield();
-                if (token.IsCancellationRequested) return;
-            }
-        }
-
         public IHeroController SpawnNew(SpawnMergeItemArgs args, int heroLvl = 0)
         {
             ICellView cellView = null;
@@ -128,16 +125,16 @@ namespace RobotCastle.Battling
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
             var itemView = factory.SpawnItemOnCell(cellView, new ItemData(args.coreData));
             var hero = itemView.Transform.GetComponent<IHeroController>();
-            barsPanel.AssignEnemyUI(hero.View);
+            barsPanel.AssignEnemyUI(hero.Components);
             hero.InitHero(args.coreData.id, heroLvl, args.coreData.level, new List<ModifierProvider>());
-            hero.View.heroUI.AssignStatsTracking(hero.View);
+            hero.Components.heroUI.AssignStatsTracking(hero.Components);
             AnimateSpawn(hero);
             return hero;
         }
         
         private void AnimateSpawn(IHeroController hero)
         {
-            var tr = hero.View.transform;
+            var tr = hero.Components.transform;
             var pos = tr.position;
             var startPos = pos;
             pos.y += 10;

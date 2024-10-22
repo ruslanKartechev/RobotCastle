@@ -14,6 +14,7 @@ namespace RobotCastle.Data
         public Dictionary<string, string> StatsIcons = new (5);
         public Dictionary<string, string> SpellsIcons = new (5);
         public Dictionary<string, string> GeneralIcons = new (5);
+        public List<string> LocationIcons = new(5);
 
         public static Sprite GetHeroSprite(string spriteId)
         {
@@ -110,6 +111,9 @@ namespace RobotCastle.Data
             return null;
         }
         
+        /// <summary>
+        /// Max Level IS NOT Indexed (level = 3 is displayed as 3)
+        /// </summary>
         public int GetMaxMergeLevel(string id)
         {
             if (ItemInfo.ContainsKey(id))

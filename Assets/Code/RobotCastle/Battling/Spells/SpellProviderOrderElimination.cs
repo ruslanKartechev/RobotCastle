@@ -2,7 +2,7 @@
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/SpellProvider OrderElimination", fileName = "OrderElimination", order = 0)]
+    [CreateAssetMenu(menuName = "SO/Spells/OrderElimination", fileName = "OrderElimination", order = 0)]
     public class SpellProviderOrderElimination : SpellProvider
     {
         [SerializeField] private SpellConfigElimination _config;

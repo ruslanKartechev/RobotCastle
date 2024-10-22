@@ -13,6 +13,8 @@ namespace RobotCastle.Battling
             _stats = components.stats;
         }
         
+        public IBattleDamageStatsCollector StatsCollector { get; set; }
+        
         public HeroDamageArgs CalculatePhysDamage()
         {
             var physDamage = _stats.Attack.Get();
@@ -60,22 +62,7 @@ namespace RobotCastle.Battling
             Damage(receiver, spellDam);
         }
 
-        private void Damage(IDamageReceiver receiver, HeroDamageArgs args)
-        {
-            var receivedArgs = receiver.TakeDamage(args);
-            var vamp = _components.stats.Vampirism.Get();
-            if (vamp > 0)
-            {
-                var healthAdded = (int)(vamp * receivedArgs.amountReceived);
-                CLog.Log($"Vampirism health: {healthAdded}");
-                _components.stats.HealthCurrent.Val += healthAdded;
-                ServiceLocator.Get<IDamageDisplay>().ShowVampirism(healthAdded, _components.pointVamp.position);
-            }
-
-            foreach (var mod in _postDamageModifiers)
-                mod.Apply(receivedArgs);
-        }
-
+   
         public void AddModifier(IDamageCalculationModifier mod)
         {
             if(_calculationModifiers.Contains(mod) == false)
@@ -103,11 +90,29 @@ namespace RobotCastle.Battling
             _calculationModifiers.Clear();
         }
 
+
         public void ClearPostDamageModifiers()
         {
             _postDamageModifiers.Clear();
         }
         
+        private void Damage(IDamageReceiver receiver, HeroDamageArgs args)
+        {
+            var receivedArgs = receiver.TakeDamage(args);
+            StatsCollector.AddDamageDealt(_components.GUID, args.type, (int)args.amount);
+            var vamp = _components.stats.Vampirism.Get();
+            if (vamp > 0)
+            {
+                var healthAdded = (int)(vamp * receivedArgs.amountReceived);
+                CLog.Log($"Vampirism health: {healthAdded}");
+                _components.stats.HealthCurrent.Val += healthAdded;
+                ServiceLocator.Get<IDamageDisplay>().ShowVampirism(healthAdded, _components.pointVamp.position);
+            }
+
+            foreach (var mod in _postDamageModifiers)
+                mod.Apply(receivedArgs);
+        }
+
         
         private HeroComponents _components;
         private HeroStatsManager _stats;

@@ -9,7 +9,7 @@ namespace RobotCastle.MainMenu
     public class BarracksHeroView : MonoBehaviour
     {
         [SerializeField] private Transform _heroPoint;
-        private BarracksHeroDescriptionPanel _descriptionPanel;
+        private BarracksHeroPanel _descriptionPanel;
         
         public void ShowHero(string heroId)
         {
@@ -21,7 +21,7 @@ namespace RobotCastle.MainMenu
             tr.SetPositionAndRotation(_heroPoint.position, _heroPoint.rotation);
             if (_descriptionPanel == null)
             {
-                _descriptionPanel = ServiceLocator.Get<IUIManager>().Show<BarracksHeroDescriptionPanel>(UIConstants.UIBarracksHeroDescription, () => {});
+                _descriptionPanel = ServiceLocator.Get<IUIManager>().Show<BarracksHeroPanel>(UIConstants.UIBarracksHeroDescription, () => {});
             }
             _descriptionPanel.Show(heroId);
         }

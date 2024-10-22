@@ -47,10 +47,10 @@ namespace RobotCastle.Battling
             // CLog.LogRed($"Affected count: {heroesAffected.Count}");
             foreach (var hero in heroesAffected)
             {
-                var val = hero.View.stats.HealthCurrent.Val;
+                var val = hero.Components.stats.HealthCurrent.Val;
                 val += amount;
-                hero.View.stats.HealthCurrent.SetBaseAndCurrent(val);
-                worldPositions.Add(hero.View.transform.position);
+                hero.Components.stats.HealthCurrent.SetBaseAndCurrent(val);
+                worldPositions.Add(hero.Components.transform.position);
             }
             var effect = GetFxView();
             effect.Show(_view.transform);

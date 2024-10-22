@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DG.Tweening;
-using RobotCastle.Core;
 using RobotCastle.Merging;
-using RobotCastle.UI;
-using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -42,6 +39,7 @@ namespace RobotCastle.Battling
             _tweenScale?.Kill();
             transform.localScale = Vector3.one;
             transform.DOPunchScale(Vector3.one * .2f, MergeConstants.PickScaleTime);
+            _view.animator.Play("Merged", 0, 0f);
         }
 
         public void OnDroppedBack() 
@@ -82,7 +80,7 @@ namespace RobotCastle.Battling
             _view.heroUI.Level.AnimateUpdated();     
             _view.stats.SetMergeLevel(mergeLevel: _data.core.level);
             if(gameObject.TryGetComponent(out IHeroController hero))
-                hero.View.heroUI.UpdateStatsView(hero.View);
+                hero.Components.heroUI.UpdateStatsView(hero.Components);
         }
 
         public void Hide()

@@ -1,5 +1,4 @@
 ﻿using DG.Tweening;
-using RobotCastle.Core;
 using SleepDev;
 using SleepDev.UIElements;
 using TMPro;
@@ -8,7 +7,7 @@ using UnityEngine.UI;
 
 namespace RobotCastle.UI
 {
-    public class LevelMoneyUI : MoneyToBuyUI
+    public class LevelMoneyUI : MoneyUI
     {
         [System.Serializable]
         private class AddedMoneyAnimator

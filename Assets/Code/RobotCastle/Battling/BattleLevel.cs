@@ -186,6 +186,7 @@ namespace RobotCastle.Battling
             _mainUI.BtnStart2.AddMainCallback(StartBattle);
             _mainUI.TroopSizePurchaseUI.SetInteractable(true);
             _mainUI.Init(_battleManager.battle, _chapter);
+            _mainUI.StatsCollector.SetCollector(_battleManager.playerDamageStatsCollector);
             InitCurrentRound();
         }
         
@@ -203,7 +204,7 @@ namespace RobotCastle.Battling
 
             _battleManager.startProcessor = this;
             _battleManager.endProcessor = this;
-            var battle = _battleManager.Init(_chapter.levelData.levels);
+            var battle = _battleManager.CreateBattle(_chapter.levelData.levels);
             
             _mergeManager.Init();
             _troopSizeManager = new BattleTroopSizeManager(battle, _mergeManager.SectionsController, _troopSizeExpansion);
@@ -265,6 +266,11 @@ namespace RobotCastle.Battling
             {
                 StartingBattle(_token.Token);
             }
+            else
+            {
+                var ui = ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {});
+                ui.ShowNoHeroesOnGrid();
+            }
         }
 
         private async Task StartingBattle(CancellationToken token)
@@ -276,7 +282,7 @@ namespace RobotCastle.Battling
             _battleManager.SetGoingState();
             _mainUI.Started();
             foreach (var hero in _battleManager.battle.playersAlive)
-                hero.View.transform.rotation = Quaternion.Euler(Vector3.zero);
+                hero.Components.transform.rotation = Quaternion.Euler(Vector3.zero);
             await _battleCamera.MoveToBattlePoint();
             if (token.IsCancellationRequested) return;
             _battleManager.BeginBattle();
@@ -295,7 +301,7 @@ namespace RobotCastle.Battling
                 GiveRewardAndShowUI();
                 return;
             }
-            _battleManager.BattleRewardCalculator.AddRewardForStage();
+            _battleManager.rewardCalculator.AddRewardForStage();
             await Task.Delay((int)(_endDelay * .5f * 1000), token);
             if (token.IsCancellationRequested) return;
 

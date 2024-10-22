@@ -2,7 +2,7 @@
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/SpellProvider SoulLink", fileName = "soul_link", order = 0)]
+    [CreateAssetMenu(menuName = "SO/Spells/Soul Link", fileName = "soul_link", order = 0)]
     public class SpellProviderSoulLink : SpellProvider
     {
         [SerializeField] private SpellConfigSoulLink _config;

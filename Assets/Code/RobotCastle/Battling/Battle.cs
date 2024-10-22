@@ -7,6 +7,29 @@ namespace RobotCastle.Battling
     [System.Serializable]
     public class Battle
     {
+        public Battle()
+        {
+            _enemies = new();
+            _players = new ();
+            _playersAlive = new();
+            _enemies = new ();
+            playerTeam = new BattleTeam();
+            enemyTeam = new BattleTeam();
+            _enemiesAlive = new ();
+            _playersAlive = new ();
+        }
+
+        public static Battle GetDefault()
+        {
+            return new Battle()
+            {
+                troopSize = 3,
+                roundIndex = 0,
+                playerHealthPoints = 3,
+            };
+        }
+
+        
         public Action<int> WinCallback { get; set; }
         
         public BattleState State { get; set; }
@@ -25,14 +48,10 @@ namespace RobotCastle.Battling
         public AttackPositionCalculator AttackPositionCalculator { get; set; } = new();
         
         public BattleRewardCalculator RewardCalculator { get; set; }
+        public List<IBattleHeroKilledListener> HeroKilledListener { get; private set; } = new(10);
+        public List<IBattleHeroKilledListener> EnemyKilledListener { get; private set; } = new(10);
 
-        private bool _completed;
-        private List<IHeroController> _enemies; // is not changed. All units set at startup
-        private List<IHeroController> _players; // is not changed. All units set at startup
-        
-        private List<IHeroController> _enemiesAlive = new(20);
-        private List<IHeroController> _playersAlive = new(20);
-        
+
         public BattleTeam GetTeam(int num) => num == 0 ? playerTeam : enemyTeam;
         public BattleTeam GetEnemyTeam(int num) => num == 0 ? enemyTeam : playerTeam;
         
@@ -47,6 +66,8 @@ namespace RobotCastle.Battling
             switch (hero.TeamNum)
             {
                 case 0:
+                    foreach (var listener in HeroKilledListener)
+                        listener.OnKilled(hero);
                     _playersAlive.Remove(hero);
                     if (!_completed && _playersAlive.Count == 0)
                     {
@@ -55,6 +76,8 @@ namespace RobotCastle.Battling
                     }
                     break;
                 default:
+                    foreach (var listener in EnemyKilledListener)
+                        listener.OnKilled(hero);
                     RewardCalculator.AddRewardForKill(hero);
                     _enemiesAlive.Remove(hero);
                     if (!_completed && _enemiesAlive.Count == 0)
@@ -110,28 +133,6 @@ namespace RobotCastle.Battling
             }
         }
 
-        public Battle()
-        {
-            _enemies = new();
-            _players = new ();
-            _playersAlive = new();
-            _enemies = new ();
-            playerTeam = new BattleTeam();
-            enemyTeam = new BattleTeam();
-            _enemiesAlive = new ();
-            _playersAlive = new ();
-        }
-
-        public static Battle GetDefault()
-        {
-            return new Battle()
-            {
-                troopSize = 3,
-                roundIndex = 0,
-                playerHealthPoints = 3,
-            };
-        }
-
         public string GetMainStateAsStr()
         {
             return $"TroopSize: {troopSize}. Stage {roundIndex}. PlayerHealth: {playerHealthPoints}. Player Count: {_players.Count}. Enemies count: {_enemies.Count}";
@@ -143,7 +144,7 @@ namespace RobotCastle.Battling
             var num = 1;
             foreach (var hero in _players)
             {
-                msg += $"{num} {hero.View.stats.HeroId}\n";
+                msg += $"{num} {hero.Components.stats.HeroId}\n";
             }
             return msg;
         }
@@ -154,9 +155,22 @@ namespace RobotCastle.Battling
             var num = 1;
             foreach (var hero in _enemies)
             {
-                msg += $"{num} {hero.View.stats.HeroId}\n";
+                msg += $"{num} {hero.Components.stats.HeroId}\n";
             }
             return msg;
         }
+        
+        private bool _completed;
+        private List<IHeroController> _enemies; // is not changed. All units set at startup
+        private List<IHeroController> _players; // is not changed. All units set at startup
+        
+        private List<IHeroController> _enemiesAlive = new(20);
+        private List<IHeroController> _playersAlive = new(20);
+        
+    }
+
+    public interface IBattleHeroKilledListener
+    {
+        void OnKilled(IHeroController hero);
     }
 }

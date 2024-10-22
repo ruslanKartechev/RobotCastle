@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1341,6 +1341,7 @@ GameObject:
   - component: {fileID: 2299896479919069544}
   - component: {fileID: 7032951864392418025}
   - component: {fileID: 1645653510917318285}
+  - component: {fileID: 2062398932651762552}
   m_Layer: 5
   m_Name: Money
   m_TagString: Untagged
@@ -1391,7 +1392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1407,6 +1408,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2062398932651762552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524086386477287949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b96edaa7308248068c8fbd228b001946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subOnEnable: 0
+  _text: {fileID: 7066123633147866336}
 --- !u!1 &1742225617668533118
 GameObject:
   m_ObjectHideFlags: 0
@@ -1735,7 +1750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4117,8 +4132,8 @@ MonoBehaviour:
   - {fileID: 3866343493709312724}
   - {fileID: 6594882523237093386}
   _completedBtn: {fileID: 1541431267832662693}
-  _moneyText: {fileID: 7066123633147866336}
   _fadeScreen: {fileID: 7814424678734212780}
+  _moneyUI: {fileID: 2062398932651762552}
 --- !u!225 &6916865751873708397
 CanvasGroup:
   m_ObjectHideFlags: 0

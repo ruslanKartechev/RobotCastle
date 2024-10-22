@@ -160,9 +160,11 @@ namespace RobotCastle.UI
             var chapterConfig = _chaptersDb.chapters[chapterInd];
             _txtLevel.text = $"Chapter {_data.chapterIndex + 1}";
             _txtName.text = chapterConfig.viewName;
+
+            var db = ServiceLocator.Get<ViewDataBase>();
+            var iconPath = db.LocationIcons[_data.chapterIndex];
+            _chapterIcon.sprite = Resources.Load<Sprite>(iconPath);
             
-            var sprite = Resources.Load<Sprite>($"sprites/chapter_icon_{_data.chapterIndex + 1}");
-            _chapterIcon.sprite = sprite;
             var tiersCount = chapterConfig.tiers.Count;
             for (var i = 0; i < tiersCount; i++)
                 _tierUis[i].SetPercentMultiplier(chapterConfig.tiers[i].multiplier);

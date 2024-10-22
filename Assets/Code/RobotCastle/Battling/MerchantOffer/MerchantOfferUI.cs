@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using DG.Tweening;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
-using TMPro;
+using SleepDev.UIElements;
 using UnityEngine;
 
 namespace RobotCastle.Battling.MerchantOffer
@@ -17,9 +16,8 @@ namespace RobotCastle.Battling.MerchantOffer
         [SerializeField] private List<ItemDescriptionLongUI> _itemDescriptions;
         [SerializeField] private List<MerchantOfferButton> _buttons;
         [SerializeField] private MyButton _completedBtn;
-        [SerializeField] private TextMeshProUGUI _moneyText;
         [SerializeField] private BlackoutFadeScreen _fadeScreen;
-
+        [SerializeField] private MoneyUI _moneyUI;
         private PurchaseCallback _purchaseCallback;
         private Action _endCallback;
         private MerchantOfferData.GoodsPreset _preset;
@@ -30,7 +28,8 @@ namespace RobotCastle.Battling.MerchantOffer
             _endCallback = completedCallback;
             _purchaseCallback = purchaseCallback;
             var money = ServiceLocator.Get<GameMoney>();
-            _moneyText.text = money.levelMoney.ToString();
+            _moneyUI.Init(money.levelMoney);
+            _moneyUI.DoReact(true);
             var count = preset.goods.Count;
             for (var i = 0; i < count; i++)
             {
@@ -71,9 +70,6 @@ namespace RobotCastle.Battling.MerchantOffer
                 _buttons[index].activeBtn.SetInteractable(false);
                 if (_preset.goods[index].forAds == false)
                 {
-                    var money = ServiceLocator.Get<GameMoney>();
-                    _moneyText.text = money.levelMoney.ToString();
-                    _moneyText.transform.DOPunchScale(Vector3.one * .2f, .3f);
                 }
             }
         }
@@ -96,6 +92,7 @@ namespace RobotCastle.Battling.MerchantOffer
         private void Complete()
         {
             _fadeScreen.FadeOut();
+            _moneyUI.DoReact(false);
             _endCallback?.Invoke();
         }
     }

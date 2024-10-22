@@ -14,7 +14,8 @@ namespace RobotCastle.UI
         [SerializeField] private float _durationIn = .3f;
         [SerializeField] private float _durationOut = .21f;
         [SerializeField] private float _maxAlpha = 1f;
-
+        [SerializeField] private Color _color1;
+        [SerializeField] private Color _color2;
         [SerializeField] private Image _image;
         [SerializeField] private GameObject _goToDisable;
         private Coroutine _working;
@@ -71,6 +72,8 @@ namespace RobotCastle.UI
             _image.enabled = true;
             _image.SetAlpha(_maxAlpha);
             yield return AlphaChange(_maxAlpha, 0f, _durationIn);
+            // yield return ColorChange(_color1, _color2, _durationOut);
+
             _image.enabled = false;
         }
 
@@ -78,10 +81,25 @@ namespace RobotCastle.UI
         {
             _image.enabled = true;
             yield return AlphaChange(0f, _maxAlpha, _durationOut);
+            // yield return ColorChange(_color2, _color1, _durationOut);
+            
             ServiceLocator.Get<IUIManager>().OnClosed(Id);
             if (_goToDisable == null)
                 _goToDisable = transform.parent.gameObject;
             _goToDisable.gameObject.SetActive(false);
+        }
+        
+        private IEnumerator ColorChange(Color one, Color two, float time)
+        {
+            var elapsed = 0f;
+            while (elapsed < time)
+            {
+                var color = Color.Lerp(one, two, elapsed / time);
+                _image.color = color;
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            _image.color = two;
         }
         
         private IEnumerator AlphaChange(float from, float to, float time)

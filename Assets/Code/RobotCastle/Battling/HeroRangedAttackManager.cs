@@ -38,24 +38,24 @@ namespace RobotCastle.Battling
         {
             _target = target;
             _targetTransform = target.GetGameObject().transform;
-            Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
-            Hero.View.animationEventReceiver.OnAttackEvent += OnAttack;
-            Hero.View.animator.SetBool(HeroesConstants.Anim_Attack, true);
+            Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
+            Hero.Components.animationEventReceiver.OnAttackEvent += OnAttack;
+            Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, true);
         }
 
         public void Stop()
         {
-            Hero.View.animator.SetBool(HeroesConstants.Anim_Attack, false);
-            Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
+            Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, false);
+            Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
         }
 
         private void OnAttack()
         {
-            if(Hero.View.shootParticles != null)
-                Hero.View.shootParticles.Play();
+            if(Hero.Components.shootParticles != null)
+                Hero.Components.shootParticles.Play();
             
             var projectile = _projectileFactory.GetProjectile();
-            projectile.LaunchProjectile(Hero.View.projectileSpawnPoint, _targetTransform, Hero.View.stats.ProjectileSpeed, HitCallback, _target);
+            projectile.LaunchProjectile(Hero.Components.projectileSpawnPoint, _targetTransform, Hero.Components.stats.ProjectileSpeed, HitCallback, _target);
             OnAttackStep?.Invoke();
         }
 
@@ -64,8 +64,8 @@ namespace RobotCastle.Battling
             var dm = (IDamageReceiver)target;
             if (dm != null)
             {
-                Hero.View.damageSource.DamagePhys(_target);
-                Hero.View.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
+                Hero.Components.damageSource.DamagePhys(_target);
+                Hero.Components.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
             }
             OnHit?.Invoke();
         }

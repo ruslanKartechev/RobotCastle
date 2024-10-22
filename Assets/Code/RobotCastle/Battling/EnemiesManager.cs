@@ -51,14 +51,14 @@ namespace RobotCastle.Battling
             var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
             foreach (var en in Enemies)
             {
-                var merge = en.View.gameObject.GetComponent<IItemView>();
+                var merge = en.Components.gameObject.GetComponent<IItemView>();
                 MergeFunctions.ClearCell(_gridView.BuiltGrid, merge.itemData);
-                if (en.View.heroUI.gameObject.TryGetComponent<HeroUIWrapper>(out var wrapper))
+                if (en.Components.heroUI.gameObject.TryGetComponent<HeroUIWrapper>(out var wrapper))
                     barsPanel.ReturnToPool(wrapper);
             }
             for (var i = Enemies.Count - 1; i >= 0; i--)
             {
-                Destroy(Enemies[i].View.gameObject);
+                Destroy(Enemies[i].Components.gameObject);
             }
             Enemies.Clear();
         }
@@ -78,7 +78,7 @@ namespace RobotCastle.Battling
                 for (var i = 0; i < enemies.Count && countLeft > 0; i++)
                 {
                     var original = enemies[i];
-                    var mergeView = original.View.gameObject.GetComponent<IItemView>();
+                    var mergeView = original.Components.gameObject.GetComponent<IItemView>();
                     var h = _enemiesFactory.SpawnNew(new SpawnMergeItemArgs(mergeView.itemData.core));
                     newEnemies.Add(h);
                     countLeft--;
@@ -96,7 +96,7 @@ namespace RobotCastle.Battling
         {
             foreach (var hero in enemies)
             {
-                var itemView = hero.View.gameObject.GetComponent<IItemView>();
+                var itemView = hero.Components.gameObject.GetComponent<IItemView>();
                 var lvl = itemView.itemData.core.level;
                 if (lvl < MergeConstants.HeroMaxMergeLvl)
                 {

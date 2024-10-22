@@ -22,7 +22,7 @@ namespace RobotCastle.Battling
             var db = ServiceLocator.Get<ViewDataBase>();
             foreach (var it in items)
             {
-                var prefab = db.GetMergePrefab(it.id);
+                var prefab = db.GetMergePrefabAtLevel(it.id, it.level);
                 if (prefab.TryGetComponent<ModifiersContainer>(out var container))
                     result.Add(new HeroWeaponData(it, container.ModifierIds));   
                 else

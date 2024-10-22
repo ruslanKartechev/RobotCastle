@@ -22,16 +22,16 @@ namespace RobotCastle.Battling
         private HeroRangeCoverCheck _rangeCoverCheck;
         private EAttackLogicStep _logicStep;
         private bool _isActivated;
-        private HeroStateData myState => _hero.View.state;
-        private HeroStateData enemyState => myState.attackData.CurrentEnemy.View.state;
+        private HeroStateData myState => _hero.Components.state;
+        private HeroStateData enemyState => myState.attackData.CurrentEnemy.Components.state;
         
         private IHeroController enemy
         {
-            get => _hero.View.state.attackData.CurrentEnemy;
-            set => _hero.View.state.attackData.CurrentEnemy = value;
+            get => _hero.Components.state.attackData.CurrentEnemy;
+            set => _hero.Components.state.attackData.CurrentEnemy = value;
         }
 
-        private HeroMovementManager movement => _hero.View.movement;
+        private HeroMovementManager movement => _hero.Components.movement;
         
         public void Activate(IHeroController hero, Action<IHeroBehaviour> endCallback)
         {
@@ -44,24 +44,24 @@ namespace RobotCastle.Battling
             _hero = hero;
             if (_rangeCoverCheck == null)
                 _rangeCoverCheck = new HeroRangeCoverCheck(_hero);
-            _hero.Battle.AttackPositionCalculator.AddUnit(_hero.View.state);
-            _hero.View.attackManager.OnAttackStep += OnAttackCallback;
+            _hero.Battle.AttackPositionCalculator.AddUnit(_hero.Components.state);
+            _hero.Components.attackManager.OnAttackStep += OnAttackCallback;
             _mainToken = new CancellationTokenSource();
-            _hero.View.stats.CheckManaFull();
+            _hero.Components.stats.CheckManaFull();
             SearchAndAttack(_mainToken.Token);
         }
 
         public void Stop()
         {
-            _hero.View.attackManager.OnAttackStep -= OnAttackCallback;
+            _hero.Components.attackManager.OnAttackStep -= OnAttackCallback;
             _logicStep = EAttackLogicStep.Waiting;
             // CLog.Log($"[{nameof(HeroAttackEnemyBehaviour)}] [Stop]");
             if(_mainToken != null)
                 _mainToken.Cancel();
             if (_subToken != null)
                 _subToken.Cancel();
-            _hero.View.attackManager.Stop();
-            _hero.Battle.AttackPositionCalculator.RemoveUnit(_hero.View.state);
+            _hero.Components.attackManager.Stop();
+            _hero.Battle.AttackPositionCalculator.RemoveUnit(_hero.Components.state);
             myState.SetTargetCellToSelf();
         }
 
@@ -73,18 +73,18 @@ namespace RobotCastle.Battling
         {
             myState.attackData.IsMovingForDuel = false;
             myState.SetTargetCellToSelf();
-            _rangeCoverCheck.Update(_hero.View.transform.position, true);
+            _rangeCoverCheck.Update(_hero.Components.transform.position, true);
             enemy = BattleManager.GetBestTargetForAttack(_hero);
             while (enemy == null && !token.IsCancellationRequested)
             {
                 const float waitTimeSec = 1f;
-                CLog.Log($"[{_hero.View.gameObject.name}] Closest enemy is null. Waiting {waitTimeSec} sec.");
+                CLog.Log($"[{_hero.Components.gameObject.name}] Closest enemy is null. Waiting {waitTimeSec} sec.");
                 await Task.Delay((int)(waitTimeSec * 1000f), token);
                 enemy = BattleManager.GetBestTargetForAttack(_hero);
             }
             if (token.IsCancellationRequested)
                 return;
-            _rangeCoverCheck.Update(_hero.View.transform.position, false);
+            _rangeCoverCheck.Update(_hero.Components.transform.position, false);
             await Task.Yield();
             if (token.IsCancellationRequested)
                 return;
@@ -130,7 +130,7 @@ namespace RobotCastle.Battling
             if (prevStep == EAttackLogicStep.Attacking)
                 StopAttack();
             _logicStep = EAttackLogicStep.Rotating;
-            movement.RotateIfNecessary(enemy.View.agent.CurrentCell, _subToken.Token, OnRotated);
+            movement.RotateIfNecessary(enemy.Components.agent.CurrentCell, _subToken.Token, OnRotated);
         }        
         
         private async void BeginAttack(EAttackLogicStep prevStep)
@@ -198,7 +198,7 @@ namespace RobotCastle.Battling
                     await Task.Delay(waitTimeMs, token);
                     break;
                 case EPathMovementResult.FailedToBuild:
-                    CLog.LogRed($"[{_hero.View.gameObject.name}] FailedToBuild moving to {attackCell.ToString()}");
+                    CLog.LogRed($"[{_hero.Components.gameObject.name}] FailedToBuild moving to {attackCell.ToString()}");
                     await Task.Delay(waitTimeMs, token);
                     break;
             }
@@ -236,7 +236,7 @@ namespace RobotCastle.Battling
                     await Task.Delay(waitTimeMs, token);
                     break;
                 case EPathMovementResult.FailedToBuild:
-                    CLog.LogRed($"[{_hero.View.gameObject.name}] FailedToBuild moving to {targetCell.ToString()}");
+                    CLog.LogRed($"[{_hero.Components.gameObject.name}] FailedToBuild moving to {targetCell.ToString()}");
                     await Task.Delay(waitTimeMs, token);
                     break;
             }
@@ -248,11 +248,11 @@ namespace RobotCastle.Battling
         /// <returns>0 - can attack. 1 - need to move, 2 - need to rotate </returns>
         private int CheckNextAction(IHeroController otherHero)
         {
-            _rangeCoverCheck.Update(_hero.View.transform.position, true);
+            _rangeCoverCheck.Update(_hero.Components.transform.position, true);
             var isWithin = _rangeCoverCheck.IsHeroWithinRange(otherHero);
             if (!isWithin)
                 return 1;
-            var shouldRotate = movement.CheckIfShouldRotate(enemy.View.agent.CurrentCell);
+            var shouldRotate = movement.CheckIfShouldRotate(enemy.Components.agent.CurrentCell);
             if (shouldRotate)
                 return 2;
             return 0;
@@ -260,24 +260,24 @@ namespace RobotCastle.Battling
 
         private void StopAttack()
         {
-            _hero.View.attackManager.Stop();
+            _hero.Components.attackManager.Stop();
             // CLog.Log($"[{_hero.gameObject.name}] Stop Attack Behaviour");
         }
 
         private async Task BeginAttackAndCheckIfDead(CancellationToken token)
         {
-            _hero.View.attackManager.BeginAttack(enemy.View.damageReceiver);
-            var startEnemyCell = enemy.View.agent.CurrentCell;
+            _hero.Components.attackManager.BeginAttack(enemy.Components.damageReceiver);
+            var startEnemyCell = enemy.Components.agent.CurrentCell;
             while (!token.IsCancellationRequested)
             {
                 if (enemy.IsDead)
                 {
-                    enemy.View.attackManager.Stop();
+                    enemy.Components.attackManager.Stop();
                     await Task.Delay((int)(DelayAfterTargetDied), token);
                     DecideNextStep(_mainToken.Token);
                     return;
                 }
-                var currentEnemyCell = enemy.View.agent.CurrentCell;
+                var currentEnemyCell = enemy.Components.agent.CurrentCell;
                 if (startEnemyCell != currentEnemyCell)
                 {
                     // This method will either stop attack or do nothing, hence continue the loop

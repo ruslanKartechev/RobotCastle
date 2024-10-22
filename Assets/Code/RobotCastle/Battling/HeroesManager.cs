@@ -92,7 +92,7 @@ namespace RobotCastle.Battling
                 var cellWorldPos = map.GetWorldFromCell(cell);
                 foreach (var hh in allHeroes)
                 {
-                    var d2 = (cellWorldPos - hh.View.transform.position).sqrMagnitude;
+                    var d2 = (cellWorldPos - hh.Components.transform.position).sqrMagnitude;
                     if (d2 <= rad2)
                         result.Add(hh);   
                 }
@@ -116,7 +116,7 @@ namespace RobotCastle.Battling
                 var cellWorldPos = map.GetWorldFromCell(cell);
                 foreach (var hh in allHeroes)
                 {
-                    var d2 = (cellWorldPos - hh.View.transform.position).sqrMagnitude;
+                    var d2 = (cellWorldPos - hh.Components.transform.position).sqrMagnitude;
                     if (d2 <= rad2)
                         result.Add(hh);   
                 }
@@ -139,7 +139,7 @@ namespace RobotCastle.Battling
                 var heroPos = map.GetWorldFromCell(cell);
                 foreach (var hh in allHeroes)
                 {
-                    var d2 = (heroPos - hh.View.transform.position).sqrMagnitude;
+                    var d2 = (heroPos - hh.Components.transform.position).sqrMagnitude;
                     if (d2 <= rad2)
                         return true;
                 }

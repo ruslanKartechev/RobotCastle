@@ -24,16 +24,16 @@ namespace RobotCastle.Battling
             if (!_activated)
             {
                 _activated = true;
-                Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
-                Hero.View.animationEventReceiver.OnAttackEvent += OnAttack;
+                Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
+                Hero.Components.animationEventReceiver.OnAttackEvent += OnAttack;
                 if (_doOverrideAnimations)
                 {
-                    Hero.View.animationEventReceiver.OnAttackAnimationEndEvent -= SetRandomAnimation;
-                    Hero.View.animationEventReceiver.OnAttackAnimationEndEvent += SetRandomAnimation;
+                    Hero.Components.animationEventReceiver.OnAttackAnimationEndEvent -= SetRandomAnimation;
+                    Hero.Components.animationEventReceiver.OnAttackAnimationEndEvent += SetRandomAnimation;
                 }
             }
-            Hero.View.state.isAttacking = true;
-            Hero.View.animator.SetBool(HeroesConstants.Anim_Attack, true);
+            Hero.Components.state.isAttacking = true;
+            Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, true);
         }
 
         public void Stop()
@@ -41,25 +41,25 @@ namespace RobotCastle.Battling
             if (!_activated)
                 return;
             _activated = false;
-            Hero.View.animationEventReceiver.OnAttackEvent -= OnAttack;
-            Hero.View.animator.SetBool(HeroesConstants.Anim_Attack, false);
-            Hero.View.state.isAttacking = false;
+            Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
+            Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, false);
+            Hero.Components.state.isAttacking = false;
             if (_doOverrideAnimations)
-                Hero.View.animationEventReceiver.OnAttackAnimationEndEvent -= SetRandomAnimation;
+                Hero.Components.animationEventReceiver.OnAttackAnimationEndEvent -= SetRandomAnimation;
         }
 
         private void OnAttack()
         {
             if (!_activated)
                 return;
-            Hero.View.damageSource.DamagePhys(_target);
+            Hero.Components.damageSource.DamagePhys(_target);
             OnAttackStep?.Invoke();
-            Hero.View.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
+            Hero.Components.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
         }
 
         private void SetRandomAnimation()
         {
-            Hero.View.animator.runtimeAnimatorController = _overrideControllers.Random();
+            Hero.Components.animator.runtimeAnimatorController = _overrideControllers.Random();
         }
     }
 }

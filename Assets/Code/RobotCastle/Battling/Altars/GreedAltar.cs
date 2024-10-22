@@ -72,7 +72,7 @@ namespace RobotCastle.Battling.Altars
 
         public void OnRoundSet(BattleManager battleManager)
         {
-            if (battleManager.CurrentRound.roundType == RoundType.EliteEnemy)
+            if (battleManager.currentRound.roundType == RoundType.EliteEnemy)
             {
                 var tier = _tier >= _money.Count ? _money.Count - 1 : _tier;
                 var val = (int)_money[tier];

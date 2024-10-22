@@ -2,7 +2,7 @@
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/SpellProvider VoidHallucination", fileName = "VoidHallucination", order = 0)]
+    [CreateAssetMenu(menuName = "SO/Spells/Void Hallucination", fileName = "void_hallucination", order = 0)]
     public class SpellProviderVoidHallucination : SpellProvider
     {
         [SerializeField] private SpellConfigVoidHallucination _config;

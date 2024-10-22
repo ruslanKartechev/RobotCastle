@@ -2,7 +2,7 @@
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/SpellProvider RapidArrows", fileName = "RapidArrows", order = 0)]
+    [CreateAssetMenu(menuName = "SO/Spells/Rapid Arrows", fileName = "rapid_arrows", order = 0)]
     public class SpellProviderRapidArrows : SpellProvider
     {
         [SerializeField] private SpellConfigRapidArrows _config;

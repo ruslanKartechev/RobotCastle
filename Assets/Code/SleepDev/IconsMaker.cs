@@ -77,6 +77,7 @@ namespace SleepDev
                 _current = active[0];
             }
             TakeFor(_current);
+            AssetDatabase.Refresh();
         }
         
         public void TakeAll()
@@ -152,23 +153,26 @@ namespace SleepDev
             var me = target as IconsMaker;
             EU.Space();
             GUILayout.BeginHorizontal();
-            if(EU.BtnMid2("Take", EU.ForestGreen))
+            if(EU.BtnMidWide2("Take All Auto", EU.Gold))
                 me.TakeAll();
-            if(EU.BtnMid2("Stop", EU.Plum))
+            GUILayout.Space(4);
+            if(EU.BtnMidWide2("Stop Taking", EU.Plum))
                 me.Stop();
             GUILayout.EndHorizontal();
             EU.Space();
             EU.Space();
 
+            EU.Label("Picking curent object", EU.Gold, 'l');
             GUILayout.BeginHorizontal();
             if(EU.BtnSmallSquare("<<", EU.Gold))
                 me.Prev();
             if(EU.BtnSmallSquare(">>", EU.Gold))
                 me.Next();
             GUILayout.EndHorizontal();
+            
             EU.Space();
 
-            if(EU.BtnMidWide2("Take Current", EU.Lavender))
+            if(EU.BtnMidWide2("Take Current", EU.Aqua))
                 me.TakeCurrent();
             
         }

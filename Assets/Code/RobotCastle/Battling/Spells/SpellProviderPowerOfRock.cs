@@ -2,7 +2,7 @@
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/SpellProvider PowerOfRock", fileName = "PowerOfRock", order = 0)]
+    [CreateAssetMenu(menuName = "SO/Spells/Power Of Rock", fileName = "power_of_rock", order = 0)]
     public class SpellProviderPowerOfRock : SpellProvider
     {
         [SerializeField] private SpellConfigPowerOfRock _config;

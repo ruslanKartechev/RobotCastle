@@ -13,40 +13,30 @@ namespace RobotCastle.Battling
     public partial class BattleManager : MonoBehaviour
     {
         public Battle battle => _battle;
-        public BattleRewardCalculator BattleRewardCalculator => _rewardCalculator;
         
         public IBattleEndProcessor endProcessor { get; set; }
         
         public IBattleStartedProcessor startProcessor { get; set; }
         public bool isRoundBoss => _battle.roundIndex == _roundData.Count - 1;
 
-        public RoundData CurrentRound => _roundData[_battle.roundIndex];
+        public BattleRewardCalculator rewardCalculator => _rewardCalculator;
+        public RoundData currentRound => _roundData[_battle.roundIndex];
+        public BattleEnemiesWeaponsDropper dropper => _dropper;
+        public BattleDamageStatsCollector playerDamageStatsCollector => _playerDamageStatsCollector;
+        public BattleDamageStatsCollector enemiesStatsCollector => _enemiesStatsCollector;
         
         [SerializeField] private bool _activateEnemies = true;
         [SerializeField] private bool _activatePlayers = true;
         private Battle _battle;
         private List<RoundData> _roundData;
         private BattleRewardCalculator _rewardCalculator;
+        private BattleEnemiesWeaponsDropper _dropper;
         private List<IRoundModifier> _roundModifiers = new(5);
-
-
-        public void AddRoundModifier(IRoundModifier modifier)
-        {
-            _roundModifiers.Add(modifier);
-        }
-
-        public void RemoveRoundModifier(IRoundModifier modifier)
-        {
-            _roundModifiers.Remove(modifier);
-        }
-
-        public void ClearAllModifiers()
-        {
-            _roundModifiers.Clear();
-        }
+        private BattleDamageStatsCollector _playerDamageStatsCollector = new();
+        private BattleDamageStatsCollector _enemiesStatsCollector = new();
         
         
-        public Battle Init(List<RoundData> roundData)
+        public Battle CreateBattle(List<RoundData> roundData)
         {
             _roundData = roundData;
             CLog.Log($"[{nameof(BattleManager)}] Init Created new battle data");
@@ -54,6 +44,8 @@ namespace RobotCastle.Battling
             ServiceLocator.Bind<Battle>(_battle);
             _battle.State = BattleState.NotStarted;
             _rewardCalculator = _battle.RewardCalculator = new BattleRewardCalculator(0,0);
+            _dropper = new();
+            _battle.EnemyKilledListener.Add(_dropper);
             return _battle;
         }
 
@@ -81,38 +73,68 @@ namespace RobotCastle.Battling
                 CLog.LogWhite($"No Player Units on active area!");
                 return false;
             }
+            _dropper.Reset();
             _battle.State = BattleState.Going;
             _battle.WinCallback = OnTeamWin;
             var map = ServiceLocator.Get<Bomber.IMap>();
+    
+
             foreach (var hero in _battle.Enemies)
             {
                 hero.TeamNum = 1;
                 hero.Battle = _battle;
-                hero.View.agent.UpdateMap(map);
+                hero.Components.agent.UpdateMap(map);
             }
             foreach (var hero in _battle.PlayerUnits)
             {
                 hero.TeamNum = 0;
                 hero.Battle = _battle;
-                hero.View.agent.UpdateMap(map);
+                hero.Components.agent.UpdateMap(map);
             }
+            
             PrepareForBattle(_battle.PlayerUnits);
             PrepareForBattle(_battle.Enemies);
             
+            try
+            {
+                _playerDamageStatsCollector.ResetForNewHeroes(_battle.PlayerUnits);
+                _enemiesStatsCollector.ResetForNewHeroes(_battle.Enemies);
+            }
+            catch (System.Exception ex)
+            {
+                CLog.LogYellow($"{ex.Message}, {ex.StackTrace}");
+            }
+
             if (_activatePlayers)
             {
-                foreach (var unit in _battle.playersAlive)
-                    unit.SetBehaviour(new HeroAttackEnemyBehaviour());
+                foreach (var hero in _battle.playersAlive)
+                    hero.SetBehaviour(new HeroAttackEnemyBehaviour());
             }
             if (_activateEnemies)
             {
-                foreach (var unit in _battle.enemiesAlive)
-                    unit.SetBehaviour(new HeroAttackEnemyBehaviour());
+                foreach (var hero in _battle.enemiesAlive)
+                    hero.SetBehaviour(new HeroAttackEnemyBehaviour());
             }
             _battle.State = BattleState.Going;
             startProcessor?.OnBattleStarted(_battle);
             return true;
         }
+        
+        public void AddRoundModifier(IRoundModifier modifier)
+        {
+            _roundModifiers.Add(modifier);
+        }
+
+        public void RemoveRoundModifier(IRoundModifier modifier)
+        {
+            _roundModifiers.Remove(modifier);
+        }
+
+        public void ClearAllModifiers()
+        {
+            _roundModifiers.Clear();
+        }
+
 
         public void SetNextStage()
         {
@@ -120,12 +142,6 @@ namespace RobotCastle.Battling
             _battle.roundIndex++;
         }
         
-        public async Task SetAndInitNextStage(CancellationToken token)
-        {
-            SetNextStage();
-            await SetRound(_battle.roundIndex, token);
-        }
-
         public async Task ResetStage(CancellationToken token)
         {
             _battle.Reset();
@@ -160,9 +176,8 @@ namespace RobotCastle.Battling
             _battle.Enemies.Clear();
             _battle.enemiesAlive.Clear();
             var preset = _roundData[stageIndex].enemyPreset;
-            var boss = isRoundBoss;
             
-            await enemiesManager.factory.SpawnPreset(preset, boss, token);
+            await enemiesManager.factory.SpawnPreset(preset, token);
             for (var i = 0; i < _roundModifiers.Count; i++)
                 _roundModifiers[i].OnRoundSet(this);
             if (token.IsCancellationRequested) return;
@@ -230,7 +245,7 @@ namespace RobotCastle.Battling
             
             for (var i = _roundModifiers.Count - 1; i >= 0; i--)
                 _roundModifiers[i].OnRoundCompleted(this);
-            
+            _dropper.RevealAll();
             switch (teamNum)
             {
                 case 0:

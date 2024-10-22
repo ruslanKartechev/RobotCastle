@@ -6,7 +6,7 @@ namespace RobotCastle.Battling
     /// Headshot (MP 0/90)
     /// Fires a powerful bullet at the target, dealing 0/50/100/300 + (161/419/ /) SP damage.
     /// </summary>
-    [CreateAssetMenu(menuName = "SO/Spells/SpellHeadshot", fileName = "spell_headshot", order = 0)]
+    [CreateAssetMenu(menuName = "SO/Spells/Headshot", fileName = "spell_headshot", order = 0)]
     public class SpellProviderHeadshot : SpellProvider
     {
         public override float manaMax => _config.manaMax;

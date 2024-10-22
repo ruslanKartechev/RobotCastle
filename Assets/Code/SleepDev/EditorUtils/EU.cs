@@ -216,7 +216,22 @@ namespace SleepDev
             var prevColor = GUI.color;
             GUI.color = color;
             SetButtonTextColor(style,color);
+            
             var clicked = GUILayout.Button(label, style);
+            GUI.color = prevColor;
+            return clicked;
+        }
+        
+        public static bool Button(GUIContent content, float width, float height, Color color, int fontSize = -1)
+        {
+            var style = GetButtonStyle(width, height);
+            style.fontStyle = FontStyle.Bold;
+            if (fontSize > 0)
+                style.fontSize = fontSize;
+            var prevColor = GUI.color;
+            GUI.color = color;
+            SetButtonTextColor(style,color);
+            var clicked = GUILayout.Button(content, style);
             GUI.color = prevColor;
             return clicked;
         }

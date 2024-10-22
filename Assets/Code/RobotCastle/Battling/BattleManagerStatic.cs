@@ -13,7 +13,7 @@ namespace RobotCastle.Battling
         public static void ResetHeroAfterBattle(IHeroController hero)
         {
             hero.IsDead = false;
-            var components = hero.View;
+            var components = hero.Components;
             components.stats.ClearDecorators();
             components.healthManager.ClearAllModifiers();
             
@@ -38,24 +38,23 @@ namespace RobotCastle.Battling
 
         public static void PrepareForBattle(List<IHeroController> heroes)
         {
-            var modsDb = ServiceLocator.Get<ModifiersDataBase>();
             foreach (var hero in heroes)
             {
-                var components = hero.View;
+                var components = hero.Components;
                 components.movement.SetupAgent();
                 components.stats.ManaResetAfterBattle.Reset(components);
                 components.heroUI.AssignStatsTracking(components);
                 components.healthManager.SetDamageable(true);
                 components.statAnimationSync.Init(true);
-                foreach (var itemData in components.heroItemsContainer.Items)
-                {
-                    foreach (var id in itemData.modifierIds)
-                    {
-                        var mod = modsDb.GetModifier(id);
-                        mod.AddToHero(components);
-                    }
-                }
-
+                components.weaponsContainer.AddAllModifiersToHero(components);
+                // foreach (var itemData in components.weaponsContainer.Items)
+                // {
+                //     foreach (var id in itemData.modifierIds)
+                //     {
+                //         var mod = modsDb.GetModifier(id);
+                //         mod.AddToHero(components);
+                //     }
+                // }
                 foreach (var mod in components.preBattleRecurringMods)
                     mod.Activate();
             }
@@ -63,8 +62,8 @@ namespace RobotCastle.Battling
 
         public static IHeroController GetBestTargetForAttack(IHeroController hero)
         {
-            var map = hero.View.agent.Map;
-            var myWorldPos = hero.View.transform.position;
+            var map = hero.Components.agent.Map;
+            var myWorldPos = hero.Components.transform.position;
             var myPos = map.GetCellPositionFromWorld(myWorldPos);
             // var cellsMask = hero.View.stats.Range.GetCellsMask();
             var enemies = hero.Battle.GetTeam(hero.TeamNum).enemyUnits;
@@ -73,17 +72,17 @@ namespace RobotCastle.Battling
             var maxPoints = -float.MaxValue;
             foreach (var otherHero in enemies)
             {
-                var enemyPos = otherHero.View.agent.CurrentCell;
+                var enemyPos = otherHero.Components.agent.CurrentCell;
                 var d2 = (enemyPos - myPos).sqrMagnitude;
                 var points = -d2 * 2f;
-                if (otherHero.View.state.isStunned)
+                if (otherHero.Components.state.isStunned)
                     points++;
-                if (!otherHero.View.state.isMoving)
+                if (!otherHero.Components.state.isMoving)
                     points++;
-                if (otherHero.View.state.attackData.CurrentEnemy == hero)
+                if (otherHero.Components.state.attackData.CurrentEnemy == hero)
                     points += 2;
-                var vec = otherHero.View.transform.position - myWorldPos;
-                var angle = Mathf.Abs(Vector3.SignedAngle(vec, hero.View.transform.forward, Vector3.up));
+                var vec = otherHero.Components.transform.position - myWorldPos;
+                var angle = Mathf.Abs(Vector3.SignedAngle(vec, hero.Components.transform.forward, Vector3.up));
 
                 if (angle >= 180)
                     points -= 10;
@@ -109,9 +108,9 @@ namespace RobotCastle.Battling
         
         public static IHeroController GetBestTargetForAttack2(IHeroController hero)
         {
-            var map = hero.View.agent.Map;
-            var myPos = map.GetCellPositionFromWorld(hero.View.transform.position);
-            var cellsMask = hero.View.stats.Range.GetCellsMask();
+            var map = hero.Components.agent.Map;
+            var myPos = map.GetCellPositionFromWorld(hero.Components.transform.position);
+            var cellsMask = hero.Components.stats.Range.GetCellsMask();
             _coveredCells.Clear();
             _heroesInRange.Clear();
             foreach (var val in cellsMask)
@@ -122,7 +121,7 @@ namespace RobotCastle.Battling
             var d2 = minD2;
             foreach (var otherHero in enemies)
             {
-                var enemyPos = otherHero.View.agent.CurrentCell;
+                var enemyPos = otherHero.Components.agent.CurrentCell;
                 d2 = (enemyPos - myPos).sqrMagnitude;
                 if (d2 < minD2)
                 {
@@ -144,7 +143,7 @@ namespace RobotCastle.Battling
                     var minHealth = float.MaxValue;
                     foreach (var enemy in _heroesInRange)
                     {
-                        var h = enemy.View.stats.HealthCurrent.Get();
+                        var h = enemy.Components.stats.HealthCurrent.Get();
                         if (h < minHealth)
                         {
                             minHealth = h;

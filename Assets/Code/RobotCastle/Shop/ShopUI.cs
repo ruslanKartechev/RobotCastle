@@ -18,6 +18,7 @@ namespace RobotCastle.Shop
 
         public void Show(int firstTab = 1)
         {
+            gameObject.SetActive(true);
             _fadeScreen.FadeInWithId(UIConstants.UIShop);
             _raycaster.enabled = true;
             _tabsSwitcher.InitFirstTab(firstTab);

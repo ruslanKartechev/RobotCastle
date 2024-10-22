@@ -26,10 +26,10 @@ namespace RobotCastle.Battling
         {
             _hero = hero;
             _callback = endCallback;
-            _hero.View.movement.Stop();
-            _hero.View.attackManager.Stop();
-            _hero.View.animator.Play("Stunned");
-            _particles.GetGameObject().transform.position = _hero.View.transform.position + Vector3.up * _hero.View.StunnedFxHeight;
+            _hero.Components.movement.Stop();
+            _hero.Components.attackManager.Stop();
+            _hero.Components.animator.Play("Stunned");
+            _particles.GetGameObject().transform.position = _hero.Components.transform.position + Vector3.up * _hero.Components.StunnedFxHeight;
             _particles.PoolShow();
             _token = new CancellationTokenSource();
             Wait(_token.Token);

@@ -53,7 +53,7 @@ namespace RobotCastle.Battling
                 if (health < 0) 
                     health = 0;
             }
-            
+            StatsCollector.AddDamageReceived(_components.GUID, args.type, (int)damageAmount);
             stats.HealthCurrent.Val = health;
             if (health <= 0)
             {
@@ -71,10 +71,9 @@ namespace RobotCastle.Battling
         }
 
 
-        public void SetDamageable(bool damageable)
-        {
-            _isDamageable = damageable;
-        }
+        public void SetDamageable(bool damageable) => _isDamageable = damageable;
+
+        public IBattleDamageStatsCollector StatsCollector { get; set; }
 
         public void AddModifier(IDamageTakenModifiers mod)
         {

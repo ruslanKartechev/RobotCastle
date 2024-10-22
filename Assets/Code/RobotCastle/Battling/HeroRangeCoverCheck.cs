@@ -17,7 +17,7 @@ namespace RobotCastle.Battling
         
         public void Update(Vector3 worldPos, bool force)
         {
-            var centerCell = _hero.View.agent.Map.GetCellPositionFromWorld(worldPos);
+            var centerCell = _hero.Components.agent.Map.GetCellPositionFromWorld(worldPos);
             if (force)
             {
                 _center = centerCell;
@@ -50,9 +50,9 @@ namespace RobotCastle.Battling
 
         public void RecalculateCovered()
         {
-            var map = _hero.View.agent.Map;
-            var myPos = map.GetCellPositionFromWorld(_hero.View.transform.position);
-            var cellsMask = _hero.View.stats.Range.GetCellsMask();
+            var map = _hero.Components.agent.Map;
+            var myPos = map.GetCellPositionFromWorld(_hero.Components.transform.position);
+            var cellsMask = _hero.Components.stats.Range.GetCellsMask();
             _coveredCells.Clear();
             foreach (var val in cellsMask)
                 _coveredCells.Add(myPos + val);
@@ -60,7 +60,7 @@ namespace RobotCastle.Battling
 
         public bool IsHeroWithinRange(IHeroController otherHero)
         {
-            var cellPos = _hero.View.agent.Map.GetCellPositionFromWorld(otherHero.View.transform.position);
+            var cellPos = _hero.Components.agent.Map.GetCellPositionFromWorld(otherHero.Components.transform.position);
             if (_coveredCells.Contains(cellPos))
                 return true;
             return false;

@@ -9,7 +9,6 @@ namespace RobotCastle.Battling
     {
         public Component ui;
         public UIWorldPositionTracker tracker;
-        private string _poolId;
 
         public void ReturnBack()
         {
@@ -24,5 +23,8 @@ namespace RobotCastle.Battling
         public GameObject GetGameObject() => gameObject;
         public void PoolHide() => gameObject.SetActive(false);
         public void PoolShow() => gameObject.SetActive(true);
+        
+        private string _poolId;
+
     }
 }

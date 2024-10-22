@@ -41,7 +41,7 @@ namespace RobotCastle.UI
         {
             if (Time.time - _clickTime < _clickMaxDelay)
             {
-                if (TryRaycastUI())
+                if (TryRaycastUI() < 2)
                     return;
                 TryRaycastWorld(screenPos);
             }
@@ -76,9 +76,11 @@ namespace RobotCastle.UI
             return false;
         }
 
-        private bool TryRaycastUI()
+        // 0 did find, 1 did raycast block, 2 - nothing
+        private int TryRaycastUI()
         {
             var casters = gameObject.GetComponentsInChildren<GraphicRaycaster>();
+            var result = 2;
             for (var k = casters.Length - 1; k >= 0; k--)
             {
                 var raycaster = casters[k];
@@ -88,6 +90,7 @@ namespace RobotCastle.UI
                 raycaster.Raycast(pointerData, hits);
                 if (hits.Count == 0)
                     continue;
+                result = 1;
                 for (var i = 0; i < hits.Count; i++)
                 {
                     var hit = hits[i];
@@ -96,11 +99,11 @@ namespace RobotCastle.UI
                         _provider = provider;
                         _currentDescription = GetUIForType(provider.GetIdForUI());
                         _currentDescription.Show(provider.GetGameObject());
-                        return true;
+                        return 0;
                     }
                 }
             }
-            return false;
+            return result;
         }
 
         private DescriptionUI GetUIForType(string type)

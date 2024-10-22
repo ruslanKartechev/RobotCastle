@@ -15,6 +15,7 @@ namespace SleepDev.UIElements
         public virtual void Init(ReactiveInt source)
         {
             this.moneySource = source;
+            OnSet(source.Val, 0);
         }
 
         public virtual void DoReact(bool react)

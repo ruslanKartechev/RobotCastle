@@ -1,5 +1,7 @@
 ﻿using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
+using RobotCastle.UI;
 using SleepDev.Data;
 using UnityEngine;
 
@@ -35,7 +37,11 @@ namespace RobotCastle.Battling
             var money = ServiceLocator.Get<GameMoney>().levelMoney.Val;
             var cost = _costReact.Val;
             if (money < cost)
+            {
+                var ui = ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {});
+                ui.ShowNotEnoughMoney();
                 return 1;
+            }
             money -= cost;
             cost += costAddedPerPurchase;
             _purchasesCount++;

@@ -35,6 +35,7 @@ namespace RobotCastle.Battling.Altars
 
         public void Show()
         {
+            gameObject.SetActive(true);
             _save = DataHelpers.GetAltarsSave();
             _db = ServiceLocator.Get<AltarsDatabase>();
             _manager = ServiceLocator.Get<AltarManager>();

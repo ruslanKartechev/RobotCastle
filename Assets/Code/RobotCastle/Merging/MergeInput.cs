@@ -32,7 +32,7 @@ namespace RobotCastle.Merging
         {
             if (_isActive == active)
                 return;
-            CLog.Log($"Merge input Set active: {active}");
+            // CLog.Log($"Merge input Set active: {active}");
             _isActive = active;
             if (_positionChecking != null)
                 StopCoroutine(_positionChecking);
@@ -62,7 +62,6 @@ namespace RobotCastle.Merging
         {
             if (_refundMode)
             {
-                CLog.LogRed($"Refunded money =========");
                 ServiceLocator.Get<GameMoney>().levelMoney.AddValue(HeroesConstants.HeroRefundMoney);
                 _mergeController.DropAndHideCurrent();
                 _battleUI.ReturnItemButton.Hide();

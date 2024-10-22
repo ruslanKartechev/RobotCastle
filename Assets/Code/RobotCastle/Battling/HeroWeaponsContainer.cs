@@ -24,8 +24,8 @@ namespace RobotCastle.Battling
                 foreach (var it in items)
                     _items.Add(it);
             }
-            _view.heroUI.Items.ShowItems(items);
-            _view.heroUI.Items.Animate();
+            _view.heroUI.Weapons.ShowItems(items);
+            _view.heroUI.Weapons.Animate();
         }
 
         public void SetItems(List<HeroWeaponData> items)
@@ -36,7 +36,13 @@ namespace RobotCastle.Battling
                 foreach (var it in items)
                     _items.Add(it);
             }
-            _view.heroUI.Items.ShowItems(items);
+            _view.heroUI.Weapons.ShowItems(items);
+        }
+
+        public void SetEmpty()
+        {
+            _items.Clear();
+            _view.heroUI.Weapons.Empty();
         }
         
         public void ReplaceWithMergedItem(int indexAt, HeroWeaponData newItem)
@@ -46,21 +52,21 @@ namespace RobotCastle.Battling
                 _items.Add(newItem);
             else
                 _items[indexAt] = newItem;
-            _view.heroUI.Items.UpdateMergedItem(_items, indexAt);
-            _view.heroUI.Items.Animate();
+            _view.heroUI.Weapons.UpdateMergedItem(_items, indexAt);
+            _view.heroUI.Weapons.Animate();
         }
 
         public void AddNewItem(HeroWeaponData newItem)
         {
             // CLog.LogGreen($"AddNewItem. {newItem.AsStr()}");
             _items.Add(newItem);
-            _view.heroUI.Items.ShowLastAddedItem(_items);
-            _view.heroUI.Items.Animate();
+            _view.heroUI.Weapons.ShowLastAddedItem(_items);
+            _view.heroUI.Weapons.Animate();
         }
 
         public void UpdateView()
         {
-            _view.heroUI.Items.ShowItems(_items);
+            _view.heroUI.Weapons.ShowItems(_items);
         }
 
         [ContextMenu("LogAllModifiers")]
@@ -77,7 +83,7 @@ namespace RobotCastle.Battling
             CLog.LogGreen(msg);
         }
 
-        public void AddAllModifiersToHero()
+        public void AddAllModifiersToHero(HeroComponents hero)
         {
             var db = ServiceLocator.Get<ModifiersDataBase>();
             foreach (var item in _items)
@@ -85,7 +91,7 @@ namespace RobotCastle.Battling
                 foreach (var id in item.modifierIds)
                 {
                     var mod = db.GetModifier(id);
-                    mod.AddTo(gameObject);
+                    mod.AddToHero(hero);
                 }
             }
         }

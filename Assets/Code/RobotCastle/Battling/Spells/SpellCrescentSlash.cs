@@ -12,6 +12,7 @@ namespace RobotCastle.Battling
         public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
         public string name => "spell";
         public int order => 10;
+        
         public float Decorate(float val)
         {
             return val + BaseSpellPower;
@@ -28,10 +29,6 @@ namespace RobotCastle.Battling
             _view.stats.SpellPower.AddPermanentDecorator(this);
         }
 
-        private SpellConfigCrescentSlash _config;
-        private CrescentSlashView _fxView;
-        private ConditionedManaAdder _manaAdder;
-        private CancellationTokenSource _token;
 
         public void OnFullMana(GameObject heroGo)
         {
@@ -54,7 +51,11 @@ namespace RobotCastle.Battling
             _token?.Cancel();
         }
 
-
+        private SpellConfigCrescentSlash _config;
+        private CrescentSlashView _fxView;
+        private ConditionedManaAdder _manaAdder;
+        private CancellationTokenSource _token;
+        
         private void Launch()
         {
             _manaAdder.CanAdd = true;

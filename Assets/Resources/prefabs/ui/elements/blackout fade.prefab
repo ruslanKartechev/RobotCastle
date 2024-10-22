@@ -50,9 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62136cf36fb24c07a97768751c084404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _durationIn: 0.4
-  _durationOut: 0.4
+  _durationIn: 0.28
+  _durationOut: 0.15
+  _maxAlpha: 0.5019608
+  _color1: {r: 0.015686275, g: 0.011764706, b: 0.14901961, a: 1}
+  _color2: {r: 1, g: 1, b: 1, a: 0}
   _image: {fileID: 1102546938829162573}
+  _goToDisable: {fileID: 0}
 --- !u!222 &2437856575309547837
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -74,15 +78,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.015686275, g: 0.011764706, b: 0.14901961, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 060820a7c77ead542be9004815bcf307, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 626a4e5626084954dbcfac655546604e, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

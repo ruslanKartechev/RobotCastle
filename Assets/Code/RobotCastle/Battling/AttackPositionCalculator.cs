@@ -41,13 +41,13 @@ namespace RobotCastle.Battling
             out Vector2Int targetCell, 
             out int distance)
         {
-            var map = hero.View.agent.Map;
-            var myPos = map.GetCellPositionFromWorld(hero.View.transform.position);
-            var cellsMask = hero.View.stats.Range.GetCellsMask();
+            var map = hero.Components.agent.Map;
+            var myPos = map.GetCellPositionFromWorld(hero.Components.transform.position);
+            var cellsMask = hero.Components.stats.Range.GetCellsMask();
             var coveredCells = new List<Vector2Int>(cellsMask.Count);
             foreach (var val in cellsMask)
                 coveredCells.Add(myPos + val);
-            var enemyPos = map.GetCellPositionFromWorld(enemy.View.transform.position);
+            var enemyPos = map.GetCellPositionFromWorld(enemy.Components.transform.position);
             if (coveredCells.Contains(enemyPos))
             {
                 targetCell = enemyPos;
@@ -57,7 +57,7 @@ namespace RobotCastle.Battling
             var otherUnitsPositions = new List<Vector2Int>(10);
             foreach (var agent in map.ActiveAgents)
             {
-                if(agent != hero.View.agent)
+                if(agent != hero.Components.agent)
                     otherUnitsPositions.Add(agent.CurrentCell);
             }
             coveredCells.Clear();
@@ -66,7 +66,7 @@ namespace RobotCastle.Battling
                 var nextPos = enemyPos + dir;
                 if (nextPos.x < 0 || nextPos.y < 0 || nextPos.x >= map.Size.x || nextPos.y >= map.Size.y)
                     continue;
-                if (!otherUnitsPositions.Contains(nextPos) && !CheckIfAnyUnitHasThisTargetPosition(nextPos, hero.View.state))
+                if (!otherUnitsPositions.Contains(nextPos) && !CheckIfAnyUnitHasThisTargetPosition(nextPos, hero.Components.state))
                     coveredCells.Add(nextPos);
             }
 

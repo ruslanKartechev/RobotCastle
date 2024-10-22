@@ -2,7 +2,7 @@
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/SpellProvider JudgmentOfLight", fileName = "judgement_of_light", order = 0)]
+    [CreateAssetMenu(menuName = "SO/Spells/Judgment Of Light", fileName = "judgement_of_light", order = 0)]
     public class SpellProviderJudgmentOfLight : SpellProvider
     {
         public override float manaMax => _config.manaMax;

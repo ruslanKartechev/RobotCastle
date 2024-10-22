@@ -179,17 +179,14 @@ namespace RobotCastle.Merging
                         _draggedItem.PutBack();
                     putResult = MergePutResult.MergeFailed;
                     break;
-                case EMergeResult.MergedIntoNew or EMergeResult.MergedOneIntoAnother:
-                    putResult = MergePutResult.Merged;
-                    break;
             }
-
             _lastPutResult = putResult;
             UpdateGridAndNullDragged();
         }
         
         private void NullDragged()
         {
+            CLog.LogWhite("NullDragged =======");
             if(_draggedItem != null)
                 _draggedItem.OnDraggingEnd();
             _draggedItem = null;
@@ -198,7 +195,22 @@ namespace RobotCastle.Merging
         private void UpdateGridAndNullDragged()
         {
             _isProcessingPut = false;
-            _sectionsController.OnItemPut(_draggedItem.itemView.itemData);
+            if (_sectionsController == null)
+            {
+                CLog.LogRed("_sectionsController == null");
+            }
+
+            if (_draggedItem == null)
+            {
+                CLog.LogRed("_draggedItem == null");
+            }
+
+            if (_draggedItem.itemView == null)
+            {
+                CLog.LogRed("_draggedItem.itemView == null");
+            }
+            if(_draggedItem.itemView != null)
+                _sectionsController.OnItemPut(_draggedItem.itemView.itemData);
             NullDragged();
             CLog.Log($"[{nameof(MergeController)}] Put Result: {_lastPutResult.ToString()}");
             OnPutItem?.Invoke(_lastPutResult);

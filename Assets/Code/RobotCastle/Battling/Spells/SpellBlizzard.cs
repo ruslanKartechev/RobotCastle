@@ -50,19 +50,16 @@ namespace RobotCastle.Battling
             var map = _view.agent.Map;
             var (heroesAffected, cells) = HeroesManager.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
                 target.transform.position, map, enemies);
-            var args = _view.damageSource.CalculateSpellDamage();
-            args.amount = _config.physDamage[lvl];
-            
             foreach (var hero in heroesAffected)
             {
-                hero.View.damageReceiver.TakeDamage(args);
+                _view.damageSource.DamageSpellAndPhys(hero.Components.damageReceiver);
                 hero.SetBehaviour(new HeroStunnedBehaviour(_config.duration[lvl]));
             }
             var view = GetFxView();
             view.transform.position = target.transform.position;
             var worldPositions = new List<Vector3>(cells.Count);
             foreach (var enemy in heroesAffected)
-                worldPositions.Add(map.GetWorldFromCell(enemy.View.state.currentCell));
+                worldPositions.Add(map.GetWorldFromCell(enemy.Components.state.currentCell));
             view.Show(worldPositions);
             
             _isActive = false;

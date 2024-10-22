@@ -9,7 +9,7 @@ namespace RobotCastle.Battling
 
         public void Activate(IHeroController hero, Action<IHeroBehaviour> endCallback)
         {
-            var view = hero.View;
+            var view = hero.Components;
             view.movement.Stop();
             view.attackManager.Stop();
             view.agent.SetCellMoveCheck(null);

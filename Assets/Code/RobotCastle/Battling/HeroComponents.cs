@@ -9,6 +9,8 @@ namespace RobotCastle.Battling
 {
     public class HeroComponents : MonoBehaviour
     {
+        public string GUID { get; set; }
+
         public BattleUnitUI heroUI
         {
             get => _heroUI;
@@ -22,7 +24,7 @@ namespace RobotCastle.Battling
         public HeroMovementManager movement { get; set; }
         public HeroStatsManager stats { get; set; }
         public HeroAnimationEventReceiver animationEventReceiver => _heroAnimationEvent;
-        public HeroWeaponsContainer heroItemsContainer => _heroItemsContainer;
+        public HeroWeaponsContainer weaponsContainer => _heroItemsContainer;
         public IHeroAttackManager attackManager { get; set; }
         public IHeroHealthManager healthManager { get; set; }
         public IDamageReceiver damageReceiver { get; set; }

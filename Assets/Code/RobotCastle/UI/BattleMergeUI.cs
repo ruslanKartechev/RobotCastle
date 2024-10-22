@@ -18,13 +18,14 @@ namespace RobotCastle.UI
         public IButtonInput BtnStart2 => _btnStartTop;
         public PurchaseNewHeroButton BtnPurchaseHero => _btnPurchaseHero;
         public ReturnItemButton ReturnItemButton => _returnItemButton;
-
+        public BattleDamageStatsUI StatsCollector => _damageStats;
         
         [SerializeField] private LevelMoneyUI _money;
         [SerializeField] private TroopsCountUI _troopsCount;
         [SerializeField] private MyButton _btnStart;
         [SerializeField] private PurchaseNewHeroButton _btnPurchaseHero;
         [SerializeField] private TroopSizePurchaseUI _troopSizePurchaseUI;
+        [SerializeField] private BattleDamageStatsUI _damageStats;
         [SerializeField] private InvasionLevelsUI _levelUI;
         [SerializeField] private Vector2 _blockYPositions;
         [SerializeField] private RectTransform _mainRect;
@@ -45,6 +46,8 @@ namespace RobotCastle.UI
             _levelUI.LevelName = chapter.viewName;
             _levelUI.SetRewardForWave(chapter.levelData.levels[battle.roundIndex].reward);
             _levelUI.SetLevel(battle.roundIndex, chapter.levelData.levels, false);
+            _money.Init(ServiceLocator.Get<GameMoney>().levelMoney);
+            _money.DoReact(true);
         }
 
         public void AllowButtonsInput(bool allow)

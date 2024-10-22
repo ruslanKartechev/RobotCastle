@@ -34,6 +34,7 @@ namespace RobotCastle.Battling.SmeltingOffer
                 CLog.LogError($"Options count and ui elements count don't match!");
                 return;
             }
+            gameObject.SetActive(true);
             _fadeScreen.FadeInWithId(UIConstants.UISmeltingOffer);
             _manager = manager;
             _options = options;

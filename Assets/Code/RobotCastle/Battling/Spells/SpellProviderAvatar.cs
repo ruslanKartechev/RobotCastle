@@ -2,7 +2,7 @@
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/SpellProvider Avatar", fileName = "Avatar", order = 0)]
+    [CreateAssetMenu(menuName = "SO/Spells/Avatar", fileName = "Avatar", order = 0)]
     public class SpellProviderAvatar : SpellProvider
     {
         [SerializeField] private SpellConfigAvatar _config;

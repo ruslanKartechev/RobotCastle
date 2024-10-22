@@ -57,7 +57,7 @@ namespace RobotCastle.Battling
                 var heroGo = spawnedItem.Transform.gameObject;
                 var hero = heroGo.GetComponent<IHeroController>();
                 var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
-                barsPanel.AssignHeroUI(hero.View);
+                barsPanel.AssignHeroUI(hero.Components);
                 var id = args.coreData.id;
                 // heroSave.isUnlocked = true;
                 var modifiers = HeroesManager.GetModifiersForHero(id);
@@ -69,7 +69,7 @@ namespace RobotCastle.Battling
                     itemsContainer.SetItems(mergedItems);
                 }
                 hero.SetBehaviour(new HeroIdleBehaviour());
-                hero.View.heroUI.UpdateStatsView(hero.View);
+                hero.Components.heroUI.UpdateStatsView(hero.Components);
             }
         }        
         

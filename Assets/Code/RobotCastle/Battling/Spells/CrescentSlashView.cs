@@ -91,13 +91,13 @@ namespace RobotCastle.Battling
                     for (var i = enemies.Count - 1; i >= 0; i--)
                     {
                         var en = enemies[i];
-                        if (en.IsDead || alreadyDamaged.Contains(en.View.damageReceiver))
+                        if (en.IsDead || alreadyDamaged.Contains(en.Components.damageReceiver))
                             continue;
-                        var d2 = (en.View.transform.position - worldPoint).sqrMagnitude;
+                        var d2 = (en.Components.transform.position - worldPoint).sqrMagnitude;
                         if (d2 < cellRadius)
                         {
-                            en.View.damageReceiver.TakeDamage(damageArgs);
-                            alreadyDamaged.Add(en.View.damageReceiver);
+                            en.Components.damageReceiver.TakeDamage(damageArgs);
+                            alreadyDamaged.Add(en.Components.damageReceiver);
                         }
                     }
                 }

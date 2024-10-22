@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Bomber;
 using RobotCastle.Core;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -8,23 +9,22 @@ namespace RobotCastle.Battling
     public class HeroController : MonoBehaviour, IHeroController
     {
         public bool IsDead { get; set; }
-        public HeroComponents View => _view;
-        public Battle Battle { get; set; }
-        public int TeamNum { get; set; }
         
-        [SerializeField] private HeroComponents _view;
-        private HeroStatsManager _stats;
-        private IHeroBehaviour _currentBehaviour;
-        private bool _didSetMap;
-
-
+        public Battle Battle { get; set; }
+        
+        public int TeamNum { get; set; }
+        public string GUID => _components.GUID;
+        public HeroComponents Components => _components;
+   
         public void InitHero(string id, int heroLevel, int mergeLevel, List<ModifierProvider> spells)
         {
+            _components.GUID = System.Guid.NewGuid().ToString();
+            CLog.LogGreen($"GUID: {GUID}");
             AddHeroComponents();
             _stats.LoadAndSetHeroStats(id, heroLevel, mergeLevel);
-            _view.statAnimationSync.Init(true);
-            _view.spellsContainer.AddModifierProviders(spells);
-            _view.spellsContainer.ApplyAllModifiers(_view);
+            _components.statAnimationSync.Init(true);
+            _components.spellsContainer.AddModifierProviders(spells);
+            _components.spellsContainer.ApplyAllModifiers(_components);
             SetStatsComponentsIfMissing();
         }
 
@@ -33,7 +33,7 @@ namespace RobotCastle.Battling
             if (_didSetMap && !force)
                 return;
             _didSetMap = true;
-            _view.agent.InitAgent(ServiceLocator.Get<IMap>());
+            _components.agent.InitAgent(ServiceLocator.Get<IMap>());
         }
 
         public void MarkDead()
@@ -59,6 +59,13 @@ namespace RobotCastle.Battling
             _currentBehaviour = behaviour;
             _currentBehaviour.Activate(this, OnBehaviourEnd);
         }
+        
+             
+        [SerializeField] private HeroComponents _components;
+        private HeroStatsManager _stats;
+        private IHeroBehaviour _currentBehaviour;
+        private bool _didSetMap;
+
 
         private void OnBehaviourEnd(IHeroBehaviour behaviour)
         {
@@ -69,13 +76,13 @@ namespace RobotCastle.Battling
 
         private void OnDisable()
         {
-            _view.statAnimationSync?.Stop();
+            _components.statAnimationSync?.Stop();
             _currentBehaviour?.Stop();
         }
         
         private void SetStatsComponentsIfMissing()
         {
-            var stats = _view.stats; 
+            var stats = _components.stats; 
             if (stats.FullManaListener == null)
                 stats.FullManaListener = new DefaultFullManaAction();
             if (stats.HealthReset == null)
@@ -83,32 +90,32 @@ namespace RobotCastle.Battling
             if (stats.ManaResetAfterBattle == null)
                 stats.ManaResetAfterBattle = new ManaResetZero();
             if (stats.ManaAdder == null)
-                stats.ManaAdder = new SimpleManaAdder(_view);
+                stats.ManaAdder = new SimpleManaAdder(_components);
         }
         
         private void AddHeroComponents()
         {
             _stats = gameObject.AddComponent<HeroStatsManager>();
-            var health = new HeroHealthManager(_view);
+            var health = new HeroHealthManager(_components);
             var pathfinder = gameObject.AddComponent<Agent>();
             var unitMover = gameObject.AddComponent<HeroMovementManager>();
-            unitMover.UnitView = _view;
-            pathfinder.rb = _view.rb;
+            unitMover.UnitView = _components;
+            pathfinder.rb = _components.rb;
             pathfinder.movable = transform;
             pathfinder.PathfindingAgentAnimatorGO = gameObject;
-            _view.agent = pathfinder;
-            _view.movement = unitMover;
-            _view.stats = _stats;
-            _view.killProcessor = new HeroDeathProcessor(_view);
-            _view.spellsContainer = new HeroSpellsContainer();
-            _view.damageSource = new HeroDamageSource(_view);
-            _view.statAnimationSync = new HeroAnimationToStatsSync(_view);
+            _components.agent = pathfinder;
+            _components.movement = unitMover;
+            _components.stats = _stats;
+            _components.killProcessor = new HeroDeathProcessor(_components);
+            _components.spellsContainer = new HeroSpellsContainer();
+            _components.damageSource = new HeroDamageSource(_components);
+            _components.statAnimationSync = new HeroAnimationToStatsSync(_components);
 
             var attack = gameObject.GetComponent<IHeroAttackManager>();
             attack.Hero = this;
-            _view.damageReceiver = health;
-            _view.healthManager = health;
-            _view.attackManager = attack;
+            _components.damageReceiver = health;
+            _components.healthManager = health;
+            _components.attackManager = attack;
 
         }
     }

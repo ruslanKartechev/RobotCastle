@@ -79,7 +79,7 @@ namespace RobotCastle.Testing
                 if (instance.TryGetComponent<HeroController>(out var hero))
                 {
                     hero.InitHero(id, pack.heroLevel,pack.mergeLevel, new List<ModifierProvider>());          
-                    hero.View.agent.UpdateMap(map);
+                    hero.Components.agent.UpdateMap(map);
                     allSpawned.Add(hero);
                 }
             }

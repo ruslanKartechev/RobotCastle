@@ -29,13 +29,16 @@ namespace RobotCastle.Data
         private const int MaxLvl = 20;
         private const int MaxMergeLvl = 7;
 
+        [SerializeField] private bool _lookThroughAllFilesInFolder = true;
+        [Space(20)]
         [SerializeField] private List<TextAsset> _configFiles;
         [SerializeField] private List<string> _tableFiles;
         [Space(20)]
         [SerializeField] private string _folderPath;
+        [SerializeField] private bool _attachFormatToFileName = true;
+        [SerializeField] private string _inputFileFormat = "tsv";
+        [Space(10)]
         [SerializeField] private string _fileName;
-        [SerializeField] private bool _attachFormat;
-        [SerializeField] private string _format;
         [SerializeField] private HeroStats _heroStats;
 
         public void ReplaceAllConfigFromTables()
@@ -67,43 +70,62 @@ namespace RobotCastle.Data
                 var pathToAssets = Application.streamingAssetsPath;
                 pathToAssets = pathToAssets.Split("Assets")[0];
                 path = pathToAssets + path;
-                CLog.LogGreen($"Overriding at path: {path}");
+                CLog.LogGreen($"Overriding json config: {path}");
                 var serialized = JsonConvert.SerializeObject(heroConfig, Formatting.Indented);
                 File.WriteAllText(path, serialized);
             }
+            AssetDatabase.Refresh();
 #endif
         }
 
         public HeroStats ReadStatsForHero(string heroId)
         {
-            var tableFileName = _tableFiles.Find(t => t.Contains(heroId));
-            if (tableFileName == default)
+            var tableFileName = (string)null;
+            var path = (string)null;
+            if (_lookThroughAllFilesInFolder)
             {
-                CLog.Log($"Table File for: {heroId} wasn't found");
-                return null;
+                var files = Directory.GetFiles(_folderPath);
+                tableFileName = files.Find(t => t.Contains(heroId));
+                if (tableFileName == default)
+                {
+                    CLog.Log($"Table File for: {heroId} wasn't found in directory: {_folderPath}");
+                    return null;
+                }
+                path = tableFileName;
             }
-            var stats = ReadTableFile(tableFileName);
+            else
+            {
+                tableFileName = _tableFiles.Find(t => t.Contains(heroId));
+                if (tableFileName == default)
+                {
+                    CLog.Log($"Table File for: {heroId} wasn't found");
+                    return null;
+                }
+                path = Path.Join(_folderPath, tableFileName);
+                if(_attachFormatToFileName)
+                    path += $".{_inputFileFormat}";
+            }
+            var stats = ReadTableFile(path);
             return stats;
         }
         
         public void Read()
         {
-            var stats = ReadTableFile(_fileName);
+            var path = Path.Join(_folderPath, _fileName);
+            if(_attachFormatToFileName)
+                path += $".{_inputFileFormat}";
+            var stats = ReadTableFile(path);
             _heroStats = stats;
         }
             
-        public HeroStats ReadTableFile(string file)
+        public HeroStats ReadTableFile(string pathToFile)
         {
-            var path = Path.Join(_folderPath, file);
-            if(_attachFormat)
-                path += $".{_format}";
-            
-            if (File.Exists(path) == false)
+            if (File.Exists(pathToFile) == false)
             {
-                CLog.LogRed($"File doesn't exist: {path} ");
+                CLog.LogRed($"File doesn't exist: {pathToFile} ");
                 return null;
             }
-            var reader = new StreamReader(path);
+            var reader = new StreamReader(pathToFile);
             var delimiter = '\t';
             var columns = reader.ReadLine().Split(delimiter);
             var msg = "";
@@ -233,8 +255,10 @@ namespace RobotCastle.Data
             base.OnInspectorGUI();
             
             var me = target as TableReader; 
-            EU.Space();
-            if (EU.BtnMidWide3("ReplaceConfigFromTables", EU.Gold))
+            GUILayout.Space(15);
+            EU.Label("Read and config all json files from downloaded tables", EU.White, 'l');
+            GUILayout.Space(5);
+            if (EU.BtnMidWide3("Read All", EU.Gold))
                 me.ReplaceAllConfigFromTables();
             EU.Space();
             if(EU.BtnMidWide2("Read To Debug", EU.Gold))
