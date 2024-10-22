@@ -1443,17 +1443,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
   m_PrefabInstance: {fileID: 1409132067}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &280246331 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1262390155436859529, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
-  m_PrefabInstance: {fileID: 1409132067}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 280246330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!223 &280246333 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 697934586019279730, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
@@ -1478,7 +1467,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _clickMaxDelay: 0.15
   _parent: {fileID: 280246334}
-  _raycaster: {fileID: 280246331}
 --- !u!1001 &294561497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2499,12 +2487,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b175aa2d5d44e59888e27d367d024d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startRoundIndex: 0
   _logRewardItems: 0
-  _startMoney: 25
   _fillActiveAreaBeforeStart: 1
   _endDelay: 1.4
   _startEnemyShowTime: 0.5
   _winFailDelay: 0.5
+  _delayBetweenOffers: 0.6
+  _startData:
+    _startMoney: 9
+    _startItems: []
   _battleManager: {fileID: 618037135}
   _mergeManager: {fileID: 1256559892}
   _enemiesManager: {fileID: 974174049}
@@ -2531,38 +2523,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cost: 3
-  _possibleItems:
-    options:
-    - obj:
-        level: 0
-        id: aramis
-        type: unit
-      weight: 1
-    - obj:
-        level: 0
-        id: evan
-        type: unit
-      weight: 1
-    - obj:
-        level: 0
-        id: shelda
-        type: unit
-      weight: 1
-    - obj:
-        level: 0
-        id: alberon
-        type: unit
-      weight: 1
-    - obj:
-        level: 0
-        id: priya
-        type: unit
-      weight: 1
-    - obj:
-        level: 0
-        id: daniel
-        type: unit
-      weight: 1
 --- !u!114 &618037140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2636,11 +2596,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11f5ec1264427254c9f6aa423a164061, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.236
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11f5ec1264427254c9f6aa423a164061, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.208
+      value: -0.22100002
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11f5ec1264427254c9f6aa423a164061, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2671,9 +2631,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 11f5ec1264427254c9f6aa423a164061, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 11f5ec1264427254c9f6aa423a164061, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 11f5ec1264427254c9f6aa423a164061, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 5d84c2ba2c1d4408ca682be990685e67, type: 2}
+      objectReference: {fileID: 2100000, guid: c13e756e9b04edf48b2a5f14d1c682db, type: 2}
     - target: {fileID: -425565630206218756, guid: 11f5ec1264427254c9f6aa423a164061, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -4706,11 +4674,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ffda48c2f8dd10b4ea2013f9ebde0e92, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.236
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ffda48c2f8dd10b4ea2013f9ebde0e92, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.208
+      value: -0.221
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ffda48c2f8dd10b4ea2013f9ebde0e92, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4741,13 +4709,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: ffda48c2f8dd10b4ea2013f9ebde0e92, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ffda48c2f8dd10b4ea2013f9ebde0e92, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ffda48c2f8dd10b4ea2013f9ebde0e92, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: ffda48c2f8dd10b4ea2013f9ebde0e92, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 5d84c2ba2c1d4408ca682be990685e67, type: 2}
+      objectReference: {fileID: 2100000, guid: c13e756e9b04edf48b2a5f14d1c682db, type: 2}
     - target: {fileID: -7511558181221131132, guid: ffda48c2f8dd10b4ea2013f9ebde0e92, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
@@ -6126,7 +6102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b0647114ae4d77856da48a48247890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitsParent: {fileID: 762940995}
 --- !u!114 &1256559895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6139,6 +6114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dad9812b753b414f85684eac986ce496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _refundAllowed: 0
 --- !u!114 &1256559896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9991,6 +9967,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tower_health_view
       objectReference: {fileID: 0}
+    - target: {fileID: 4283784615404849833, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c13e756e9b04edf48b2a5f14d1c682db, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
