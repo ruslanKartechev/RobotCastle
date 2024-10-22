@@ -19,9 +19,6 @@ namespace RobotCastle.Battling
             }
         }
 
-        public HeroSpellsContainer()
-        { }
-
         public ModifierProvider GetCurrentSpell()
         {
             if (_modifiers.Count == 0) return null;

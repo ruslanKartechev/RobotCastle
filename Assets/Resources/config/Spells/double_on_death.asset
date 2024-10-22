@@ -12,11 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aaffb3637dc4798a1de41a44475a78e, type: 3}
   m_Name: double_on_death
   m_EditorClassIdentifier: 
-  _id: 
-  _config:
-    manaMax: 0
-    manaStart: 0
-    speed: 0
-    cellsMasksByTear: []
-    spellDamage: []
-    physDamage: []
+  _id: double_on_death
+  _spawnArgs:
+  - coreData:
+      level: 0
+      id: bat_tiny
+      type: unit
+    preferredCoordinated: {x: 0, y: 0}
+    usePreferredCoordinate: 0
+    useAdditionalItems: 0
+    additionalItems: []
+    overrideSpells: 0
+    modifiersIds: []
+  - coreData:
+      level: 0
+      id: bat_tiny
+      type: unit
+    preferredCoordinated: {x: 0, y: 0}
+    usePreferredCoordinate: 0
+    useAdditionalItems: 0
+    additionalItems: []
+    overrideSpells: 0
+    modifiersIds: []

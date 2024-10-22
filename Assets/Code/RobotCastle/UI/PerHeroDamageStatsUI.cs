@@ -35,7 +35,6 @@ namespace RobotCastle.UI
                 case BattleDamageStatsUI.Mode.Dealt:
                 {
                     var total = _data.damageDealtMag + _data.damageDealtPhys;
-                    CLog.LogWhite($"GUID {_data.id} TOTAL: {total}");
                     _damageText.text = total.ToString();
                        if (total <= 0)
                        {
@@ -52,7 +51,6 @@ namespace RobotCastle.UI
                 case BattleDamageStatsUI.Mode.Received:
                 {
                     var total = _data.damageReceivedPhys + _data.damageReceivedMag;
-                    CLog.LogWhite($"GUID {_data.id} TOTAL: {total}");
                     _damageText.text = total.ToString();
                     if (total <= 0)
                     {

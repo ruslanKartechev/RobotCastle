@@ -10,20 +10,9 @@ namespace RobotCastle.Battling
 {
     public class EnemiesManager : MonoBehaviour
     {
-        [SerializeField] private bool _initOnStart = true;
-        [SerializeField] private EnemiesFactory _enemiesFactory;
-        [SerializeField] private GridView _gridView;
-        private bool _didInit;
-
-        public List<IHeroController> Enemies => _enemiesFactory.SpawnedEnemies;
+        public List<IHeroController> AllEnemies => _enemiesFactory.SpawnedEnemies;
         public EnemiesFactory factory => _enemiesFactory;
         
-        private void Start()
-        {
-            if(_initOnStart)
-                Init();
-        }
-
         public void Init()
         {
             if (_didInit)
@@ -37,35 +26,34 @@ namespace RobotCastle.Battling
             _enemiesFactory.GridView = _gridView;
         }
 
-
         public IHeroController SpawnNewEnemy(SpawnMergeItemArgs args, int heroLvl = 0, bool addToList = true)
         {
             var h = _enemiesFactory.SpawnNew(args, heroLvl);
             if(addToList)
-                Enemies.Add(h);
+                AllEnemies.Add(h);
             return h;
         }
 
         public void DestroyCurrentUnits()
         {
             var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
-            foreach (var en in Enemies)
+            foreach (var en in AllEnemies)
             {
                 var merge = en.Components.gameObject.GetComponent<IItemView>();
                 MergeFunctions.ClearCell(_gridView.BuiltGrid, merge.itemData);
                 if (en.Components.heroUI.gameObject.TryGetComponent<HeroUIWrapper>(out var wrapper))
                     barsPanel.ReturnToPool(wrapper);
             }
-            for (var i = Enemies.Count - 1; i >= 0; i--)
+            for (var i = AllEnemies.Count - 1; i >= 0; i--)
             {
-                Destroy(Enemies[i].Components.gameObject);
+                Destroy(AllEnemies[i].Components.gameObject);
             }
-            Enemies.Clear();
+            AllEnemies.Clear();
         }
 
         public void IncreaseEnemyForcesBy(float percent)
         {
-            var enemies = Enemies;
+            var enemies = AllEnemies;
             var totalCount = enemies.Count;
             var additionalCount = Mathf.RoundToInt(totalCount * percent);
             if(additionalCount == 0 && percent > 0)
@@ -84,12 +72,13 @@ namespace RobotCastle.Battling
                     countLeft--;
                 }
             }
-            Enemies.AddRange(newEnemies);
+            AllEnemies.AddRange(newEnemies);
         }
 
+        
         public void RaiseEnemiesTierAll(int additionalVal)
         {
-            RaiseEnemiesTier(Enemies, additionalVal);
+            RaiseEnemiesTier(AllEnemies, additionalVal);
         }        
         
         public void RaiseEnemiesTier(List<IHeroController> enemies, int additionalVal)
@@ -108,5 +97,18 @@ namespace RobotCastle.Battling
                 }
             }    
         }
+        
+        
+        [SerializeField] private bool _initOnStart = true;
+        [SerializeField] private EnemiesFactory _enemiesFactory;
+        [SerializeField] private GridView _gridView;
+        private bool _didInit;
+        
+        private void Start()
+        {
+            if(_initOnStart)
+                Init();
+        }
+
     }
 }

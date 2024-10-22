@@ -139,6 +139,32 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &-3363420166045293674
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: temp_state
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 1827226128182048838, guid: 94838491e1ad68040ad55c6d4bc33052, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1101 &-1616810441157477040
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -237,7 +263,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Attack_2
-  m_Speed: 1
+  m_Speed: 0.83262825
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1590137607846056134}
@@ -294,7 +320,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Attack
-  m_Speed: 1
+  m_Speed: 0.83094454
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -6971762676558308857}
@@ -392,7 +418,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Attack_3
-  m_Speed: 1
+  m_Speed: 0.832284
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2956051819107800228}
@@ -595,7 +621,10 @@ AnimatorStateMachine:
     m_Position: {x: -40, y: 1640, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4008586721148695159}
-    m_Position: {x: 360, y: 1630, z: 0}
+    m_Position: {x: 220, y: 1560, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -3363420166045293674}
+    m_Position: {x: 590, y: 1740, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

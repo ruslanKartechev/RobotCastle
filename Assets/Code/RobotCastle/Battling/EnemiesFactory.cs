@@ -102,7 +102,7 @@ namespace RobotCastle.Battling
             }
         }
         
-        public IHeroController SpawnNew(SpawnMergeItemArgs args, int heroLvl = 0)
+        public IHeroController SpawnNew(SpawnMergeItemArgs args, int heroLvl = 0, bool animate = true)
         {
             ICellView cellView = null;
             if (args.usePreferredCoordinate)
@@ -126,9 +126,15 @@ namespace RobotCastle.Battling
             var itemView = factory.SpawnItemOnCell(cellView, new ItemData(args.coreData));
             var hero = itemView.Transform.GetComponent<IHeroController>();
             barsPanel.AssignEnemyUI(hero.Components);
-            hero.InitHero(args.coreData.id, heroLvl, args.coreData.level, new List<ModifierProvider>());
+            List<ModifierProvider> spells = null;
+            if (args.overrideSpells)
+                spells = HeroesManager.GetModifiers(args.modifiersIds);
+            else
+                spells = new();
+            hero.InitHero(args.coreData.id, heroLvl, args.coreData.level, spells);
             hero.Components.heroUI.AssignStatsTracking(hero.Components);
-            AnimateSpawn(hero);
+            if(animate)
+                AnimateSpawn(hero);
             return hero;
         }
         

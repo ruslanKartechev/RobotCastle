@@ -1,7 +1,9 @@
-﻿namespace RobotCastle.Battling
+﻿using RobotCastle.Core;
+
+namespace RobotCastle.Battling
 {
-    public interface IKillProcessor
+    public interface IKillProcessor : IModifiable<IKIllModifier>
     {
-        void OnKilled();
+        void Kill();
     }
 }

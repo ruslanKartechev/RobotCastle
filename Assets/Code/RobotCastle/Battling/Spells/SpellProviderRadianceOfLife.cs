@@ -14,9 +14,9 @@ namespace RobotCastle.Battling
         public override void AddTo(GameObject target)
         { }
         
-        public override void AddToHero(HeroComponents view)
+        public override void AddToHero(HeroComponents components)
         {
-            view.stats.FullManaListener= new SpellRadianceOfLife(view, _config);
+            components.stats.FullManaListener= new SpellRadianceOfLife(components, _config);
         }
         
         

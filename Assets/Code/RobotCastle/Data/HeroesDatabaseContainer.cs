@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using RobotCastle.Battling;
@@ -63,12 +64,33 @@ namespace RobotCastle.Data
             return path;
         }
         
-        [Space(15)] 
+        [Space(50)] 
         [SerializeField] public string e_id = "aramis";
         [SerializeField] public string e_folder = "heroes";
         [SerializeField] public float e_multiplier;
         [SerializeField] public EStatType e_statType;
 
+
+        [ContextMenu("GetAllEnemyConfigFileNames")]
+        public void GetAllEnemyConfigFileNames()
+        {
+            var path = Application.streamingAssetsPath;
+            path = path.Replace("StreamingAssets", "Resources");
+            path = Path.Join(path, pathToEnemies);
+            var files = Directory.GetFiles(path);
+            _enemiesIdsForFiles.Clear();
+            _enemiesIdsForFiles = new List<string>(20);
+            foreach (var pathToFile in files)
+            {
+                var ss = Path.GetFileName(pathToFile);
+                if (ss.Contains("meta"))
+                    continue;
+                ss = ss.Replace(".json", "");
+                _enemiesIdsForFiles.Add(ss);
+            }
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+        
         [ContextMenu("MultiplyStatForChosenId")]
         public void MultiplyStatForChosenId()
         {

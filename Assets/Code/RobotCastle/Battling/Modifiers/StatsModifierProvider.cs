@@ -31,9 +31,9 @@ namespace RobotCastle.Battling
             AddToHero(target.GetComponent<HeroComponents>());
         }
         
-        public override void AddToHero(HeroComponents view)
+        public override void AddToHero(HeroComponents components)
         {
-            var stats = view.stats;
+            var stats = components.stats;
             switch (_statType)
             {
                 case EStatType.Attack:

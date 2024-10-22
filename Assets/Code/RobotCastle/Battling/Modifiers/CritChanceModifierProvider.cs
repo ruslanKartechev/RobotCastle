@@ -20,15 +20,15 @@ namespace RobotCastle.Battling
         public override void AddTo(GameObject target)
         { }
 
-        public override void AddToHero(HeroComponents view)
+        public override void AddToHero(HeroComponents components)
         {
             if (_statType == EStatType.CritChance)
             {
-                view.stats.PhysicalCritChance.AddDecorator(this);
+                components.stats.PhysicalCritChance.AddDecorator(this);
             }
             else if (_statType == EStatType.MagicCritChance)
             {
-                view.stats.MagicalCritChance.AddDecorator(this);
+                components.stats.MagicalCritChance.AddDecorator(this);
             }
         }
 

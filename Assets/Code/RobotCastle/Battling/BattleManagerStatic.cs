@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Bomber;
 using RobotCastle.Core;
 using SleepDev;
 using UnityEngine;
@@ -7,8 +8,49 @@ namespace RobotCastle.Battling
 {
     public partial class BattleManager
     {
-        private static readonly List<Vector2Int> _coveredCells = new(20);
-        private static readonly List<IHeroController> _heroesInRange = new(20);
+        public static void SetClosestAvailableDesiredPositions(List<SpawnMergeItemArgs> args, Vector2Int center)
+        {
+            var map = ServiceLocator.Get<IMap>();
+            var battle = ServiceLocator.Get<BattleManager>()._battle;
+            var size = map.Size;
+            var busyCells = new List<Vector2Int>(30);
+            foreach (var en in battle.enemiesAlive)
+            {
+                busyCells.Add(en.Components.state.currentCell);
+                busyCells.Add(en.Components.state.targetMoveCell);
+            }
+            foreach (var en in battle.playersAlive)
+            {
+                busyCells.Add(en.Components.state.currentCell);
+                busyCells.Add(en.Components.state.targetMoveCell);
+            }
+            var radius = 1;
+            for(var i = 0; i < args.Count; i++)
+            {
+                radius = 1;
+                var didFind = false;
+                for (var x = -radius; x <= radius && !didFind; x++)
+                {
+                    for (var y = -radius; y <= radius && !didFind; y++)
+                    {
+                        if (x == 0 && y == 0) 
+                            continue;
+                        
+                        var cellPos = center + new Vector2Int(x, y);
+                        if (map.IsOutOfBounce(cellPos))
+                            continue;
+                        if (busyCells.Contains(cellPos))
+                            continue;
+                        args[i].preferredCoordinated = cellPos;
+                        busyCells.Add(cellPos);
+                        didFind = true;
+                    }
+                }
+                radius++;
+                if (radius >= size.x)
+                    break;
+            }
+        }
         
         public static void ResetHeroAfterBattle(IHeroController hero)
         {
@@ -47,14 +89,6 @@ namespace RobotCastle.Battling
                 components.healthManager.SetDamageable(true);
                 components.statAnimationSync.Init(true);
                 components.weaponsContainer.AddAllModifiersToHero(components);
-                // foreach (var itemData in components.weaponsContainer.Items)
-                // {
-                //     foreach (var id in itemData.modifierIds)
-                //     {
-                //         var mod = modsDb.GetModifier(id);
-                //         mod.AddToHero(components);
-                //     }
-                // }
                 foreach (var mod in components.preBattleRecurringMods)
                     mod.Activate();
             }
@@ -106,54 +140,6 @@ namespace RobotCastle.Battling
         }
 
         
-        public static IHeroController GetBestTargetForAttack2(IHeroController hero)
-        {
-            var map = hero.Components.agent.Map;
-            var myPos = map.GetCellPositionFromWorld(hero.Components.transform.position);
-            var cellsMask = hero.Components.stats.Range.GetCellsMask();
-            _coveredCells.Clear();
-            _heroesInRange.Clear();
-            foreach (var val in cellsMask)
-                _coveredCells.Add(myPos + val);
-            var enemies = hero.Battle.GetTeam(hero.TeamNum).enemyUnits;
-            var overallClosest = (IHeroController)null;
-            var minD2 = int.MaxValue;
-            var d2 = minD2;
-            foreach (var otherHero in enemies)
-            {
-                var enemyPos = otherHero.Components.agent.CurrentCell;
-                d2 = (enemyPos - myPos).sqrMagnitude;
-                if (d2 < minD2)
-                {
-                    minD2 = d2;
-                    overallClosest = otherHero;
-                }
-
-                if (_coveredCells.Contains(enemyPos))
-                    _heroesInRange.Add(otherHero);
-            }
-
-            switch (_heroesInRange.Count)
-            {
-                case 0:
-                    return overallClosest;
-                case 1:
-                    return _heroesInRange[0];
-                default:
-                    var minHealth = float.MaxValue;
-                    foreach (var enemy in _heroesInRange)
-                    {
-                        var h = enemy.Components.stats.HealthCurrent.Get();
-                        if (h < minHealth)
-                        {
-                            minHealth = h;
-                            overallClosest = enemy;
-                        }
-                    }
-                    return overallClosest;
-            }
-        }
-
     
     }
 }

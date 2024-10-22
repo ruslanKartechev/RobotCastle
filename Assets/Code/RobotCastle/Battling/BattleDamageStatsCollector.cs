@@ -13,7 +13,20 @@ namespace RobotCastle.Battling
 
         public void AddHero(IHeroController hero)
         {
+            hero.Components.healthManager.StatsCollector = this;
+            hero.Components.damageSource.StatsCollector = this;
             _data.Add(hero.Components.GUID ,new PerHeroData() { id = hero.Components.stats.HeroId });
+            onListUpdated?.Invoke();
+        }
+        
+        public void AddHeroes(List<IHeroController> heroes)
+        {
+            foreach (var hero in heroes)
+            {
+                hero.Components.healthManager.StatsCollector = this;
+                hero.Components.damageSource.StatsCollector = this;
+                _data.Add(hero.Components.GUID, new PerHeroData() { id = hero.Components.stats.HeroId });
+            }
             onListUpdated?.Invoke();
         }
 

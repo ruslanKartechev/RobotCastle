@@ -20,9 +20,9 @@ namespace RobotCastle.Battling
         public override void AddTo(GameObject target)
         { }
 
-        public override void AddToHero(HeroComponents view)
+        public override void AddToHero(HeroComponents components)
         {
-            view.stats.PhysicalCritChance.AddDecorator(this);
+            components.stats.PhysicalCritChance.AddDecorator(this);
 
         }
 

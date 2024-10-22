@@ -77,8 +77,6 @@ namespace RobotCastle.Battling
             _battle.State = BattleState.Going;
             _battle.WinCallback = OnTeamWin;
             var map = ServiceLocator.Get<Bomber.IMap>();
-    
-
             foreach (var hero in _battle.Enemies)
             {
                 hero.TeamNum = 1;
@@ -94,17 +92,8 @@ namespace RobotCastle.Battling
             
             PrepareForBattle(_battle.PlayerUnits);
             PrepareForBattle(_battle.Enemies);
-            
-            try
-            {
-                _playerDamageStatsCollector.ResetForNewHeroes(_battle.PlayerUnits);
-                _enemiesStatsCollector.ResetForNewHeroes(_battle.Enemies);
-            }
-            catch (System.Exception ex)
-            {
-                CLog.LogYellow($"{ex.Message}, {ex.StackTrace}");
-            }
-
+            _playerDamageStatsCollector.ResetForNewHeroes(_battle.PlayerUnits);
+            _enemiesStatsCollector.ResetForNewHeroes(_battle.Enemies);
             if (_activatePlayers)
             {
                 foreach (var hero in _battle.playersAlive)
@@ -182,7 +171,7 @@ namespace RobotCastle.Battling
                 _roundModifiers[i].OnRoundSet(this);
             if (token.IsCancellationRequested) return;
 
-            _battle.Enemies = enemiesManager.Enemies;
+            _battle.Enemies = enemiesManager.AllEnemies;
             // do something for merge reset
             _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>()
                 .GetItemsInActiveArea<IHeroController>(_ => true);
@@ -228,12 +217,44 @@ namespace RobotCastle.Battling
                 ResetHeroAfterBattle(playerUnit);
             mergeManager.ResetAllItemsPositions();
         }
+
+        public void AddNewEnemiesDuringBattle(List<SpawnMergeItemArgs> args)
+        {
+            if (_battle.State != BattleState.Going)
+            {
+                CLog.Log($"[AddNewEnemiesDuringBattle] Battle not going");
+                return;
+            }
+            var map = ServiceLocator.Get<Bomber.IMap>();
+            var enemies = ServiceLocator.Get<EnemiesManager>();
+            var heroes = new List<IHeroController>(args.Count);
+            foreach (var arg in args)
+            {
+                var hero = enemies.factory.SpawnNew(arg, 0,false);
+                heroes.Add(hero);
+                var pos = map.GetWorldFromCell(arg.preferredCoordinated);
+                hero.Components.transform.position = pos;
+            }
+            
+            foreach (var hero in heroes)
+            {
+                hero.TeamNum = 1;
+                hero.Battle = _battle;
+                hero.Components.agent.UpdateMap(map);
+            }
+            
+            _battle.Enemies.AddRange(heroes);
+            _battle.enemiesAlive.AddRange(heroes);
+            _enemiesStatsCollector.AddHeroes(heroes);
+            PrepareForBattle(heroes);
+            foreach (var hero in heroes)
+                hero.SetBehaviour(new HeroAttackEnemyBehaviour());
+        }
         
-        public void SetupRewardForCurrentRound()
+        private void SetupRewardForCurrentRound()
         {
             _rewardCalculator.RewardPerStageCompletion = _roundData[_battle.roundIndex].reward;
         }
-        
         
         private void OnTeamWin(int teamNum)
         {

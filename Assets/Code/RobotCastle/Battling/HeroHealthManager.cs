@@ -58,7 +58,7 @@ namespace RobotCastle.Battling
             if (health <= 0)
             {
                 if(_components.killProcessor != null)
-                    _components.killProcessor.OnKilled();
+                    _components.killProcessor.Kill();
                 else
                     CLog.LogRed($"[{nameof(HeroHealthManager)}] IKillProcessor is null {_components.name}");
             }

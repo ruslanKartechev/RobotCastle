@@ -13,7 +13,14 @@ namespace RobotCastle.Data
             base.OnInspectorGUI();
 
             EU.Space();
-            if (EU.BtnMidWide3($"Multiply {me.e_statType.ToString()} by {me.e_multiplier}", EU.Lime))
+            EU.Space();
+            EU.Space();
+            if (EU.BtnMidWide3($"GetAllEnemyConfigFiles", EU.Gold))
+                me.GetAllEnemyConfigFileNames();
+            
+            EU.Space();
+            
+            if (EU.BtnMidWide3($"Multiply {me.e_statType.ToString()} by {me.e_multiplier}", EU.Gold))
                 me.MultiplyStatForChosenId();
         }
     }

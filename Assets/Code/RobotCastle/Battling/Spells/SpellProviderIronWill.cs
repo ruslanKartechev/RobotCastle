@@ -13,9 +13,9 @@ namespace RobotCastle.Battling
         public override void AddTo(GameObject target)
         { }
         
-        public override void AddToHero(HeroComponents view)
+        public override void AddToHero(HeroComponents components)
         {
-            view.stats.FullManaListener = new SpellIronWill(view, _config);
+            components.stats.FullManaListener = new SpellIronWill(components, _config);
         }
         
         public override string GetDescription(GameObject target)

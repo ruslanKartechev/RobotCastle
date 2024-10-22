@@ -186,7 +186,6 @@ namespace RobotCastle.Merging
         
         private void NullDragged()
         {
-            CLog.LogWhite("NullDragged =======");
             if(_draggedItem != null)
                 _draggedItem.OnDraggingEnd();
             _draggedItem = null;
@@ -195,20 +194,6 @@ namespace RobotCastle.Merging
         private void UpdateGridAndNullDragged()
         {
             _isProcessingPut = false;
-            if (_sectionsController == null)
-            {
-                CLog.LogRed("_sectionsController == null");
-            }
-
-            if (_draggedItem == null)
-            {
-                CLog.LogRed("_draggedItem == null");
-            }
-
-            if (_draggedItem.itemView == null)
-            {
-                CLog.LogRed("_draggedItem.itemView == null");
-            }
             if(_draggedItem.itemView != null)
                 _sectionsController.OnItemPut(_draggedItem.itemView.itemData);
             NullDragged();

@@ -19,7 +19,6 @@ namespace RobotCastle.Battling
         public void InitHero(string id, int heroLevel, int mergeLevel, List<ModifierProvider> spells)
         {
             _components.GUID = System.Guid.NewGuid().ToString();
-            CLog.LogGreen($"GUID: {GUID}");
             AddHeroComponents();
             _stats.LoadAndSetHeroStats(id, heroLevel, mergeLevel);
             _components.statAnimationSync.Init(true);

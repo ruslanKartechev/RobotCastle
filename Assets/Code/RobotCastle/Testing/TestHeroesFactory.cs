@@ -39,6 +39,9 @@ namespace RobotCastle.Testing
                 all.AddRange(res);
             }
             _spawned = all;
+            #if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+            #endif
             return all;
         }
 
@@ -69,18 +72,25 @@ namespace RobotCastle.Testing
                 }
                 if (y >= spawnData.grid.y)
                     y = 0;
-                if (!Application.isPlaying)
-                    continue;
                 if (root != null)
                     instance.transform.position = root.TransformPoint(currentGridPos);
                 else
                     instance.transform.position = currentGridPos;
-                var map = ServiceLocator.Get<Bomber.IMap>();
-                if (instance.TryGetComponent<HeroController>(out var hero))
+                if (!Application.isPlaying)
                 {
-                    hero.InitHero(id, pack.heroLevel,pack.mergeLevel, new List<ModifierProvider>());          
-                    hero.Components.agent.UpdateMap(map);
-                    allSpawned.Add(hero);
+                    if (instance.TryGetComponent<HeroController>(out var hero))
+                        allSpawned.Add(hero);
+                    continue;
+                }
+                else
+                {
+                    var map = ServiceLocator.Get<Bomber.IMap>();
+                    if (instance.TryGetComponent<HeroController>(out var hero))
+                    {
+                        hero.InitHero(id, pack.heroLevel,pack.mergeLevel, new List<ModifierProvider>());          
+                        hero.Components.agent.UpdateMap(map);
+                        allSpawned.Add(hero);
+                    }
                 }
             }
             return allSpawned;

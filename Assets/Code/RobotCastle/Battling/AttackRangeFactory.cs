@@ -45,7 +45,24 @@ namespace RobotCastle.Battling
                     return new AttackRangeRectangle(1, 1);
                 case "bumble":
                     return new AttackRangeRectangle(1, 1);
-                
+                case "bloom":
+                    return new AttackRangeRectangle(2, 3);
+                case "bat_lord":
+                    return new AttackRangeRectangle(2, 3);
+                case "devil_hell":
+                    return new AttackRangeRectangle(2, 3);
+                case "devil_hades":
+                    return new AttackRangeRectangle(3, 4);
+                case "vampire_bat":
+                    return new AttackRangeRectangle(1, 1);
+                case "spider_king":
+                    return new AttackRangeRectangle(1, 1);
+                case "spider_toxin":
+                    return new AttackRangeRectangle(4, 4);
+                case "dog":
+                    return new AttackRangeRectangle(1, 1);
+                case "cat":
+                    return new AttackRangeRectangle(1, 1);
             }
             CLog.Log($"[AttackRangeFactory] No preset attack range for: {id}. Returning basic 1x1 \"PlusShape\" ");
             return new AttackRangeSingle();

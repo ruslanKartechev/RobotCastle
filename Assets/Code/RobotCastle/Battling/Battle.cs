@@ -78,7 +78,7 @@ namespace RobotCastle.Battling
                 default:
                     foreach (var listener in EnemyKilledListener)
                         listener.OnKilled(hero);
-                    RewardCalculator.AddRewardForKill(hero);
+                    // RewardCalculator.AddRewardForKill(hero);
                     _enemiesAlive.Remove(hero);
                     if (!_completed && _enemiesAlive.Count == 0)
                     {

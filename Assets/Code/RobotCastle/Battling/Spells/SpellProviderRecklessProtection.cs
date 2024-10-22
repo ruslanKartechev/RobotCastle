@@ -8,7 +8,7 @@ namespace RobotCastle.Battling
         [SerializeField] private SpellConfigRecklessProtection _config;
         public override void AddTo(GameObject target) {}
 
-        public override void AddToHero(HeroComponents view) { }
+        public override void AddToHero(HeroComponents components) { }
 
         public override float manaMax => 100;
         public override float manaStart => 0;

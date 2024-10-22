@@ -8,6 +8,7 @@ using RobotCastle.Core;
 using SleepDev;
 using UnityEngine;
 #if UNITY_EDITOR
+using System.Collections;
 using UnityEditor.Animations;
 #endif
 namespace RobotCastle.Testing
@@ -88,39 +89,60 @@ namespace RobotCastle.Testing
             _heroesFactory.SpawnAll();
         }
 
+
+        private IEnumerator Working()
+        {
+            var doWait = true;
+            
+            
+            while(doWait)
+                yield return null;
+        }
+        
         public void StartAttack()
         {
             var target = FakeAttackTarget.GetNew();
             var heroes = _heroesFactory.AllSpawned;
+            // var timers = new List<AttackTimer>(10);
             foreach (var hero in heroes)
             {
                 if (hero.Components.attackManager == null)
                 {
-                    CLog.LogRed("hero.HeroView.AttackManager is null");
-                    continue;
+                    hero.InitHero(hero.gameObject.name, 0,0, new List<ModifierProvider>());
+                    // CLog.LogRed("hero.HeroView.AttackManager is null");
+                    // continue;
                 }
 
-                if (hero.TryGetComponent(out AttackTimer timer) == false)
+                var animController = _animationControllers.Find(t => t.name.Contains(hero.gameObject.name) || hero.gameObject.name.Contains(t.name));
+                if (animController == default)
                 {
-                    timer = hero.gameObject.AddComponent<AttackTimer>();
+                    CLog.Log($"Cannot find animController for hero {hero.gameObject.name}");
+                    continue;
                 }
+                                
+                if (hero.TryGetComponent(out AttackTimer timer) == false)
+                    timer = hero.gameObject.AddComponent<AttackTimer>();
                 timer.enabled = true;
                 timer.DoLog = _logAttackDelays;
+                // timers.Add(timer);
+                                
                 switch (hero.Components.attackManager)
                 {
                     case HeroRangedAttackManager:
                         var rangeTarget = FakeAttackTarget.GetNew();
                         rangeTarget.transform.position = hero.transform.TransformPoint(new Vector3(0, 1.25f, 2f));
-                        hero.Components.attackManager.BeginAttack(rangeTarget);
+                        // hero.Components.attackManager.BeginAttack(rangeTarget);
                         break;
                     case HeroMeleeAttackManager:
-                        hero.Components.attackManager.BeginAttack(target);
+                        // hero.Components.attackManager.BeginAttack(target);
                         break;
                     default:
-                        CLog.Log("unknown attack manager type ");
-                        hero.Components.attackManager.BeginAttack(target);
+                        // CLog.Log("unknown attack manager type ");
+                        // hero.Components.attackManager.BeginAttack(target);
                         break;
                 }
+                
+                timer.Begin(animController);
             }
         }
 

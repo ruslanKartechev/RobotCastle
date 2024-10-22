@@ -13,8 +13,6 @@ namespace RobotCastle.Battling
         public IDamageReceiver CurrentTarget => _target;
         public IDamageReceiver LastTarget => _target;
 
-        [SerializeField] private bool _doOverrideAnimations;
-        [SerializeField] private List<RuntimeAnimatorController> _overrideControllers;
         private IDamageReceiver _target;
         private bool _activated;
 
@@ -26,11 +24,7 @@ namespace RobotCastle.Battling
                 _activated = true;
                 Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
                 Hero.Components.animationEventReceiver.OnAttackEvent += OnAttack;
-                if (_doOverrideAnimations)
-                {
-                    Hero.Components.animationEventReceiver.OnAttackAnimationEndEvent -= SetRandomAnimation;
-                    Hero.Components.animationEventReceiver.OnAttackAnimationEndEvent += SetRandomAnimation;
-                }
+        
             }
             Hero.Components.state.isAttacking = true;
             Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, true);
@@ -44,8 +38,6 @@ namespace RobotCastle.Battling
             Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
             Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, false);
             Hero.Components.state.isAttacking = false;
-            if (_doOverrideAnimations)
-                Hero.Components.animationEventReceiver.OnAttackAnimationEndEvent -= SetRandomAnimation;
         }
 
         private void OnAttack()
@@ -57,9 +49,6 @@ namespace RobotCastle.Battling
             Hero.Components.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
         }
 
-        private void SetRandomAnimation()
-        {
-            Hero.Components.animator.runtimeAnimatorController = _overrideControllers.Random();
-        }
+      
     }
 }
