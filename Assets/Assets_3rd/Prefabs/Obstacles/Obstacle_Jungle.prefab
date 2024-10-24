@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1620581737817192
+--- !u!1 &1315427819248595955
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4820219646785952}
-  - component: {fileID: 33535221874705528}
-  - component: {fileID: 23930300579782500}
+  - component: {fileID: 1804401992438311241}
+  - component: {fileID: 3361195604473931500}
+  - component: {fileID: 667002038266434086}
   m_Layer: 0
-  m_Name: SM_Env_SpiderWeb_03
+  m_Name: Obstacle_Jungle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4820219646785952
+--- !u!4 &1804401992438311241
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1620581737817192}
+  m_GameObject: {fileID: 1315427819248595955}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.004, y: 0, z: 8.946}
+  m_LocalScale: {x: 0.73373777, y: 0.73373777, z: 0.73373777}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33535221874705528
+--- !u!33 &3361195604473931500
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1620581737817192}
-  m_Mesh: {fileID: 4300000, guid: fed5f58f685a74040a0c6ed3b57e08b2, type: 3}
---- !u!23 &23930300579782500
+  m_GameObject: {fileID: 1315427819248595955}
+  m_Mesh: {fileID: 9079188999251329513, guid: 1b9446df3c6f9ef4c8a2369be1e828a0, type: 3}
+--- !u!23 &667002038266434086
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1620581737817192}
+  m_GameObject: {fileID: 1315427819248595955}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4776dae064b9f574ea7d2d25294d2a1b, type: 2}
+  - {fileID: 2100000, guid: c13e756e9b04edf48b2a5f14d1c682db, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
