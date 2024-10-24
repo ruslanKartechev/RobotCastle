@@ -2,7 +2,7 @@
 {
     public abstract class Spell
     {
-        protected HeroComponents _view;
+        protected HeroComponents _components;
         protected bool _isActive;
     }
 }

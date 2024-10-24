@@ -6,10 +6,9 @@ namespace RobotCastle.Battling
     public class SpellProviderIronWill : SpellProvider
     {
         public override float manaMax => _config.manaMax;
+        
         public override float manaStart => _config.manaStart;
         
-        [SerializeField] private SpellConfigIronWill _config;
-
         public override void AddTo(GameObject target)
         { }
         
@@ -25,5 +24,8 @@ namespace RobotCastle.Battling
             str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
             return str;
         }
+        
+        [SerializeField] private SpellConfigIronWill _config;
+
     }
 }

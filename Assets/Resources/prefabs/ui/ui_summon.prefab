@@ -5696,7 +5696,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _durationIn: 0.4
   _durationOut: 0.4
+  _maxAlpha: 1
+  _color1: {r: 0, g: 0, b: 0, a: 0}
+  _color2: {r: 0, g: 0, b: 0, a: 0}
   _image: {fileID: 7879765301397921006}
+  _goToDisable: {fileID: 0}
 --- !u!222 &812505293548804261
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7531,8 +7535,10 @@ GameObject:
   - component: {fileID: 8242378481142689511}
   - component: {fileID: 1617925264080469287}
   - component: {fileID: 8817986273619098673}
+  - component: {fileID: 3648170180374647382}
+  - component: {fileID: 6691506865231210911}
   m_Layer: 5
-  m_Name: backgradient_1
+  m_Name: top icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7595,6 +7601,38 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3648170180374647382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9065024041971927229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8751f0996614591b446a97737b2a13a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _autoStartOnEnable: 1
+  _mass: 5
+  _spring: 50
+  _damping: 5
+  _listeners:
+  - {fileID: 6691506865231210911}
+--- !u!114 &6691506865231210911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9065024041971927229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0eb8a49f3404cf4ba897c3d62ef4f8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _magnitudeAbs: 15
+  _rect: {fileID: 8242378481142689511}
 --- !u!1 &9080595451360201166
 GameObject:
   m_ObjectHideFlags: 0

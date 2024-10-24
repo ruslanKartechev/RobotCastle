@@ -9,29 +9,7 @@ namespace RobotCastle.Battling
 {
     public class HeroAttackEnemyBehaviour : IHeroBehaviour
     {
-        
         public string BehaviourID => "hero_attack";
-
-        private enum EAttackLogicStep { Waiting, Moving, Rotating, Attacking }
-        
-        private const float DelayAfterTargetDied = .6f;
-
-        private IHeroController _hero;
-        private CancellationTokenSource _mainToken;
-        private CancellationTokenSource _subToken;
-        private HeroRangeCoverCheck _rangeCoverCheck;
-        private EAttackLogicStep _logicStep;
-        private bool _isActivated;
-        private HeroStateData myState => _hero.Components.state;
-        private HeroStateData enemyState => myState.attackData.CurrentEnemy.Components.state;
-        
-        private IHeroController enemy
-        {
-            get => _hero.Components.state.attackData.CurrentEnemy;
-            set => _hero.Components.state.attackData.CurrentEnemy = value;
-        }
-
-        private HeroMovementManager movement => _hero.Components.movement;
         
         public void Activate(IHeroController hero, Action<IHeroBehaviour> endCallback)
         {
@@ -49,10 +27,12 @@ namespace RobotCastle.Battling
             _mainToken = new CancellationTokenSource();
             _hero.Components.stats.CheckManaFull();
             SearchAndAttack(_mainToken.Token);
+        
         }
 
         public void Stop()
         {
+            _isActivated = false;
             _hero.Components.attackManager.OnAttackStep -= OnAttackCallback;
             _logicStep = EAttackLogicStep.Waiting;
             // CLog.Log($"[{nameof(HeroAttackEnemyBehaviour)}] [Stop]");
@@ -64,6 +44,28 @@ namespace RobotCastle.Battling
             _hero.Battle.AttackPositionCalculator.RemoveUnit(_hero.Components.state);
             myState.SetTargetCellToSelf();
         }
+        
+        private enum EAttackLogicStep { Waiting, Moving, Rotating, Attacking }
+        
+        private const float DelayAfterTargetDiedMs = 300;
+        private const int TimeWaitIfPathFailedMs = 250;
+
+        private IHeroController _hero;
+        private CancellationTokenSource _mainToken;
+        private CancellationTokenSource _subToken;
+        private HeroRangeCoverCheck _rangeCoverCheck;
+        private EAttackLogicStep _logicStep;
+        private bool _isActivated;
+        private HeroStateData myState => _hero.Components.state;
+        private HeroStateData enemyState => myState.attackData.CurrentEnemy.Components.state;
+        
+        private IHeroController enemy
+        {
+            get => _hero.Components.state.attackData.CurrentEnemy;
+            set => _hero.Components.state.attackData.CurrentEnemy = value;
+        }
+
+        private HeroMovementManager movement => _hero.Components.movement;
 
         // 1 Choose target
         // 2 go to target
@@ -119,16 +121,19 @@ namespace RobotCastle.Battling
                     MoveToEnemy(prevStep, token);
                     return;
                 case 2:
-                    RotateToEnemy(prevStep);
+                    RotateToEnemy(prevStep, token);
                     return;
             }
         }
 
-        private async void RotateToEnemy(EAttackLogicStep prevStep)
+        private async void RotateToEnemy(EAttackLogicStep prevStep, CancellationToken token)
         {
             StopSubProc();
             if (prevStep == EAttackLogicStep.Attacking)
+            {
                 StopAttack();
+                await Task.Delay((int)(DelayAfterTargetDiedMs), token);
+            }
             _logicStep = EAttackLogicStep.Rotating;
             movement.RotateIfNecessary(enemy.Components.agent.CurrentCell, _subToken.Token, OnRotated);
         }        
@@ -149,6 +154,9 @@ namespace RobotCastle.Battling
             {
                 StopSubProc();
                 StopAttack();
+                await Task.Delay((int)(DelayAfterTargetDiedMs));
+                if (token.IsCancellationRequested)
+                    return;
             }
             _logicStep = EAttackLogicStep.Waiting;
             myState.SetTargetCellToSelf();
@@ -156,7 +164,7 @@ namespace RobotCastle.Battling
                 _hero, enemy, out var attackCell, out var distance);
             if (!shouldMove)
             {
-                CLog.LogRed($"[DecideNextStep] Wierd case");
+                // CLog.LogRed($"[DecideNextStep] Wierd case");
                 await Task.Yield();
                 if (token.IsCancellationRequested) return;
                 DecideNextStep(_mainToken.Token);
@@ -179,15 +187,13 @@ namespace RobotCastle.Battling
                     DecideNextStep(_mainToken.Token);
                     return;
                 }
-                else
-                    myState.attackData.IsMovingForDuel = true;
+                myState.attackData.IsMovingForDuel = true;
             }
             _logicStep = EAttackLogicStep.Moving;
             myState.TargetCell = attackCell;
             StopSubProc();
             movement.OnMovementBegan();
             // WaitForMovement(attackCell, _subToken.Token);
-            const int waitTimeMs = (int)(1000 * .25f);
             var result = await movement.MoveToCell(attackCell, token);
             if (token.IsCancellationRequested)
                 return;
@@ -195,11 +201,13 @@ namespace RobotCastle.Battling
             {
                 case EPathMovementResult.IsBlockedOnTheWay:
                     // CLog.LogRed($"[{_hero.gameObject.name}] IsBlockedOnTheWay moving to {targetCell.ToString()}");
-                    await Task.Delay(waitTimeMs, token);
+                    await Task.Delay(TimeWaitIfPathFailedMs);
+                    if(token.IsCancellationRequested) return;
                     break;
                 case EPathMovementResult.FailedToBuild:
-                    CLog.LogRed($"[{_hero.Components.gameObject.name}] FailedToBuild moving to {attackCell.ToString()}");
-                    await Task.Delay(waitTimeMs, token);
+                    // CLog.LogRed($"[{_hero.Components.gameObject.name}] FailedToBuild moving to {attackCell.ToString()}");
+                    await Task.Delay(TimeWaitIfPathFailedMs);
+                    if(token.IsCancellationRequested) return;
                     break;
             }
             DecideNextStep(_mainToken.Token);
@@ -223,25 +231,6 @@ namespace RobotCastle.Battling
             DecideNextStep(_mainToken.Token);
         }
 
-        private async void WaitForMovement(Vector2Int targetCell, CancellationToken token)
-        {
-            const int waitTimeMs = (int)(1000 * .25f);
-            var result = await movement.MoveToCell(targetCell, token);
-            if (token.IsCancellationRequested)
-                return;
-            switch (result)
-            {
-                case EPathMovementResult.IsBlockedOnTheWay:
-                    // CLog.LogRed($"[{_hero.gameObject.name}] IsBlockedOnTheWay moving to {targetCell.ToString()}");
-                    await Task.Delay(waitTimeMs, token);
-                    break;
-                case EPathMovementResult.FailedToBuild:
-                    CLog.LogRed($"[{_hero.Components.gameObject.name}] FailedToBuild moving to {targetCell.ToString()}");
-                    await Task.Delay(waitTimeMs, token);
-                    break;
-            }
-            DecideNextStep(_mainToken.Token);
-        }
         
         /// <summary>
         /// </summary>
@@ -273,7 +262,6 @@ namespace RobotCastle.Battling
                 if (enemy.IsDead)
                 {
                     enemy.Components.attackManager.Stop();
-                    await Task.Delay((int)(DelayAfterTargetDied), token);
                     DecideNextStep(_mainToken.Token);
                     return;
                 }

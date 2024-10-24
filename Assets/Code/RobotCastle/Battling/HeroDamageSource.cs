@@ -62,7 +62,13 @@ namespace RobotCastle.Battling
             Damage(receiver, spellDam);
         }
 
-   
+        public void DamageSpellAndPhys(float phys, float mag, IDamageReceiver receiver)
+        {
+            Damage(receiver, new HeroDamageArgs(phys, EDamageType.Physical, _components));
+            Damage(receiver, new HeroDamageArgs(mag, EDamageType.Magical, _components));
+        }
+
+
         public void AddModifier(IDamageCalculationModifier mod)
         {
             if(_calculationModifiers.Contains(mod) == false)

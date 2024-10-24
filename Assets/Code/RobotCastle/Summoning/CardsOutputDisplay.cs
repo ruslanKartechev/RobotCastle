@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DG.Tweening;
@@ -76,6 +75,7 @@ namespace RobotCastle.Summoning
             var countLeft = outputs.Count;
             foreach (var go in _gridObjects) { go.SetActive(false); }
             foreach (var go in _cardsOneByOneObjects) { go.SetActive(false); }
+            
             var startIndex = 0;
             var hasHero = outputs[0].data.type == SummonConfig.Id_NewHero;
             if (hasHero)
@@ -118,7 +118,8 @@ namespace RobotCastle.Summoning
             Setup(_showCard, outputs[startIndex], viewDb, heroesDb, descrDb);
             _showAnimator.Play("Show", 0, 0f);
             _fadeImage.gameObject.SetActive(true);
-            SplashAnimate();
+            _fadeImage.SetAlpha(0f);
+            // SplashAnimate();
             await Task.Delay((int)(1000 * _fadeTime), token);
             _textCount.text = countLeft.ToString();
             countLeft--;
@@ -132,7 +133,7 @@ namespace RobotCastle.Summoning
                 _waiting = true;
                 Setup(_showCard, outputs[i], viewDb, heroesDb, descrDb);
                 _showAnimator.Play("Show", 0, 0f);
-                SplashAnimate();
+                // SplashAnimate();
                 _textCount.text = countLeft.ToString();
                 countLeft--;
             }
@@ -174,7 +175,7 @@ namespace RobotCastle.Summoning
                 case SummonConfig.Id_NewHero: {
                     var info = heroesDb.GetHeroViewInfo(output.data.id);
                     ui.SetIcon(ViewDataBase.GetHeroSprite(info.iconId));  
-                    ui.SetTitleAndCount(info.name, $"+{output.data.level}");
+                    ui.SetTitleAndCount("+EXP", $"+{output.data.level}");
                 }
                     break;
                 case SummonConfig.Id_OwnedHero: {
@@ -206,6 +207,51 @@ namespace RobotCastle.Summoning
             gameObject.SetActive(false);
         }
 
+        [ContextMenu("Set Question")]
+        public void SetQuestion()
+        {
+            gameObject.SetActive(true);
+            _exitBtn.gameObject.SetActive(false);
+            _skipBtn.gameObject.SetActive(true);
+            foreach (var go in _gridObjects) { go.SetActive(false); }
+            foreach (var go in _cardsOneByOneObjects) { go.SetActive(false); }
+            foreach (var go in _firstObjects) { go.SetActive(true); }
+
+        }
+
+        [ContextMenu("Set New Hero")]
+        public void SetNewHero()
+        {
+            gameObject.SetActive(true);
+            _skipBtn.gameObject.SetActive(false);
+            _exitBtn.gameObject.SetActive(false);
+            foreach (var go in _firstObjects) { go.SetActive(false); }
+            _heroCardAnimator.gameObject.SetActive(true);
+            foreach (var go in _cardsOneByOneObjects) { go.SetActive(false); }
+        }
+
+        [ContextMenu("Set First Item")]
+        public void SetFirstItem()
+        {
+            gameObject.SetActive(true);
+            _skipBtn.gameObject.SetActive(false);
+            _exitBtn.gameObject.SetActive(false);
+            _heroCardAnimator.gameObject.SetActive(false);
+            foreach (var go in _firstObjects) { go.SetActive(false); }
+            foreach (var go in _cardsOneByOneObjects) { go.SetActive(true); }
+
+        }
+
+        [ContextMenu("Set Exit")]
+        public void SetExit()
+        {
+            _skipBtn.gameObject.SetActive(false);
+            _exitBtn.gameObject.SetActive(true);
+            foreach (var go in _cardsOneByOneObjects) { go.SetActive(false); }
+            foreach (var go in _gridObjects) { go.SetActive(true); }
+
+        }
+        
         private void OnBtn()
         {
             CLog.Log($"[{nameof(CardsOutputDisplay)}] Next cards step");

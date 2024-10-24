@@ -10,7 +10,7 @@ namespace RobotCastle.Data
 
         public HeroesDatabase()
         {
-            info = new Dictionary<string, HeroInfo>(50);
+            info = new Dictionary<string, HeroInfo>(25);
         }
 
         public HeroStats GetStatsForHero(string id)

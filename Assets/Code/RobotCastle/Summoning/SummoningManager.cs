@@ -40,7 +40,7 @@ namespace RobotCastle.Summoning
             var inv = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;
             var save = inv.scrollsMap[id];
             var timePassed = save.timerData.CheckIfTimePassed(TimeSpan.FromHours(data.timePeriodHours));
-            CLog.LogRed($" ==== {id} Time Passed: {timePassed}");
+            CLog.Log($"{id} Time Passed: {timePassed}");
             return timePassed;
         }
 

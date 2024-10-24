@@ -48,24 +48,6 @@ namespace RobotCastle.Battling
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
             var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
             var startInd = 0;
-            
-            // if (isBoss)
-            // {
-            //     startInd = 1;
-            //     var bossPreset = packPreset.enemies[0];
-            //     {
-            //         var cellView = GridView.GetCell(bossPreset.gridPos.x, bossPreset.gridPos.y);
-            //         var itemView = factory.SpawnItemOnCell(cellView, new ItemData(bossPreset.enemy));
-            //         var hero = itemView.Transform.GetComponent<IHeroController>();
-            //         barsPanel.AssignBossUI(hero.Components);
-            //                         
-            //         var modifiers = HeroesManager.GetModifiers(bossPreset.modifiers);
-            //         hero.InitHero(bossPreset.enemy.id, bossPreset.heroLevel, bossPreset.enemy.level, modifiers);
-            //         hero.Components.heroUI.AssignStatsTracking(hero.Components);
-            //         _spawnedEnemies.Add(hero);
-            //         hero.Components.animator.Play("Appear", 0, 0);
-            //     }
-            // }
             for (var ind = startInd; ind < packPreset.enemies.Count; ind++)
             {
                 var enemyPreset = packPreset.enemies[ind];

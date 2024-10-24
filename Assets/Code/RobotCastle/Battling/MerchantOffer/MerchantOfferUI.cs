@@ -55,6 +55,7 @@ namespace RobotCastle.Battling.MerchantOffer
                         break;
                 }
             }
+            gameObject.SetActive(true);
             _buttons[0].activeBtn.OverrideMainCallback(OnBtn1);
             _buttons[1].activeBtn.OverrideMainCallback(OnBtn2);
             _buttons[2].activeBtn.OverrideMainCallback(OnBtn3);

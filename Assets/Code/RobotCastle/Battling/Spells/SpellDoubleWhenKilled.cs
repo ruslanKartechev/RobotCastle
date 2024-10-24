@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
-using SleepDev;
 
 namespace RobotCastle.Battling
 {
@@ -18,24 +17,17 @@ namespace RobotCastle.Battling
 
         public int order => 100;
         
-        public void OnKilled(HeroComponents hero)
+        public void OnKilled(HeroComponents components)
         {
             _components.killProcessor.RemoveModifier(this);
             _components.agent.SetCurrentCellFromWorldPosition();
             BattleManager.SetClosestAvailableDesiredPositions(_spawnArgs, _components.agent.CurrentCell);
             foreach (var arg in _spawnArgs)
             {
-                arg.coreData.level = hero.stats.MergeTier;
+                arg.coreData.level = components.stats.MergeTier;
                 arg.usePreferredCoordinate = false;
             }
-            try
-            {
-                ServiceLocator.Get<BattleManager>().AddNewEnemiesDuringBattle(_spawnArgs);
-            }
-            catch (System.Exception ex)
-            {
-                CLog.LogRed($"========= Exception: {ex.Message}\n{ex.StackTrace}");
-            }
+            ServiceLocator.Get<BattleManager>().AddNewEnemiesDuringBattle(_spawnArgs);
         }
         
         private List<SpawnMergeItemArgs> _spawnArgs;

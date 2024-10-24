@@ -125,8 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58110171326f4872acbf1725c3caba12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _doOverrideAnimations: 0
-  _overrideControllers: []
 --- !u!1001 &8473188093795475001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -191,6 +189,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7664710971776875801, guid: 8357d7d18e38dbb44afccec26d66fa49, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ae3acb91021d2ea4f92a4959416471ba, type: 2}
     - target: {fileID: 7664710971776875801, guid: 8357d7d18e38dbb44afccec26d66fa49, type: 3}
       propertyPath: m_CullingMode
       value: 0

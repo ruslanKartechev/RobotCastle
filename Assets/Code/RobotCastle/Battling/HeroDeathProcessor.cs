@@ -6,7 +6,6 @@ namespace RobotCastle.Battling
     public class HeroDeathProcessor : IKillProcessor
     {
         private HeroComponents _components;
-        private bool _isDead;
 
         public HeroDeathProcessor(HeroComponents components)
         {
@@ -15,9 +14,6 @@ namespace RobotCastle.Battling
 
         public void Kill()
         {
-            if (_isDead) return;
-            _isDead = true;
-            
             _components.healthManager.SetDamageable(false);
             _components.agent.Stop();
 

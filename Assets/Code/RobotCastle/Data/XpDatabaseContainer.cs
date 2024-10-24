@@ -13,6 +13,7 @@ namespace RobotCastle.Data
 
         public XpDatabase Database => _database;
 
+        [ContextMenu("Load")]
         public void Load()
         {
             var text = UnityEngine.Resources.Load<TextAsset>(FileName);
@@ -28,6 +29,10 @@ namespace RobotCastle.Data
                 return;
             }
             _database = data;
+            #if UNITY_EDITOR
+            if(Application.isPlaying == false)
+                UnityEditor.EditorUtility.SetDirty(this);
+            #endif
         }
         
         

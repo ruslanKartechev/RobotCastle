@@ -7,9 +7,12 @@ namespace RobotCastle.Battling
 {
     public class SpellBlizzard : Spell, IFullManaListener, IStatDecorator, IHeroProcess
     {
-        public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
+        public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_components.stats.MergeTier)];
+        
         public string name => "spell";
+        
         public int order => 10;
+        
         public float Decorate(float val)
         {
             return val + BaseSpellPower;
@@ -17,13 +20,31 @@ namespace RobotCastle.Battling
         
         public SpellBlizzard(HeroComponents view, SpellConfigBlizzard config)
         {
-            _view = view;
+            _components = view;
             _config = config;
-            _view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            _view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart); 
-            _view.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
-            _view.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(_view);
-            _view.stats.SpellPower.AddPermanentDecorator(this);
+            _components.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
+            _components.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart); 
+            _components.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
+            _components.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(_components);
+            _components.stats.SpellPower.AddPermanentDecorator(this);
+        }
+        
+        public void OnFullMana(GameObject heroGo)
+        {
+            if (_isActive) return;
+            _isActive = true;
+            CLog.Log($"[{_components.gameObject.name}] [{nameof(SpellBlizzard)}]");
+            _manaAdder.CanAdd = false;
+            _components.attackManager.OnAttackStep -= OnAttack;
+            _components.attackManager.OnAttackStep += OnAttack;
+        }
+        
+        public void Stop()
+        {
+            _components.attackManager.OnAttackStep -= OnAttack;
+            _isActive = true;
+            _manaAdder.CanAdd = true;
+            _token?.Cancel();
         }
         
         private SpellConfigBlizzard _config;
@@ -31,34 +52,25 @@ namespace RobotCastle.Battling
         private ConditionedManaAdder _manaAdder;
         private CancellationTokenSource _token;
         
-        public void OnFullMana(GameObject heroGo)
-        {
-            if (_isActive) return;
-            _isActive = true;
-            CLog.Log($"[{_view.gameObject.name}] [{nameof(SpellBlizzard)}]");
-            _manaAdder.CanAdd = false;
-            _view.attackManager.OnAttackStep += OnAttack;
-        }
-
         private void OnAttack()
         {
-            _view.attackManager.OnAttackStep -= OnAttack;
-            _view.stats.ManaResetAfterFull.Reset(_view);
-            var target = _view.attackManager.LastTarget.GetGameObject();
-            var lvl = (int)HeroesManager.GetSpellTier(_view.stats.MergeTier);
-            var enemies = HeroesManager.GetHeroesEnemies(_view);
-            var map = _view.agent.Map;
-            var (heroesAffected, cells) = HeroesManager.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
+            _components.attackManager.OnAttackStep -= OnAttack;
+            _components.stats.ManaResetAfterFull.Reset(_components);
+            var target = _components.attackManager.LastTarget.GetGameObject();
+            var lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);
+            var enemies = HeroesManager.GetHeroesEnemies(_components);
+            var map = _components.agent.Map;
+            var (affectedEnemies, cells) = HeroesManager.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
                 target.transform.position, map, enemies);
-            foreach (var hero in heroesAffected)
+            foreach (var hero in affectedEnemies)
             {
-                _view.damageSource.DamageSpellAndPhys(hero.Components.damageReceiver);
+                _components.damageSource.DamageSpellAndPhys(hero.Components.damageReceiver);
                 hero.SetBehaviour(new HeroStunnedBehaviour(_config.duration[lvl]));
             }
             var view = GetFxView();
             view.transform.position = target.transform.position;
             var worldPositions = new List<Vector3>(cells.Count);
-            foreach (var enemy in heroesAffected)
+            foreach (var enemy in affectedEnemies)
                 worldPositions.Add(map.GetWorldFromCell(enemy.Components.state.currentCell));
             view.Show(worldPositions);
             
@@ -66,12 +78,6 @@ namespace RobotCastle.Battling
             _manaAdder.CanAdd = true;
         }
 
-        public void Stop()
-        {
-            _isActive = true;
-            _manaAdder.CanAdd = true;
-            _token?.Cancel();
-        }
         
         private SpellParticleOnGridEffect GetFxView()
         {

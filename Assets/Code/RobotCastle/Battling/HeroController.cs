@@ -22,8 +22,8 @@ namespace RobotCastle.Battling
             AddHeroComponents();
             _stats.LoadAndSetHeroStats(id, heroLevel, mergeLevel);
             _components.statAnimationSync.Init(true);
-            _components.spellsContainer.AddModifierProviders(spells);
-            _components.spellsContainer.ApplyAllModifiers(_components);
+            _components.spellsContainer.AddProviders(spells);
+            _components.spellsContainer.ApplyAll(_components);
             SetStatsComponentsIfMissing();
         }
 
@@ -47,6 +47,26 @@ namespace RobotCastle.Battling
             if (_currentBehaviour != null)
                 _currentBehaviour.Stop();
             _currentBehaviour = null;
+        }
+
+        public void PauseCurrentBehaviour()
+        {
+            if (_currentBehaviour == null)
+            {
+                CLog.Log($"currentBehaviour is null, cannot stop");
+                return;
+            }
+            _currentBehaviour.Stop();            
+        }
+        
+        public void ResumeCurrentBehaviour()
+        {
+            if (_currentBehaviour == null)
+            {
+                CLog.Log($"currentBehaviour is null, cannot resume");
+                return;
+            }
+            _currentBehaviour.Activate(this, OnBehaviourEnd);
         }
 
         public void SetBehaviour(IHeroBehaviour behaviour)

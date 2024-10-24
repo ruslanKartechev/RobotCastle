@@ -22,7 +22,10 @@ namespace RobotCastle.Data
         
         public string rangeId;
 
-        public HeroStats(){}
+        public HeroStats()
+        {
+            
+        }
         
         public HeroStats(HeroStats other)
         {

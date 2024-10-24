@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a8ef964f7044d5ca833bc6bce623bed, type: 3}
   m_Name: summon_dead
   m_EditorClassIdentifier: 
-  _id: 
+  _id: summon_dead
   _config:
-    manaMax: 0
-    manaStart: 0
-    speed: 0
-    cellsMasksByTear: []
-    spellDamage: []
-    physDamage: []
+    manaMax: 100
+    manaStart: 50
+    enemiesToSpawn:
+    - level: 0
+      id: devil_bat
+      type: unit
+    - level: 0
+      id: devil_hell
+      type: unit

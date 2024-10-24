@@ -5,72 +5,108 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public class SpellJudgementOfLight : IFullManaListener, IStatDecorator, IHeroProcess
+    public class SpellJudgementOfLight : Spell, IFullManaListener, IStatDecorator, IHeroProcess
     {
-        public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_view.stats.MergeTier)];
-        public string name => "spell";
-        public int order => 10;
-        public float Decorate(float val)
+        public SpellJudgementOfLight(HeroComponents components, SpellConfigJudgementOfLight config)
         {
-            return val + BaseSpellPower;
-        }
-
-        public SpellJudgementOfLight(HeroComponents view, SpellConfigJudgementOfLight config)
-        {
-            _view = view;
             _config = config;
-            view.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            view.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
-            _view.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
-            _view.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(view);
-            _view.stats.SpellPower.AddPermanentDecorator(this);
+            _components = components;
+            components.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
+            components.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
+            _components.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
+            _components.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(components);
+            _components.stats.SpellPower.AddPermanentDecorator(this);
         }
         
-        private SpellConfigJudgementOfLight _config;
-        private HeroComponents _view;
-        private SpellParticlesByLevel _fxView;
-        private CancellationTokenSource _token;
-        private ConditionedManaAdder _manaAdder;
-        private bool _isActive;
+        public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_components.stats.MergeTier)];
+        public string name => "spell";
+        public int order => 10;
+        
+        public float Decorate(float val) => val + BaseSpellPower;
 
         public void OnFullMana(GameObject heroGo)
         {
             if (_isActive) return;
             _isActive = true;
             _token = new CancellationTokenSource();
-            _view.processes.Add(this);
+            _components.processes.Add(this);
             _manaAdder.CanAdd = false;
             Waiting(_token.Token);
+        }
+        
+        private SpellConfigJudgementOfLight _config;
+        private SpellParticlesByLevel _fxView;
+        private CancellationTokenSource _token;
+        private ConditionedManaAdder _manaAdder;
+        private bool _isCasting;
+
+        public void Stop()
+        {
+            if (_isCasting)
+            {
+                _components.animationEventReceiver.OnAttackEvent -= OnAttack;
+                _isCasting = false;
+            }
+            _manaAdder.CanAdd = true;
+            _isActive = false;
+            _token?.Cancel();
         }
 
         private async void Waiting(CancellationToken token)
         {
-            var lvl = (int)HeroesManager.GetSpellTier(_view.stats.MergeTier);
+            var lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);
             var mask = _config.cellsMasksByTear[lvl];
-            var allEnemies = HeroesManager.GetHeroesEnemies(_view);
-            var map = _view.agent.Map;
+            var allEnemies = HeroesManager.GetHeroesEnemies(_components);
+            var map = _components.agent.Map;
 
             const int waitMs = (int)(.25f * 1000);
             await Task.Yield();
             if (token.IsCancellationRequested) return;
-            while (!token.IsCancellationRequested)
+            const int frameInside = 5;
+            List<IHeroController> affectedEnemies = null;
+            var didFind = false;
+            while (!token.IsCancellationRequested && !didFind)
             {
-                var affectedEnemies = HeroesManager.GetHeroesInsideCellMask(mask, _view.transform.position, map, allEnemies);
+                affectedEnemies = HeroesManager.GetHeroesInsideCellMask(mask, _components.transform.position, map, allEnemies);
                 if (affectedEnemies.Count > 0)
                 {
-                    var fx = GetFxView();
-                    fx.transform.position = map.GetWorldFromCell(_view.state.currentCell);
-                    fx.Show(lvl);
-                    for (var i = affectedEnemies.Count - 1; i >= 0; i--)
-                        _view.damageSource.DamageSpellAndPhys(allEnemies[i].Components.damageReceiver);
-                    _isActive = false;
-                    _view.stats.ManaResetAfterFull.Reset(_view);
-                    _view.processes.Remove(this);
-                    _manaAdder.CanAdd = true;
-                    return;
+                    for (var i = 0; i < frameInside; i++)
+                        await Task.Yield();
+                    if (token.IsCancellationRequested) return;
+                    affectedEnemies = HeroesManager.GetHeroesInsideCellMask(mask, _components.transform.position, map, allEnemies);
+                    if(affectedEnemies.Count > 0)
+                        didFind = true;
                 }
-                await Task.Delay(waitMs, token);
+                else
+                    await Task.Delay(waitMs, token);
             }
+            if (affectedEnemies is { Count: > 0 })
+            {
+                _isCasting = true;
+                _components.animator.Play("Cast");
+                _components.animationEventReceiver.OnAttackEvent += OnAttack;
+                
+                while(_isCasting && !token.IsCancellationRequested)
+                    await Task.Yield();
+                if (token.IsCancellationRequested) return;
+                
+                affectedEnemies = HeroesManager.GetHeroesInsideCellMask(mask, _components.transform.position, map, allEnemies);
+                var fx = GetFxView();
+                fx.transform.position = map.GetWorldFromCell(_components.state.currentCell);
+                fx.Show(lvl);
+                for (var i = affectedEnemies.Count - 1; i >= 0; i--)
+                    _components.damageSource.DamageSpellAndPhys(affectedEnemies[i].Components.damageReceiver);
+                _isActive = false;
+                _components.stats.ManaResetAfterFull.Reset(_components);
+                _components.processes.Remove(this);
+                _manaAdder.CanAdd = true;
+            }
+        }
+
+        private void OnAttack()
+        {
+            _components.animationEventReceiver.OnAttackEvent -= OnAttack;
+            _isCasting = false;
         }
 
         private SpellParticlesByLevel GetFxView()
@@ -82,11 +118,6 @@ namespace RobotCastle.Battling
             return instance;
         }
 
-        public void Stop()
-        {
-            _manaAdder.CanAdd = true;
-            _isActive = false;
-            _token?.Cancel();
-        }
+     
     }
 }
