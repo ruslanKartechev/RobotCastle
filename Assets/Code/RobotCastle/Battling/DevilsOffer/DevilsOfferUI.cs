@@ -19,6 +19,7 @@ namespace RobotCastle.Battling.DevilsOffer
 
         public void Show(DevilsOfferData offerData, Action<bool> callback)
         {
+            gameObject.SetActive(true);
             _fadeScreen.FadeInWithId(UIConstants.UIDevilsOffer);
             _callback = callback;
             _btnAccept.AddMainCallback(Accept);

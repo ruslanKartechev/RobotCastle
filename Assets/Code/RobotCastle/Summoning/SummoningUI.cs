@@ -267,7 +267,7 @@ namespace RobotCastle.Summoning
             var ownedAmount = save.ownedAmount;
             optionUI.SetPurchasesCount(save.purchasedCount);
             optionUI.invView1.text.text = $"x{ownedAmount}";
-            CLog.Log($"On option picked. setting up: {id}");
+            // CLog.Log($"On option picked. setting up: {id}");
             switch (id)
             {
                 case ItemsIds.Scroll1:

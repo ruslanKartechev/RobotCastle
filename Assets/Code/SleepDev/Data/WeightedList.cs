@@ -44,6 +44,14 @@ namespace SleepDev
         {
             public T obj;
             public float weight;
+            
+            public Data(){}
+
+            public Data(T obj, float weight)
+            {
+                this.obj = obj;
+                this.weight = weight;
+            }
         }
     }
     

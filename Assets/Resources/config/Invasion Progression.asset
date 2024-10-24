@@ -68,9 +68,9 @@ MonoBehaviour:
           reward: 10
           roundType: 3
     - id: chapter_2
-      viewName: Graveyard
+      viewName: Magic Forest
       moneyGoldReward: 120
-      playerXpReward: 10
+      playerXpReward: 25
       heroXpReward: 10
       location: ENV_2Graveyard
       tiers:
@@ -118,9 +118,9 @@ MonoBehaviour:
           reward: 10
           roundType: 3
     - id: chapter_3
-      viewName: Spirders Cave
+      viewName: Spiders Cave
       moneyGoldReward: 160
-      playerXpReward: 10
+      playerXpReward: 40
       heroXpReward: 10
       location: ENV_3SpiderCave
       tiers:
@@ -183,74 +183,9 @@ MonoBehaviour:
           reward: 10
           roundType: 3
     - id: chapter_4
-      viewName: Winter Forest
-      moneyGoldReward: 191
-      playerXpReward: 10
-      heroXpReward: 10
-      location: ENV_4WinterPole
-      tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
-      chapterCompletedRewards: []
-      levelData:
-        levels:
-        - enemyPreset: winter_forest_1
-          reward: 10
-          roundType: 0
-        - enemyPreset: winter_forest_2
-          reward: 10
-          roundType: 0
-        - enemyPreset: winter_forest_3
-          reward: 10
-          roundType: 0
-        - enemyPreset: winter_forest_4
-          reward: 10
-          roundType: 1
-        - enemyPreset: winter_forest_5
-          reward: 10
-          roundType: 2
-        - enemyPreset: winter_forest_6
-          reward: 10
-          roundType: 0
-        - enemyPreset: winter_forest_7
-          reward: 10
-          roundType: 0
-        - enemyPreset: winter_forest_8
-          reward: 10
-          roundType: 0
-        - enemyPreset: winter_forest_9
-          reward: 10
-          roundType: 1
-        - enemyPreset: winter_forest_10
-          reward: 10
-          roundType: 2
-        - enemyPreset: winter_forest_11
-          reward: 10
-          roundType: 0
-        - enemyPreset: winter_forest_12
-          reward: 10
-          roundType: 0
-        - enemyPreset: winter_forest_13
-          reward: 10
-          roundType: 0
-        - enemyPreset: winter_forest_14
-          reward: 10
-          roundType: 1
-        - enemyPreset: winter_forest_15
-          reward: 10
-          roundType: 3
-    - id: chapter_5
       viewName: The Underworld
-      moneyGoldReward: 208
-      playerXpReward: 10
+      moneyGoldReward: 191
+      playerXpReward: 50
       heroXpReward: 10
       location: ENV_5Underworld
       tiers:
@@ -312,25 +247,90 @@ MonoBehaviour:
         - enemyPreset: the_underworld_15
           reward: 10
           roundType: 2
-        - enemyPreset: the_underworld_16
+    - id: chapter_5
+      viewName: Winter Forest
+      moneyGoldReward: 208
+      playerXpReward: 75
+      heroXpReward: 10
+      location: ENV_4WinterPole
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: winter_forest_1
           reward: 10
           roundType: 0
-        - enemyPreset: the_underworld_17
+        - enemyPreset: winter_forest_2
           reward: 10
           roundType: 0
-        - enemyPreset: the_underworld_18
+        - enemyPreset: winter_forest_3
           reward: 10
           roundType: 0
-        - enemyPreset: the_underworld_19
+        - enemyPreset: winter_forest_4
           reward: 10
           roundType: 1
-        - enemyPreset: the_underworld_20
+        - enemyPreset: winter_forest_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: winter_forest_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: winter_forest_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: winter_forest_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: winter_forest_15
+          reward: 10
+          roundType: 3
+        - enemyPreset: winter_forest_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_19
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_20
           reward: 10
           roundType: 3
     - id: chapter_6
       viewName: Desert
       moneyGoldReward: 250
-      playerXpReward: 10
+      playerXpReward: 90
       heroXpReward: 10
       location: Env_6DangerousDesert
       tiers:
@@ -408,9 +408,9 @@ MonoBehaviour:
           reward: 10
           roundType: 3
     - id: chapter_7
-      viewName: Mystic Forest
+      viewName: Graveyard
       moneyGoldReward: 300
-      playerXpReward: 10
+      playerXpReward: 110
       heroXpReward: 10
       location: Env_7MysticForest
       tiers:
@@ -490,7 +490,7 @@ MonoBehaviour:
     - id: chapter_8
       viewName: Goblins Grot
       moneyGoldReward: 360
-      playerXpReward: 10
+      playerXpReward: 130
       heroXpReward: 10
       location: Env_8GoblinsGrot
       tiers:
@@ -568,9 +568,9 @@ MonoBehaviour:
           reward: 10
           roundType: 3
     - id: chapter_9
-      viewName: Dragon's Lair
+      viewName: Wild Jungle
       moneyGoldReward: 431
-      playerXpReward: 10
+      playerXpReward: 160
       heroXpReward: 10
       location: Env_10DragonsLair
       tiers:
@@ -647,4 +647,797 @@ MonoBehaviour:
         - enemyPreset: dragon's_lair_20
           reward: 10
           roundType: 3
-    corruptionChapters: []
+    - id: chapter_10
+      viewName: Dragon's Lair
+      moneyGoldReward: 431
+      playerXpReward: 200
+      heroXpReward: 10
+      location: Env_10DragonsLair
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: dragon's_lair_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: dragon's_lair_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: dragon's_lair_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_15
+          reward: 10
+          roundType: 2
+        - enemyPreset: dragon's_lair_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_19
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_20
+          reward: 10
+          roundType: 3
+    corruptionChapters:
+    - id: chapter_1
+      viewName: Mushroom Fields
+      moneyGoldReward: 100
+      playerXpReward: 10
+      heroXpReward: 3
+      location: Env_1MushroomFields
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards:
+      - level: 20
+        id: book
+        type: item
+      levelData:
+        levels:
+        - enemyPreset: mushroom_fields_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushroom_fields_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushroom_fields_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushroom_fields_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: mushroom_fields_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: mushroom_fields_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushroom_fields_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushroom_fields_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: mushroom_fields_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: mushroom_fields_10
+          reward: 10
+          roundType: 3
+    - id: chapter_2
+      viewName: Magic Forest
+      moneyGoldReward: 120
+      playerXpReward: 25
+      heroXpReward: 10
+      location: ENV_2Graveyard
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: graveyard_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: graveyard_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: graveyard_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: graveyard_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: graveyard_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: graveyard_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: graveyard_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: graveyard_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: graveyard_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: graveyard_10
+          reward: 10
+          roundType: 3
+    - id: chapter_3
+      viewName: Spiders Cave
+      moneyGoldReward: 160
+      playerXpReward: 40
+      heroXpReward: 10
+      location: ENV_3SpiderCave
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: spirders_cave_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: spirders_cave_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: spirders_cave_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: spirders_cave_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: spirders_cave_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: spirders_cave_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: spirders_cave_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: spirders_cave_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: spirders_cave_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: spirders_cave_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: spirders_cave_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: spirders_cave_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: spirders_cave_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: spirders_cave_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: spirders_cave_15
+          reward: 10
+          roundType: 3
+    - id: chapter_4
+      viewName: The Underworld
+      moneyGoldReward: 191
+      playerXpReward: 50
+      heroXpReward: 10
+      location: ENV_5Underworld
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: the_underworld_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: the_underworld_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: the_underworld_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: the_underworld_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: the_underworld_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: the_underworld_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: the_underworld_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: the_underworld_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: the_underworld_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: the_underworld_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: the_underworld_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: the_underworld_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: the_underworld_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: the_underworld_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: the_underworld_15
+          reward: 10
+          roundType: 2
+    - id: chapter_5
+      viewName: Winter Forest
+      moneyGoldReward: 208
+      playerXpReward: 75
+      heroXpReward: 10
+      location: ENV_4WinterPole
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: winter_forest_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: winter_forest_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: winter_forest_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: winter_forest_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: winter_forest_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: winter_forest_15
+          reward: 10
+          roundType: 3
+        - enemyPreset: winter_forest_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_19
+          reward: 10
+          roundType: 0
+        - enemyPreset: winter_forest_20
+          reward: 10
+          roundType: 3
+    - id: chapter_6
+      viewName: Desert
+      moneyGoldReward: 250
+      playerXpReward: 90
+      heroXpReward: 10
+      location: Env_6DangerousDesert
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: desert_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: desert_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: desert_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: desert_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: desert_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: desert_15
+          reward: 10
+          roundType: 2
+        - enemyPreset: desert_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: desert_19
+          reward: 10
+          roundType: 1
+        - enemyPreset: desert_20
+          reward: 10
+          roundType: 3
+    - id: chapter_7
+      viewName: Graveyard
+      moneyGoldReward: 300
+      playerXpReward: 110
+      heroXpReward: 10
+      location: Env_7MysticForest
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: mystic_forest_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: mystic_forest_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: mystic_forest_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: mystic_forest_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: mystic_forest_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: mystic_forest_15
+          reward: 10
+          roundType: 2
+        - enemyPreset: mystic_forest_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: mystic_forest_19
+          reward: 10
+          roundType: 1
+        - enemyPreset: mystic_forest_20
+          reward: 10
+          roundType: 3
+    - id: chapter_8
+      viewName: Goblins Grot
+      moneyGoldReward: 360
+      playerXpReward: 130
+      heroXpReward: 10
+      location: Env_8GoblinsGrot
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: goblins_grot_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: goblins_grot_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: goblins_grot_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: goblins_grot_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: goblins_grot_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: goblins_grot_15
+          reward: 10
+          roundType: 2
+        - enemyPreset: goblins_grot_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: goblins_grot_19
+          reward: 10
+          roundType: 1
+        - enemyPreset: goblins_grot_20
+          reward: 10
+          roundType: 3
+    - id: chapter_9
+      viewName: Wild Jungle
+      moneyGoldReward: 431
+      playerXpReward: 160
+      heroXpReward: 10
+      location: Env_10DragonsLair
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: dragon's_lair_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: dragon's_lair_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: dragon's_lair_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_15
+          reward: 10
+          roundType: 2
+        - enemyPreset: dragon's_lair_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_19
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_20
+          reward: 10
+          roundType: 3
+    - id: chapter_10
+      viewName: Dragon's Lair
+      moneyGoldReward: 431
+      playerXpReward: 200
+      heroXpReward: 10
+      location: Env_10DragonsLair
+      tiers:
+      - multiplier: 1
+        additionalRewards: []
+      - multiplier: 1.25
+        additionalRewards: []
+      - multiplier: 1.5
+        additionalRewards: []
+      - multiplier: 2
+        additionalRewards: []
+      - multiplier: 2.5
+        additionalRewards: []
+      chapterCompletedRewards: []
+      levelData:
+        levels:
+        - enemyPreset: dragon's_lair_1
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_2
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_3
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_4
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_5
+          reward: 10
+          roundType: 2
+        - enemyPreset: dragon's_lair_6
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_7
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_8
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_9
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_10
+          reward: 10
+          roundType: 2
+        - enemyPreset: dragon's_lair_11
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_12
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_13
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_14
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_15
+          reward: 10
+          roundType: 2
+        - enemyPreset: dragon's_lair_16
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_17
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_18
+          reward: 10
+          roundType: 0
+        - enemyPreset: dragon's_lair_19
+          reward: 10
+          roundType: 1
+        - enemyPreset: dragon's_lair_20
+          reward: 10
+          roundType: 3

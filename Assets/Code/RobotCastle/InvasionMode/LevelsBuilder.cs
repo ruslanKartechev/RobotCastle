@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using RobotCastle.Battling;
 using RobotCastle.Data;
 using SleepDev;
+using UnityEditor;
 using UnityEngine;
 
 namespace RobotCastle.InvasionMode
@@ -65,6 +66,44 @@ namespace RobotCastle.InvasionMode
             public List<EnemyPreset> columns;
         }
 
+        #region SCRIPTS EDITOR HELPERs
+        #if UNITY_EDITOR
+        // [ContextMenu("RenameFilesToUnderworld")]
+        public void RenameWinterToUnderworld()
+        {
+            var title = "the_underworld";
+            for (var i = 0; i < presetFiles.Count; i++)
+            {
+                var newName = $"{title}_{i + 1}.json";
+                var pathParent = GetFoldersPath();
+                var srcFile = $"{pathParent}/winter_forest_{i+1}.json";
+                var newFile = $"{pathParent}/{newName}";
+                var content = System.IO.File.ReadAllText(srcFile);
+                
+                File.Delete(srcFile);
+                File.WriteAllText(newFile, content);
+            }
+            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.AssetDatabase.Refresh();
+        }
+
+        [ContextMenu("CreateWinterFiles")]
+        public void CreateWinterFiles()
+        {
+            var title = "winter_forest";
+            for (var i = 0; i < 20; i++)
+            {
+                var newName = $"{title}_{i + 1}.json";
+                var pathParent = GetFoldersPath();
+                var srcFile = $"{pathParent}/{newName}";
+                File.WriteAllText(srcFile, " ");
+            }
+            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.AssetDatabase.Refresh();
+        }
+        #endif
+        #endregion
+        
         public string GetFoldersPath()
         {
             var path = Application.streamingAssetsPath.Replace("StreamingAssets", "Resources");
@@ -259,11 +298,13 @@ namespace RobotCastle.InvasionMode
             if (content == null)
             {
                 CLog.LogError($"Could not deserialize: {currentPresetFile.name}");
-                currentPack = null;
-                return;
+                currentPack = new EnemyPackPreset();
             }
-            currentPack = content;
-            CLog.Log($"Read file: {currentPresetFile.name}. Units count: {content.enemies.Count}");
+            else
+            {
+                currentPack = content;
+                CLog.Log($"Read file: {currentPresetFile.name}. Units count: {content.enemies.Count}");
+            }
             _enemiesGrid = new EnemiesEditorGrid(gridSize);
             for (var x = 0; x < gridSize.x; x++)
             {
@@ -272,7 +313,11 @@ namespace RobotCastle.InvasionMode
                     enemiesGrid[x, y] = new EnemyPreset() {gridPos = new Vector2Int(x, y)};
                 }                    
             }
-            foreach (var en in content.enemies)
+            if(currentPack.enemies == null)
+            {
+                currentPack.enemies = new List<EnemyPreset>();
+            }
+            foreach (var en in currentPack.enemies)
                 enemiesGrid[en.gridPos.x, en.gridPos.y] = en;
         }
 

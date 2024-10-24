@@ -40,6 +40,9 @@ namespace RobotCastle.Battling
         public const string SpellFXPrefab_CrescentSlash = "prefabs/spells/crescent_slash";
         public const string SpellFXPrefab_RadianceOfLife = "prefabs/spells/radiance_of_life";
         public const string SpellFXPrefab_IronWill = "prefabs/spells/iron_will";
+        public const string SpellFXPrefab_Smite = "prefabs/spells/smite";
+        public const string SpellFXPrefab_Avatar = "prefabs/spells/avatar";
+
 
         
 

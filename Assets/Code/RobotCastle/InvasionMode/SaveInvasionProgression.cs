@@ -21,6 +21,15 @@ namespace RobotCastle.InvasionMode
                 chapters.Add(new ChapterData(other.chapters[i]));
         }
 
+        public void SetFirstTierUnlockedIfChapterUnlocked()
+        {
+            foreach (var chapter in chapters)
+            {
+                if (chapter.unlocked)
+                    chapter.tierData[0].unlocked = true;
+            }
+        }
+
         public TierData GetTierData(int chapterInd, int tierInd)
         {
             if (chapterInd > chapters.Count)

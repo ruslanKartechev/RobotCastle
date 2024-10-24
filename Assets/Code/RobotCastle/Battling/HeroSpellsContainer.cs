@@ -25,19 +25,19 @@ namespace RobotCastle.Battling
             return _modifiers[0];
         }
 
-        public void AddModifierProvider(ModifierProvider modifierProvider)
+        public void AddProvider(ModifierProvider modifierProvider)
         {
             _modifiers.Add(modifierProvider);    
         }
 
-        public void AddModifierProviders(List<ModifierProvider> modifierProviders)
+        public void AddProviders(List<ModifierProvider> modifierProviders)
         {
             _modifiers.AddRange(modifierProviders);
         }
 
-        public void ClearModifiers() => _modifiers.Clear();
+        public void ClearAll() => _modifiers.Clear();
         
-        public void ApplyAllModifiers(HeroComponents view)
+        public void ApplyAll(HeroComponents view)
         {
             foreach (var mod in _modifiers)
             {

@@ -13,5 +13,8 @@ namespace RobotCastle.Battling
         void SetBehaviour(IHeroBehaviour behaviour);
         void StopCurrentBehaviour();
         void MarkDead();
+        
+        void PauseCurrentBehaviour();
+        void ResumeCurrentBehaviour();
     }
 }

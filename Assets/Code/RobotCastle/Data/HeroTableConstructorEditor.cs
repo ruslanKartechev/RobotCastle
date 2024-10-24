@@ -14,9 +14,14 @@ namespace RobotCastle.Data
             EU.Space();
             if(EU.BtnMidWide2("Make Hero", EU.DarkGreen))
                 me.MakeHero();
+            
             EU.Space();
             if(EU.BtnMidWide2("Make Enemy", EU.Red))
                 me.MakeEnemy();
+
+            EU.Space();
+            if(EU.BtnMidWide2("Make Manual Enemy", EU.Red))
+                me.MakeEnemyFromScratch();
         }
     }
 }

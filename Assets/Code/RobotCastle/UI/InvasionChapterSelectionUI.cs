@@ -9,7 +9,6 @@ using SleepDev.Inventory;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace RobotCastle.UI
 {
@@ -30,9 +29,8 @@ namespace RobotCastle.UI
         [SerializeField] private TextMeshProUGUI _txtName;
         [SerializeField] private TextMeshProUGUI _txtRewardBasic;
         [SerializeField] private TextMeshProUGUI _enemiesTotalPower;
-        [SerializeField] private List<GameObject> _lockedGameobjects;
         [SerializeField] private List<DifficultyTierUI> _tierUis;
-        [SerializeField] private Image _chapterIcon;
+        [SerializeField] private ChapterIconUI _chapterIcon;
         [Space(10)]
         [SerializeField] private MyButton _nextChapterBtn;
         [SerializeField] private MyButton _prevChapterBtn;
@@ -62,6 +60,7 @@ namespace RobotCastle.UI
             gameObject.SetActive(true);
             _chaptersDb = ServiceLocator.Get<InvasionMode.ProgressionDataBase>();
             _progresSave = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().progression;
+            _progresSave.SetFirstTierUnlockedIfChapterUnlocked();
             for (var i = 0; i < 5; i++)
                 _inventory.AllItems[i].Id = i.ToString();
             if (_data == null)
@@ -83,7 +82,7 @@ namespace RobotCastle.UI
             _additionalReward.Init();
             _partyUI.SetupHeroes();
             _partyUI.On();
-            UpdateChapter();
+            UpdateChapter(0);
             _inventory.OnNewPicked -= OnNewTierPicked;
             _inventory.OnNewPicked += OnNewTierPicked;
             _inventory.AllowPickNothing = false;
@@ -126,23 +125,21 @@ namespace RobotCastle.UI
         public void NextChapter()
         {
             if (_isLoading) return;
-            CLog.Log("Next Chapter");
             var nextIndex = _data.chapterIndex + 1;
             if (nextIndex >= _chaptersDb.chapters.Count)
                 return;
             _data.chapterIndex = nextIndex;
-            UpdateChapter();
+            UpdateChapter(2);
         }
 
         public void PrevChapter()
         {
             if (_isLoading) return;
-            CLog.Log("Prev Chapter");
             var prevIndex = _data.chapterIndex - 1;
             if (prevIndex < 0)
                 return;
             _data.chapterIndex = prevIndex;
-            UpdateChapter();
+            UpdateChapter(1);
         }
         
         private void OnNewTierPicked(Item item)
@@ -152,7 +149,11 @@ namespace RobotCastle.UI
             UpdateTier();
         }
         
-        private void UpdateChapter()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nextOrPrev">0 - none, 1 - prev, 2 - next </param>
+        private void UpdateChapter(int nextOrPrev)
         {
             var chapterInd = _data.chapterIndex;
             // CLog.Log($"Updating chapter. Index: {chapterInd}. Unlocked: {_progresSave.chapters[chapterInd].unlocked}");
@@ -161,16 +162,26 @@ namespace RobotCastle.UI
             _txtName.text = chapterConfig.viewName;
 
             var db = ServiceLocator.Get<ViewDataBase>();
-            var iconPath = db.LocationIcons[_data.chapterIndex];
-            _chapterIcon.sprite = Resources.Load<Sprite>(iconPath);
+            var icon = Resources.Load<Sprite>(db.LocationIcons[_data.chapterIndex]);
+            var unlocked = _progresSave.chapters[chapterInd].unlocked;
+            switch (nextOrPrev)
+            {
+                case 1:
+                    _chapterIcon.AnimatePrev(icon, unlocked);
+                    break;
+                case 2:
+                    _chapterIcon.AnimateNext(icon, unlocked);
+                    break;
+                default:
+                    _chapterIcon.SetIcon(icon, unlocked);
+                    break;
+            }
             
             var tiersCount = chapterConfig.tiers.Count;
             for (var i = 0; i < tiersCount; i++)
                 _tierUis[i].SetPercentMultiplier(chapterConfig.tiers[i].multiplier);
-            if (_progresSave.chapters[chapterInd].unlocked)
+            if (unlocked)
             {
-                foreach (var go in _lockedGameobjects)
-                    go.SetActive(false);
                 for (var i = 0; i < tiersCount; i++)
                 {
                     var tierUnlocked = _progresSave.chapters[chapterInd].tierData[i].unlocked;
@@ -181,10 +192,9 @@ namespace RobotCastle.UI
                 _inventory.SetItemPicked(_data.tierIndex);
                 UpdateTier();
             }
+            
             else
             {
-                foreach (var go in _lockedGameobjects)
-                    go.SetActive(true);
                 _inventory.SetNoItem();
                 for (var i = 0; i < tiersCount; i++)
                 {

@@ -9,7 +9,6 @@ namespace RobotCastle.Battling
         
         public override float manaStart => _config.manaStart;
         
-        [SerializeField] private SpellConfigCrescentSlash _config;
        
 
         public override void AddTo(GameObject target)
@@ -17,26 +16,16 @@ namespace RobotCastle.Battling
         
         public override void AddToHero(HeroComponents components)
         {
-            components.stats.FullManaListener = new SpellCrescentSlash(components, _config);
+            components.stats.FullManaListener = new SpellSummonDead(components, _config);
         }
 
         public override string GetDescription(GameObject target)
         {
             var str = base.GetDescription(target);
-            var lvl = 0;
-            if (target != null)
-            {
-                var stats = target.GetComponent<HeroStatsManager>();
-                lvl = stats.MergeTier;
-                str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
-                str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
-            }
-            else
-            {
-                str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
-                str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{_config.spellDamage[lvl]}</color>");
-            }
             return str;
         }
+        
+        [SerializeField] private SpellConfigSummonDead _config;
+
     }
 }

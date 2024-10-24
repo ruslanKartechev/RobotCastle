@@ -6,9 +6,9 @@ namespace RobotCastle.Battling
     {
         ModifierProvider defaultSpell { get; }
         ModifierProvider GetCurrentSpell();
-        void AddModifierProvider(ModifierProvider modifierProvider);
-        void AddModifierProviders(List<ModifierProvider> modifierProviders);
-        void ClearModifiers();
-        void ApplyAllModifiers(HeroComponents view);
+        void AddProvider(ModifierProvider modifierProvider);
+        void AddProviders(List<ModifierProvider> modifierProviders);
+        void ClearAll();
+        void ApplyAll(HeroComponents view);
     }
 }

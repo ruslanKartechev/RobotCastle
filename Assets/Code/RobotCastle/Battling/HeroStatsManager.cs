@@ -12,8 +12,14 @@ namespace RobotCastle.Battling
     public class HeroStatsManager : MonoBehaviour
     {
         #region Static
+
         public static float GetStatByLevel(List<float> tableValues, int heroLevel, int mergeLevel)
-            => tableValues[heroLevel] * HeroesConstants.TierStatMultipliers[mergeLevel];
+        {
+            var ind = heroLevel;
+            if (ind >= tableValues.Count)
+                ind = tableValues.Count - 1;
+            return tableValues[ind] * HeroesConstants.TierStatMultipliers[mergeLevel];
+        }
 
         public static float GetStatByMergeLevel(List<float> tableValues, int mergeLevel) 
             => tableValues[mergeLevel];

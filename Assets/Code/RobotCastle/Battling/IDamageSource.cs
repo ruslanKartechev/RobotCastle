@@ -4,7 +4,8 @@
     {
         void DamagePhys(IDamageReceiver receiver);
         void DamageSpellAndPhys(IDamageReceiver receiver);
-        
+        void DamageSpellAndPhys(float phys, float mag, IDamageReceiver receiver);
+
         void AddModifier(IDamageCalculationModifier mod);
         void RemoveModifier(IDamageCalculationModifier mod);
         
