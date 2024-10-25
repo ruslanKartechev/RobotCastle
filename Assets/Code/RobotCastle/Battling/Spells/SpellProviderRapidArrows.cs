@@ -22,5 +22,12 @@ namespace RobotCastle.Battling
 
         public override float manaMax => _config.manaMax;
         public override float manaStart => _config.manaStart;
+        
+        public override string GetDescription(GameObject target)
+        {
+            return base.GetDescription(target);
+        }
+
+        
     }
 }

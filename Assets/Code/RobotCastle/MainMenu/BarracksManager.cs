@@ -181,6 +181,7 @@ namespace RobotCastle.MainMenu
         public void SetGridView(IGridView gridView) { }
 
         public void SetMaxCount(int maxCount) { }
+        public void OnGridUpdated() {}
 
         public bool GetFreeAllowedCell(MergeGrid grid, ItemData itemData, out Vector2Int coordinates)
         {
@@ -191,6 +192,7 @@ namespace RobotCastle.MainMenu
         public int GetFreeCellsCount() => 0;
 
         public List<ItemData> GetAllItems() => null;
+        public List<IItemView> GetAllItemsViews() => null;
 
         public List<ItemData> GetAllItemsInMergeArea() => null;
 

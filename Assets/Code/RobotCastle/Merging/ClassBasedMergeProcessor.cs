@@ -130,13 +130,8 @@ namespace RobotCastle.Merging
                 it++;
             if(it >= itMax)
                 CLog.LogRed("[MergeAllItemsPossible] it >= it_max !!! ERROR");
-            var result = new List<IItemView>(allItems.Count);
-            for (var i = 0; i < allItems.Count; i++)
-            {
-                if(allItems[i] != null)
-                    result.Add(allItems[i]);
-            }
-            return result;
+            allItems.ClearNulls();
+            return allItems;
             
             // Nested Methods
             bool TryMakeOneMerge()

@@ -243,6 +243,23 @@ namespace RobotCastle.Merging
 
             return allItems;
         }
+        
+        public List<IItemView> GetAllItemsViews()
+        {
+            var allItems = new List<IItemView>(20);
+            var yMax = _gridView.Grid.GetLength(1);
+            var xMax = _gridView.Grid.GetLength(0);
+            for (var y = 0; y < yMax; y++)
+            {
+                for (var x = 0; x < xMax; x++)
+                {
+                    var cell = _gridView.Grid[x, y];
+                    if (cell.itemView != null)
+                        allItems.Add(cell.itemView);
+                }
+            }
+            return allItems;
+        }
 
         public List<ItemData> GetAllItemsInMergeArea()
         {

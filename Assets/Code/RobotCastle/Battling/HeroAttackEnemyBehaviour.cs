@@ -73,6 +73,8 @@ namespace RobotCastle.Battling
         // while going  - check position
         private async void SearchAndAttack(CancellationToken token)
         {
+            if (!_isActivated)
+                return;
             myState.attackData.IsMovingForDuel = false;
             myState.SetTargetCellToSelf();
             _rangeCoverCheck.Update(_hero.Components.transform.position, true);
@@ -83,8 +85,6 @@ namespace RobotCastle.Battling
                 CLog.Log($"[{_hero.Components.gameObject.name}] Closest enemy is null. Waiting {waitTimeSec} sec.");
                 await Task.Delay((int)(waitTimeSec * 1000f), token);
                 enemy = BattleManager.GetBestTargetForAttack(_hero);
-                if (enemy == null)
-                    return;
             }
             if (token.IsCancellationRequested)
                 return;
@@ -134,8 +134,7 @@ namespace RobotCastle.Battling
             if (prevStep == EAttackLogicStep.Attacking)
             {
                 StopAttack();
-                await Task.Delay((int)(DelayAfterTargetDiedMs));
-                if (token.IsCancellationRequested) return;
+                await Task.Delay((int)(DelayAfterTargetDiedMs), token);
             }
             _logicStep = EAttackLogicStep.Rotating;
             movement.RotateIfNecessary(enemy.Components.agent.CurrentCell, _subToken.Token, OnRotated);
@@ -157,9 +156,7 @@ namespace RobotCastle.Battling
             {
                 StopSubProc();
                 StopAttack();
-                await Task.Delay((int)(DelayAfterTargetDiedMs));
-                if (token.IsCancellationRequested)
-                    return;
+                await Task.Delay((int)(DelayAfterTargetDiedMs), token);
             }
             _logicStep = EAttackLogicStep.Waiting;
             myState.SetTargetCellToSelf();
@@ -204,13 +201,11 @@ namespace RobotCastle.Battling
             {
                 case EPathMovementResult.IsBlockedOnTheWay:
                     // CLog.LogRed($"[{_hero.gameObject.name}] IsBlockedOnTheWay moving to {targetCell.ToString()}");
-                    await Task.Delay(TimeWaitIfPathFailedMs);
-                    if(token.IsCancellationRequested) return;
+                    await Task.Delay(TimeWaitIfPathFailedMs, token);
                     break;
                 case EPathMovementResult.FailedToBuild:
                     // CLog.LogRed($"[{_hero.Components.gameObject.name}] FailedToBuild moving to {attackCell.ToString()}");
-                    await Task.Delay(TimeWaitIfPathFailedMs);
-                    if(token.IsCancellationRequested) return;
+                    await Task.Delay(TimeWaitIfPathFailedMs, token);
                     break;
             }
             if(token.IsCancellationRequested) return;
