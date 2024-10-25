@@ -4,6 +4,7 @@ using RobotCastle.Core;
 using SleepDev;
 using System;
 using RobotCastle.Data;
+using RobotCastle.Utils;
 using UnityEngine;
 
 namespace RobotCastle.Merging
@@ -117,7 +118,8 @@ namespace RobotCastle.Merging
             return list;
         }
 
-        public List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, IGridView gridView)
+        public List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, 
+            IGridView gridView)
         {
             if (allItems.Count < 2)
                 return allItems;
@@ -128,13 +130,8 @@ namespace RobotCastle.Merging
                 it++;
             if(it >= itMax)
                 CLog.LogRed("[MergeAllItemsPossible] it >= it_max !!! ERROR");
-            var result = new List<IItemView>(allItems.Count);
-            for (var i = 0; i < allItems.Count; i++)
-            {
-                if(allItems[i] != null)
-                    result.Add(allItems[i]);
-            }
-            return result;
+            allItems.ClearNulls();
+            return allItems;
             
             // Nested Methods
             bool TryMakeOneMerge()
@@ -195,9 +192,95 @@ namespace RobotCastle.Merging
                 }
                 return false;
             }
-                
         }
 
+        
+        public void MergeAllItemsByPriority(List<IItemView> firstPriority, 
+            List<IItemView> secondPriority,
+            IGridView gridView)
+        {
+             if (firstPriority.Count + secondPriority.Count < 2)
+                return;
+             var db = ServiceLocator.Get<ViewDataBase>();
+             var it = 0;
+             const int itMax = 100;
+             
+             while (it < itMax && TryMakeOneMerge(null, null))
+                 it++;
+             if(it >= itMax)
+                 CLog.LogRed("[MergeAllItemsPossible] it >= it_max !!! ERROR");
+             firstPriority.ClearNulls();
+             secondPriority.ClearNulls();
+            
+             // Nested Methods
+             bool TryMakeOneMerge(IItemView itemOne, List<IItemView> allItems)
+             {
+                 var count = allItems.Count;
+                 // for (var indOne = count - 1; indOne >= 1; indOne--)
+                 // {
+                 //     if (allItems[indOne] == null)
+                 //         continue;
+                 //     var data1 = allItems[indOne].itemData.core;
+                 //     var maxLvl = db.GetMaxMergeLevel(data1.id) - 1; // (not indexed)
+                 //     if (data1.level >= maxLvl)
+                 //         continue;
+                 //     var cellOne = gridView.GetCell(allItems[indOne].itemData.pivotX, allItems[indOne].itemData.pivotY);
+                 //
+                 // }
+                 var data1 = itemOne.itemData.core;
+                 var maxLvl = db.GetMaxMergeLevel(data1.id) - 1; // (not indexed)
+                 if (data1.level >= maxLvl)
+                     return false;
+                 var cellOne = gridView.GetCell(itemOne.itemData.pivotX, itemOne.itemData.pivotY);
+                 
+                 for (var indTwo = count - 1; indTwo >= 0; indTwo--)
+                 {
+                     if (allItems[indTwo] == null)
+                         continue;
+                     var data2 = allItems[indTwo].itemData.core;
+                     if (data1 == data2)
+                     {
+                         switch (data1.type)
+                         {
+                             case MergeConstants.TypeHeroes:
+                                 var itemsCont1 = itemOne.Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
+                                 var itemsCont2 = allItems[indTwo].Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
+                                 if (itemsCont1.ItemsCount + itemsCont2.ItemsCount > 0)
+                                 {
+                                     var merged = MergeItemsList(itemsCont1.Items, itemsCont2.Items);
+                                     if (merged.Count <= MaxItemsCount)
+                                         itemsCont1.UpdateItems(merged);
+                                     else
+                                     {
+                                         CLog.Log($"[MergeAll] All items won't fit into container");
+                                         continue;
+                                     }
+                                 }
+                                 _container.RemoveItem(allItems[indTwo]);
+                                 MergeFunctions.ClearCellAndHideItem(gridView, allItems[indTwo]);
+                                 allItems[indTwo] = null;
+                                 data1.level++;
+                                 itemOne.UpdateViewToData();
+                                 itemOne.OnMerged();
+                                 return true;
+                             case MergeConstants.TypeWeapons:
+                                 _container.RemoveItem(itemOne);
+                                 _container.RemoveItem(allItems[indTwo]);
+                                 MergeFunctions.ClearCellAndHideItem(gridView, itemOne);
+                                 MergeFunctions.ClearCellAndHideItem(gridView, allItems[indTwo]);
+                                 // allItems[indOne] = null;
+                                 // allItems[indTwo] = null;
+                                 // data1.level++;
+                                 // allItems[indOne] = ServiceLocator.Get<IMergeItemsFactory>().SpawnItemOnCell(cellOne, new ItemData(data1));
+                                 return true;
+                         }
+                     }
+                 }
+                 return false;
+             }
+        }
+
+        
         public List<IItemView> SortAllItemsPossible(List<IItemView> allItems, IGridView gridView)
         {
             if (allItems.Count < 2)
@@ -242,8 +325,10 @@ namespace RobotCastle.Merging
             }
             return result;
             }
-            
-        public List<HeroWeaponData> MergeItemsList(List<HeroWeaponData> items1, List<HeroWeaponData> items2)
+
+
+
+        private List<HeroWeaponData> MergeItemsList(List<HeroWeaponData> items1, List<HeroWeaponData> items2)
         {
             var totalCount = items1.Count + items2.Count;
             if (totalCount == 0)

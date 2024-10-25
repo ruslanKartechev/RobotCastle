@@ -53,7 +53,7 @@ namespace RobotCastle.Battling
                 worldPositions.Add(hero.Components.transform.position);
             }
             var effect = GetFxView();
-            effect.Show(_components.transform);
+            effect.ShowTrackingDefaultDuration(_components.transform);
             _isActive = false;
         }
         

@@ -134,6 +134,8 @@ namespace RobotCastle.Battling
             if (bestTarget == null)
             {
                 CLog.Log($"Error trying to calculate best enemy");
+                if(enemies.Count == 0)
+                    return null;
                 return enemies[0];
             }
             return bestTarget;

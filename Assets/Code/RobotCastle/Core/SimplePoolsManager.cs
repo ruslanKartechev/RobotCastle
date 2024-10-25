@@ -19,12 +19,13 @@ namespace RobotCastle.Core
             _pools.Clear();            
         }
 
-        public void AddPoolIfNot(string id, string prefabPath, int startCount)
+        public Pool AddPoolIfNot(string id, string prefabPath, int startCount)
         {
             if (_poolsMap.ContainsKey(id))
-                return;
+                return _poolsMap[id];
             var pool = new Pool(id, prefabPath, startCount);
             _poolsMap.Add(id, pool);
+            return pool;
         }
 
 

@@ -230,12 +230,32 @@ namespace RobotCastle.Merging
         {
             var allItems = new List<ItemData>(20);
             var grid = _gridView.BuiltGrid;
-            foreach (var row in grid.rows)
+            var count = grid.rows.Count;
+            for (var r = count - 1; r >= 0; r--)
             {
+                var row = grid.rows[r];
                 foreach (var cell in row.cells)
                 {
-                    if(cell.currentItem.IsEmpty() == false)
+                    if (cell.currentItem.IsEmpty() == false)
                         allItems.Add(cell.currentItem);
+                }
+            }
+
+            return allItems;
+        }
+        
+        public List<IItemView> GetAllItemsViews()
+        {
+            var allItems = new List<IItemView>(20);
+            var yMax = _gridView.Grid.GetLength(1);
+            var xMax = _gridView.Grid.GetLength(0);
+            for (var y = 0; y < yMax; y++)
+            {
+                for (var x = 0; x < xMax; x++)
+                {
+                    var cell = _gridView.Grid[x, y];
+                    if (cell.itemView != null)
+                        allItems.Add(cell.itemView);
                 }
             }
             return allItems;

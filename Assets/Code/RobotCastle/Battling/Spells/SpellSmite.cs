@@ -40,13 +40,14 @@ namespace RobotCastle.Battling
 
         public void Stop()
         {
-            _isActive = false;
             if (_isCasting)
             {
                 _isCasting = false;
-                _components.animationEventReceiver.OnAttackEvent += OnAttack;
+                _components.animationEventReceiver.OnAttackEvent -= OnAttack;
             }
-            _token?.Cancel();
+            if(_isActive)
+                _token?.Cancel();
+            _isActive = false;
         }
         
         public float BaseSpellPower => _config.damageMag[(int)HeroesManager.GetSpellTier(_components.stats.MergeTier)];
@@ -54,8 +55,8 @@ namespace RobotCastle.Battling
         private SpellConfigSmite _config;
         private CancellationTokenSource _token;
         private ConditionedManaAdder _manaAdder;
-        private bool _isCasting;
         private SpellParticlesByLevel _fxView;
+        private bool _isCasting;
 
 
         private async void Working(CancellationToken token)
@@ -108,36 +109,29 @@ namespace RobotCastle.Battling
                     _components.damageSource.DamageSpellAndPhys(_config.damagePhys[lvl], 
                         _config.damageMag[lvl], affectedEnemies[i].Components.damageReceiver);
                 }
-
-                _isCasting = false;
-                _isActive = false;
-                _components.stats.ManaResetAfterFull.Reset(_components);
-                _components.processes.Remove(this);
-                _manaAdder.CanAdd = true;
             }
+            _isCasting = false;
+            _isActive = false;
+            _components.stats.ManaResetAfterFull.Reset(_components);
+            _components.processes.Remove(this);
+            _manaAdder.CanAdd = true;
         }
         
         private void OnAttack()
         {
-            _components.animationEventReceiver.OnAttackEvent += OnAttack;
+            _components.animationEventReceiver.OnAttackEvent -= OnAttack;
             _isCasting = false;
         }
 
         private SpellParticlesByLevel GetFxView()
         {
-            SpellParticlesByLevel fx = null;
-            if (_fxView != null)
-            {
-                fx = _fxView;
-            }
-            else
+            if(_fxView == null)
             {
                 var prefab = Resources.Load<GameObject>(HeroesConstants.SpellFXPrefab_Smite);
-                fx = Object.Instantiate(prefab).GetComponent<SpellParticlesByLevel>();
-                _fxView = fx;
+                _fxView = Object.Instantiate(prefab).GetComponent<SpellParticlesByLevel>();
             }
-            fx.transform.position = _components.transform.position;
-            fx.transform.rotation = _components.transform.rotation;
+            _fxView.transform.position = _components.transform.position;
+            _fxView.transform.rotation = _components.transform.rotation;
             return _fxView;
         }
     }

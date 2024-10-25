@@ -27,11 +27,9 @@ namespace RobotCastle.Battling
         public void OnFullMana(GameObject heroGo)
         {
             if (_isActive) return;
-            _isActive = true;
             _token = new CancellationTokenSource();
-            _components.processes.Add(this);
-            _manaAdder.CanAdd = false;
-            Waiting(_token.Token);
+        
+            Working(_token.Token);
         }
         
         private SpellConfigJudgementOfLight _config;
@@ -52,8 +50,12 @@ namespace RobotCastle.Battling
             _token?.Cancel();
         }
 
-        private async void Waiting(CancellationToken token)
+        private async void Working(CancellationToken token)
         {
+            _isActive = true;
+            _components.processes.Add(this);
+            _manaAdder.CanAdd = false;
+            
             var lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);
             var mask = _config.cellsMasksByTear[lvl];
             var allEnemies = HeroesManager.GetHeroesEnemies(_components);
@@ -80,6 +82,9 @@ namespace RobotCastle.Battling
                 else
                     await Task.Delay(waitMs, token);
             }
+
+            if (token.IsCancellationRequested) return;
+            
             if (affectedEnemies is { Count: > 0 })
             {
                 _isCasting = true;
@@ -96,10 +101,10 @@ namespace RobotCastle.Battling
                 fx.Show(lvl);
                 for (var i = affectedEnemies.Count - 1; i >= 0; i--)
                     _components.damageSource.DamageSpellAndPhys(affectedEnemies[i].Components.damageReceiver);
-                _isActive = false;
                 _components.stats.ManaResetAfterFull.Reset(_components);
                 _components.processes.Remove(this);
                 _manaAdder.CanAdd = true;
+                _isActive = false;
             }
         }
 

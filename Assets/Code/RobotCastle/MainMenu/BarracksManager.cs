@@ -170,24 +170,18 @@ namespace RobotCastle.MainMenu
         public List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, IGridView gridView) => null;
 
         public List<IItemView> SortAllItemsPossible(List<IItemView> allItems, IGridView gridView) => null;
-        public void AddModifier(IMergeModifier mod)
-        {
-            throw new NotImplementedException();
-        }
+        public void MergeAllItemsByPriority(List<IItemView> firstPriority, List<IItemView> secondPriority, IGridView gridView){}
 
-        public void RemoveModifier(IMergeModifier mod)
-        {
-            throw new NotImplementedException();
-        }
+        public void AddModifier(IMergeModifier mod) => throw new NotImplementedException();
 
-        public void ClearAllModifiers()
-        {
-            throw new NotImplementedException();
-        }
+        public void RemoveModifier(IMergeModifier mod) => throw new NotImplementedException();
+
+        public void ClearAllModifiers() => throw new NotImplementedException();
 
         public void SetGridView(IGridView gridView) { }
 
         public void SetMaxCount(int maxCount) { }
+        public void OnGridUpdated() {}
 
         public bool GetFreeAllowedCell(MergeGrid grid, ItemData itemData, out Vector2Int coordinates)
         {
@@ -198,6 +192,7 @@ namespace RobotCastle.MainMenu
         public int GetFreeCellsCount() => 0;
 
         public List<ItemData> GetAllItems() => null;
+        public List<IItemView> GetAllItemsViews() => null;
 
         public List<ItemData> GetAllItemsInMergeArea() => null;
 

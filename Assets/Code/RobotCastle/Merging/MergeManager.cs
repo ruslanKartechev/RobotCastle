@@ -104,9 +104,11 @@ namespace RobotCastle.Merging
         public void MergeAll()
         {
             CLog.Log($"[{nameof(MergeManager)}] Merge All");
-            var items = _sectionsController.GetAllItemViewsInMergeArea();
-            var merged = _mergeProcessor.MergeAllItemsPossible(items, _gridView);
-            _mergeProcessor.SortAllItemsPossible(merged, _gridView);
+            var allItems = _sectionsController.GetAllItemsViews();
+            var merged = _mergeProcessor.MergeAllItemsPossible(allItems, _gridView);
+            _sectionsController.OnGridUpdated();
+            var mergeAreaItems = _sectionsController.GetAllItemViewsInMergeArea();
+            _mergeProcessor.SortAllItemsPossible(mergeAreaItems, _gridView);
             HighlightMergeOptions();
         }
 

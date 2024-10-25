@@ -73,6 +73,8 @@ namespace RobotCastle.Battling
         // while going  - check position
         private async void SearchAndAttack(CancellationToken token)
         {
+            if (!_isActivated)
+                return;
             myState.attackData.IsMovingForDuel = false;
             myState.SetTargetCellToSelf();
             _rangeCoverCheck.Update(_hero.Components.transform.position, true);
@@ -102,7 +104,7 @@ namespace RobotCastle.Battling
                 enemy = bestTarget;
                 myState.attackData.IsMovingForDuel = false;
             }
-            if (enemy.IsDead)
+            if (enemy == null || enemy.IsDead)
             {
                 _mainToken.Cancel();
                 _mainToken = new CancellationTokenSource();
@@ -154,9 +156,7 @@ namespace RobotCastle.Battling
             {
                 StopSubProc();
                 StopAttack();
-                await Task.Delay((int)(DelayAfterTargetDiedMs));
-                if (token.IsCancellationRequested)
-                    return;
+                await Task.Delay((int)(DelayAfterTargetDiedMs), token);
             }
             _logicStep = EAttackLogicStep.Waiting;
             myState.SetTargetCellToSelf();
@@ -201,15 +201,14 @@ namespace RobotCastle.Battling
             {
                 case EPathMovementResult.IsBlockedOnTheWay:
                     // CLog.LogRed($"[{_hero.gameObject.name}] IsBlockedOnTheWay moving to {targetCell.ToString()}");
-                    await Task.Delay(TimeWaitIfPathFailedMs);
-                    if(token.IsCancellationRequested) return;
+                    await Task.Delay(TimeWaitIfPathFailedMs, token);
                     break;
                 case EPathMovementResult.FailedToBuild:
                     // CLog.LogRed($"[{_hero.Components.gameObject.name}] FailedToBuild moving to {attackCell.ToString()}");
-                    await Task.Delay(TimeWaitIfPathFailedMs);
-                    if(token.IsCancellationRequested) return;
+                    await Task.Delay(TimeWaitIfPathFailedMs, token);
                     break;
             }
+            if(token.IsCancellationRequested) return;
             DecideNextStep(_mainToken.Token);
         }
         

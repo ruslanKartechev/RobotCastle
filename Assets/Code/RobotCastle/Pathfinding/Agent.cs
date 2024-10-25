@@ -1,5 +1,5 @@
 #define __DrawPathCells
-#define DrawCurrentCell
+#define __DrawCurrentCell
 using System.Threading;
 using System.Threading.Tasks;
 using SleepDev;

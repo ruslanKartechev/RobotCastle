@@ -13,9 +13,12 @@ namespace RobotCastle.Merging
         /// Internally calls OnGridUpdated()
         /// </summary>
         void OnItemPut(ItemData item);
+        void OnGridUpdated();
         bool GetFreeAllowedCell(MergeGrid grid, ItemData itemData, out Vector2Int coordinates);
         
         List<ItemData> GetAllItems();
+        List<IItemView> GetAllItemsViews();
+        
         List<ItemData> GetAllItemsInMergeArea();
         List<IItemView> GetAllItemViewsInMergeArea();
         List<T> GetItemsInActiveArea<T>(MiscUtils.Condition<T> condition);

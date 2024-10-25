@@ -55,7 +55,7 @@ namespace RobotCastle.Battling
             _modShield.AddToHero(_components.stats.SpellPower.Get());
             _components.heroUI.ShieldBar.TrackUntilZero(_modShield);
             var fx = GetFxView();
-            fx.Show(_components.transform);
+            fx.ShowTrackingDefaultDuration(_components.transform);
         }
 
         private async void CastAnimated(CancellationToken token)
