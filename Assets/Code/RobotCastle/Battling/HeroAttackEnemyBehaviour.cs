@@ -83,6 +83,8 @@ namespace RobotCastle.Battling
                 CLog.Log($"[{_hero.Components.gameObject.name}] Closest enemy is null. Waiting {waitTimeSec} sec.");
                 await Task.Delay((int)(waitTimeSec * 1000f), token);
                 enemy = BattleManager.GetBestTargetForAttack(_hero);
+                if (enemy == null)
+                    return;
             }
             if (token.IsCancellationRequested)
                 return;
@@ -102,7 +104,7 @@ namespace RobotCastle.Battling
                 enemy = bestTarget;
                 myState.attackData.IsMovingForDuel = false;
             }
-            if (enemy.IsDead)
+            if (enemy == null || enemy.IsDead)
             {
                 _mainToken.Cancel();
                 _mainToken = new CancellationTokenSource();
@@ -132,7 +134,8 @@ namespace RobotCastle.Battling
             if (prevStep == EAttackLogicStep.Attacking)
             {
                 StopAttack();
-                await Task.Delay((int)(DelayAfterTargetDiedMs), token);
+                await Task.Delay((int)(DelayAfterTargetDiedMs));
+                if (token.IsCancellationRequested) return;
             }
             _logicStep = EAttackLogicStep.Rotating;
             movement.RotateIfNecessary(enemy.Components.agent.CurrentCell, _subToken.Token, OnRotated);
@@ -210,6 +213,7 @@ namespace RobotCastle.Battling
                     if(token.IsCancellationRequested) return;
                     break;
             }
+            if(token.IsCancellationRequested) return;
             DecideNextStep(_mainToken.Token);
         }
         

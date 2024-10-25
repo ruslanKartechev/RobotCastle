@@ -170,20 +170,13 @@ namespace RobotCastle.MainMenu
         public List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, IGridView gridView) => null;
 
         public List<IItemView> SortAllItemsPossible(List<IItemView> allItems, IGridView gridView) => null;
-        public void AddModifier(IMergeModifier mod)
-        {
-            throw new NotImplementedException();
-        }
+        public void MergeAllItemsByPriority(List<IItemView> firstPriority, List<IItemView> secondPriority, IGridView gridView){}
 
-        public void RemoveModifier(IMergeModifier mod)
-        {
-            throw new NotImplementedException();
-        }
+        public void AddModifier(IMergeModifier mod) => throw new NotImplementedException();
 
-        public void ClearAllModifiers()
-        {
-            throw new NotImplementedException();
-        }
+        public void RemoveModifier(IMergeModifier mod) => throw new NotImplementedException();
+
+        public void ClearAllModifiers() => throw new NotImplementedException();
 
         public void SetGridView(IGridView gridView) { }
 
