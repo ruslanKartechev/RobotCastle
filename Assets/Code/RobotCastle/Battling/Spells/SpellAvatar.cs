@@ -82,14 +82,12 @@ namespace RobotCastle.Battling
             var allEnemies = HeroesManager.GetHeroesEnemies(_components);
             var map = _components.agent.Map;
             var affectedEnemies = HeroesManager.GetHeroesInsideCellMask(range, _components.transform.position, map, allEnemies);
-            CLog.LogBlue($"Affected heroes count: {affectedEnemies.Count}. Damage: {damage}");
             foreach (var hero in affectedEnemies)
             {
                 hero.Components.damageReceiver
                     .TakeDamage(new HeroDamageArgs(damage, EDamageType.Magical, _components));
             }
             _fxView.PlayHitParticles(_lvl);
-            
         }
 
         private SpellParticlesOnHero GetFxView()
