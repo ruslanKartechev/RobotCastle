@@ -1449,6 +1449,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2147584397019755118, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Name
+      value: Flag_1
+      objectReference: {fileID: 0}
     - target: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_Name
       value: tower_health_view
@@ -1458,11 +1462,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
---- !u!1 &198883742 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
-  m_PrefabInstance: {fileID: 198883741}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &198883743 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 866484490312188316, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
@@ -1601,6 +1600,11 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2908524365796136601, guid: 22dbdf41526e8db4392f638695267f66, type: 3}
   m_PrefabInstance: {fileID: 223201722}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &234605553 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2435462845010008029, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+  m_PrefabInstance: {fileID: 198883741}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &236593201
 GameObject:
@@ -4137,6 +4141,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2147584397019755118, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Name
+      value: Flag_3
+      objectReference: {fileID: 0}
     - target: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_Name
       value: tower_health_view (2)
@@ -4146,11 +4154,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
---- !u!1 &608422754 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
-  m_PrefabInstance: {fileID: 608422753}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &608422755 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 866484490312188316, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
@@ -4724,6 +4727,11 @@ Transform:
   - {fileID: 381257483}
   m_Father: {fileID: 150904458}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &766561108 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2435462845010008029, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+  m_PrefabInstance: {fileID: 608422753}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &806075154
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6398,9 +6406,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scaleTime: 0.3
   _healthPoles:
-  - {fileID: 198883742}
-  - {fileID: 1739772002}
-  - {fileID: 608422754}
+  - {fileID: 234605553}
+  - {fileID: 1163505802}
+  - {fileID: 766561108}
 --- !u!4 &1161594981
 Transform:
   m_ObjectHideFlags: 0
@@ -6419,6 +6427,11 @@ Transform:
   - {fileID: 608422755}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
+--- !u!95 &1163505802 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2435462845010008029, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+  m_PrefabInstance: {fileID: 1739772001}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1177653089
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8638,6 +8651,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2147584397019755118, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Name
+      value: Flag_2
+      objectReference: {fileID: 0}
     - target: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_Name
       value: tower_health_view (1)
@@ -8647,11 +8664,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
---- !u!1 &1739772002 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
-  m_PrefabInstance: {fileID: 1739772001}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1739772003 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 866484490312188316, guid: 81584db4644c27e48928ab01d264fc74, type: 3}

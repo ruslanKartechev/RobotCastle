@@ -72,7 +72,7 @@ namespace RobotCastle.Battling
 
             if (coveredCells.Count == 0)
             {
-                CLog.Log($"[{nameof(AttackPositionCalculator)}] Error. No suitable covered cells");
+                CLog.Log($"[{nameof(AttackPositionCalculator)}] Error. No suitable covered cells. Hero: {hero.Components.gameObject.name}");
                 targetCell = myPos;
                 distance = 0;
                 return true;

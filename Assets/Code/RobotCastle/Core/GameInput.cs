@@ -9,6 +9,7 @@ namespace RobotCastle.Core
     {
         public event Action<Vector3> OnDownIgnoreUI;
         public event Action<Vector3> OnUpIgnoreUI;
+        public event Action<Vector3> OnDownLongIgnoreUIClick;
 
         public event Action<Vector3> OnDownLongClick;
         public event Action<Vector3> OnShortClick;
@@ -25,6 +26,8 @@ namespace RobotCastle.Core
         [SerializeField] private LayerMask _worldButtonsLayer;
         private Vector3 _clickPos;
         private Coroutine _longClickWaiting;
+        private Coroutine _longClickWaitingIgnoreUI;
+        
         private IWorldButton _currentWorldButton;
         private InputBtn _inputBtn;
         private bool _mainDown;
@@ -44,12 +47,12 @@ namespace RobotCastle.Core
         public void Init()
         {
             _inputBtn = InputBtn.Create();
-            _inputBtn.Btn.OnDown -= OnBtnDown;            
-            _inputBtn.Btn.OnDown += OnBtnDown;
+            _inputBtn.Btn.OnDown -= OnUIBtnDown;            
+            _inputBtn.Btn.OnDown += OnUIBtnDown;
             StartCoroutine(Working());
         }
 
-        private void OnBtnDown()
+        private void OnUIBtnDown()
         {
             if (!InputAllowed)
                 return;
@@ -117,12 +120,12 @@ namespace RobotCastle.Core
         {
             _mainClickTime = Time.time;
             _clickPos = MainMousePosition;
-            if(_longClickWaiting != null)
-                StopCoroutine(_longClickWaiting);
-            _longClickWaiting = StartCoroutine(LongClickChecking());
             _mainDown = true;
             WorldButtons(true, _clickPos);
             OnDownMain?.Invoke(_clickPos);
+            if(_longClickWaiting != null)
+                StopCoroutine(_longClickWaiting);
+            _longClickWaiting = StartCoroutine(LongClickChecking());
         }
 
         private void UpMain()
@@ -177,13 +180,24 @@ namespace RobotCastle.Core
             var elapsed = 0f;
             while (elapsed < _longClockTime)
             {
-                elapsed += Time.deltaTime;
+                elapsed += Time.unscaledDeltaTime;
                 yield return null;
             }
             // CLog.LogRed($"[Input] Down long lick after {_longClockTime} sec.");
             OnDownLongClick?.Invoke(_clickPos);
         }
-
+        
+        private IEnumerator LongClickIgnoreUIChecking()
+        {
+            var elapsed = 0f;
+            while (elapsed < _longClockTime)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                yield return null;
+            }
+            OnDownLongIgnoreUIClick?.Invoke(Input.mousePosition);
+        }
+        
         private IEnumerator Working()
         {
             var oldMainPos = Input.mousePosition;
@@ -205,9 +219,14 @@ namespace RobotCastle.Core
                 if (Input.GetMouseButtonDown(0))
                 {
                     OnDownIgnoreUI?.Invoke(MainMousePosition);
+                    if(_longClickWaitingIgnoreUI != null)
+                        StopCoroutine(_longClickWaitingIgnoreUI);
+                    _longClickWaitingIgnoreUI = StartCoroutine(LongClickIgnoreUIChecking());
                 }
                 else if(Input.GetMouseButtonUp(0))
                 {
+                    if(_longClickWaitingIgnoreUI != null)
+                        StopCoroutine(_longClickWaitingIgnoreUI);
                     OnUpIgnoreUI?.Invoke(MainMousePosition);
                 }
                 else if (_mainDown && !_didSlide)

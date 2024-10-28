@@ -2,8 +2,8 @@
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.MainMenu;
+using RobotCastle.Relicts;
 using RobotCastle.Summoning;
-using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.UI
@@ -21,16 +21,28 @@ namespace RobotCastle.UI
         [SerializeField] private MyButton _battleBtn;
         [SerializeField] private MyButton _settingBtn;
         [SerializeField] private MyButton _altarsBTN;
-
+        [SerializeField] private MyButton _relicsBtn;
+        [SerializeField] private SideMoveAnimator _sideMoveAnimator;    
+        
         private void Start()
         {
             _summonBtn.AddMainCallback(OpenSummonMenu);
             _battleBtn.AddMainCallback(OpenGameModeMenu);
             _settingBtn.AddMainCallback(OpenSettings);
             _altarsBTN.AddMainCallback(AltarsBtn);
-            _summonBtn.SetInteractable(true);
-            _battleBtn.SetInteractable(true);
-            _settingBtn.SetInteractable(true);
+            _relicsBtn.AddMainCallback(RelicsBtn);
+            SetBtnsInteractable(true);
+        }
+
+        private void RelicsBtn()
+        {
+            _sideMoveAnimator.AnimateOut();
+            SetBtnsInteractable(false);
+            ServiceLocator.Get<IUIManager>().Show<RelicsUIPanel>(UIConstants.UIRelics, () =>
+            {
+                _sideMoveAnimator.AnimateIn();
+                SetBtnsInteractable(true);
+            }).Show();
         }
 
         private void AltarsBtn()
@@ -77,6 +89,14 @@ namespace RobotCastle.UI
         public void Close()
         {
             gameObject.SetActive(false);
+        }
+
+        public void SetBtnsInteractable(bool interactable)
+        {
+            _summonBtn.SetInteractable(interactable);
+            _battleBtn.SetInteractable(interactable);
+            _settingBtn.SetInteractable(interactable);
+            _relicsBtn.SetInteractable(interactable);
         }
     }
 }

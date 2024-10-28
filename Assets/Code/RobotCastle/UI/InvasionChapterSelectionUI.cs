@@ -27,7 +27,6 @@ namespace RobotCastle.UI
         [SerializeField] private InventoryController _inventory;
         [SerializeField] private TextMeshProUGUI _txtLevel;
         [SerializeField] private TextMeshProUGUI _txtName;
-        [SerializeField] private TextMeshProUGUI _txtRewardBasic;
         [SerializeField] private TextMeshProUGUI _enemiesTotalPower;
         [SerializeField] private List<DifficultyTierUI> _tierUis;
         [SerializeField] private ChapterIconUI _chapterIcon;
@@ -41,7 +40,7 @@ namespace RobotCastle.UI
         [SerializeField] private HeroesPartyUI _partyUI;
         [SerializeField] private AdditionalRewardUI _additionalReward;
         [SerializeField] private DifficultyTierDescriptionUI _difficultyTierUI;
-        
+        [SerializeField] private ChapterRewardsUI _rewardsUI;
         [Header("EDITOR REVIEW")]
         [SerializeField] private ChapterSelectionData _data;
         private InvasionMode.ProgressionDataBase _chaptersDb;
@@ -192,9 +191,9 @@ namespace RobotCastle.UI
                 _inventory.SetItemPicked(_data.tierIndex);
                 UpdateTier();
             }
-            
             else
             {
+                UpdateTierRewardOnly();
                 _inventory.SetNoItem();
                 for (var i = 0; i < tiersCount; i++)
                 {
@@ -204,17 +203,30 @@ namespace RobotCastle.UI
             }
         }
 
+        private void UpdateTierRewardOnly()
+        {
+            var tierInd = _data.tierIndex;
+            var chapter = _chaptersDb.chapters[_data.chapterIndex];
+            var multiplier = chapter.tiers[tierInd].multiplier;
+            _data.basicRewardMultiplier = multiplier;
+            var goldReward = Mathf.RoundToInt(chapter.moneyGoldReward * multiplier);
+            var tierSave = _progresSave.chapters[_data.chapterIndex].tierData[tierInd];
+            _playBtn.SetInteractable(tierSave.unlocked);
+            _rewardsUI.SetRewards(goldReward, chapter.tiers[tierInd].additionalRewards);
+            _enemiesTotalPower.text = chapter.tiers[tierInd].totalPower.ToString();
+        }
+
         private void UpdateTier()
         {
             var tierInd = _data.tierIndex;
             var chapter = _chaptersDb.chapters[_data.chapterIndex];
-            var multiplier = chapter.tiers[_data.tierIndex].multiplier;
+            var multiplier = chapter.tiers[tierInd].multiplier;
             _data.basicRewardMultiplier = multiplier;
-            var totalReward = chapter.moneyGoldReward * multiplier;
-            var tierUnlocked = _progresSave.chapters[_data.chapterIndex].tierData[tierInd].unlocked;
-            _playBtn.SetInteractable(tierUnlocked);
-            
-            _txtRewardBasic.text = $"{Mathf.RoundToInt(totalReward)}";
+            var goldReward = Mathf.RoundToInt(chapter.moneyGoldReward * multiplier);
+            var tierSave = _progresSave.chapters[_data.chapterIndex].tierData[tierInd];
+            _playBtn.SetInteractable(tierSave.unlocked);
+            _rewardsUI.SetRewards(goldReward, chapter.tiers[tierInd].additionalRewards);
+
             _additionalReward.UpdateDataView();
             if (tierInd == 0)
             {
@@ -225,7 +237,11 @@ namespace RobotCastle.UI
                 var difficultyConfig = ServiceLocator.Get<DifficultyTiersDatabase>().tiersConfig[tierInd];
                 _difficultyTierUI.Show(difficultyConfig.textDescription, true);
             }
+
+            _enemiesTotalPower.text = chapter.tiers[tierInd].totalPower.ToString();
         }
+        
+        
      
         private void CorrectTierIndex()
         {

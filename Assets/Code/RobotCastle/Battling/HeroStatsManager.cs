@@ -110,6 +110,7 @@ namespace RobotCastle.Battling
             HealthCurrent.SetBaseAndCurrent(HealthMax.Val);
             
             Attack.SetBaseAndCurrent(GetStatByLevel(_stats.attack, HeroLvl, MergeTier));
+            SpellPower.SetBaseAndCurrent(GetStatByLevel(_stats.spellPower, HeroLvl, MergeTier));
 
             PhysicalResist.SetBaseAndCurrent(_stats.physicalResist[0]);
             MagicalResist.SetBaseAndCurrent(_stats.magicalResist[0]);

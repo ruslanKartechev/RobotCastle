@@ -15,8 +15,8 @@ namespace RobotCastle.Testing
         public string motionName;
         public float time;
         
-        public Motion tempMotion { get; set; }
-        public AnimatorState tempState { get; set; }
+        public Motion motionClip { get; set; }
+        public AnimatorState animState { get; set; }
     }
     
     public class AttackTimer : MonoBehaviour
@@ -95,8 +95,8 @@ namespace RobotCastle.Testing
                         {
                             motionName = childState.state.motion.name,
                             stateName = animName,
-                            tempMotion = childState.state.motion,
-                            tempState = childState.state
+                            motionClip = childState.state.motion,
+                            animState = childState.state
                         };
                         motions.Add(tempMo);
                         break;
@@ -120,7 +120,7 @@ namespace RobotCastle.Testing
                 _hitsCount = 0;
                 // _animator.StopPlayback();
                 yield return null;
-                tempState.motion = data.tempMotion;
+                tempState.motion = data.motionClip;
                 tempState.speed = 1f;
                 yield return null;
                 _animator.Play(tempName, 0, 0);
@@ -130,11 +130,12 @@ namespace RobotCastle.Testing
                     yield return null;
                 }
                 data.time = _lastTimeBetween;
-                data.tempState.speed = _lastTimeBetween;
+                data.animState.speed = _lastTimeBetween;
             }
             yield return null;
             CLog.Log($"[{gameObject.name}] Timer work done!");
             _animator.Play("Idle", 0, 0);
+            yield return null;
         }
         
         

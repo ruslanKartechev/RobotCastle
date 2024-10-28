@@ -131,17 +131,8 @@ namespace RobotCastle.Testing
                     case HeroRangedAttackManager:
                         var rangeTarget = FakeAttackTarget.GetNew();
                         rangeTarget.transform.position = hero.transform.TransformPoint(new Vector3(0, 1.25f, 2f));
-                        // hero.Components.attackManager.BeginAttack(rangeTarget);
-                        break;
-                    case HeroMeleeAttackManager:
-                        // hero.Components.attackManager.BeginAttack(target);
-                        break;
-                    default:
-                        // CLog.Log("unknown attack manager type ");
-                        // hero.Components.attackManager.BeginAttack(target);
                         break;
                 }
-                
                 timer.Begin(animController);
             }
         }

@@ -110,6 +110,7 @@ namespace RobotCastle.Battling
 
         private void OnAttack()
         {
+            if (!_isActive) return;
             _components.animationEventReceiver.OnAttackEvent -= OnAttack;
             _isCasting = false;
         }

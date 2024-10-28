@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ namespace RobotCastle.UI
     {
         [SerializeField] private Canvas _canvas;
         [SerializeField] private List<Image> _heroIcons;
+        [SerializeField] private TextMeshProUGUI _textPlayerPower;
 
         public void On()
         {
@@ -32,6 +34,9 @@ namespace RobotCastle.UI
                 var id = party.heroesIds[i];
                 _heroIcons[i].sprite = ViewDataBase.GetHeroSprite(db.GetHeroViewInfo(id).iconId);
             }
+            var power = HeroesPowerCalculator.CalculateTotalPlayerPower(party.heroesIds);
+            _textPlayerPower.text = power.ToString();
+
         }
     }
 }

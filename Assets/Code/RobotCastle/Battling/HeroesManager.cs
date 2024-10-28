@@ -14,6 +14,8 @@ namespace RobotCastle.Battling
         
         public static float ReduceDamageByDef(float damage, float def)
         {
+            if (def <= 0)
+                return damage;
             damage -= GetDef(def) * damage;
             return damage;
         }

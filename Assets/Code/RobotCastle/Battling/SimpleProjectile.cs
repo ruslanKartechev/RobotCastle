@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using RobotCastle.Core;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace RobotCastle.Battling
         [SerializeField] private bool _isPooled = true;
         [SerializeField] private ParticleSystem _hitParticles;
         [SerializeField] private ParticleSystem _trailParticles;
+        [SerializeField] private List<GameObject> _disableOnHitGo;
         private Action<object> _hitCallback;
         private object _target;
         
@@ -17,10 +19,15 @@ namespace RobotCastle.Battling
         {
             _hitCallback = hitCallback;
             _target = target;
-            transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
+            var dirVec = endPoint.position - startPoint.position;
+            dirVec.y = 0f;
+            var rot = Quaternion.LookRotation(dirVec);
+            transform.SetPositionAndRotation(startPoint.position, rot);
             gameObject.SetActive(true);
-            if(_trailParticles != null)
-                _trailParticles.gameObject.SetActive(true);
+
+            foreach (var go in _disableOnHitGo)
+                go.SetActive(true);
+            
             StartCoroutine(Moving(startPoint, endPoint, speed));
         }
 
@@ -48,9 +55,10 @@ namespace RobotCastle.Battling
                 yield return null;
             }
             transform.position = endPos;
+            foreach (var go in _disableOnHitGo)
+                go.SetActive(false);
+
             _hitCallback?.Invoke(_target);
-            if(_trailParticles != null)
-                _trailParticles.gameObject.SetActive(false);
             if (_hitParticles != null)
             {
                 _hitParticles.gameObject.SetActive(true);

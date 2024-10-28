@@ -133,6 +133,9 @@ MonoBehaviour:
   _isPooled: 1
   _hitParticles: {fileID: 4162946714177861983}
   _trailParticles: {fileID: 2033134257428156626}
+  _disableOnHitGo:
+  - {fileID: 2033134257442078796}
+  - {fileID: 4719888150749273202}
 --- !u!1001 &2033134257441969078
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -213,6 +216,11 @@ PrefabInstance:
 --- !u!198 &2033134257428156626 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 19874660, guid: c39f135b5ead72a49b86bcf04496181d, type: 3}
+  m_PrefabInstance: {fileID: 2033134257441969078}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2033134257442078796 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 185338, guid: c39f135b5ead72a49b86bcf04496181d, type: 3}
   m_PrefabInstance: {fileID: 2033134257441969078}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2033134257442296596 stripped
