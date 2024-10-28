@@ -22,8 +22,7 @@ namespace RobotCastle.Battling
         public void OnFullMana(GameObject heroGo)
         {
             if (_isActive) return;
-            _isActive = true;
-            _manaAdder.CanAdd = false;
+     
             _token?.Cancel();
             _token = new CancellationTokenSource();
             Working(_token.Token);
@@ -33,10 +32,7 @@ namespace RobotCastle.Battling
         
         public int order => 1;
         
-        public float Decorate(float val)
-        {
-            return BaseSpellPower + val;
-        }
+        public float Decorate(float val) => BaseSpellPower + val;
 
         public void Stop()
         {
@@ -45,12 +41,17 @@ namespace RobotCastle.Battling
                 _isCasting = false;
                 _components.animationEventReceiver.OnAttackEvent -= OnAttack;
             }
-            if(_isActive)
+
+            if (_isActive)
+            {
+                _manaAdder.CanAdd = true;
                 _token?.Cancel();
-            _isActive = false;
+                _isActive = false;
+            }
         }
         
         public float BaseSpellPower => _config.damageMag[(int)HeroesManager.GetSpellTier(_components.stats.MergeTier)];
+
 
         private SpellConfigSmite _config;
         private CancellationTokenSource _token;
@@ -58,9 +59,10 @@ namespace RobotCastle.Battling
         private SpellParticlesByLevel _fxView;
         private bool _isCasting;
 
-
         private async void Working(CancellationToken token)
         {
+            _isActive = true;
+            _manaAdder.CanAdd = false;
             _components.processes.Add(this);
             var lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);
             var mask = new CellsMask()            {
@@ -73,6 +75,7 @@ namespace RobotCastle.Battling
             await Task.Yield();
             if (token.IsCancellationRequested) return;
             const int frameInside = 5;
+            
             List<IHeroController> affectedEnemies = null;
             var didFind = false;
             while (!token.IsCancellationRequested && !didFind)

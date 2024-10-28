@@ -92,6 +92,7 @@ namespace RobotCastle.Battling
 
         private void OnAttack()
         {
+            if (!_isActive) return;
             _isCasting = false;
         }
 

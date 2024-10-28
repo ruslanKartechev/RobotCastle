@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.Relicts;
 using RobotCastle.Saving;
 using SleepDev;
 using SleepDev.Data;
@@ -63,6 +64,7 @@ namespace RobotCastle.MainMenu
             if (_playerData.playerXp >= GetMaxXp())
             {
                 _playerData.playerLevel++;
+                RelicsManager.TryAddSlotsOnNewLevel(_playerData.relics, _playerData.playerLevel);
                 OnLevelSet?.Invoke(_playerData.playerLevel, _playerData.playerLevel - 1);
                 OnXpSet?.Invoke(_playerData.playerXp, prev);
                 return true;

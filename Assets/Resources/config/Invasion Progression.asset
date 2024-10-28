@@ -21,19 +21,63 @@ MonoBehaviour:
       heroXpReward: 3
       location: Env_1MushroomFields
       tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
+      - totalPower: 815
+        multiplier: 1
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+        - level: 1
+          id: fury_gauntlet
+          type: relic
+      - totalPower: 983
+        multiplier: 1.25
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 1703
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 2835
+        multiplier: 2
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 3894
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards:
-      - level: 20
-        id: book
+      - level: 2
+        id: scroll_tier_2
         type: item
       levelData:
         levels:
@@ -74,17 +118,61 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_2Graveyard
       tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
-      chapterCompletedRewards: []
+      - totalPower: 4482
+        multiplier: 1
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 5616
+        multiplier: 1.25
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 10159
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 15362
+        multiplier: 2
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 20756
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
+      chapterCompletedRewards:
+      - level: 2
+        id: scroll_tier_3
+        type: item
       levelData:
         levels:
         - enemyPreset: graveyard_1
@@ -124,17 +212,61 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_3SpiderCave
       tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
-      chapterCompletedRewards: []
+      - totalPower: 2433
+        multiplier: 1
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 3049
+        multiplier: 1.25
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 4677
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 7458
+        multiplier: 2
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 9745
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
+      chapterCompletedRewards:
+      - level: 3
+        id: scroll_tier_3
+        type: item
       levelData:
         levels:
         - enemyPreset: spirders_cave_1
@@ -189,16 +321,57 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_5Underworld
       tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
+      - totalPower: 2025
+        multiplier: 1
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 2685
+        multiplier: 1.25
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 4261
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 7097
+        multiplier: 2
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 9344
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
         levels:
@@ -254,16 +427,57 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_4WinterPole
       tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
+      - totalPower: 5902
+        multiplier: 1
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 7088
+        multiplier: 1.25
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 10945
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 17021
+        multiplier: 2
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 21225
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
         levels:
@@ -334,16 +548,57 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_6DangerousDesert
       tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
+      - totalPower: 0
+        multiplier: 1
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 1.25
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 0
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 2
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 0
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
         levels:
@@ -414,16 +669,57 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_7MysticForest
       tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
+      - totalPower: 0
+        multiplier: 1
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 1.25
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 0
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 2
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 0
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
         levels:
@@ -494,16 +790,57 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_8GoblinsGrot
       tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
+      - totalPower: 0
+        multiplier: 1
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 1.25
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 0
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 2
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 0
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
         levels:
@@ -574,16 +911,57 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_10DragonsLair
       tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
+      - totalPower: 0
+        multiplier: 1
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 1.25
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 0
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 2
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 0
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
         levels:
@@ -654,16 +1032,57 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_10DragonsLair
       tiers:
-      - multiplier: 1
-        additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
+      - totalPower: 0
+        multiplier: 1
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 1.25
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 0
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 2
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 0
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
         levels:
@@ -735,16 +1154,48 @@ MonoBehaviour:
       heroXpReward: 3
       location: Env_1MushroomFields
       tiers:
-      - multiplier: 1
+      - totalPower: 0
+        multiplier: 1
+        additionalRewards:
+        - level: 2
+          id: book
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+      - totalPower: 0
+        multiplier: 1.25
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 0
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 2
         additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
+      - totalPower: 0
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
       chapterCompletedRewards:
       - level: 20
         id: book
@@ -788,16 +1239,48 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_2Graveyard
       tiers:
-      - multiplier: 1
+      - totalPower: 0
+        multiplier: 1
+        additionalRewards:
+        - level: 2
+          id: book
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+      - totalPower: 0
+        multiplier: 1.25
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 0
+        multiplier: 1.5
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 0
+        multiplier: 2
         additionalRewards: []
-      - multiplier: 1.25
-        additionalRewards: []
-      - multiplier: 1.5
-        additionalRewards: []
-      - multiplier: 2
-        additionalRewards: []
-      - multiplier: 2.5
-        additionalRewards: []
+      - totalPower: 0
+        multiplier: 2.5
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
       chapterCompletedRewards: []
       levelData:
         levels:
@@ -838,15 +1321,20 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_3SpiderCave
       tiers:
-      - multiplier: 1
+      - totalPower: 0
+        multiplier: 1
         additionalRewards: []
-      - multiplier: 1.25
+      - totalPower: 0
+        multiplier: 1.25
         additionalRewards: []
-      - multiplier: 1.5
+      - totalPower: 0
+        multiplier: 1.5
         additionalRewards: []
-      - multiplier: 2
+      - totalPower: 0
+        multiplier: 2
         additionalRewards: []
-      - multiplier: 2.5
+      - totalPower: 0
+        multiplier: 2.5
         additionalRewards: []
       chapterCompletedRewards: []
       levelData:
@@ -903,15 +1391,20 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_5Underworld
       tiers:
-      - multiplier: 1
+      - totalPower: 0
+        multiplier: 1
         additionalRewards: []
-      - multiplier: 1.25
+      - totalPower: 0
+        multiplier: 1.25
         additionalRewards: []
-      - multiplier: 1.5
+      - totalPower: 0
+        multiplier: 1.5
         additionalRewards: []
-      - multiplier: 2
+      - totalPower: 0
+        multiplier: 2
         additionalRewards: []
-      - multiplier: 2.5
+      - totalPower: 0
+        multiplier: 2.5
         additionalRewards: []
       chapterCompletedRewards: []
       levelData:
@@ -968,15 +1461,20 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_4WinterPole
       tiers:
-      - multiplier: 1
+      - totalPower: 0
+        multiplier: 1
         additionalRewards: []
-      - multiplier: 1.25
+      - totalPower: 0
+        multiplier: 1.25
         additionalRewards: []
-      - multiplier: 1.5
+      - totalPower: 0
+        multiplier: 1.5
         additionalRewards: []
-      - multiplier: 2
+      - totalPower: 0
+        multiplier: 2
         additionalRewards: []
-      - multiplier: 2.5
+      - totalPower: 0
+        multiplier: 2.5
         additionalRewards: []
       chapterCompletedRewards: []
       levelData:
@@ -1048,15 +1546,20 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_6DangerousDesert
       tiers:
-      - multiplier: 1
+      - totalPower: 0
+        multiplier: 1
         additionalRewards: []
-      - multiplier: 1.25
+      - totalPower: 0
+        multiplier: 1.25
         additionalRewards: []
-      - multiplier: 1.5
+      - totalPower: 0
+        multiplier: 1.5
         additionalRewards: []
-      - multiplier: 2
+      - totalPower: 0
+        multiplier: 2
         additionalRewards: []
-      - multiplier: 2.5
+      - totalPower: 0
+        multiplier: 2.5
         additionalRewards: []
       chapterCompletedRewards: []
       levelData:
@@ -1128,15 +1631,20 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_7MysticForest
       tiers:
-      - multiplier: 1
+      - totalPower: 0
+        multiplier: 1
         additionalRewards: []
-      - multiplier: 1.25
+      - totalPower: 0
+        multiplier: 1.25
         additionalRewards: []
-      - multiplier: 1.5
+      - totalPower: 0
+        multiplier: 1.5
         additionalRewards: []
-      - multiplier: 2
+      - totalPower: 0
+        multiplier: 2
         additionalRewards: []
-      - multiplier: 2.5
+      - totalPower: 0
+        multiplier: 2.5
         additionalRewards: []
       chapterCompletedRewards: []
       levelData:
@@ -1208,15 +1716,20 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_8GoblinsGrot
       tiers:
-      - multiplier: 1
+      - totalPower: 0
+        multiplier: 1
         additionalRewards: []
-      - multiplier: 1.25
+      - totalPower: 0
+        multiplier: 1.25
         additionalRewards: []
-      - multiplier: 1.5
+      - totalPower: 0
+        multiplier: 1.5
         additionalRewards: []
-      - multiplier: 2
+      - totalPower: 0
+        multiplier: 2
         additionalRewards: []
-      - multiplier: 2.5
+      - totalPower: 0
+        multiplier: 2.5
         additionalRewards: []
       chapterCompletedRewards: []
       levelData:
@@ -1288,15 +1801,20 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_10DragonsLair
       tiers:
-      - multiplier: 1
+      - totalPower: 0
+        multiplier: 1
         additionalRewards: []
-      - multiplier: 1.25
+      - totalPower: 0
+        multiplier: 1.25
         additionalRewards: []
-      - multiplier: 1.5
+      - totalPower: 0
+        multiplier: 1.5
         additionalRewards: []
-      - multiplier: 2
+      - totalPower: 0
+        multiplier: 2
         additionalRewards: []
-      - multiplier: 2.5
+      - totalPower: 0
+        multiplier: 2.5
         additionalRewards: []
       chapterCompletedRewards: []
       levelData:
@@ -1368,15 +1886,20 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_10DragonsLair
       tiers:
-      - multiplier: 1
+      - totalPower: 0
+        multiplier: 1
         additionalRewards: []
-      - multiplier: 1.25
+      - totalPower: 0
+        multiplier: 1.25
         additionalRewards: []
-      - multiplier: 1.5
+      - totalPower: 0
+        multiplier: 1.5
         additionalRewards: []
-      - multiplier: 2
+      - totalPower: 0
+        multiplier: 2
         additionalRewards: []
-      - multiplier: 2.5
+      - totalPower: 0
+        multiplier: 2.5
         additionalRewards: []
       chapterCompletedRewards: []
       levelData:

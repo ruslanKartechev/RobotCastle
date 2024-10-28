@@ -86,12 +86,14 @@ namespace RobotCastle.Battling
             fx.ShowTrackingDefaultDuration(_components.transform);
 
             await Task.Delay(_config.duration.SecToMs(), token);
-
+            if (token.IsCancellationRequested) return;
+            
             fx.gameObject.SetActive(false);
             _manaAdder.CanAdd = true;
             atkManager.ProjectileFactory = _prevFactory;
             _components.stats.ManaResetAfterFull.Reset(_components);
             _components.processes.Remove(this);
+            _isActive = false;
         }
         
         private SpellParticlesOnHero GetFxView()

@@ -50,7 +50,7 @@ namespace RobotCastle.Battling
             }
 
             AllowPlayerUIInput(false);
-            GiveRewardAndShowUI();
+            AddRewardForLevelAndShowUI();
         }
 #endif
 

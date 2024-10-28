@@ -11,6 +11,7 @@ using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 using RobotCastle.MainMenu;
 using RobotCastle.Merging;
+using RobotCastle.Relicts;
 using RobotCastle.Saving;
 using RobotCastle.UI;
 using SleepDev;
@@ -164,6 +165,12 @@ namespace RobotCastle.Battling
             manager.SetupAndApplyAll();
         }
 
+        private void InitRelics()
+        {
+            CLog.Log($"[{nameof(BattleLevel)}] Applying relics");
+            RelicsManager.ApplyAllSelectedRelics();
+        }
+        
         private void SetStartData()
         {
             CLog.Log($"[{nameof(BattleLevel)}] Start money: {_startData.StartMoney}. Start items: {_startData.StartItems.Count}");
@@ -226,7 +233,12 @@ namespace RobotCastle.Battling
             {
                 InitAltars();
             } catch(System.Exception ex) { CLog.LogError(ex.Message); }
-            
+
+            try
+            {
+                InitRelics();
+            } catch(System.Exception ex) { CLog.LogError(ex.Message); }
+
             try
             {
                 SetStartData();
@@ -298,7 +310,7 @@ namespace RobotCastle.Battling
                 await Task.Delay((int)(_winFailDelay * 1000), token);
                 if (token.IsCancellationRequested) return;
                 SleepDev.Analytics.OnLevelCompleted(_selectionData.chapterIndex, _selectionData.tierIndex);
-                GiveRewardAndShowUI();
+                AddRewardForLevelAndShowUI();
                 return;
             }
             _battleManager.rewardCalculator.AddRewardForStage();
@@ -441,7 +453,7 @@ namespace RobotCastle.Battling
         }
         
         
-        private void GiveRewardAndShowUI()
+        private void AddRewardForLevelAndShowUI()
         {
             var chapterConfig = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
             var playerData = DataHelpers.GetPlayerData();
@@ -470,10 +482,18 @@ namespace RobotCastle.Battling
                 var upgReward = new CoreItemData(reward);
                 upgReward.level = Mathf.RoundToInt(upgReward.level * rewardMultiplier);
                 rewardsList.Add(upgReward);
-                if(reward.type == "item")
-                    inventory.AddItem(reward.id, reward.level);
-                else
-                    CLog.LogRed($"reward type != \"item\", will not add to inventory!");
+                switch (reward.type)
+                {
+                    case "item":
+                        inventory.AddItem(reward.id, reward.level);
+                        break;
+                    case "relic":
+                        RelicsManager.AddRelic(playerData.relics, reward.id);
+                        break;
+                    default:
+                        CLog.LogRed($"reward type: \"{reward.type}\" unknown will not add to inventory!");
+                        break;
+                }
             }
 
             if (_logRewardItems)

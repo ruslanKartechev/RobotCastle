@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using RobotCastle.Core;
+using RobotCastle.UI;
+using UnityEngine;
 
 namespace RobotCastle.InvasionMode
 {
@@ -7,8 +9,27 @@ namespace RobotCastle.InvasionMode
     {
         public ProgressionDataBase database;
 
+        
+        
+        
         #if UNITY_EDITOR
 
+        [ContextMenu("E_CalculateTotalPower")]
+        public void E_CalculateTotalPower()
+        {
+            foreach (var chapter in database.chapters)
+            {
+                for (var i = 0; i < chapter.tiers.Count; i++)
+                {
+                    var tier = chapter.tiers[i];
+                    var total = HeroesPowerCalculator.CalculateTotalPowerForEnemies(chapter.levelData, i);
+                    tier.totalPower = total;
+                }
+            }
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+        
+        
         [ContextMenu("E_FitLevelTypes")]
         public void E_FitLevelTypes()
         {

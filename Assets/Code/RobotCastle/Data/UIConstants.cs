@@ -30,6 +30,7 @@
         public const string UIDevilsOffer = "ui_offer_devils";
         public const string UIMerchantOffer = "ui_offer_merchant";
         
+        public const string UIRelics = "ui_relics_inventory";
 
     }
 }

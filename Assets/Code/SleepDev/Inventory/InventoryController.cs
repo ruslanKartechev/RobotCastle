@@ -44,7 +44,7 @@ namespace SleepDev.Inventory
 
         public void SetNoItem()
         {
-            CLog.Log($"[{nameof(InventoryController)}] Call to pick nothing");
+            // CLog.Log($"[{nameof(InventoryController)}] Call to pick nothing");
             if(_pickedItem != null)
                 _pickedItem.Unpick();
             _pickedItem = null;
@@ -52,7 +52,7 @@ namespace SleepDev.Inventory
 
         public void SetItemPicked(int index)
         {
-            CLog.Log($"[{nameof(InventoryController)}] Call to set {index}");
+            // CLog.Log($"[{nameof(InventoryController)}] Call to set {index}");
             var item = _items[index];
             if (item != _pickedItem)
             {

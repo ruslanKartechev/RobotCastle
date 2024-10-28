@@ -42,6 +42,23 @@ namespace RobotCastle.Battling
             await SpawnPresetAndBoss(preset, token);
         }
 
+        public static EnemyPackPreset GetPackPreset(string presetPath)
+        {
+            var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
+            if (asset == null)
+            {
+                CLog.LogError($"{presetPath} DIDN'T find the preset!");
+                return null;
+            }
+            var presetStr = asset.text;
+            var preset = Newtonsoft.Json.JsonConvert.DeserializeObject<EnemyPackPreset>(presetStr);
+            if (preset == null)
+            {
+                CLog.LogError($"[{nameof(EnemiesFactory)}] Cannot Deserialize preset at {presetPath}");
+            }
+            return preset;
+        }
+
         private async Task SpawnPresetAndBoss(EnemyPackPreset packPreset, CancellationToken token)
         {
             _spawnedEnemies = new List<IHeroController>(packPreset.enemies.Count);
