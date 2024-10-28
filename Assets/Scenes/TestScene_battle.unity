@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &9014747 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
-  m_PrefabInstance: {fileID: 402763105}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &41013630
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -418,11 +413,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22dbdf41526e8db4392f638695267f66, type: 3}
---- !u!1 &91584785 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
-  m_PrefabInstance: {fileID: 857372440400381117}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &92051748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1806,6 +1796,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2147584397019755118, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Name
+      value: Flag 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_Name
       value: tower_health_view (2)
@@ -1818,6 +1812,11 @@ PrefabInstance:
 --- !u!4 &402763106 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 866484490312188316, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+  m_PrefabInstance: {fileID: 402763105}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &402763107 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2147584397019755118, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
   m_PrefabInstance: {fileID: 402763105}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &409095017 stripped
@@ -2236,9 +2235,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scaleTime: 0.3
   _healthPoles:
-  - {fileID: 91584785}
-  - {fileID: 959852719}
-  - {fileID: 9014747}
+  - {fileID: 857372440400381118}
+  - {fileID: 1616713144}
+  - {fileID: 402763107}
 --- !u!1001 &553160033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3906,11 +3905,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22dbdf41526e8db4392f638695267f66, type: 3}
---- !u!1 &959852719 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
-  m_PrefabInstance: {fileID: 1616713142}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &965250531
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4116,8 +4110,10 @@ MonoBehaviour:
       type: 
     preferredCoordinated: {x: 0, y: 0}
     usePreferredCoordinate: 0
-    additionalItems: []
     useAdditionalItems: 0
+    additionalItems: []
+    overrideSpells: 0
+    modifiersIds: []
   _addItems: 0
   _heroItems: []
   _doSpawnEnemy: 0
@@ -4128,8 +4124,10 @@ MonoBehaviour:
       type: 
     preferredCoordinated: {x: 0, y: 0}
     usePreferredCoordinate: 0
-    additionalItems: []
     useAdditionalItems: 0
+    additionalItems: []
+    overrideSpells: 0
+    modifiersIds: []
 --- !u!114 &974174048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7792,6 +7790,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2147584397019755118, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Name
+      value: Flag 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_Name
       value: tower_health_view (1)
@@ -7804,6 +7806,11 @@ PrefabInstance:
 --- !u!4 &1616713143 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 866484490312188316, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+  m_PrefabInstance: {fileID: 1616713142}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1616713144 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2147584397019755118, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
   m_PrefabInstance: {fileID: 1616713142}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1635222925
@@ -9963,6 +9970,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2147584397019755118, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Name
+      value: Flag 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_Name
       value: tower_health_view
@@ -9976,6 +9987,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+--- !u!1 &857372440400381118 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2147584397019755118, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+  m_PrefabInstance: {fileID: 857372440400381117}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2223369115392069613
 PrefabInstance:
   m_ObjectHideFlags: 0

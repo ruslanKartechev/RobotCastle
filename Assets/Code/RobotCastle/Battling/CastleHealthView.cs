@@ -8,7 +8,7 @@ namespace RobotCastle.Battling
     public class CastleHealthView : MonoBehaviour
     {
         [SerializeField] private float _scaleTime = .3f;
-        [SerializeField] private List<GameObject> _healthPoles;
+        [SerializeField] private List<Animator> _healthPoles;
         private int _current;
         
         public void SetHealth(int totalHealth)
@@ -16,8 +16,9 @@ namespace RobotCastle.Battling
             _current = totalHealth;
             for (var i = 0; i < totalHealth; i++)
             {
-                _healthPoles[i].SetActive(true);
+                _healthPoles[i].gameObject.SetActive(true);
                 _healthPoles[i].transform.localScale = Vector3.one;
+                _healthPoles[i].Play("Idle");
             }
         }
 
@@ -32,11 +33,7 @@ namespace RobotCastle.Battling
 
             for (var i = totalHealth; i < _healthPoles.Count; i++)
             {
-                var tr = _healthPoles[i].transform;
-                tr.DOScale(Vector3.zero, _scaleTime).SetEase(Ease.OutBack).OnComplete(() =>
-                {
-                    tr.gameObject.SetActive(false);  
-                });
+                _healthPoles[i].SetTrigger("Break");
             }
             _current = totalHealth;
         }
@@ -51,11 +48,10 @@ namespace RobotCastle.Battling
             }
             for (var i = _current; i < totalHealth; i++)
             {
-                _healthPoles[i].transform.localScale = Vector3.one;
-                _healthPoles[i].SetActive(true);
-                _healthPoles[i].transform.DOPunchScale(Vector3.one * .2f, .25f);
+                _healthPoles[i].SetTrigger("Repair");
             }
             _current = totalHealth;
         }
+        
     }
 }
