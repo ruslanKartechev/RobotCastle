@@ -138,14 +138,6 @@ namespace RobotCastle.Merging
 
             _unitStanding.itemData.core.level++;
             ServiceLocator.Get<MergeAnimation>().Play(_unitStanding, _unitMoving, _gridView, AnimationCallback);
-            // _unitStanding.UpdateViewToData();
-            // _unitStanding.OnMerged();
-            // MergeFunctions.PlayMergeFX(_unitStanding);
-            
-            // foreach (var mod in _modifiers)
-                // mod.OnMergedOneIntoAnother(_unitMoving, _unitStanding);
-            
-            // _callback.Invoke(EMergeResult.MergedOneIntoAnother, true); // always merges ItemMoving into ItemTaken
         }
 
         private void AnimationCallback()

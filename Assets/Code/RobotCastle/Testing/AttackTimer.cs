@@ -104,11 +104,9 @@ namespace RobotCastle.Testing
                 }
 
             }
-            var msg = $"{gameObject.name}. Found Attack motions: ";
+            var msg = $"{gameObject.name}. Found Attack motions ({motions.Count}): ";
             foreach (var mo in motions)
-            {
-                msg += $" {mo.stateName}, ";
-            }
+                msg += $"{mo.stateName}, ";
             CLog.LogWhite(msg);
             
             yield return null;

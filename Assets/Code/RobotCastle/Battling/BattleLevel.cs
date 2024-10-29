@@ -47,6 +47,10 @@ namespace RobotCastle.Battling
         [SerializeField] private SmeltingConfigContainer _smeltingConfigContainer;
         [SerializeField] private DevilsOfferConfigContainer _devilsOfferConfigContainer;
         [SerializeField] private MerchantOfferConfigContainer _merchantOfferConfigContainer;
+        [Space(10)]
+        [SerializeField] private ObstaclesContainer _obstacles;
+        [SerializeField] private ObstaclesManager _obstaclesManager;
+        
         private IPlayerMergeItemsFactory _playerMergeFactory;
         private ITroopSizeManager _troopSizeManager;
         private BattleMergeUI _mainUI;
@@ -82,16 +86,22 @@ namespace RobotCastle.Battling
             _uiManager = ServiceLocator.Get<IUIManager>(); 
             _chapter = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
             _playerMergeFactory = gameObject.GetComponent<IPlayerMergeItemsFactory>();
-            SetLocation();
             SleepDev.Analytics.OnLevelStarted(_selectionData.chapterIndex, _selectionData.tierIndex);
             _token = new CancellationTokenSource();
             InitProcess(_token.Token);
-            
         }
 
         private void SetLocation()
         {
             _locationSpawner.SpawnLocation(_chapter);
+            SetObstacles();
+        }
+
+        private void SetObstacles()
+        {
+            _obstaclesManager.SetMap(_map.Map);
+            var preset = _obstacles.options.Random();
+            _obstaclesManager.SetPreset(preset, _obstacles.prefabsOptions[_selectionData.chapterIndex]);
         }
 
         private void AddTierBasedDifficultyModifiers()
@@ -204,14 +214,14 @@ namespace RobotCastle.Battling
             _battleCamera.AllowPlayerInput(false);
             _uiManager.ParentCanvas = _mainCanvas;
             _uiManager.Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
-            await Task.Yield();
             _map.InitRuntime();
+            SetLocation();
             await Task.Yield();
             if (token.IsCancellationRequested) return;
 
             _battleManager.startProcessor = this;
             _battleManager.endProcessor = this;
-            var battle = _battleManager.CreateBattle(_chapter.levelData.levels);
+            var battle = _battleManager.CreateBattle(_chapter.levelData);
             
             _mergeManager.Init();
             _troopSizeManager = new BattleTroopSizeManager(battle, _mergeManager.SectionsController, _troopSizeExpansion);
@@ -430,34 +440,12 @@ namespace RobotCastle.Battling
             return false;
         }
 
-        private void SetTierCompletedAndUnlockNext()
-        {
-            var playerData = DataHelpers.GetPlayerData();
-            var tier = _selectionData.tierIndex;
-            var chapterSave = playerData.progression.chapters[_selectionData.chapterIndex];
-            var tierSave = chapterSave.tierData[tier];
-            tierSave.completed = true;
-            tierSave.completedCount++;
-            var chapterConfig = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
-            tier++;
-            if (tier < chapterSave.tierData.Count)
-            {
-                chapterSave.tierData[tier].unlocked = true;
-            }
-            else if(_selectionData.chapterIndex < playerData.progression.chapters.Count)
-            {
-                var nextChapterSave = playerData.progression.chapters[_selectionData.chapterIndex + 1];
-                nextChapterSave.unlocked = true;
-                nextChapterSave.tierData[0].unlocked = true;
-            }
-        }
-        
-        
         private void AddRewardForLevelAndShowUI()
         {
             var chapterConfig = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
             var playerData = DataHelpers.GetPlayerData();
-            SetTierCompletedAndUnlockNext();
+            ProgressionManager.CompleteTier(_selectionData.chapterIndex, _selectionData.tierIndex);
+
             var rewardMultiplier = _selectionData.multiplierTier * _selectionData.basicRewardMultiplier;
             CLog.Log($"Total reward multiplier: {rewardMultiplier}");
             var goldReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.moneyGoldReward);

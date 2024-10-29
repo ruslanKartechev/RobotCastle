@@ -108,7 +108,7 @@ namespace RobotCastle.Testing
             {
                 if (hero.Components.attackManager == null)
                 {
-                    hero.InitHero(hero.gameObject.name, 0,0, new List<ModifierProvider>());
+                    // hero.InitHero(hero.gameObject.name, 0,0, new List<ModifierProvider>());
                     // CLog.LogRed("hero.HeroView.AttackManager is null");
                     // continue;
                 }

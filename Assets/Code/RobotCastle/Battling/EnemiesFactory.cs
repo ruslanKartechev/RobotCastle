@@ -6,6 +6,7 @@ using DG.Tweening;
 using Newtonsoft.Json;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.InvasionMode;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
@@ -15,33 +16,7 @@ namespace RobotCastle.Battling
 {
     public class EnemiesFactory : MonoBehaviour
     {
-        [SerializeField] private string _presetsDirectory;
-        private List<IHeroController> _spawnedEnemies;
-        
-        public List<IHeroController> SpawnedEnemies => _spawnedEnemies;
-        
-        public IGridView GridView { get; set; }
-        
-        
-        public async Task SpawnPreset(string presetPath, CancellationToken token)
-        {
-            var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
-            if (asset == null)
-            {
-                CLog.LogError($"{presetPath} DIDN'T find the preset!");
-                _spawnedEnemies = null;
-                return;
-            }
-            var presetStr = asset.text;
-            var preset = Newtonsoft.Json.JsonConvert.DeserializeObject<EnemyPackPreset>(presetStr);
-            if (preset == null)
-            {
-                CLog.LogError($"[{nameof(EnemiesFactory)}] Cannot Deserialize preset at {presetPath}");
-            }
-
-            await SpawnPresetAndBoss(preset, token);
-        }
-
+    
         public static EnemyPackPreset GetPackPreset(string presetPath)
         {
             var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
@@ -58,8 +33,34 @@ namespace RobotCastle.Battling
             }
             return preset;
         }
+        
+    
+        
+        public List<IHeroController> SpawnedEnemies => _spawnedEnemies;
+        
+        public IGridView GridView { get; set; }
+        
+        
+        public async Task SpawnPreset(string presetPath, EliteItemsPreset items, CancellationToken token)
+        {
+            var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
+            if (asset == null)
+            {
+                CLog.LogError($"{presetPath} DIDN'T find the preset!");
+                _spawnedEnemies = null;
+                return;
+            }
+            var presetStr = asset.text;
+            var preset = Newtonsoft.Json.JsonConvert.DeserializeObject<EnemyPackPreset>(presetStr);
+            if (preset == null)
+            {
+                CLog.LogError($"[{nameof(EnemiesFactory)}] Cannot Deserialize preset at {presetPath}");
+            }
 
-        private async Task SpawnPresetAndBoss(EnemyPackPreset packPreset, CancellationToken token)
+            await SpawnPresetEnemies(preset, items, token);
+        }
+
+        private async Task SpawnPresetEnemies(EnemyPackPreset packPreset, EliteItemsPreset items, CancellationToken token)
         {
             _spawnedEnemies = new List<IHeroController>(packPreset.enemies.Count);
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
@@ -75,32 +76,29 @@ namespace RobotCastle.Battling
                 {
                     case EUnitType.Default or EUnitType.Elite:
                         barsPanel.AssignEnemyUI(hero.Components);
+                        hero.Components.weaponsContainer.SetEmpty();
                         AnimateSpawn(hero);
                         break;
                     case EUnitType.Boss:
                         barsPanel.AssignBossUI(hero.Components);
+                        hero.Components.weaponsContainer.SetEmpty();
                         hero.Components.animator.Play("Appear", 0, 0);
                         break;
                 }
                 var spells = HeroesManager.GetModifiers(enemyPreset.modifiers);
                 hero.InitHero(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level, spells);
+                if (enemyPreset.unitType is EUnitType.Elite)
+                {
+                    SetItems(hero, items);
+                }
                 hero.Components.heroUI.AssignStatsTracking(hero.Components);
                 _spawnedEnemies.Add(hero);
-                
-                if (enemyPreset.items is {Count: > 0})
-                {
-                    var weaponsData = HeroWeaponData.GetDataWithDefaultModifiers(enemyPreset.items);
-                    hero.Components.weaponsContainer.SetItems(weaponsData);
-                    hero.Components.weaponsContainer.AddAllModifiersToHero(hero.Components);
-                }
-                else
-                    hero.Components.weaponsContainer.SetEmpty();
-                
+
                 await Task.Yield();
                 if (token.IsCancellationRequested) return;
             }
         }
-        
+
         public IHeroController SpawnNew(SpawnMergeItemArgs args, int heroLvl = 0, bool animate = true)
         {
             ICellView cellView = null;
@@ -135,6 +133,43 @@ namespace RobotCastle.Battling
             if(animate)
                 AnimateSpawn(hero);
             return hero;
+        }
+        
+            
+        [SerializeField] private string _presetsDirectory;
+        private List<IHeroController> _spawnedEnemies;
+        
+        private void SetItems(IHeroController hero, EliteItemsPreset itemsPreset)
+        {
+            if (itemsPreset == null || itemsPreset.itemsOptions.Count == 0)
+            {
+                CLog.Log($"Items Preset is null or empty");
+                hero.Components.weaponsContainer.SetEmpty();
+                return;
+            }
+
+            var count = UnityEngine.Random.Range(itemsPreset.itemsCountMin, itemsPreset.itemsCountMax);
+            var results = new List<CoreItemData>(3);
+            while (results.Count < count)
+            {
+                var random = itemsPreset.itemsOptions.Random();
+                if (results.Contains(random))
+                {
+                    if (results.Count >= itemsPreset.itemsOptions.Count)
+                        break;
+                }
+                else
+                    results.Add(random);
+            }
+
+            var msg = $"Added items to elite enemy: ";
+            foreach (var res in results)
+                msg += $" {res.id}_{res.level + 1}, ";
+            
+            CLog.LogRed(msg);
+            var weaponsData = HeroWeaponData.GetDataWithDefaultModifiers(results);
+            hero.Components.weaponsContainer.SetItems(weaponsData);
+            hero.Components.weaponsContainer.AddAllModifiersToHero(hero.Components);
         }
         
         private void AnimateSpawn(IHeroController hero)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,13 +40,20 @@ namespace RobotCastle.UI
             AnimateInDir(1);
         }
 
-
         public void Stop()
         {
             _current.rect.DOKill();
             _prev.rect.DOKill();
         }
-       
+
+        public void SetUnlockRequirement(int chapterInd, int tierInd)
+        {
+            _current.unlockRequirement.text = $"Complete Chapter {chapterInd+1}\n" +
+                                              $"<color=#FF1111>{TierNames[tierInd]}</color> Difficulty";
+        }
+
+        private static readonly List<string> TierNames = new (){ "Ease", "Normal", "Hard", "Very Hard", "King" };
+
         [SerializeField] private float _distance = 700;
         [SerializeField] private float _scale = .85f;
         [SerializeField] private float _animationTime = .85f;
@@ -72,7 +80,6 @@ namespace RobotCastle.UI
             prevRect.gameObject.SetActive(true);
             prevRect.DOAnchorPosX(dir * _distance, _animationTime).SetEase(Ease.Linear);
             prevRect.DOScale(lowScale, _animationTime).SetEase(Ease.Linear).OnComplete(OnAnimationEnd);
-
         }
 
         private void OnAnimationEnd()
@@ -101,6 +108,7 @@ namespace RobotCastle.UI
         {
             public Image image;
             public RectTransform rect;
+            public TextMeshProUGUI unlockRequirement;
             public List<GameObject> lockedGo;
             public bool IsLocked { get; set; }
 

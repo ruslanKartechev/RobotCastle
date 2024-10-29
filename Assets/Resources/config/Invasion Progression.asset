@@ -80,6 +80,55 @@ MonoBehaviour:
         id: scroll_tier_2
         type: item
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: mushroom_fields_1
           reward: 10
@@ -111,6 +160,7 @@ MonoBehaviour:
         - enemyPreset: mushroom_fields_10
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_2
       viewName: Graveyard
       moneyGoldReward: 120
@@ -174,6 +224,55 @@ MonoBehaviour:
         id: scroll_tier_3
         type: item
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: graveyard_1
           reward: 10
@@ -205,6 +304,7 @@ MonoBehaviour:
         - enemyPreset: graveyard_10
           reward: 10
           roundType: 3
+      prevTierRequired: 0
     - id: chapter_3
       viewName: Spiders Cave
       moneyGoldReward: 160
@@ -268,6 +368,55 @@ MonoBehaviour:
         id: scroll_tier_3
         type: item
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: spirders_cave_1
           reward: 10
@@ -314,6 +463,7 @@ MonoBehaviour:
         - enemyPreset: spirders_cave_15
           reward: 10
           roundType: 3
+      prevTierRequired: 1
     - id: chapter_4
       viewName: The Underworld
       moneyGoldReward: 191
@@ -374,6 +524,55 @@ MonoBehaviour:
           type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: the_underworld_1
           reward: 10
@@ -420,6 +619,7 @@ MonoBehaviour:
         - enemyPreset: the_underworld_15
           reward: 10
           roundType: 2
+      prevTierRequired: 2
     - id: chapter_5
       viewName: Winter Forest
       moneyGoldReward: 208
@@ -480,6 +680,55 @@ MonoBehaviour:
           type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: winter_forest_1
           reward: 10
@@ -541,6 +790,7 @@ MonoBehaviour:
         - enemyPreset: winter_forest_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_6
       viewName: Orc Desert
       moneyGoldReward: 250
@@ -601,6 +851,55 @@ MonoBehaviour:
           type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: desert_1
           reward: 10
@@ -662,6 +961,7 @@ MonoBehaviour:
         - enemyPreset: desert_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_7
       viewName: Mystic Forest
       moneyGoldReward: 300
@@ -722,6 +1022,55 @@ MonoBehaviour:
           type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: mystic_forest_1
           reward: 10
@@ -783,8 +1132,9 @@ MonoBehaviour:
         - enemyPreset: mystic_forest_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_8
-      viewName: Vampire Goblins Grot
+      viewName: Goblins Grot
       moneyGoldReward: 360
       playerXpReward: 130
       heroXpReward: 10
@@ -843,6 +1193,55 @@ MonoBehaviour:
           type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: goblins_grot_1
           reward: 10
@@ -904,8 +1303,9 @@ MonoBehaviour:
         - enemyPreset: goblins_grot_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_9
-      viewName: Frozen Wild Jungle
+      viewName: Wild Jungle
       moneyGoldReward: 431
       playerXpReward: 160
       heroXpReward: 10
@@ -964,6 +1364,55 @@ MonoBehaviour:
           type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: dragon's_lair_1
           reward: 10
@@ -1025,8 +1474,9 @@ MonoBehaviour:
         - enemyPreset: dragon's_lair_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_10
-      viewName: Void Dragon's Lair
+      viewName: Dragon's Lair
       moneyGoldReward: 431
       playerXpReward: 200
       heroXpReward: 10
@@ -1085,6 +1535,55 @@ MonoBehaviour:
           type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: dragon's_lair_1
           reward: 10
@@ -1146,6 +1645,7 @@ MonoBehaviour:
         - enemyPreset: dragon's_lair_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     corruptionChapters:
     - id: chapter_1
       viewName: Mushroom Fields
@@ -1154,25 +1654,25 @@ MonoBehaviour:
       heroXpReward: 3
       location: Env_1MushroomFields
       tiers:
-      - totalPower: 0
+      - totalPower: 815
         multiplier: 1
         additionalRewards:
-        - level: 2
+        - level: 3
           id: book
           type: item
         - level: 1
-          id: scroll_tier_1
-          type: item
-      - totalPower: 0
+          id: fury_gauntlet
+          type: relic
+      - totalPower: 983
         multiplier: 1.25
         additionalRewards:
-        - level: 1
+        - level: 2
           id: king_medal
           type: item
         - level: 2
           id: scroll_tier_1
           type: item
-      - totalPower: 0
+      - totalPower: 1703
         multiplier: 1.5
         additionalRewards:
         - level: 1
@@ -1184,10 +1684,19 @@ MonoBehaviour:
         - level: 1
           id: book
           type: item
-      - totalPower: 0
+      - totalPower: 2835
         multiplier: 2
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 3894
         multiplier: 2.5
         additionalRewards:
         - level: 1
@@ -1196,11 +1705,63 @@ MonoBehaviour:
         - level: 2
           id: king_medal
           type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards:
-      - level: 20
-        id: book
+      - level: 2
+        id: scroll_tier_2
         type: item
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: mushroom_fields_1
           reward: 10
@@ -1232,32 +1793,30 @@ MonoBehaviour:
         - enemyPreset: mushroom_fields_10
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_2
-      viewName: Magic Forest
+      viewName: Graveyard
       moneyGoldReward: 120
       playerXpReward: 25
       heroXpReward: 10
       location: ENV_2Graveyard
       tiers:
-      - totalPower: 0
+      - totalPower: 4482
         multiplier: 1
         additionalRewards:
-        - level: 2
+        - level: 3
           id: book
           type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-      - totalPower: 0
+      - totalPower: 5616
         multiplier: 1.25
         additionalRewards:
-        - level: 1
+        - level: 2
           id: king_medal
           type: item
         - level: 2
           id: scroll_tier_1
           type: item
-      - totalPower: 0
+      - totalPower: 10159
         multiplier: 1.5
         additionalRewards:
         - level: 1
@@ -1269,10 +1828,19 @@ MonoBehaviour:
         - level: 1
           id: book
           type: item
-      - totalPower: 0
+      - totalPower: 15362
         multiplier: 2
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 20756
         multiplier: 2.5
         additionalRewards:
         - level: 1
@@ -1281,8 +1849,63 @@ MonoBehaviour:
         - level: 2
           id: king_medal
           type: item
-      chapterCompletedRewards: []
+        - level: 10
+          id: gold_hard
+          type: item
+      chapterCompletedRewards:
+      - level: 2
+        id: scroll_tier_3
+        type: item
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: graveyard_1
           reward: 10
@@ -1314,6 +1937,7 @@ MonoBehaviour:
         - enemyPreset: graveyard_10
           reward: 10
           roundType: 3
+      prevTierRequired: 0
     - id: chapter_3
       viewName: Spiders Cave
       moneyGoldReward: 160
@@ -1321,23 +1945,111 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_3SpiderCave
       tiers:
-      - totalPower: 0
+      - totalPower: 2433
         multiplier: 1
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 3049
         multiplier: 1.25
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 4677
         multiplier: 1.5
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 7458
         multiplier: 2
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 9745
         multiplier: 2.5
-        additionalRewards: []
-      chapterCompletedRewards: []
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
+      chapterCompletedRewards:
+      - level: 3
+        id: scroll_tier_3
+        type: item
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: spirders_cave_1
           reward: 10
@@ -1384,6 +2096,7 @@ MonoBehaviour:
         - enemyPreset: spirders_cave_15
           reward: 10
           roundType: 3
+      prevTierRequired: 1
     - id: chapter_4
       viewName: The Underworld
       moneyGoldReward: 191
@@ -1391,23 +2104,108 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_5Underworld
       tiers:
-      - totalPower: 0
+      - totalPower: 2025
         multiplier: 1
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 2685
         multiplier: 1.25
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 4261
         multiplier: 1.5
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 7097
         multiplier: 2
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 9344
         multiplier: 2.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: the_underworld_1
           reward: 10
@@ -1454,6 +2252,7 @@ MonoBehaviour:
         - enemyPreset: the_underworld_15
           reward: 10
           roundType: 2
+      prevTierRequired: 2
     - id: chapter_5
       viewName: Winter Forest
       moneyGoldReward: 208
@@ -1461,23 +2260,108 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_4WinterPole
       tiers:
-      - totalPower: 0
+      - totalPower: 5902
         multiplier: 1
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
+      - totalPower: 7088
         multiplier: 1.25
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 10945
         multiplier: 1.5
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
+      - totalPower: 17021
         multiplier: 2
-        additionalRewards: []
-      - totalPower: 0
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
+      - totalPower: 21225
         multiplier: 2.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: winter_forest_1
           reward: 10
@@ -1539,8 +2423,9 @@ MonoBehaviour:
         - enemyPreset: winter_forest_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_6
-      viewName: Desert
+      viewName: Orc Desert
       moneyGoldReward: 250
       playerXpReward: 90
       heroXpReward: 10
@@ -1548,21 +2433,106 @@ MonoBehaviour:
       tiers:
       - totalPower: 0
         multiplier: 1
-        additionalRewards: []
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
       - totalPower: 0
         multiplier: 1.25
-        additionalRewards: []
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
       - totalPower: 0
         multiplier: 1.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
       - totalPower: 0
         multiplier: 2
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
       - totalPower: 0
         multiplier: 2.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: desert_1
           reward: 10
@@ -1624,8 +2594,9 @@ MonoBehaviour:
         - enemyPreset: desert_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_7
-      viewName: Graveyard
+      viewName: Mystic Forest
       moneyGoldReward: 300
       playerXpReward: 110
       heroXpReward: 10
@@ -1633,21 +2604,106 @@ MonoBehaviour:
       tiers:
       - totalPower: 0
         multiplier: 1
-        additionalRewards: []
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
       - totalPower: 0
         multiplier: 1.25
-        additionalRewards: []
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
       - totalPower: 0
         multiplier: 1.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
       - totalPower: 0
         multiplier: 2
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
       - totalPower: 0
         multiplier: 2.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: mystic_forest_1
           reward: 10
@@ -1709,6 +2765,7 @@ MonoBehaviour:
         - enemyPreset: mystic_forest_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_8
       viewName: Goblins Grot
       moneyGoldReward: 360
@@ -1718,21 +2775,106 @@ MonoBehaviour:
       tiers:
       - totalPower: 0
         multiplier: 1
-        additionalRewards: []
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
       - totalPower: 0
         multiplier: 1.25
-        additionalRewards: []
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
       - totalPower: 0
         multiplier: 1.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
       - totalPower: 0
         multiplier: 2
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
       - totalPower: 0
         multiplier: 2.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: goblins_grot_1
           reward: 10
@@ -1794,6 +2936,7 @@ MonoBehaviour:
         - enemyPreset: goblins_grot_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_9
       viewName: Wild Jungle
       moneyGoldReward: 431
@@ -1803,21 +2946,106 @@ MonoBehaviour:
       tiers:
       - totalPower: 0
         multiplier: 1
-        additionalRewards: []
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
       - totalPower: 0
         multiplier: 1.25
-        additionalRewards: []
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
       - totalPower: 0
         multiplier: 1.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
       - totalPower: 0
         multiplier: 2
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
       - totalPower: 0
         multiplier: 2.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: dragon's_lair_1
           reward: 10
@@ -1879,6 +3107,7 @@ MonoBehaviour:
         - enemyPreset: dragon's_lair_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2
     - id: chapter_10
       viewName: Dragon's Lair
       moneyGoldReward: 431
@@ -1888,21 +3117,106 @@ MonoBehaviour:
       tiers:
       - totalPower: 0
         multiplier: 1
-        additionalRewards: []
+        additionalRewards:
+        - level: 3
+          id: book
+          type: item
       - totalPower: 0
         multiplier: 1.25
-        additionalRewards: []
+        additionalRewards:
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 2
+          id: scroll_tier_1
+          type: item
       - totalPower: 0
         multiplier: 1.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: scroll_tier_1
+          type: item
+        - level: 1
+          id: book
+          type: item
       - totalPower: 0
         multiplier: 2
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 1
+          id: book
+          type: item
+        - level: 5
+          id: gold_hard
+          type: item
       - totalPower: 0
         multiplier: 2.5
-        additionalRewards: []
+        additionalRewards:
+        - level: 1
+          id: scroll_tier_2
+          type: item
+        - level: 2
+          id: king_medal
+          type: item
+        - level: 10
+          id: gold_hard
+          type: item
       chapterCompletedRewards: []
       levelData:
+        eliteItemsByLevel:
+        - name: round_1
+          itemsCountMin: 1
+          itemsCountMax: 1
+          itemsOptions:
+          - level: 0
+            id: sword
+            type: item
+          - level: 0
+            id: armor
+            type: item
+          - level: 0
+            id: staff
+            type: item
+          - level: 0
+            id: bow
+            type: item
+        - name: round_2
+          itemsCountMin: 1
+          itemsCountMax: 2
+          itemsOptions:
+          - level: 1
+            id: sword
+            type: item
+          - level: 1
+            id: armor
+            type: item
+          - level: 1
+            id: staff
+            type: item
+          - level: 1
+            id: bow
+            type: item
+        - name: round_3
+          itemsCountMin: 2
+          itemsCountMax: 3
+          itemsOptions:
+          - level: 2
+            id: sword
+            type: item
+          - level: 2
+            id: armor
+            type: item
+          - level: 2
+            id: staff
+            type: item
+          - level: 2
+            id: bow
+            type: item
         levels:
         - enemyPreset: dragon's_lair_1
           reward: 10
@@ -1964,3 +3278,4 @@ MonoBehaviour:
         - enemyPreset: dragon's_lair_20
           reward: 10
           roundType: 3
+      prevTierRequired: 2

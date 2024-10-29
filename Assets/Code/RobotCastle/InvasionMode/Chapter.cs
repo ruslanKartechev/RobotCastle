@@ -15,5 +15,7 @@ namespace RobotCastle.InvasionMode
         public List<DifficultyTier> tiers;
         public List<CoreItemData> chapterCompletedRewards;
         public LevelData levelData;
+        public int prevTierRequired = 2;
+
     }
 }

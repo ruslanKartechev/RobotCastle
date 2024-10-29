@@ -160,9 +160,13 @@ namespace RobotCastle.UI
             _txtLevel.text = $"Chapter {_data.chapterIndex + 1}";
             _txtName.text = chapterConfig.viewName;
 
-            var db = ServiceLocator.Get<ViewDataBase>();
-            var icon = Resources.Load<Sprite>(db.LocationIcons[_data.chapterIndex]);
+            var viewDb = ServiceLocator.Get<ViewDataBase>();
+            var icon = Resources.Load<Sprite>(viewDb.LocationIcons[_data.chapterIndex]);
             var unlocked = _progresSave.chapters[chapterInd].unlocked;
+            if (!unlocked)
+            {
+                _chapterIcon.SetUnlockRequirement(_data.chapterIndex - 1, _chaptersDb.chapters[chapterInd].prevTierRequired);
+            }
             switch (nextOrPrev)
             {
                 case 1:

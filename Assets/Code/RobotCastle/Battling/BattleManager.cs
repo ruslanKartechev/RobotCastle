@@ -17,10 +17,10 @@ namespace RobotCastle.Battling
         public IBattleEndProcessor endProcessor { get; set; }
         
         public IBattleStartedProcessor startProcessor { get; set; }
-        public bool isRoundBoss => _battle.roundIndex == _roundData.Count - 1;
+        public bool isRoundBoss => _battle.roundIndex == _levelData.levels.Count - 1;
 
         public BattleRewardCalculator rewardCalculator => _rewardCalculator;
-        public RoundData currentRound => _roundData[_battle.roundIndex];
+        public RoundData currentRound => _levelData.levels[_battle.roundIndex];
         public BattleEnemiesWeaponsDropper dropper => _dropper;
         public BattleDamageStatsCollector playerDamageStatsCollector => _playerDamageStatsCollector;
         public BattleDamageStatsCollector enemiesStatsCollector => _enemiesStatsCollector;
@@ -28,7 +28,7 @@ namespace RobotCastle.Battling
         [SerializeField] private bool _activateEnemies = true;
         [SerializeField] private bool _activatePlayers = true;
         private Battle _battle;
-        private List<RoundData> _roundData;
+        private LevelData _levelData;
         private BattleRewardCalculator _rewardCalculator;
         private BattleEnemiesWeaponsDropper _dropper;
         private List<IRoundModifier> _roundModifiers = new(5);
@@ -36,9 +36,9 @@ namespace RobotCastle.Battling
         private BattleDamageStatsCollector _enemiesStatsCollector = new();
         
         
-        public Battle CreateBattle(List<RoundData> roundData)
+        public Battle CreateBattle(LevelData levelData)
         {
-            _roundData = roundData;
+            _levelData = levelData;
             CLog.Log($"[{nameof(BattleManager)}] Init Created new battle data");
             _battle = Battle.GetDefault();
             ServiceLocator.Bind<Battle>(_battle);
@@ -149,11 +149,11 @@ namespace RobotCastle.Battling
             }
         }
 
-        public async Task SetRound(int stageIndex, CancellationToken token)
+        public async Task SetRound(int roundInd, CancellationToken token)
         {
             var enemiesManager = ServiceLocator.Get<EnemiesManager>();
-            _rewardCalculator.RewardPerStageCompletion = _roundData[stageIndex].reward;
-            _battle.roundIndex = stageIndex;
+            _rewardCalculator.RewardPerStageCompletion = _levelData.levels[roundInd].reward;
+            _battle.roundIndex = roundInd;
             
             if (_battle.Enemies.Count > 0)
             {
@@ -164,9 +164,14 @@ namespace RobotCastle.Battling
             
             _battle.Enemies.Clear();
             _battle.enemiesAlive.Clear();
-            var preset = _roundData[stageIndex].enemyPreset;
-            
-            await enemiesManager.factory.SpawnPreset(preset, token);
+
+            EliteItemsPreset itemsPreset = null;
+            if (_levelData.levels[roundInd].roundType == RoundType.EliteEnemy)
+            {
+                var itemsPresetInd = (roundInd + 1) / 5;
+                itemsPreset = _levelData.eliteItemsByLevel[itemsPresetInd];
+            }
+            await enemiesManager.factory.SpawnPreset(_levelData.levels[roundInd].enemyPreset, itemsPreset, token);
             for (var i = 0; i < _roundModifiers.Count; i++)
                 _roundModifiers[i].OnRoundSet(this);
             if (token.IsCancellationRequested) return;
@@ -253,7 +258,7 @@ namespace RobotCastle.Battling
         
         private void SetupRewardForCurrentRound()
         {
-            _rewardCalculator.RewardPerStageCompletion = _roundData[_battle.roundIndex].reward;
+            _rewardCalculator.RewardPerStageCompletion = _levelData.levels[_battle.roundIndex].reward;
         }
         
         private void OnTeamWin(int teamNum)

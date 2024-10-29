@@ -31,7 +31,7 @@ namespace Bomber
         
         public static List<PathNode> Fill(IMap map, PathNode parent, Vector2Int target, IHeuristicFunction heuristicFunction)
         {
-            const int count = 8;
+            const int count = 4;
             var buffer = new List<PathNode>(count);
             if (parent.Position.x > 0 && parent.Position.x < map.Size.x-1
                 && parent.Position.y > 0 && parent.Position.y < map.Size.y-1)
