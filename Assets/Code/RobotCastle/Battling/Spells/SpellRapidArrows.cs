@@ -84,10 +84,11 @@ namespace RobotCastle.Battling
             _components.stats.AttackSpeed.AddDecorator(this);
             var fx = GetFxView();
             fx.ShowTrackingDefaultDuration(_components.transform);
-
-            await Task.Delay(_config.duration.SecToMs(), token);
-            if (token.IsCancellationRequested) return;
             
+            _components.heroUI.ManaUI.AnimateTimedSpell(1f, 0f, _config.duration);
+            await Task.Delay(_config.duration.SecToMs(), token);
+            
+            _components.stats.AttackSpeed.RemoveDecorator(this);
             fx.gameObject.SetActive(false);
             _manaAdder.CanAdd = true;
             atkManager.ProjectileFactory = _prevFactory;

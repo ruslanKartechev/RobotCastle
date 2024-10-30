@@ -20,8 +20,11 @@ namespace RobotCastle.Battling
         
         public void BeginAttack(IDamageReceiver target)
         {
+            if (_isActive) return;
+            _isActive = true;
             _target = target;
             _targetTransform = target.GetGameObject().transform;
+            Hero.Components.state.isAttacking = true;
             Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
             Hero.Components.animationEventReceiver.OnAttackEvent += OnAttack;
             Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, true);
@@ -29,6 +32,9 @@ namespace RobotCastle.Battling
         
         public void Stop()
         {
+            if (!_isActive) return;
+            _isActive = false;
+            Hero.Components.state.isAttacking = false;
             Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, false);
             Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
         }
@@ -36,6 +42,7 @@ namespace RobotCastle.Battling
         private Transform _targetTransform;
         private IDamageReceiver _target;
         private IProjectileFactory _projectileFactory;
+        private bool _isActive;
         
         private void OnAttack()
         {

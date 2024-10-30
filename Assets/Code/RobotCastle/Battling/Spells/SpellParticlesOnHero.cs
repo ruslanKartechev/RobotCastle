@@ -7,7 +7,7 @@ namespace RobotCastle.Battling
 {
     public class SpellParticlesOnHero : MonoBehaviour
     {
-        private const float duration = 1.5f;
+        private const float duration = 2f;
         
         [SerializeField] private ParticleSystem _particles;
         [SerializeField] private List<ParticleSystem> _hitParticles;

@@ -10,7 +10,7 @@ namespace RobotCastle.Battling
         public const int PlayerHealthStart = 3;
         public const int PlayerTroopsStart = 3;
         
-        public const int DuelMaxDistance = 3;
+        public const int DuelMaxDistance = 2;
         
         public const float SpeedStatFactor = 1f / 40;
         public const float SpeedStatToAnimationFactor = 1f / 150;
@@ -44,6 +44,8 @@ namespace RobotCastle.Battling
         public const string SpellFXPrefab_Avatar = "prefabs/spells/avatar";
         public const string SpellFXPrefab_RapidArrow = "prefabs/spells/rapid_arrows";
         public const string SpellFXPrefab_PowerOfRock = "prefabs/spells/power_of_rock";
+        public const string SpellFXPrefab_Backstab = "prefabs/spells/backstab";
+        
 
     }
 }

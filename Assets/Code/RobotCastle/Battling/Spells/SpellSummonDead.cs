@@ -35,7 +35,7 @@ namespace RobotCastle.Battling
                 args.Add(arg);
             }
             _components.agent.SetCurrentCellFromWorldPosition();
-            BattleManager.SetClosestAvailableDesiredPositions(args, _components.agent.CurrentCell);
+            BattleManager.SetClosestAvailableDesiredPositions(args, _components.state.currentCell);
             var bm = ServiceLocator.Get<BattleManager>();
             try
             {

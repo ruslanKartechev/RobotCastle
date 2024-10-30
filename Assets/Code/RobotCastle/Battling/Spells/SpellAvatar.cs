@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using RobotCastle.Utils;
-using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -16,7 +15,8 @@ namespace RobotCastle.Battling
             _components.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart); 
             _components.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(_components);
             _components.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
-
+            _spDecor = new SimpleDecoratorAdd(_config.spellDamage);
+            _components.stats.SpellPower.AddPermanentDecorator(_spDecor);
         }
     
         public void OnFullMana(GameObject heroGo)
@@ -48,6 +48,7 @@ namespace RobotCastle.Battling
         private SpellConfigAvatar _config;
         private ConditionedManaAdder _manaAdder;
         private SpellParticlesOnHero _fxView;
+        private SimpleDecoratorAdd _spDecor;
         private float _def;
         private int _lvl;
 
@@ -64,8 +65,10 @@ namespace RobotCastle.Battling
             _components.stats.MagicalResist.AddDecorator(this);
             _components.stats.PhysicalResist.AddDecorator(this);
             
+            _components.heroUI.ManaUI.AnimateTimedSpell(1f, 0f, _config.duration);
             await Task.Delay(_config.duration.SecToMs(), token);
-            
+            _components.attackManager.OnAttackStep -= OnAttackStep;
+
             _components.stats.MagicalResist.RemoveDecorator(this);
             _components.stats.PhysicalResist.RemoveDecorator(this);
             
@@ -77,15 +80,13 @@ namespace RobotCastle.Battling
 
         private void OnAttackStep()
         {
-            var damage = _config.spellDamage;
             var range = _config.cellsMasksByTear[_lvl];
             var allEnemies = HeroesManager.GetHeroesEnemies(_components);
             var map = _components.agent.Map;
             var affectedEnemies = HeroesManager.GetHeroesInsideCellMask(range, _components.transform.position, map, allEnemies);
             foreach (var hero in affectedEnemies)
             {
-                hero.Components.damageReceiver
-                    .TakeDamage(new HeroDamageArgs(damage, EDamageType.Magical, _components));
+                _components.damageSource.DamageSpell(hero.Components.damageReceiver);
             }
             _fxView.PlayHitParticles(_lvl);
         }

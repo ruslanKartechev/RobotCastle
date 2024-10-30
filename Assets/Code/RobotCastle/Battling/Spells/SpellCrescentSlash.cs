@@ -95,7 +95,7 @@ namespace RobotCastle.Battling
                 if (remainder < 2)
                 {
                     var frw = tr.forward;
-                    var cellCenter = _components.agent.CurrentCell;
+                    var cellCenter = _components.state.currentCell;
                     var frwCellDir = new Vector2Int(Mathf.RoundToInt(frw.x), Mathf.RoundToInt(frw.z));
                     for (var stepInd = 0; stepInd < MaxDistance; stepInd++)
                     {

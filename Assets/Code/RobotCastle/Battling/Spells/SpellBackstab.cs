@@ -16,6 +16,7 @@ namespace RobotCastle.Battling
             _components.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(_components);
             _components.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
             _hero = components.gameObject.GetComponent<IHeroController>();
+            InitFx();
         }
      
         public void OnFullMana(GameObject heroGo)
@@ -46,7 +47,9 @@ namespace RobotCastle.Battling
         private CancellationTokenSource _token;
         private SpellConfigBackstab _config;
         private ConditionedManaAdder _manaAdder;
-        private SpellParticlesOnHero _fxView;
+        private SpellParticlesOnHero _fx1;
+        private SpellParticlesOnHero _fx2;
+
         private IHeroController _hero;
         private bool _isAttacking;
 
@@ -71,6 +74,7 @@ namespace RobotCastle.Battling
             while (!token.IsCancellationRequested && !canTp)
             {
                 var enemy = await WaitForTarget(token);
+                if (token.IsCancellationRequested) return;
                 var cellFree = false;
                 Vector2Int cell;
                 do
@@ -84,17 +88,16 @@ namespace RobotCastle.Battling
                     rotMask.SetAsRotated(maskRef, rot);
                     cell = rotMask.mask[0] + enemy.Components.state.currentCell;
                     cellFree = !map.IsOutOfBounce(cell);
-                    // if (cellFree == false)
-                        // CLog.LogGreen($"Mara cell {cell} NOT free");
-                    cellFree &= IsCellFree(cell);
-                    // if(!cellFree)
-                    //     CLog.LogGreen($"Mara cell {cell} OUT of bounce");
                     if (cellFree)
                     {
-                        // CLog.LogGreen($"Cell behind: {cell}. Enemy: {enemy.Components.gameObject.name}");
-                        canTp = true;
-                        TeleportToAttack(cell, enemy, token);
-                        return;
+                        cellFree &= map.Grid[cell.x, cell.y].isPlayerWalkable;
+                        cellFree &= IsCellFree(cell);
+                        if (cellFree)
+                        {
+                            canTp = true;
+                            TeleportToAttack(cell, enemy, token);
+                            return;
+                        }
                     }
                     await Task.Delay(150, token);
                     if (token.IsCancellationRequested)
@@ -119,13 +122,13 @@ namespace RobotCastle.Battling
             _hero.StopCurrentBehaviour();
             _components.movement.Stop();
             _components.animator.Play("Idle");
+            _fx1.PlayHitParticles();
             await Task.Yield();
             if (token.IsCancellationRequested) return;
             
             var map = _components.agent.Map;
             var worldPos = map.GetWorldFromCell(cell);
             var rot = Quaternion.LookRotation(enemy.Components.transform.position - worldPos);
-            
             // Debug.DrawLine(_components.transform.position + Vector3.up * .5f, 
             //     worldPos + Vector3.up * .5f, Color.red, 10f);
             //
@@ -137,7 +140,7 @@ namespace RobotCastle.Battling
             
             await Task.Yield();
             if (token.IsCancellationRequested) return;
-            
+            _fx2.PlayHitParticles();
             _components.attackManager.OnAttackStep += OnAttack;
             _components.attackManager.BeginAttack(enemy.Components.damageReceiver);
         }
@@ -165,12 +168,20 @@ namespace RobotCastle.Battling
         private async Task<IHeroController> WaitForTarget(CancellationToken token)
         {
             var target = BattleManager.GetBestTargetForAttack(_hero);
-            while (target == null && !token.IsCancellationRequested)
+            while (target is not {Count: > 0} && !token.IsCancellationRequested)
                 await Task.Delay(150, token);
-            return target;
+            if (token.IsCancellationRequested) return null;
+            return target[0];
         }
 
-
+        private void InitFx()
+        {
+            var prefab = Resources.Load<SpellParticlesOnHero>(HeroesConstants.SpellFXPrefab_Backstab);
+            _fx1 = Object.Instantiate(prefab);
+            _fx2 = Object.Instantiate(prefab);
+            _fx1.gameObject.SetActive(false);
+            _fx2.gameObject.SetActive(false);
+        }
 
     
     }

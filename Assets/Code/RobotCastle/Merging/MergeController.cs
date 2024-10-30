@@ -70,6 +70,8 @@ namespace RobotCastle.Merging
 
         public void DropAndHideCurrent()
         {
+            if (_draggedItem == null || _draggedItem.itemView == null)
+                return;
             _draggedItem.itemView.Hide();
             NullDragged();
             _isProcessingPut = false;

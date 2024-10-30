@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using DG.Tweening;
 using RobotCastle.Battling;
 using RobotCastle.Core;
-using SleepDev;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RobotCastle.UI
 {
@@ -37,12 +37,16 @@ namespace RobotCastle.UI
         public void SetModeDealtDamage()
         {
             _mode = Mode.Dealt;
+            _highlightDealt.enabled = true;
+            _highlightReceived.enabled = false;
             OnUpdated();
         }
 
         public void SetModeReceivedDamage()
         {
             _mode = Mode.Received;
+            _highlightDealt.enabled = false;
+            _highlightReceived.enabled = true;
             OnUpdated();
         }
 
@@ -88,6 +92,7 @@ namespace RobotCastle.UI
         {
             if (!_inputAllowed) return;
             _isOpened = true;
+    
             _closedGo.SetActive(false);
             _openedGo.SetActive(true);
             _movingRect.anchoredPosition = _closedPos;
@@ -115,7 +120,9 @@ namespace RobotCastle.UI
         }
 
         [SerializeField] private Pool _uiPool;
-        [Space(10)]
+        [Space(10)] 
+        [SerializeField] private Image _highlightDealt;
+        [SerializeField] private Image _highlightReceived;
         [SerializeField] private MyButton _openBtn;
         [SerializeField] private MyButton _closeBtn;
         [Space(10)]

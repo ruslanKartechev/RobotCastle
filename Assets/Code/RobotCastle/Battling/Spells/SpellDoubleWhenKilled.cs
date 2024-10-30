@@ -21,7 +21,7 @@ namespace RobotCastle.Battling
         {
             _components.killProcessor.RemoveModifier(this);
             _components.agent.SetCurrentCellFromWorldPosition();
-            BattleManager.SetClosestAvailableDesiredPositions(_spawnArgs, _components.agent.CurrentCell);
+            BattleManager.SetClosestAvailableDesiredPositions(_spawnArgs, _components.state.currentCell);
             foreach (var arg in _spawnArgs)
             {
                 arg.coreData.level = components.stats.MergeTier;

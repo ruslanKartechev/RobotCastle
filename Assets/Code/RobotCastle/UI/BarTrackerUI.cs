@@ -59,6 +59,13 @@ namespace RobotCastle.UI
             }
         }
 
+        public void AnimateTimedSpell(float from, float to, float time)
+        {
+            if(_changing != null)
+                StopCoroutine(_changing);
+            _changing = StartCoroutine(ChangingFillOnly(from, to, _fillTime));   
+        }
+        
         protected void OnEnable()
         {
             if (_stat == null)
@@ -87,7 +94,7 @@ namespace RobotCastle.UI
                     {
                         if(_changing != null)
                             StopCoroutine(_changing);
-                        _changing = StartCoroutine(Changing(_prevT, t));      
+                        _changing = StartCoroutine(ChangingDamaged(_prevT, t, _fillTime));      
                     }
                     else
                     {
@@ -112,14 +119,27 @@ namespace RobotCastle.UI
             
         }
 
-        private IEnumerator Changing(float t1, float t2)
+        private IEnumerator ChangingFillOnly(float from, float to, float time)
+        {
+            _fillImage.fillAmount = from;
+            var elapsed = 0f;
+            while (elapsed < time)
+            {
+                _fillImage.fillAmount = Mathf.Lerp(from, to, elapsed / time);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            _fillImage.fillAmount = to;
+        }        
+        
+        private IEnumerator ChangingDamaged(float t1, float t2, float time)
         {
             _fillImage.fillAmount = t2;
             _fillImageBack.fillAmount = t1;
             var elapsed = 0f;
-            while (elapsed < _fillTime)
+            while (elapsed < time)
             {
-                _fillImageBack.fillAmount = Mathf.Lerp(t1, t2, elapsed / _fillTime);
+                _fillImageBack.fillAmount = Mathf.Lerp(t1, t2, elapsed / time);
                 elapsed += Time.deltaTime;
                 yield return null;
             }

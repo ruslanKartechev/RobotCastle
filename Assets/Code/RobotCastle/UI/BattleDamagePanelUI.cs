@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DG.Tweening;
 using RobotCastle.Battling;
 using RobotCastle.Core;
@@ -9,8 +8,9 @@ namespace RobotCastle.UI
 {
     public class BattleDamagePanelUI : MonoBehaviour, IDamageDisplay, IScreenUI
     {
+        [SerializeField] private float _randomRadius = 40;
         [SerializeField] private Ease _ease;
-        
+        [Space(10)]
         [SerializeField] private Pool _physical;
         [SerializeField] private Pool _magical;
         [SerializeField] private Pool _mightyBlock;
@@ -59,7 +59,8 @@ namespace RobotCastle.UI
                     break;
             }
 
-            ui.transform.position = screenPos;
+            var random = UnityEngine.Random.insideUnitCircle * _randomRadius;
+            ui.transform.position = screenPos + (Vector3)random;
             ui.Show(amount);
             ui.AnimateDamage(_ease);
         }

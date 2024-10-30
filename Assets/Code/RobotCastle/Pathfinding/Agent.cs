@@ -202,7 +202,18 @@ namespace Bomber
             }
             return result;
         }
-        
+
+        public async Task<bool> CheckIfCanMove(Vector2Int targetCellPos, CancellationToken token)
+        {
+            _map.GetCellAtPosition(_movable.position, out var mCellPos, out var mCell);
+            var path = await _pathfinder.FindPath(mCellPos, targetCellPos);
+            if (token.IsCancellationRequested)
+                return false;
+            if (!path.success || path.points.Count < 2)
+                return false;
+            return true;
+
+        }
         
         public async Task<EPathMovementResult> MakeOneStepTowards(Vector2Int targetCellPos, CancellationToken token)
         {
@@ -308,7 +319,6 @@ namespace Bomber
             }
             State = AgentState.IsMoving;
             var targetWorldPos = _map.Grid[targetCell.x, targetCell.y].worldPosition;
-            // CLog.Log($"{gameObject.name} Moving to pos: {targetPos}");
             var rot1 = _movable.rotation;
             var rot2 = Quaternion.LookRotation(targetWorldPos - _movable.position);
             var angle = Quaternion.Angle(rot1, rot2);
@@ -347,6 +357,7 @@ namespace Bomber
                 _movable.rotation = rot2;
                 var totalDistance = (targetWorldPos - transform.position).magnitude;
                 var travelled = 0f;
+                var didChangeCell = false;
                 while (!token.IsCancellationRequested && travelled < totalDistance)
                 {
                     var vec = targetWorldPos - transform.position;
@@ -355,12 +366,19 @@ namespace Bomber
                     vec *= amount / vecL;
                     travelled += amount;
                     transform.position += vec;
+                    if (!didChangeCell)
+                    {
+                        if (travelled / totalDistance >= .5f)
+                        {
+                            didChangeCell = true;
+                            CurrentCell = targetCell;
+                        }
+                    }
                     await Task.Yield();
                 }
                 if (token.IsCancellationRequested)
                     return EPathMovementResult.WasCancelled;
                 transform.position = targetWorldPos;
-     
             }
             return EPathMovementResult.ReachedEnd;
         }

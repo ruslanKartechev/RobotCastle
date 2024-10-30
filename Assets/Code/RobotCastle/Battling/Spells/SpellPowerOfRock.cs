@@ -16,6 +16,8 @@ namespace RobotCastle.Battling
             _components.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart); 
             _components.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(_components);
             _components.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
+            _spDecor = new SimpleDecoratorAdd(_config.hitDamage);
+            _components.stats.SpellPower.AddPermanentDecorator(_spDecor);
         }
 
         public void OnFullMana(GameObject heroGo)
@@ -34,6 +36,8 @@ namespace RobotCastle.Battling
                 _components.attackManager.OnAttackStep -= OnAttack;
                 _components.stats.PhysicalResist.RemoveDecorator(this);
                 _components.stats.MagicalResist.RemoveDecorator(this);
+                _didCast = false;
+                _components.animationEventReceiver.OnAttackEvent -= OnCast;
                 _token?.Cancel();
             }
         }
@@ -45,11 +49,12 @@ namespace RobotCastle.Battling
         public float Decorate(float val) => val + _def;
         
         private SpellConfigPowerOfRock _config;
-        private HeroComponents _components;
         private CancellationTokenSource _token;
         private SpellParticleOnGridEffect _fxView;
         private ConditionedManaAdder _manaAdder;
+        private SimpleDecoratorAdd _spDecor;
         private float _def;
+        private bool _didCast;
 
         private async void Working(CancellationToken token)
         {
@@ -95,6 +100,16 @@ namespace RobotCastle.Battling
 
             if (affectedEnemies is { Count: > 0 })
             {
+                
+                _didCast = false;
+                _components.animationEventReceiver.OnAttackEvent += OnCast;
+                
+                _components.animator.Play("Cast", 0, 0);
+                while (!_didCast && !token.IsCancellationRequested)
+                    await Task.Yield();
+                if (token.IsCancellationRequested)
+                    return;
+                
                 var fx = GetFxView();
                 var worldPositions = new List<Vector3>(affectedEnemies.Count);
                 
@@ -103,18 +118,19 @@ namespace RobotCastle.Battling
                     worldPositions.Add(map.GetWorldFromCell(centerCell + dir));
                     
                 fx.Show(worldPositions);
-                var damageArgs = new HeroDamageArgs(_config.hitDamage, EDamageType.Magical, _components);
                 foreach (var en in affectedEnemies)
-                    en.Components.damageReceiver.TakeDamage(damageArgs);
+                    _components.damageSource.DamageSpell(en.Components.damageReceiver);
 
                 _components.attackManager.OnAttackStep += OnAttack;
                 _components.stats.PhysicalResist.AddDecorator(this);
                 _components.stats.MagicalResist.AddDecorator(this);
                 
+                _components.heroUI.ManaUI.AnimateTimedSpell(1f, 0f, _config.auraDuration);
                 await Task.Delay(_config.auraDuration.SecToMs());
                 if (token.IsCancellationRequested)
                     return;
-                _components.attackManager.OnAttackStep -= OnAttack;
+                _components.animationEventReceiver.OnAttackEvent -= OnAttack;
+                // _components.attackManager.OnAttackStep -= OnAttack;
                 _components.stats.PhysicalResist.RemoveDecorator(this);
                 _components.stats.MagicalResist.RemoveDecorator(this);
                 _components.stats.ManaResetAfterFull.Reset(_components);
@@ -130,12 +146,17 @@ namespace RobotCastle.Battling
             }
         }
 
+        private void OnCast()
+        {
+            _components.animationEventReceiver.OnAttackEvent -= OnCast;
+            _didCast = true;
+        }
+        
         private void OnAttack()
         {
             if (_components.attackManager.LastTarget == null)
                 return;
-            _components.attackManager.LastTarget
-                .TakeDamage(new HeroDamageArgs(_config.addedDamageOnAttacks, EDamageType.Magical, _components));
+            _components.damageSource.DamageSpell(_components.attackManager.LastTarget);
         }
         
         private SpellParticleOnGridEffect GetFxView()

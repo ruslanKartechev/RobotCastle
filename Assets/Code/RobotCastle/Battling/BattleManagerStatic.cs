@@ -19,13 +19,15 @@ namespace RobotCastle.Battling
                 busyCells.Add(en.Components.state.currentCell);
                 busyCells.Add(en.Components.state.targetMoveCell);
             }
+
             foreach (var en in battle.playersAlive)
             {
                 busyCells.Add(en.Components.state.currentCell);
                 busyCells.Add(en.Components.state.targetMoveCell);
             }
+
             var radius = 1;
-            for(var i = 0; i < args.Count; i++)
+            for (var i = 0; i < args.Count; i++)
             {
                 radius = 1;
                 var didFind = false;
@@ -33,9 +35,9 @@ namespace RobotCastle.Battling
                 {
                     for (var y = -radius; y <= radius && !didFind; y++)
                     {
-                        if (x == 0 && y == 0) 
+                        if (x == 0 && y == 0)
                             continue;
-                        
+
                         var cellPos = center + new Vector2Int(x, y);
                         if (map.IsOutOfBounce(cellPos))
                             continue;
@@ -46,35 +48,36 @@ namespace RobotCastle.Battling
                         didFind = true;
                     }
                 }
+
                 radius++;
                 if (radius >= size.x)
                     break;
             }
         }
-        
+
         public static void ResetHeroAfterBattle(IHeroController hero)
         {
             hero.IsDead = false;
             var components = hero.Components;
             components.stats.ClearDecorators();
             components.healthManager.ClearAllModifiers();
-            
+
             components.heroUI.ShieldBar.Hide();
             components.stats.HealthReset.Reset(components);
             components.stats.ManaResetAfterBattle.Reset(components);
             components.heroUI.UpdateStatsView(components);
-            
+
             components.healthManager.SetDamageable(false);
             components.state.Reset();
             components.gameObject.SetActive(true);
             components.heroUI.Show();
             components.processes.StopAll();
-            
+
             components.damageSource.ClearDamageCalculationModifiers();
             components.damageSource.ClearPostDamageModifiers();
             foreach (var mod in components.preBattleRecurringMods)
                 mod.Deactivate();
-            
+
             hero.SetBehaviour(new HeroIdleBehaviour());
         }
 
@@ -94,7 +97,7 @@ namespace RobotCastle.Battling
             }
         }
 
-        public static IHeroController GetBestTargetForAttack(IHeroController hero)
+        public static List<IHeroController> GetBestTargetForAttack(IHeroController hero)
         {
             var map = hero.Components.agent.Map;
             var myWorldPos = hero.Components.transform.position;
@@ -104,11 +107,13 @@ namespace RobotCastle.Battling
             // var pointsData = new List<HeroAttackPoints>(enemies.Count);
             IHeroController bestTarget = null;
             var maxPoints = -float.MaxValue;
+            var results = new List<IHeroController>(5);
+            
             foreach (var otherHero in enemies)
             {
-                var enemyPos = otherHero.Components.agent.CurrentCell;
+                var enemyPos = otherHero.Components.state.currentCell;
                 var d2 = (enemyPos - myPos).sqrMagnitude;
-                var points = -d2 * 2f;
+                var points = 100 - d2 * 2f;
                 if (otherHero.Components.state.isStunned)
                     points++;
                 if (!otherHero.Components.state.isMoving)
@@ -117,31 +122,33 @@ namespace RobotCastle.Battling
                     points += 2;
                 var vec = otherHero.Components.transform.position - myWorldPos;
                 var angle = Mathf.Abs(Vector3.SignedAngle(vec, hero.Components.transform.forward, Vector3.up));
-
                 if (angle >= 180)
                     points -= 10;
                 else if (angle >= 90)
-                    points -= 8;
-                else if (angle >= 10)
                     points -= 5;
-                
+                else if (angle >= 10)
+                    points -= 2;
                 if (points >= maxPoints)
                 {
                     maxPoints = points;
-                    bestTarget = otherHero;
+                    results.Insert(0, otherHero);
                 }
+                else
+                    results.Add(otherHero);
             }
-            if (bestTarget == null)
-            {
-                CLog.Log($"Error trying to calculate best enemy");
-                if(enemies.Count == 0)
-                    return null;
-                return enemies[0];
-            }
-            return bestTarget;
+            return results;
         }
 
-        
-    
+        private struct HeroAndPoints
+        {
+            public int points;
+            public IHeroController hero;
+
+            public HeroAndPoints(int points, IHeroController hero)
+            {
+                this.points = points;
+                this.hero = hero;
+            }
+        }
     }
 }
