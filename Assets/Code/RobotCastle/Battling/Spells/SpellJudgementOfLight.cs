@@ -42,7 +42,7 @@ namespace RobotCastle.Battling
         {
             if (_isCasting)
             {
-                _components.animationEventReceiver.OnAttackEvent -= OnAttack;
+                _components.animationEventReceiver.OnAttackEvent -= OnAnimationEvent;
                 _isCasting = false;
             }
             _manaAdder.CanAdd = true;
@@ -89,7 +89,7 @@ namespace RobotCastle.Battling
             {
                 _isCasting = true;
                 _components.animator.Play("Cast");
-                _components.animationEventReceiver.OnAttackEvent += OnAttack;
+                _components.animationEventReceiver.OnAttackEvent += OnAnimationEvent;
                 
                 while(_isCasting && !token.IsCancellationRequested)
                     await Task.Yield();
@@ -108,11 +108,13 @@ namespace RobotCastle.Battling
             }
         }
 
-        private void OnAttack()
+        private void OnAnimationEvent()
         {
             if (!_isActive) return;
-            _components.animationEventReceiver.OnAttackEvent -= OnAttack;
+            _components.animationEventReceiver.OnAttackEvent -= OnAnimationEvent;
             _isCasting = false;
+            if (_components.spellSounds.Count > 0)
+                _components.spellSounds[0].Play();
         }
 
         private SpellParticlesByLevel GetFxView()

@@ -102,16 +102,17 @@ namespace RobotCastle.Battling
                 while(_isCasting && !token.IsCancellationRequested)
                     await Task.Yield();
                 if (token.IsCancellationRequested) return;
-                
                 affectedEnemies = HeroesManager.GetHeroesInsideCellMask(mask, _components.transform.position, map, allEnemies);
-                var fx = GetFxView();
-                fx.Show(lvl);
                 for (var i = affectedEnemies.Count - 1; i >= 0; i--)
                 {
                     affectedEnemies[i].SetBehaviour(new HeroStunnedBehaviour(_config.stunDuration));
                     _components.damageSource.DamageSpellAndPhys(_config.damagePhys[lvl], 
                         _config.damageMag[lvl], affectedEnemies[i].Components.damageReceiver);
                 }
+                if (_components.spellSounds.Count > 0)
+                    _components.spellSounds[0].Play();
+                var fx = GetFxView();
+                fx.Show(lvl);
             }
             _isCasting = false;
             _isActive = false;

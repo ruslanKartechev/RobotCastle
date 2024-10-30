@@ -76,11 +76,11 @@ namespace RobotCastle.Core
             
             _inAppsData.Init();
             ServiceLocator.Bind<InAppsSKUDataBase>(_inAppsData);
-            
             if(_initSdk)
                 InitSdk();
             InputBtn.Create();
         }
+
 
         public void InitSdk()
         {

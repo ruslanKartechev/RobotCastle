@@ -47,6 +47,11 @@ namespace RobotCastle.Battling
             Hero.Components.damageSource.DamagePhys(_target);
             OnAttackStep?.Invoke();
             Hero.Components.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
+            if (Hero.Components.attackSounds.Count > 0)
+            {
+                var s = Hero.Components.attackSounds.Random();
+                s.Play();
+            }
         }
 
       

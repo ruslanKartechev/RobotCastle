@@ -123,6 +123,8 @@ namespace RobotCastle.Battling
             _components.movement.Stop();
             _components.animator.Play("Idle");
             _fx1.PlayHitParticles();
+            if (_components.spellSounds.Count > 0)
+                _components.spellSounds[0].Play();
             await Task.Yield();
             if (token.IsCancellationRequested) return;
             

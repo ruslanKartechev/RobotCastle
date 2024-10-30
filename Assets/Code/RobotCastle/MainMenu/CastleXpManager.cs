@@ -60,7 +60,7 @@ namespace RobotCastle.MainMenu
         {
             var prev = _playerData.playerXp;
             _playerData.playerXp += added;
-            CLog.LogGreen($"[CastleXpManager] Added {added} to player xp, total: {_playerData.playerXp}");
+            CLog.Log($"[CastleXpManager] Added {added} to player exp, total: {_playerData.playerXp}");
             if (_playerData.playerXp >= GetMaxXp())
             {
                 _playerData.playerLevel++;

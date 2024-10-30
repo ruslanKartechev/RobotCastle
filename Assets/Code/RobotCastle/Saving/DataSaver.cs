@@ -36,10 +36,10 @@ namespace RobotCastle.Saving
             }
             foreach (var (type, obj) in _loadedData)
             {
-                var typeName = type.ToString();
+                var typeName = type.ToString() + ".json";
                 var path = Path.Join(_persistentPath, typeName);
-                var str = JsonUtility.ToJson(obj);
-                File.WriteAllText(str, path);
+                var content = JsonUtility.ToJson(obj);
+                File.WriteAllText(path, content);
             }
         }
 

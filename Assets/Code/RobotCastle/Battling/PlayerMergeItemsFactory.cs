@@ -14,6 +14,7 @@ namespace RobotCastle.Battling
         public ReactiveInt NextCost => _costReact;
         
         [SerializeField] private int _cost = 3;
+        [SerializeField] private SoundID _sound;
         private IPlayerSummonItemPicker _itemsPicker;
         private List<IPlayerItemSpawnModifier> _modifiers = new(10);
         private ReactiveInt _costReact;
@@ -56,6 +57,8 @@ namespace RobotCastle.Battling
 
                 foreach (var mod in _modifiers)
                     mod.OnNewItemSpawned(newItem);
+                
+                SoundManager.Inst.Play(_sound);
             }
         }
 

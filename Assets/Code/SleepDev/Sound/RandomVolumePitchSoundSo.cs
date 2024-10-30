@@ -10,7 +10,7 @@ namespace SleepDev
 
         public override PlayingSound Play()
         {
-            return SoundContainer.SoundManager.Play(this, false, _volumeLimits.Random(), _pitchLimits.Random());
+            return SoundContainer.SoundManager.Play(this, false, volume * _volumeLimits.Random(), _pitchLimits.Random());
         }
     }
 }

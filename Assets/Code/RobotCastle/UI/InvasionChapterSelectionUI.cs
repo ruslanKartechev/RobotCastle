@@ -41,6 +41,7 @@ namespace RobotCastle.UI
         [SerializeField] private AdditionalRewardUI _additionalReward;
         [SerializeField] private DifficultyTierDescriptionUI _difficultyTierUI;
         [SerializeField] private ChapterRewardsUI _rewardsUI;
+        [SerializeField] private SoundID _selectedChapterSound;
         [Header("EDITOR REVIEW")]
         [SerializeField] private ChapterSelectionData _data;
         private InvasionMode.ProgressionDataBase _chaptersDb;
@@ -110,7 +111,11 @@ namespace RobotCastle.UI
             _isLoading = true;
             CLog.LogGreen($"Playing chapter {_data.chapterIndex}, tier {_data.tierIndex}");
             DataHelpers.GetPlayerData().chapterSelectionData = _data;
-            SceneManager.LoadSceneAsync(GlobalConfig.SceneBattle);
+            SoundManager.Inst.Play(_selectedChapterSound, false);
+            ScreenDarkening.Animate(() =>
+            {
+                ServiceLocator.Get<SceneLoader>().LoadBattleScene();
+            }, null);
         }
 
         public void Return()

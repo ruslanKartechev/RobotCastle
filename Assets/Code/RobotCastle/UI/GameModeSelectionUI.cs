@@ -15,8 +15,6 @@ namespace RobotCastle.UI
         [Space(5)]
         [SerializeField] private InvasionChapterSelectionUI _chapters1;
         [SerializeField] private InvasionChapterSelectionUI _chapters2;
-        [SerializeField] private BlackoutFadeScreen _fadeScreen;
-        
 
         public void Show()
         {
@@ -29,12 +27,15 @@ namespace RobotCastle.UI
             _btnChapters1.AddMainCallback(ShowChapter1);
             _btnChapters2.AddMainCallback(ShowChapter2);
             _closeBtn.AddMainCallback(Return);
-            _fadeScreen.FadeInWithId(UIConstants.UIGameModeSelection);
         }
 
         private void Return()
         {
-            _fadeScreen.FadeOut();
+            ScreenDarkening.Animate(() =>
+            {
+                gameObject.SetActive(false);
+                ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UIGameModeSelection);
+            });
         }
 
         private void ShowChapter1()

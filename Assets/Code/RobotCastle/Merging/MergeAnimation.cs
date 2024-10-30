@@ -1,21 +1,12 @@
 ﻿using System;
 using RobotCastle.Core;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Merging
 {
     public class MergeAnimation : MonoBehaviour
     {
-        private void Start()
-        {
-            ServiceLocator.Bind<MergeAnimation>(this);
-        }
-
-        private void OnDestroy()
-        {
-            ServiceLocator.Unbind<MergeAnimation>();
-        }
-
         public void Play(IItemView standing, IItemView moving, IGridView gridView, Action endCallback)
         {
             _moving = moving;
@@ -39,6 +30,7 @@ namespace RobotCastle.Merging
             MergeFunctions.ClearCellAndHideItem(_gridView, _moving);
             _standing.UpdateViewToData();
             _standing.OnMerged();
+            SoundManager.Inst.Play(_sound);
         }
 
         public void AE_End()
@@ -57,8 +49,17 @@ namespace RobotCastle.Merging
         [SerializeField] private ParticleSystem _particle;
         [SerializeField] private Transform _pointStanding;
         [SerializeField] private Transform _pointMoving;
-        
-        
+        [SerializeField] private SoundID _sound;
+
+        private void Start()
+        {
+            ServiceLocator.Bind<MergeAnimation>(this);
+        }
+
+        private void OnDestroy()
+        {
+            ServiceLocator.Unbind<MergeAnimation>();
+        }
 
 
     }

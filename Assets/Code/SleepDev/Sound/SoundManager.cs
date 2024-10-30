@@ -1,38 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 
 namespace SleepDev
 {
     public class SoundManager : MonoBehaviour, ISoundManager
     {
-
-        [Header("MIXERS")]
-        [SerializeField] private Transform _parent;
-        [SerializeField] private int _startSourcesCount = 50;
-        private Queue<AudioSource> _sources;
-        private AudioSource _musicSource;
-        private List<AudioSource> _playingSources;
-
-        private float _volume = 1f;
-        private bool _isOn = true;
-        private bool _didInit;
-
-        protected float StatusMod => _isOn ? 1f : 0f;
-        public float Volume => _volume;
-        public bool IsOn => _isOn;
+        public static SoundManager Inst => _inst;
         
-
-        public void Init(bool isOn, float volume)
+        public float Volume => _volume;
+        public bool IsOn => _isOnSound;
+        
+        public void Init(bool isOn, float volume, bool musicOn, float musicVolume)
         {
             CLog.LogWhite($"[SoundManager] Init {isOn}, {volume}");
             if (_didInit)
                 return;
+            _inst = this;
             _didInit = true;
-            _isOn = isOn;
+            _isOnSound = isOn;
+            _isOnMusic = musicOn;
             _volume = volume;
+            _volumeMusic = musicVolume;
             SoundContainer.SoundManager = this;
+            transform.parent = null;
             DontDestroyOnLoad(gameObject);
             _sources = new Queue<AudioSource>(_startSourcesCount);
             for (byte i = 0; i < _startSourcesCount; i++)
@@ -46,31 +37,36 @@ namespace SleepDev
             BeginCheck();
         }
         
-        public void SetStatus(bool onOff)
+        public void SetStatusSound(bool onOff)
         {
-            _isOn = onOff;
-            CLog.LogWhite($"[SoundManager] Status Set to {_isOn}");
+            _isOnSound = onOff;
             foreach (var source in _playingSources)
-                source.volume *= StatusMod;
-            _musicSource.volume *= StatusMod;
+                source.volume *= SoundStatusMod;
+        }
+        
+        public void SetStatusMusic(bool onOff)
+        {
+            _isOnMusic = onOff;
+            _musicSource.volume *= MusicStatusMod;
         }
 
         public PlayingSound PlayMusic(SoundID sound, bool loop)
         {
             CLog.LogWhite($"ID {sound.clip.name}");
             _musicSource.clip = sound.clip;
-            _musicSource.volume = sound.volume * Volume * StatusMod;
+            _musicSource.volume = sound.volume * _volumeMusic * MusicStatusMod;
             _musicSource.loop = loop;
             _musicSource.Play();
             return new PlayingSound(_musicSource);
         }
 
-        public PlayingSound Play(SoundID sound, bool loop)
+        public PlayingSound Play(SoundID sound, bool loop = false)
         {
+            CLog.Log($"========= Play: {sound.name}");
             var source = GetSource();
             var ps = new PlayingSound(source);
             source.clip = sound.clip;
-            source.volume = Volume * sound.volume * StatusMod;
+            source.volume = Volume * sound.volume * SoundStatusMod;
             source.loop = loop;
             source.Play();
             _playingSources.Add(source);
@@ -82,7 +78,7 @@ namespace SleepDev
             var source = GetSource();
             var ps = new PlayingSound(source);
             source.clip = sound.clip;
-            source.volume = Volume * sound.volume * volume * StatusMod;
+            source.volume = Volume * sound.volume * volume * SoundStatusMod;
             source.loop = loop;
             source.Play();
             _playingSources.Add(source);
@@ -94,7 +90,7 @@ namespace SleepDev
             var source = GetSource();
             var ps = new PlayingSound(source);
             source.clip = sound.clip;
-            source.volume = Volume * sound.volume * volume * StatusMod;
+            source.volume = Volume * sound.volume * volume * SoundStatusMod;
             source.pitch = pitch;
             source.loop = loop;
             source.Play();
@@ -102,6 +98,24 @@ namespace SleepDev
             return ps;
         }
         
+        private static SoundManager _inst;
+        
+        [SerializeField] private Transform _parent;
+        [SerializeField] private int _startSourcesCount = 50;
+        private Queue<AudioSource> _sources;
+        private AudioSource _musicSource;
+        private List<AudioSource> _playingSources;
+
+        private float _volume = 1f;
+        private float _volumeMusic = 1f;
+        private bool _isOnSound = true;
+        private bool _isOnMusic = true;
+        
+        private bool _didInit;
+
+        protected float SoundStatusMod => _isOnSound ? 1f : 0f;
+        protected float MusicStatusMod => _isOnMusic ? 1f : 0f;
+
         private AudioSource GetSource()
         {
             if (_sources.Count == 0)

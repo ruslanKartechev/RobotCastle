@@ -21,8 +21,7 @@ namespace RobotCastle.Summoning
         [SerializeField] private LeftRightScroller _scroller;
         [SerializeField] private GameObject _freeLeftBadge;
         [SerializeField] private GameObject _freeRightBadge;
-        [SerializeField] private Button _returnBtn;
-        [SerializeField] private BlackoutFadeScreen _fadeScreen;
+        [SerializeField] private MyButton _returnBtn;
         private SummoningManager _manager = new();
         private CancellationTokenSource _tokenSource;
         private bool _canTakeInput;
@@ -45,6 +44,7 @@ namespace RobotCastle.Summoning
         {
             gameObject.SetActive(true);
             InitData();
+            _returnBtn.AddMainCallback(Return);
             _scroller.inputAllowed = true;
             _scroller.assignedObjects.Clear();
             for (var i = 0; i < _options.Count; i++)
@@ -57,18 +57,8 @@ namespace RobotCastle.Summoning
             _scroller.OnNewItemChosen += OnNewItemPicked;
             AdCallbacks(currentUI);
             SetFreeBadgesOnScroll();
-            _fadeScreen.FadeInWithId(UIConstants.UISummon);
             _canTakeInput = true;
         }
-
-        // public void Return()
-        // {
-        //     if (!_canTakeInput) return;
-        //     _tokenSource?.Cancel();
-        //     _canTakeInput = false;
-        //     _scroller.OnNewItemChosen -= OnNewItemPicked;
-        //     _fadeScreen.FadeOut();
-        // }
 
         private void SetFreeBadgesOnScroll()
         {
@@ -234,24 +224,25 @@ namespace RobotCastle.Summoning
         {
             _tokenSource = new CancellationTokenSource();
             _canTakeInput = true;
-            _returnBtn.onClick.AddListener(Return);
         }
         
         private void OnDisable()
         {
             _tokenSource?.Cancel();
-            _returnBtn.onClick.RemoveListener(Return);
         }
         
         private void Return()
         {
             if (!_canTakeInput) return;
-            _tokenSource?.Cancel();
-            _canTakeInput = false;
-            _scroller.OnNewItemChosen -= OnNewItemPicked;
-            _fadeScreen.FadeOut();
+            ScreenDarkening.Animate(() =>
+            {
+                _tokenSource?.Cancel();
+                _canTakeInput = false;
+                _scroller.OnNewItemChosen -= OnNewItemPicked;
+                gameObject.SetActive(false);
+                ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UISummon);
+            });
         }
-
 
         private void SetData(SummonOptionUI optionUI)
         {

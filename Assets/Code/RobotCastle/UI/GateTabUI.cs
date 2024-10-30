@@ -48,10 +48,14 @@ namespace RobotCastle.UI
         private void AltarsBtn()
         {
             ServiceLocator.Get<TabsSwitcher>().SetNoneTab();
-            ServiceLocator.Get<IUIManager>().Show<AltarsOverviewUI>(UIConstants.UIAltars, () =>
+            ScreenDarkening.Animate(() =>
             {
-                ServiceLocator.Get<TabsSwitcher>().SetGateTab();
-            }).Show();
+                ServiceLocator.Get<IUIManager>().Show<AltarsOverviewUI>(UIConstants.UIAltars, () =>
+                {
+                    ServiceLocator.Get<TabsSwitcher>().SetGateTab();
+                }).Show();
+            }, null);
+        
         }
 
         private void OpenSettings()
@@ -66,19 +70,26 @@ namespace RobotCastle.UI
         private void OpenSummonMenu()
         {
             ServiceLocator.Get<TabsSwitcher>().SetNoneTab();
-            ServiceLocator.Get<IUIManager>().Show<SummoningUI>(UIConstants.UISummon, () => 
-            { 
-                ServiceLocator.Get<TabsSwitcher>().SetGateTab();
-            }).Show();
+            ScreenDarkening.Animate(() =>
+            {
+                ServiceLocator.Get<IUIManager>().Show<SummoningUI>(UIConstants.UISummon, () => 
+                { 
+                    ServiceLocator.Get<TabsSwitcher>().SetGateTab();
+                }).Show();
+            }, null);
+       
         }
 
         private void OpenGameModeMenu()
         {
             ServiceLocator.Get<TabsSwitcher>().SetNoneTab();
-            ServiceLocator.Get<IUIManager>().Show<GameModeSelectionUI>(UIConstants.UIGameModeSelection, () => 
-            { 
-                ServiceLocator.Get<TabsSwitcher>().SetGateTab();
-            }).Show();
+            ScreenDarkening.Animate(() =>
+            {
+                ServiceLocator.Get<IUIManager>().Show<GameModeSelectionUI>(UIConstants.UIGameModeSelection, () => 
+                { 
+                    ServiceLocator.Get<TabsSwitcher>().SetGateTab();
+                }).Show();
+            }, null);
         }
 
         public void Show()

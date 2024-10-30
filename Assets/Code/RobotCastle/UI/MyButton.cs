@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using RobotCastle.Core;
+using SleepDev;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +11,14 @@ namespace RobotCastle.UI
     {
         [SerializeField] protected Button _btn;
         [SerializeField] protected bool _doRespond;
+        [SerializeField] private SoundID _sound;
         protected readonly List<Action> _callbacks = new List<Action>(5);
+
+        private void Start()
+        {
+            if (_sound == null)
+                _sound = Resources.Load<SoundID>("sounds/s_click");
+        }
 
         private  void OnEnable()
         {
@@ -34,6 +43,11 @@ namespace RobotCastle.UI
             _callbacks.Add(callback);
         }
 
+        public void RemoveMainCallback(Action callback)
+        {
+            _callbacks.Remove(callback);
+        }
+        
 
         /// <summary>
         /// Will delete all existing non-fx callbacks and set this one
@@ -80,6 +94,7 @@ namespace RobotCastle.UI
         private void FXCallback()
         {
             if (!_doRespond) return;
+            SoundManager.Inst.Play(_sound, false);
             // play sound, etc
         }
 

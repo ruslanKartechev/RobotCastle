@@ -218,7 +218,7 @@ namespace RobotCastle.Battling
                 if(result)
                     return (true, p);
             }
-            CLog.LogRed($"Cannot build path to any position!");
+            // CLog.Log($"Cannot build path to any position!");
             return (false, default);
         }
 

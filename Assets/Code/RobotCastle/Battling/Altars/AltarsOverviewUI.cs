@@ -21,7 +21,6 @@ namespace RobotCastle.Battling.Altars
         [SerializeField] private MyButton _btnPurchasePoint;
         [SerializeField] private MyButton _btnRetrievePoints;
         [SerializeField] private MyButton _BtnClose;
-        [SerializeField] private BlackoutFadeScreen _fadeScreen;
         
         private AltarsDatabase _db;
         private AltarsSave _save;
@@ -52,7 +51,6 @@ namespace RobotCastle.Battling.Altars
             _btnPurchasePoint.AddMainCallback(TryPurchasePoint);
             _BtnClose.AddMainCallback(Return);
             UpdateButtonsState();
-            _fadeScreen.FadeInWithId(UIConstants.UIAltars);
         }
 
         private void OnFreePointsUpdated(int prevVal, int newVal)
@@ -74,7 +72,14 @@ namespace RobotCastle.Battling.Altars
             _pointsAvailable.transform.DOPunchScale(Vector3.one * -.1f, .22f);
         }
 
-        private void Return() => _fadeScreen.FadeOut();
+        private void Return()
+        {
+            ScreenDarkening.Animate(() =>
+            {
+                gameObject.SetActive(false);
+                ServiceLocator.Get<IUIManager>().OnClosed(UIConstants.UIAltars);
+            });
+        }
 
         private void RetrievePoints()
         {

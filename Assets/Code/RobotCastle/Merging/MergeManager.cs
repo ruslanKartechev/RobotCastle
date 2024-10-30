@@ -18,6 +18,7 @@ namespace RobotCastle.Merging
         [SerializeField] private GameObject _gridViewGo;
         [SerializeField] private MergeGridHighlighter _highlighter;
         [SerializeField] private SimplePoolsManager _mergeCellHighlight;
+        [SerializeField] private SoundID _clickSound;
         
         private IGridSectionsController _sectionsController;
         private IGridView _gridView;
@@ -145,6 +146,7 @@ namespace RobotCastle.Merging
         {
             var allItems = _sectionsController.GetAllItems();
             _highlighter.HighlightForSpecificItem(allItems, srcItem);
+            SoundManager.Inst.Play(_clickSound);
         }
         
         private void OnItemPut(MergePutResult result)
@@ -165,8 +167,6 @@ namespace RobotCastle.Merging
             ServiceLocator.Bind<IHeroWeaponsContainer>(_itemsContainer);
             ServiceLocator.Bind<IMergeMaxLevelCheck>(_maxLevelCheck);
         }
-
-
 
         private void Start()
         {

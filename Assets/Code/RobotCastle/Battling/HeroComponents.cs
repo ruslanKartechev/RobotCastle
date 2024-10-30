@@ -48,7 +48,9 @@ namespace RobotCastle.Battling
         public Transform pointVamp => _pointVamp;
 
         public Transform pointMightyBlock => _pointMightyBlock;
-        
+
+        public List<SoundSo> attackSounds;
+        public List<SoundSo> spellSounds;
         [SerializeField] private float _stunnedFxHeight = 1.5f;
         [SerializeField] private HeroWeaponsContainer _heroItemsContainer;
         [SerializeField] private BattleUnitUI _heroUI;

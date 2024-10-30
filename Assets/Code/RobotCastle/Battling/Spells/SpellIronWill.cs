@@ -34,14 +34,15 @@ namespace RobotCastle.Battling
             _isActive = false;
             if (_isCasting)
             {
-                _components.animationEventReceiver.OnAttackEvent -= OnAttack;
+                _components.animationEventReceiver.OnAttackEvent -= OnAnimEvent;
                 _isCasting = false;
             }
         }
 
         public void OnFullMana(GameObject heroGo)
         {
-            CLog.LogGreen($"[{_components.gameObject.name}] [{nameof(SpellIronWill)}] Adding shield bonus");
+            // CLog.Log($"[{_components.gameObject.name}] [{nameof(SpellIronWill)}] Adding shield bonus");
+            _isActive = true;
             _components.processes.Add(this);
             _components.stats.ManaCurrent.Val = 0;
             _manaAdder.CanAdd = false;
@@ -63,14 +64,15 @@ namespace RobotCastle.Battling
             const float afterCastDelay = .4f;
             var hero = _components.gameObject.GetComponent<IHeroController>();
             hero.PauseCurrentBehaviour();
-            
+            await Task.Yield();
             _isCasting = true;
             _components.animator.Play("Cast");
-            _components.animationEventReceiver.OnAttackEvent += OnAttack;
-            
+            _components.animationEventReceiver.OnAttackEvent += OnAnimEvent;
             while (_isCasting && !token.IsCancellationRequested)
                 await Task.Yield();
             if (token.IsCancellationRequested) return;
+            _components.animationEventReceiver.OnAttackEvent -= OnAnimEvent;
+
             _isCasting = false;
             AddShield();
             
@@ -80,7 +82,6 @@ namespace RobotCastle.Battling
             hero.ResumeCurrentBehaviour();
             _manaAdder.CanAdd = true;
             _isActive = false;
-            
         }
         
         private SpellConfigIronWill _config;
@@ -90,10 +91,13 @@ namespace RobotCastle.Battling
         private ConditionedManaAdder _manaAdder;
         private bool _isCasting;
 
-        private void OnAttack()
+        private void OnAnimEvent()
         {
+            CLog.LogGreen("On Anim event");
             if (!_isActive) return;
             _isCasting = false;
+            if (_components.spellSounds.Count > 0)
+                _components.spellSounds[0].Play();
         }
 
         private SpellParticlesOnHero GetFxView()

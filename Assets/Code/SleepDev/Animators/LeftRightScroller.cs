@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using RobotCastle.UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SleepDev
 {
@@ -54,8 +54,8 @@ namespace SleepDev
         [SerializeField] private List<ScrollElement> _elements;
         [SerializeField] private RectTransform _activeAreaParent;
         [SerializeField] private RectTransform _backgroundParent;
-        [SerializeField] private Button _leftBtn;
-        [SerializeField] private Button _rightBtn;
+        [SerializeField] private MyButton _leftBtn;
+        [SerializeField] private MyButton _rightBtn;
         [SerializeField] private RectTransform _centerPoint;
         [SerializeField] private RectTransform _rightPoint;
         [SerializeField] private RectTransform _leftPoint;
@@ -67,8 +67,8 @@ namespace SleepDev
         private void OnEnable()
         {
             _isAnimating = false;
-            _leftBtn.onClick.AddListener(Left);
-            _rightBtn.onClick.AddListener(Right);
+            _leftBtn.AddMainCallback(Left);
+            _rightBtn.AddMainCallback(Right);
             _index = CorrectCircularIndex(_index);
             SetPositionsForCurrentIndex();
         }
@@ -76,8 +76,8 @@ namespace SleepDev
         private void OnDisable()
         {
             _isAnimating = false;
-            _leftBtn.onClick.RemoveListener(Left);
-            _rightBtn.onClick.RemoveListener(Right);
+            _leftBtn.RemoveMainCallback(Left);
+            _rightBtn.RemoveMainCallback(Right);
         }
 
         [ContextMenu("SetPositionsForCurrentIndex")]

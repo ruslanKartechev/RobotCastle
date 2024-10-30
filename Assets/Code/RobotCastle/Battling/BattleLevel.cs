@@ -50,6 +50,8 @@ namespace RobotCastle.Battling
         [Space(10)]
         [SerializeField] private ObstaclesContainer _obstacles;
         [SerializeField] private ObstaclesManager _obstaclesManager;
+        [Space(10)] 
+        [SerializeField] private SoundID _battleStartSound;
         
         private IPlayerMergeItemsFactory _playerMergeFactory;
         private ITroopSizeManager _troopSizeManager;
@@ -154,6 +156,7 @@ namespace RobotCastle.Battling
 
         private void OnDisable()
         {
+            _token?.Cancel();
             BindRefs(false);
         }
 
@@ -305,11 +308,17 @@ namespace RobotCastle.Battling
             _mainUI.Started();
             foreach (var hero in _battleManager.battle.playersAlive)
                 hero.Components.transform.rotation = Quaternion.Euler(Vector3.zero);
+            
+            SoundManager.Inst.Play(_battleStartSound);
             await _battleCamera.MoveToBattlePoint();
+            
             if (token.IsCancellationRequested) return;
+            await Task.Yield();
+            if (token.IsCancellationRequested) return;
+
+            await Task.Delay(110, token);
             _battleManager.BeginBattle();
         }
-
 
         private async Task BattleRoundCompletion(Battle battle, CancellationToken token)
         {
@@ -358,6 +367,7 @@ namespace RobotCastle.Battling
                 battleUI.SetMainAreaUpPos();
             
             await _battleCamera.MoveToMergePoint();
+            
             if (token.IsCancellationRequested) return;
             
             InitCurrentRound();

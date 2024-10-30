@@ -9,6 +9,7 @@ namespace RobotCastle.Core
     public class SavePlayerData
     {
         public bool soundOn;
+        public bool musicOn;
         public bool vibrOn;
         public int levelMoney;
         public int globalMoney;
@@ -30,6 +31,7 @@ namespace RobotCastle.Core
         public SavePlayerData(SavePlayerData other)
         {
             soundOn = other.soundOn;
+            musicOn = other.musicOn;
             vibrOn = other.vibrOn;
             levelMoney = other.levelMoney;
             globalMoney = other.globalMoney;

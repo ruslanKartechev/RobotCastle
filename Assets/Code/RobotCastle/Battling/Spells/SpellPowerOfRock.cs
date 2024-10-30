@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using RobotCastle.Utils;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -150,6 +151,8 @@ namespace RobotCastle.Battling
         {
             _components.animationEventReceiver.OnAttackEvent -= OnCast;
             _didCast = true;
+            if (_components.spellSounds.Count > 0)
+                _components.spellSounds[0].Play();
         }
         
         private void OnAttack()

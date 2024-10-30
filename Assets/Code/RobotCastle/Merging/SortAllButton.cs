@@ -7,6 +7,7 @@ namespace RobotCastle.Merging
     public class SortAllButton : MonoBehaviour
     {
         [SerializeField] private ScaleWorldButton _worldButton;
+        [SerializeField] private SoundID _sound;
 
         private void OnEnable()
         {
@@ -16,6 +17,7 @@ namespace RobotCastle.Merging
         private void Call()
         {
             ServiceLocator.Get<MergeManager>().SortAll();
+            SoundManager.Inst.Play(_sound);
         }
     }
 }

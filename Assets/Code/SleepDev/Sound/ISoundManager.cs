@@ -2,7 +2,7 @@
 {
     public interface ISoundManager
     {
-        void Init(bool isOn, float volume);
+        void Init(bool isOn, float volume, bool musicOn, float musicVolume);
         
         PlayingSound Play(SoundID sound, bool loop);
         PlayingSound Play(SoundID sound, bool loop, float volume);
@@ -10,8 +10,9 @@
 
         float Volume { get; }
         bool IsOn { get; }
-        void SetStatus(bool onOff);
-
+        void SetStatusSound(bool onOff);
+        void SetStatusMusic(bool onOff);
+        
         PlayingSound PlayMusic(SoundID sound, bool loop);
     }
 }
