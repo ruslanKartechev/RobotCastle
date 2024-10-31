@@ -77,8 +77,8 @@ namespace RobotCastle.UI
                     }
                     var stats = db.info[id].stats;
                     var mergeLvl = enPreset.enemy.level + tierConfig.enemyTier;
-                    if (mergeLvl >= 7)
-                        mergeLvl = 7;
+                    if (mergeLvl >= 6)
+                        mergeLvl = 6;
                     var atk = HeroStatsManager.GetStatByLevel(stats.attack, lvl, mergeLvl);
                     var atks = HeroStatsManager.GetStatByMergeLevel(stats.attackSpeed, mergeLvl);
                     var health = HeroStatsManager.GetStatByLevel(stats.health, lvl, mergeLvl) / 10;

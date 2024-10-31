@@ -3,7 +3,7 @@ using RobotCastle.Core;
 using RobotCastle.Data;
 using UnityEngine;
 
-namespace RobotCastle.Relicts
+namespace RobotCastle.Relics
 {
     public class EquippedRelicsPanel : MonoBehaviour
     {

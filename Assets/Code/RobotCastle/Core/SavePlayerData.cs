@@ -1,7 +1,7 @@
 ﻿using RobotCastle.Battling.Altars;
 using RobotCastle.Data;
 using RobotCastle.InvasionMode;
-using RobotCastle.Relicts;
+using RobotCastle.Relics;
 
 namespace RobotCastle.Core
 {

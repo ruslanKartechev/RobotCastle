@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.Relics;
 using RobotCastle.Shop;
 using RobotCastle.UI;
 using UnityEngine;
@@ -100,6 +101,9 @@ namespace RobotCastle.MainMenu
             ServiceLocator.Get<PlayersPartyGateDisplay>().SetFromSave();
             ServiceLocator.Get<MainMenuCamera>().SetPoint(_camPointGate);
             ServiceLocator.Get<TabsHighlighterUI>().HighlightTab(MenuTabType.Gate);
+            var screen = ui.GetIfShown<RelicsUIPanel>(UIConstants.UIRelics);
+            if (screen)
+                screen.On();
         }
         
         private void ShowShop()
@@ -129,6 +133,9 @@ namespace RobotCastle.MainMenu
 
         private void CloseGate()
         {
+            var screen = ServiceLocator.Get<IUIManager>().GetIfShown<RelicsUIPanel>(UIConstants.UIRelics);
+            if (screen)
+                screen.Off();
             _worldGate.SetActive(false);
         }
         

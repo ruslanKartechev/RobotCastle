@@ -169,7 +169,7 @@ namespace RobotCastle.Battling
 
         private async Task<IHeroController> WaitForTarget(CancellationToken token)
         {
-            var target = BattleManager.GetBestTargetForAttack(_hero);
+            var target = BattleManager.GetBestTargetForAttack(_hero, null);
             while (target is not {Count: > 0} && !token.IsCancellationRequested)
                 await Task.Delay(150, token);
             if (token.IsCancellationRequested) return null;

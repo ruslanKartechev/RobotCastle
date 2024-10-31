@@ -25,6 +25,7 @@ namespace RobotCastle.DevCheat
             if (_inst == null)
             {
                 _inst = this;
+                transform.parent = null;
                 DontDestroyOnLoad(gameObject);
             }
             else
@@ -40,19 +41,14 @@ namespace RobotCastle.DevCheat
             if (_clicks <= 0)
             {
                 _clicks = 1;
-                _clickTime = Time.deltaTime;
+                _clickTime = Time.time;
             }
             else if (_clicks >= 1)
             {
-                if (Time.deltaTime - _clickTime <= _doubleClickTime)
+                if (Time.time - _clickTime <= _doubleClickTime)
                 {
                     _clicks = 0;
-                    gameObject.SetActive(true);
-                    CloseCurrent();
-                    _goOpen.SetActive(true);
-                    _goClosed.SetActive(false);
-                    OpenMainMenu();
-                    Time.timeScale = 0f;
+                    ShowScreen();
                 }
                 else
                     _clicks = 0;
@@ -65,6 +61,16 @@ namespace RobotCastle.DevCheat
             _goOpen.SetActive(false);
             _goClosed.SetActive(true);
             Time.timeScale = 1f;
+        }
+
+        private void ShowScreen()
+        {
+            gameObject.SetActive(true);
+            CloseCurrent();
+            _goOpen.SetActive(true);
+            _goClosed.SetActive(false);
+            OpenMainMenu();
+            Time.timeScale = 0f;
         }
 
         private void CloseCurrent()

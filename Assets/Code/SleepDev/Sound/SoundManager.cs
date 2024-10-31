@@ -41,13 +41,15 @@ namespace SleepDev
         {
             _isOnSound = onOff;
             foreach (var source in _playingSources)
-                source.volume *= SoundStatusMod;
+            {
+                source.mute = !onOff;
+            }
         }
         
         public void SetStatusMusic(bool onOff)
         {
             _isOnMusic = onOff;
-            _musicSource.volume *= MusicStatusMod;
+            _musicSource.mute = !onOff;
         }
 
         public PlayingSound PlayMusic(SoundID sound, bool loop)
@@ -67,6 +69,7 @@ namespace SleepDev
             source.volume = Volume * sound.volume * SoundStatusMod;
             source.loop = loop;
             source.Play();
+            source.mute = !_isOnSound;
             _playingSources.Add(source);
             return ps;
         }

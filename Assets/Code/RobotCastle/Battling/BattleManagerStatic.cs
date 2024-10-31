@@ -97,7 +97,7 @@ namespace RobotCastle.Battling
             }
         }
 
-        public static List<IHeroController> GetBestTargetForAttack(IHeroController hero)
+        public static List<IHeroController> GetBestTargetForAttack(IHeroController hero, IHeroController currentEnemy)
         {
             var map = hero.Components.agent.Map;
             var myWorldPos = hero.Components.transform.position;
@@ -114,6 +114,8 @@ namespace RobotCastle.Battling
                 var enemyPos = otherHero.Components.state.currentCell;
                 var d2 = (enemyPos - myPos).sqrMagnitude;
                 var points = 100 - d2 * 2f;
+                if (otherHero == currentEnemy)
+                    points += 10;
                 if (otherHero.Components.state.isStunned)
                     points++;
                 if (!otherHero.Components.state.isMoving)

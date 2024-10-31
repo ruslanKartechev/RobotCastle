@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace RobotCastle.Relicts
+namespace RobotCastle.Relics
 {
     public class EquippedRelicUI : RelicItemUI
     { 

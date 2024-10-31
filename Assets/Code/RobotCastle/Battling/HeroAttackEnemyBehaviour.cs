@@ -76,13 +76,13 @@ namespace RobotCastle.Battling
             myState.attackData.IsMovingForDuel = false;
             myState.SetTargetCellToSelf();
             _rangeCoverCheck.Update(_hero.Components.transform.position, true);
-            var enemies = BattleManager.GetBestTargetForAttack(_hero);
+            var enemies = BattleManager.GetBestTargetForAttack(_hero, enemy);
             while ((enemies == null || enemies.Count == 0) && !token.IsCancellationRequested)
             {
                 const int waitTimMs = 500;
                 CLog.Log($"[{_hero.Components.gameObject.name}] Closest enemy is null. Waiting {waitTimMs} ms.");
                 await Task.Delay(waitTimMs, token);
-                enemies = BattleManager.GetBestTargetForAttack(_hero);
+                enemies = BattleManager.GetBestTargetForAttack(_hero, enemy);
             }
             if (token.IsCancellationRequested)
                 return;
@@ -94,10 +94,10 @@ namespace RobotCastle.Battling
             await Task.Yield();
             if (token.IsCancellationRequested)
                 return;
-            var targets= BattleManager.GetBestTargetForAttack(_hero);
+            var targets= BattleManager.GetBestTargetForAttack(_hero, enemy);
             while(targets.Count == 0)
             {
-                targets = BattleManager.GetBestTargetForAttack(_hero);
+                targets = BattleManager.GetBestTargetForAttack(_hero, enemy);
                 await Task.Delay(250, token);
             }
             var prevStep = _logicStep;

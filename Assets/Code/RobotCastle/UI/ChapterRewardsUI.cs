@@ -2,7 +2,7 @@
 using DG.Tweening;
 using RobotCastle.Core;
 using RobotCastle.Data;
-using RobotCastle.Relicts;
+using RobotCastle.Relics;
 using SleepDev;
 using UnityEngine;
 

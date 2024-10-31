@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace RobotCastle.Relicts
+namespace RobotCastle.Relics
 {
     [CreateAssetMenu(menuName = "SO/Relicts DataBase Container", fileName = "Relicts DataBase Container", order = 300)]
     public class RelicsDataBaseContainer : ScriptableObject

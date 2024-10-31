@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RobotCastle.Relicts
+namespace RobotCastle.Relics
 {
     public class RelicStatsUI : MonoBehaviour
     {

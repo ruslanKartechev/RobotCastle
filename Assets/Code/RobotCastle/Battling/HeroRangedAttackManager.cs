@@ -48,15 +48,15 @@ namespace RobotCastle.Battling
         {
             if(Hero.Components.shootParticles != null)
                 Hero.Components.shootParticles.Play();
-            
             var projectile = _projectileFactory.GetProjectile();
             projectile.LaunchProjectile(Hero.Components.projectileSpawnPoint, _targetTransform, Hero.Components.stats.ProjectileSpeed, HitCallback, _target);
-            OnAttackStep?.Invoke();
+
             if (Hero.Components.attackSounds.Count > 0)
             {
                 var s = Hero.Components.attackSounds.Random();
                 s.Play();
             }
+            OnAttackStep?.Invoke();
         }
 
         private void Awake()

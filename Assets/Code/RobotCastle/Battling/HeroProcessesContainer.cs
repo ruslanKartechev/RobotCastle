@@ -18,8 +18,10 @@ namespace RobotCastle.Battling
         
         public void StopAll()
         {
-            foreach (var s in activeProcesses)
-                s.Stop();
+            for (var i = activeProcesses.Count-1; i >= 0; i--)
+            {
+                activeProcesses[i].Stop();
+            }
             activeProcesses.Clear();
         }
     }

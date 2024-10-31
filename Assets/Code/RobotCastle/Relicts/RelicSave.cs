@@ -1,4 +1,4 @@
-﻿namespace RobotCastle.Relicts
+﻿namespace RobotCastle.Relics
 {
     [System.Serializable]
     public class RelicSave

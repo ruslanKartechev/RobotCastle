@@ -3,7 +3,7 @@ using RobotCastle.Battling.Altars;
 using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 using RobotCastle.Merging;
-using RobotCastle.Relicts;
+using RobotCastle.Relics;
 using RobotCastle.Shop;
 using RobotCastle.Summoning;
 using UnityEngine;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using SleepDev;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,6 @@ namespace RobotCastle.UI
         [SerializeField] private List<Button> _buttons;
         [SerializeField] private FadeInOutAnimator _fadeInOutAnimator;
         [SerializeField] private string _link;
-
 
 
         public void Show()
@@ -63,7 +63,10 @@ namespace RobotCastle.UI
                 _btnSound.SetActive(true);
             else
                 _btnSound.SetPassive(true);
-            data.soundOn = dd;    
+            data.soundOn = dd;
+            data.musicOn = dd;
+            SoundManager.Inst.SetStatusSound(dd);
+            SoundManager.Inst.SetStatusMusic(dd);
         }
 
         private void Close()

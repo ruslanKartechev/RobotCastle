@@ -1,7 +1,7 @@
 ﻿using RobotCastle.Core;
 using UnityEngine;
 
-namespace RobotCastle.Relicts
+namespace RobotCastle.Relics
 {
     public class RelicCellUI : MonoBehaviour, IPoolItem
     {

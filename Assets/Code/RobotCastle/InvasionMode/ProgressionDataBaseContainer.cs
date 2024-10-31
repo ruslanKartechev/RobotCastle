@@ -132,15 +132,26 @@ namespace RobotCastle.InvasionMode
         [ContextMenu("E_CalculateTotalPower")]
         public void E_CalculateTotalPower()
         {
-            foreach (var chapter in database.chapters)
+            for (var chi = 0; chi < database.chapters.Count; chi++)
             {
+                var chapter = database.chapters[chi];
                 for (var i = 0; i < chapter.tiers.Count; i++)
                 {
                     var tier = chapter.tiers[i];
                     var total = HeroesPowerCalculator.CalculateTotalPowerForEnemies(chapter.levelData, i);
                     tier.totalPower = total;
                 }
+
+                if (chi < database.corruptionChapters.Count)
+                {
+                    chapter = database.corruptionChapters[chi];
+                    for (var i = 0; i < chapter.tiers.Count; i++)
+                    {
+                        chapter.tiers[i].totalPower = database.chapters[chi].tiers[i].totalPower;
+                    }                    
+                }
             }
+
             UnityEditor.EditorUtility.SetDirty(this);
         }
         

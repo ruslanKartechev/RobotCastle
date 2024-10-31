@@ -11,7 +11,7 @@ using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 using RobotCastle.MainMenu;
 using RobotCastle.Merging;
-using RobotCastle.Relicts;
+using RobotCastle.Relics;
 using RobotCastle.Saving;
 using RobotCastle.UI;
 using SleepDev;

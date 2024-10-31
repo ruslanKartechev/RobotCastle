@@ -1,6 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Data;
-using RobotCastle.Relicts;
+using RobotCastle.Relics;
 using RobotCastle.Saving;
 using SleepDev;
 using SleepDev.Data;

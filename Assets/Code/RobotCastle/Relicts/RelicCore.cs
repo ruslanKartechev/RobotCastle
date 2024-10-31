@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RobotCastle.Relicts
+namespace RobotCastle.Relics
 {
     [System.Serializable]
     public struct RelicCore

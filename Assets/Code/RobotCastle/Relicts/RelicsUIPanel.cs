@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace RobotCastle.Relicts
+namespace RobotCastle.Relics
 {
     public class RelicsUIPanel : MonoBehaviour, IScreenUI
     {
@@ -350,5 +350,14 @@ namespace RobotCastle.Relicts
             return null;
         }
 
+        public void Off()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void On()
+        {
+            gameObject.SetActive(true);
+        }
     }
 }

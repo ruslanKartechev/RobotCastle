@@ -4,7 +4,7 @@ using RobotCastle.Data;
 using SleepDev;
 using UnityEngine;
 
-namespace RobotCastle.Relicts
+namespace RobotCastle.Relics
 {
     public class RelicsManager
     {

@@ -161,19 +161,20 @@ namespace RobotCastle.UI
         {
             var chapterInd = _data.chapterIndex;
             // CLog.Log($"Updating chapter. Index: {chapterInd}. Unlocked: {_progresSave.chapters[chapterInd].unlocked}");
-            var chapterConfig = _chaptersDb.chapters[chapterInd];
+            var chapter = GetChapter();
             _txtLevel.text = $"Chapter {_data.chapterIndex + 1}";
             var title = _isCorruption ? $"<color=#FF1111>Corruption</color> " : "";
-            title += chapterConfig.viewName;
+            title += chapter.viewName;
             _txtName.text = title;
 
             var viewDb = ServiceLocator.Get<ViewDataBase>();
             var iconPath = _isCorruption ? viewDb.LocationIconsCorruption[_data.chapterIndex] : viewDb.LocationIcons[_data.chapterIndex];
             var icon = Resources.Load<Sprite>(iconPath);
-            var unlocked = _progresSave.chapters[chapterInd].unlocked;
+            var chapterSave = GetChapterSave();
+            var unlocked = chapterSave.unlocked;
             if (!unlocked)
             {
-                _chapterIcon.SetUnlockRequirement(_data.chapterIndex - 1, _chaptersDb.chapters[chapterInd].prevTierRequired);
+                _chapterIcon.SetUnlockRequirement(_data.chapterIndex - 1, chapter.prevTierRequired);
             }
             switch (nextOrPrev)
             {
@@ -188,14 +189,14 @@ namespace RobotCastle.UI
                     break;
             }
             
-            var tiersCount = chapterConfig.tiers.Count;
+            var tiersCount = chapter.tiers.Count;
             for (var i = 0; i < tiersCount; i++)
-                _tierUis[i].SetPercentMultiplier(chapterConfig.tiers[i].multiplier);
+                _tierUis[i].SetPercentMultiplier(chapter.tiers[i].multiplier);
             if (unlocked)
             {
                 for (var i = 0; i < tiersCount; i++)
                 {
-                    var tierUnlocked = _progresSave.chapters[chapterInd].tierData[i].unlocked;
+                    var tierUnlocked = chapterSave.tierData[i].unlocked;
                     // _tierUis[i].SetInteractable(tierUnlocked);
                     _tierUis[i].SetLocked(!tierUnlocked);
                 }

@@ -2,7 +2,7 @@
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.MainMenu;
-using RobotCastle.Relicts;
+using RobotCastle.Relics;
 using RobotCastle.Summoning;
 using UnityEngine;
 

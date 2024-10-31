@@ -4,7 +4,7 @@ using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
 
-namespace RobotCastle.Relicts
+namespace RobotCastle.Relics
 {
     [CreateAssetMenu(menuName = "SO/Relics/Stat Modifier", fileName = "Relic Stat Modifier", order = 0)]
     public class RelicStatModifier : RelicModifier, IPlayerItemSpawnModifier
