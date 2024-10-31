@@ -5,8 +5,6 @@ namespace RobotCastle.Battling
 {
     public partial class BattleLevel
     {
-#if UNITY_EDITOR
-
         [ContextMenu("Force SmeltingOffer")]
         public void ForceShowSmeltingOffer()
         {
@@ -52,7 +50,6 @@ namespace RobotCastle.Battling
             AllowPlayerUIInput(false);
             AddRewardForLevelAndShowUI();
         }
-#endif
 
     }
 }

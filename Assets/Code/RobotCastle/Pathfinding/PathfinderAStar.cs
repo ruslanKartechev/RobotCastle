@@ -15,7 +15,7 @@ namespace Bomber
         private HashSet<Vector2Int> _occupied;
         private ISet<Vector2Int> _excludedPos;
 
-        private int _stepsPerFrameMax = 20; 
+        private int _stepsPerFrameMax = 100; 
         
         public int StepsPerFrameMax
         {

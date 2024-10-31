@@ -137,7 +137,9 @@ namespace RobotCastle.InvasionMode
                     var content = JsonConvert.SerializeObject(preset, Formatting.Indented);
                     File.WriteAllText(path, content);
                 }
+                #if UNITY_EDITOR
                 UnityEditor.AssetDatabase.Refresh();
+                #endif
             }
         }
 
@@ -226,7 +228,9 @@ namespace RobotCastle.InvasionMode
             CLog.Log($"Saving with enemies: {currentPack.enemies.Count}");
             var content = JsonConvert.SerializeObject(currentPack, Formatting.Indented);
             File.WriteAllText(path, content);
+#if UNITY_EDITOR
             UnityEditor.AssetDatabase.Refresh();
+#endif
         }
 
         public bool HasEnemyAt(Vector2Int coord, out EnemyPreset preset)

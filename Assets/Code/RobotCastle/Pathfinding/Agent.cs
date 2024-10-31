@@ -231,20 +231,14 @@ namespace Bomber
             {
                 // CLog.LogWhite($"[{nameof(PathfindingAgent)}] path count < 2...");
                 State = AgentState.NotMoving;
-                if(alreadyMoving)
-                    _agentAnimator?.OnMovementStopped();
                 return EPathMovementResult.FailedToBuild;
             }
             State = AgentState.IsMoving;
             SetCurrentCellFromWorldPosition();
-            // if(!alreadyMoving)
-            //     _agentAnimator?.OnMovementBegan();
             var result = await MoveToCell(path.points[1], token);
             if (!token.IsCancellationRequested)
             {
                 State = AgentState.NotMoving;
-                // _agentAnimator?.OnMovementStopped();
-                // SetCurrentCellFromWorldPosition();
             }
             return result;
         }

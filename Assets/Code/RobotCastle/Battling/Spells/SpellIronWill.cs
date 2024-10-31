@@ -93,7 +93,6 @@ namespace RobotCastle.Battling
 
         private void OnAnimEvent()
         {
-            CLog.LogGreen("On Anim event");
             if (!_isActive) return;
             _isCasting = false;
             if (_components.spellSounds.Count > 0)

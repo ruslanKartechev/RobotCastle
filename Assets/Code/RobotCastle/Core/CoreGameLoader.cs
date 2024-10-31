@@ -50,6 +50,7 @@ namespace RobotCastle.Core
         {
             if (DidInit) return;
             DidInit = true;
+            Application.targetFrameRate = 60;
             DontDestroyOnLoad(gameObject);
             NamingDataLoader.Load();
             ServiceLocator.Create();

@@ -97,17 +97,18 @@ namespace RobotCastle.Battling
             var targets= BattleManager.GetBestTargetForAttack(_hero, enemy);
             while(targets.Count == 0)
             {
+                CLog.LogRed("No targets, waiting");
                 targets = BattleManager.GetBestTargetForAttack(_hero, enemy);
                 await Task.Delay(250, token);
             }
             var prevStep = _logicStep;
             _logicStep = EAttackLogicStep.Waiting;
             StopSubProc();
+            _rangeCoverCheck.Update(_hero.Components.state.currentCell, false);
             foreach (var tempEnemy in targets)
             {
                 if (tempEnemy.IsDead)
                     continue;
-                _rangeCoverCheck.Update(_hero.Components.state.currentCell, false);
                 var inRange = _rangeCoverCheck.IsHeroWithinRange(tempEnemy);
                 if (inRange)
                 {
@@ -146,8 +147,9 @@ namespace RobotCastle.Battling
                 }
                 enemy = tempEnemy;
                 var enState = enemy.Components.state;
-                        
-                if ((point - _hero.Components.state.currentCell).magnitude <= HeroesConstants.DuelMaxDistance 
+                // var distance = (point - myState.currentCell).sqrMagnitude <= HeroesConstants.DuelMaxDistance;
+                var distance = (myState.currentCell - tempEnemy.Components.state.currentCell).sqrMagnitude; 
+                if (distance < HeroesConstants.DuelMaxDistance
                     && enState.attackData.CurrentEnemy == _hero 
                     && enState.isMoving)
                 {
@@ -231,7 +233,10 @@ namespace RobotCastle.Battling
                 await Task.Delay(500, token);
             }
             if(prevStep != EAttackLogicStep.Moving)
+            {
+                // CLog.LogYellow("Prev step was not moving");
                 movement.OnMovementBegan();
+            }
             _logicStep = EAttackLogicStep.Moving;
             var result = await movement.MoveToCell(cell, token);
             if (token.IsCancellationRequested)

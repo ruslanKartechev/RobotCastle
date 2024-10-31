@@ -1,4 +1,4 @@
-﻿using System;
+﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
 using Castle.Core.Internal;
@@ -7,10 +7,7 @@ using RobotCastle.Battling;
 using RobotCastle.Core;
 using SleepDev;
 using UnityEngine;
-#if UNITY_EDITOR
-using System.Collections;
 using UnityEditor.Animations;
-#endif
 namespace RobotCastle.Testing
 {
     public class AttackSpeedTester : MonoBehaviour
@@ -89,16 +86,6 @@ namespace RobotCastle.Testing
             _heroesFactory.SpawnAll();
         }
 
-
-        private IEnumerator Working()
-        {
-            var doWait = true;
-            
-            
-            while(doWait)
-                yield return null;
-        }
-        
         public void StartAttack()
         {
             var target = FakeAttackTarget.GetNew();
@@ -136,7 +123,6 @@ namespace RobotCastle.Testing
                 timer.Begin(animController);
             }
         }
-
         public void RecordAllAverageSpeed()
         {
             var dataList = new List<SpeedPerAnimator>(50);
@@ -211,3 +197,4 @@ namespace RobotCastle.Testing
         }
     }
 }
+#endif

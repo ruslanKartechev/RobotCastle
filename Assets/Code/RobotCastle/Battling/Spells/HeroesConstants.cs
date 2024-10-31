@@ -10,7 +10,7 @@ namespace RobotCastle.Battling
         public const int PlayerHealthStart = 3;
         public const int PlayerTroopsStart = 3;
         
-        public const int DuelMaxDistance = 2;
+        public const int DuelMaxDistance = 4;
         
         public const float SpeedStatFactor = 1f / 40;
         public const float SpeedStatToAnimationFactor = 1f / 150;

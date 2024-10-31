@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR
+using System.Collections;
 using System.Collections.Generic;
 using Castle.Core.Internal;
 using RobotCastle.Battling;
 using SleepDev;
-using UnityEditor.Animations;
 using UnityEngine;
-
+using UnityEditor.Animations;
 namespace RobotCastle.Testing
 {
     [System.Serializable]
@@ -14,7 +14,6 @@ namespace RobotCastle.Testing
         public string stateName;
         public string motionName;
         public float time;
-        
         public Motion motionClip { get; set; }
         public AnimatorState animState { get; set; }
     }
@@ -39,6 +38,7 @@ namespace RobotCastle.Testing
         
         private void Awake()
         {
+#if UNITY_EDITOR
             if (_didInit)
                 return;
             _didInit = true;
@@ -51,9 +51,9 @@ namespace RobotCastle.Testing
             }
             attack.OnAttackEvent -= OnAttack;
             attack.OnAttackEvent += OnAttack;
+            #endif
         }
         
-#if UNITY_EDITOR
         public void Begin(AnimatorController animatorController)
         {
             Awake();
@@ -136,10 +136,6 @@ namespace RobotCastle.Testing
             yield return null;
         }
         
-        
-        
-        #endif
-        
         private void OnAttack()
         {
             if (!_started)
@@ -157,3 +153,4 @@ namespace RobotCastle.Testing
         }
     }
 }
+#endif
