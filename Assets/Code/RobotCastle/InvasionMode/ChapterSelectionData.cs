@@ -19,6 +19,7 @@
         public int totalEnergyCost = BasicEnergyCost;
         public int chapterIndex;
         public int tierIndex;
+        public bool corruption;
         
         public ChapterSelectionData(){}
 
@@ -29,6 +30,7 @@
             totalEnergyCost = other.totalEnergyCost;
             chapterIndex = other.chapterIndex;
             tierIndex = other.tierIndex;
+            corruption = other.corruption;
         }
     }
 }

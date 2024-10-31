@@ -123,6 +123,8 @@ namespace RobotCastle.Battling.Altars
         public int CanBuyOnFreePoint()
         {
             var player = DataHelpers.GetPlayerData();
+            if (player.playerLevel < 2)
+                return 2;
             if (_db.HasReachedMaxPoints(player.altars.pointsTotal))
                 return 3;
             var cost = (int)_db.GetNextPointCost(player.playerLevel + 1);

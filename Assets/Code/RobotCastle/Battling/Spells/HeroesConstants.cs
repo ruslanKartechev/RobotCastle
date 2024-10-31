@@ -45,7 +45,8 @@ namespace RobotCastle.Battling
         public const string SpellFXPrefab_RapidArrow = "prefabs/spells/rapid_arrows";
         public const string SpellFXPrefab_PowerOfRock = "prefabs/spells/power_of_rock";
         public const string SpellFXPrefab_Backstab = "prefabs/spells/backstab";
-        
+        public const string SpellFXPrefab_SoulLink = "prefabs/spells/soul_link";
+
 
     }
 }

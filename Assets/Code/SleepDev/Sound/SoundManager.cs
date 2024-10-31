@@ -52,7 +52,6 @@ namespace SleepDev
 
         public PlayingSound PlayMusic(SoundID sound, bool loop)
         {
-            CLog.LogWhite($"ID {sound.clip.name}");
             _musicSource.clip = sound.clip;
             _musicSource.volume = sound.volume * _volumeMusic * MusicStatusMod;
             _musicSource.loop = loop;
@@ -62,7 +61,6 @@ namespace SleepDev
 
         public PlayingSound Play(SoundID sound, bool loop = false)
         {
-            CLog.Log($"========= Play: {sound.name}");
             var source = GetSource();
             var ps = new PlayingSound(source);
             source.clip = sound.clip;

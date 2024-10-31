@@ -14,7 +14,6 @@ namespace RobotCastle.UI
         [SerializeField] private List<Canvas> _otherCanvases;
         [Space(5)]
         [SerializeField] private InvasionChapterSelectionUI _chapters1;
-        [SerializeField] private InvasionChapterSelectionUI _chapters2;
 
         public void Show()
         {
@@ -22,7 +21,6 @@ namespace RobotCastle.UI
             foreach (var canvas in _otherCanvases)
                 canvas.enabled = false;
             _chapters1.Off();
-            _chapters2.Off();
             _selectionCanvas.enabled = true;
             _btnChapters1.AddMainCallback(ShowChapter1);
             _btnChapters2.AddMainCallback(ShowChapter2);
@@ -40,14 +38,16 @@ namespace RobotCastle.UI
 
         private void ShowChapter1()
         {
+            _chapters1.IsCorruption = false;
             _selectionCanvas.enabled = false;
             _chapters1.Show(ModeReturnCallback);
         }
 
         private void ShowChapter2()
         {
+            _chapters1.IsCorruption = true;
             _selectionCanvas.enabled = false;
-            _chapters2.Show(ModeReturnCallback);
+            _chapters1.Show(ModeReturnCallback);
         }
 
         public void ModeReturnCallback()

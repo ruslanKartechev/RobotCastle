@@ -15,6 +15,7 @@ namespace RobotCastle.Data
         public Dictionary<string, string> SpellsIcons = new (5);
         public Dictionary<string, string> GeneralIcons = new (5);
         public List<string> LocationIcons = new(5);
+        public List<string> LocationIconsCorruption = new(5);
 
         public static Sprite GetHeroSprite(string spriteId)
         {

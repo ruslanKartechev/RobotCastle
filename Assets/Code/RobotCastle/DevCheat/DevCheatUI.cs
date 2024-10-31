@@ -15,7 +15,10 @@ namespace RobotCastle.DevCheat
         [SerializeField] private MyButton _openBtn;
         [SerializeField] private GameObject _goOpen;
         [SerializeField] private GameObject _goClosed;
+        [SerializeField] private float _doubleClickTime = .15f;
         private Tab _current;
+        private int _clicks;
+        private float _clickTime;
 
         private void Awake()
         {
@@ -34,12 +37,26 @@ namespace RobotCastle.DevCheat
         [ContextMenu("Open")]
         public void Open()
         {
-            gameObject.SetActive(true);
-            CloseCurrent();
-            _goOpen.SetActive(true);
-            _goClosed.SetActive(false);
-            OpenMainMenu();
-            Time.timeScale = 0f;
+            if (_clicks <= 0)
+            {
+                _clicks = 1;
+                _clickTime = Time.deltaTime;
+            }
+            else if (_clicks >= 1)
+            {
+                if (Time.deltaTime - _clickTime <= _doubleClickTime)
+                {
+                    _clicks = 0;
+                    gameObject.SetActive(true);
+                    CloseCurrent();
+                    _goOpen.SetActive(true);
+                    _goClosed.SetActive(false);
+                    OpenMainMenu();
+                    Time.timeScale = 0f;
+                }
+                else
+                    _clicks = 0;
+            }
         }
 
         [ContextMenu("Exit")]

@@ -17,11 +17,11 @@ MonoBehaviour:
     musicOn: 1
     vibrOn: 0
     levelMoney: 0
-    globalMoney: 30000
-    globalHardMoney: 80
-    playerLevel: 1
-    playerXp: 10
-    playerEnergy: 440
+    globalMoney: 0
+    globalHardMoney: 0
+    playerLevel: 0
+    playerXp: 0
+    playerEnergy: 100
     playerEnergyMax: 40
     gameMode: 0
     party:
@@ -34,18 +34,10 @@ MonoBehaviour:
       - maiu
       - mara
     inventory:
-      items:
-      - id: book
-        amount: 45
-      - id: king_medal
-        amount: 40
-      - id: hero_medal
-        amount: 30
-      - id: upgrade_cube
-        amount: 2
+      items: []
       scrolls:
       - id: scroll_tier_1
-        ownedAmount: 5
+        ownedAmount: 0
         purchasedCount: 0
         timerData:
           year: 0
@@ -56,7 +48,7 @@ MonoBehaviour:
           second: 0
           milliSecond: 0
       - id: scroll_tier_2
-        ownedAmount: 5
+        ownedAmount: 0
         purchasedCount: 0
         timerData:
           year: 0
@@ -67,7 +59,7 @@ MonoBehaviour:
           second: 0
           milliSecond: 0
       - id: scroll_tier_3
-        ownedAmount: 5
+        ownedAmount: 0
         purchasedCount: 0
         timerData:
           year: 0
@@ -78,7 +70,7 @@ MonoBehaviour:
           second: 0
           milliSecond: 0
       - id: scroll_tier_4
-        ownedAmount: 1
+        ownedAmount: 0
         purchasedCount: 0
         timerData:
           year: 0
@@ -89,53 +81,8 @@ MonoBehaviour:
           second: 0
           milliSecond: 0
     relics:
-      unlockedSlotsCount: 2
-      allRelics:
-      - core:
-          id: flaming_blade
-          tier: 1
-        isEquipped: 0
-        amount: 1
-      - core:
-          id: royal_crown
-          tier: 1
-        isEquipped: 0
-        amount: 1
-      - core:
-          id: wind_orb
-          tier: 1
-        isEquipped: 0
-        amount: 1
-      - core:
-          id: emerald_shield
-          tier: 1
-        isEquipped: 0
-        amount: 1
-      - core:
-          id: dark_staff
-          tier: 1
-        isEquipped: 0
-        amount: 1
-      - core:
-          id: fury_gauntlet
-          tier: 1
-        isEquipped: 0
-        amount: 1
-      - core:
-          id: healing_pendant
-          tier: 1
-        isEquipped: 0
-        amount: 1
-      - core:
-          id: ethereal_mask
-          tier: 1
-        isEquipped: 0
-        amount: 1
-      - core:
-          id: divine_goblet
-          tier: 1
-        isEquipped: 0
-        amount: 1
+      unlockedSlotsCount: 0
+      allRelics: []
     progression:
       chapterIndex: 0
       tierLevel: 0
@@ -146,10 +93,6 @@ MonoBehaviour:
           completed: 0
           completedCount: 0
           attemptedCount: 0
-        - unlocked: 1
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
         - unlocked: 0
           completed: 0
           completedCount: 0
@@ -162,6 +105,209 @@ MonoBehaviour:
           completed: 0
           completedCount: 0
           attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      chaptersCorruption:
       - unlocked: 1
         tierData:
         - unlocked: 1
@@ -184,73 +330,7 @@ MonoBehaviour:
           completed: 0
           completedCount: 0
           attemptedCount: 0
-      - unlocked: 1
-        tierData:
-        - unlocked: 1
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-      - unlocked: 1
-        tierData:
-        - unlocked: 1
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-      - unlocked: 1
-        tierData:
-        - unlocked: 1
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-      - unlocked: 1
+      - unlocked: 0
         tierData:
         - unlocked: 0
           completed: 0
@@ -272,7 +352,7 @@ MonoBehaviour:
           completed: 0
           completedCount: 0
           attemptedCount: 0
-      - unlocked: 1
+      - unlocked: 0
         tierData:
         - unlocked: 0
           completed: 0
@@ -294,7 +374,95 @@ MonoBehaviour:
           completed: 0
           completedCount: 0
           attemptedCount: 0
-      - unlocked: 1
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
+        tierData:
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 0
+          completed: 0
+          completedCount: 0
+          attemptedCount: 0
+      - unlocked: 0
         tierData:
         - unlocked: 0
           completed: 0
@@ -366,9 +534,10 @@ MonoBehaviour:
       totalEnergyCost: 5
       chapterIndex: 0
       tierIndex: 0
+      corruption: 0
     altars:
-      pointsTotal: 20
-      pointsFree: 20
+      pointsTotal: 0
+      pointsFree: 0
       altars:
       - id: heroes
         points: 0

@@ -45,6 +45,7 @@ namespace RobotCastle.Battling.SmeltingOffer
             _confirmButton.SetInteractable(false);
             _confirmButton.AddMainCallback(OnConfirmBtn);
             _txtDescription.text = "";
+            _inventory.Reset();
             _inventory.OnNewPicked -= OnItemPicked;
             _inventory.OnNothingPicked -= OnNothingPicked;
             _inventory.OnNewPicked += OnItemPicked;
@@ -61,6 +62,7 @@ namespace RobotCastle.Battling.SmeltingOffer
                 _itemsUI[i].icon.sprite = viewDb.GetItemSpriteByTypeAndLevel(option);
                 _itemsUI[i].NumberId = i;
                 _itemsUI[i].AnimateShow();
+                
             }
         }
 

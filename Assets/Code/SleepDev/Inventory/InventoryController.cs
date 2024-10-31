@@ -32,7 +32,6 @@ namespace SleepDev.Inventory
                 _pickedItem.Unpick();
             _pickedItem = null;
         }
-        
 
         private void Update()
         {

@@ -2,6 +2,7 @@
 {
     public interface IDamageSource : IDamageCalculator
     {
+        void Damage(IDamageReceiver receiver, HeroDamageArgs args);
         void DamagePhys(IDamageReceiver receiver);
         void DamageSpellAndPhys(IDamageReceiver receiver);
         void DamageSpell(IDamageReceiver receiver);

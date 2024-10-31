@@ -121,6 +121,7 @@ namespace RobotCastle.Battling
         {
             _unitView.agent.Stop();
             _unitView.state.SetTargetCellToSelf();
+            _isRunning = false;
         }
 
         private void Update()
@@ -132,7 +133,7 @@ namespace RobotCastle.Battling
         private void OnDisable()
         {
             _didSetup = false;
- 
+            _isRunning = false;
         }
     }
 

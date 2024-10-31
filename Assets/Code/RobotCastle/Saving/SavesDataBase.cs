@@ -16,7 +16,49 @@ namespace RobotCastle.Saving
 
 
         #if UNITY_EDITOR
-        [ContextMenu("Reset Heroes")]
+ 
+        [ContextMenu("1_Set_InitialSave")]
+        public void E_SetInitialSave()
+        {
+            E_ResetChapters();
+            PlayerData.musicOn = true;
+            PlayerData.soundOn = true;
+            PlayerData.inventory.Reset();
+            PlayerData.relics.unlockedSlotsCount = 0;
+            PlayerData.relics.allRelics.Clear();
+            PlayerData.globalMoney = 0;
+            PlayerData.levelMoney = 0;
+            PlayerData.globalHardMoney = 0;
+            PlayerData.playerEnergy = 100;
+            PlayerData.playerEnergyMax = 40;
+            PlayerData.progression.tierLevel = 0;
+            PlayerData.playerXp = 0;
+            PlayerData.playerLevel = 0;
+            foreach (var chapter in PlayerData.progression.chapters)
+            {
+                chapter.unlocked = false;
+                foreach (var tt in chapter.tierData)
+                {
+                    tt.attemptedCount = 0;
+                    tt.completedCount = 0;
+                    tt.completed = false;
+                    tt.unlocked = false;
+                }
+            }
+
+            var chapterOne = PlayerData.progression.chapters[0];
+            chapterOne.unlocked = true;
+            chapterOne.tierData[0].unlocked = true;
+
+            PlayerData.altars.pointsFree = PlayerData.altars.pointsTotal = 0;
+            foreach (var save in PlayerData.altars.altars)
+            {
+                save.points = 0;
+            }
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+        
+        [ContextMenu("2_Reset_Heroes")]
         public void E_ResetHeroes()
         {
             foreach (var ss in PlayerHeroes.heroSaves)
@@ -27,6 +69,7 @@ namespace RobotCastle.Saving
             }
             UnityEditor.EditorUtility.SetDirty(this);
         }
+
         #endif
         
 #if UNITY_EDITOR

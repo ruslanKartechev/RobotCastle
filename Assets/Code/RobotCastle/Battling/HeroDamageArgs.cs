@@ -4,12 +4,14 @@
     {
         public float amount;
         public EDamageType type;
+        public string srsId;
         public HeroComponents source;
         public bool reflected;
         public bool critical;
 
-        public HeroDamageArgs(float amount, EDamageType type, HeroComponents source)
+        public HeroDamageArgs(float amount, EDamageType type, HeroComponents source, string srsId = "default")
         {
+            this.srsId = srsId;
             this.amount = amount;
             this.type = type;
             this.source = source;
@@ -18,8 +20,9 @@
         }
 
 
-        public HeroDamageArgs(float amount, EDamageType type, HeroComponents source, bool reflected, bool critical)
+        public HeroDamageArgs(float amount, EDamageType type, HeroComponents source, bool reflected, bool critical, string srsId = "default")
         {
+            this.srsId = srsId;
             this.amount = amount;
             this.type = type;
             this.source = source;

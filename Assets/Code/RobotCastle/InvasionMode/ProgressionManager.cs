@@ -6,14 +6,14 @@ namespace RobotCastle.InvasionMode
 {
     public class ProgressionManager
     {
-        public static void CompleteTier(int chapterIndex, int tier)
+        public static void CompleteTier(int chapterIndex, int tier, out bool completedFirstTime)
         {
             CLog.LogGreen($"Chapter: {chapterIndex+1}, tier: {tier+1} completed!");
             var db = ServiceLocator.Get<ProgressionDataBase>();
             var playerData = DataHelpers.GetPlayerData();
-            
             var chapterSave = playerData.progression.chapters[chapterIndex];
             var tierSave = chapterSave.tierData[tier];
+            completedFirstTime = !tierSave.completed;
             tierSave.completed = true;
             tierSave.completedCount++;
 

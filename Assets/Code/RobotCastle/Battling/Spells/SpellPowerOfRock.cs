@@ -34,10 +34,10 @@ namespace RobotCastle.Battling
             {
                 _isActive = false;
                 _manaAdder.CanAdd = true;
+                _didCast = false;
                 _components.attackManager.OnAttackStep -= OnAttack;
                 _components.stats.PhysicalResist.RemoveDecorator(this);
                 _components.stats.MagicalResist.RemoveDecorator(this);
-                _didCast = false;
                 _components.animationEventReceiver.OnAttackEvent -= OnCast;
                 _token?.Cancel();
             }
@@ -149,6 +149,7 @@ namespace RobotCastle.Battling
 
         private void OnCast()
         {
+            if (!_isActive) return;
             _components.animationEventReceiver.OnAttackEvent -= OnCast;
             _didCast = true;
             if (_components.spellSounds.Count > 0)

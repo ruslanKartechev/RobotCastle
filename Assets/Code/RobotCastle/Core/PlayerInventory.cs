@@ -91,5 +91,14 @@ namespace RobotCastle.Core
             scrollsMap.Add(id, new ScrollSave(id, amount));
             return amount;
         }
+
+        public void Reset()
+        {
+            itemsMap.Clear();
+            foreach (var scroll in scrolls)
+            {
+                scroll.ownedAmount = scroll.purchasedCount = 0;
+            }
+        }
     }
 }

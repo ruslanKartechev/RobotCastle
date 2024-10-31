@@ -17,57 +17,57 @@ MonoBehaviour:
     - id: chapter_1
       viewName: Mushroom Fields
       moneyGoldReward: 100
-      playerXpReward: 10
+      playerXpReward: 25
       heroXpReward: 3
       location: Env_1MushroomFields
       tiers:
-      - totalPower: 815
+      - totalPower: 162
         multiplier: 1
         additionalRewards:
         - level: 3
           id: book
           type: item
-        - level: 1
-          id: fury_gauntlet
-          type: relic
-      - totalPower: 983
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 196
         multiplier: 1.25
         additionalRewards:
         - level: 2
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 1
+          id: scroll_tier_2
           type: item
-      - totalPower: 1703
+      - totalPower: 353
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: book
+          type: item
+        - level: 1
           id: king_medal
           type: item
         - level: 1
-          id: scroll_tier_1
+          id: scroll_tier_3
           type: item
-        - level: 1
-          id: book
-          type: item
-      - totalPower: 2835
+      - totalPower: 614
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
+        - level: 2
+          id: book
           type: item
         - level: 1
-          id: book
+          id: king_medal
           type: item
         - level: 5
           id: gold_hard
           type: item
-      - totalPower: 3894
+      - totalPower: 879
         multiplier: 2.5
         additionalRewards:
         - level: 1
-          id: scroll_tier_2
+          id: scroll_tier_3
           type: item
         - level: 2
           id: king_medal
@@ -76,8 +76,8 @@ MonoBehaviour:
           id: gold_hard
           type: item
       chapterCompletedRewards:
-      - level: 2
-        id: scroll_tier_2
+      - level: 1
+        id: upgrade_cube
         type: item
       levelData:
         eliteItemsByLevel:
@@ -168,60 +168,69 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_2Graveyard
       tiers:
-      - totalPower: 4482
+      - totalPower: 421
         multiplier: 1
         additionalRewards:
         - level: 3
           id: book
           type: item
-      - totalPower: 5616
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 3
+          id: scroll_tier_1
+          type: item
+      - totalPower: 535
         multiplier: 1.25
         additionalRewards:
+        - level: 3
+          id: book
+          type: item
         - level: 2
           id: king_medal
           type: item
         - level: 2
-          id: scroll_tier_1
+          id: scroll_tier_2
           type: item
-      - totalPower: 10159
+      - totalPower: 975
         multiplier: 1.5
         additionalRewards:
         - level: 1
-          id: king_medal
-          type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
           id: book
           type: item
-      - totalPower: 15362
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 2
+          id: scroll_tier_3
+          type: item
+      - totalPower: 1756
         multiplier: 2
         additionalRewards:
+        - level: 2
+          id: book
+          type: item
         - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: book
-          type: item
-        - level: 5
+        - level: 12
           id: gold_hard
           type: item
-      - totalPower: 20756
+      - totalPower: 2532
         multiplier: 2.5
         additionalRewards:
         - level: 1
-          id: scroll_tier_2
+          id: scroll_tier_3
           type: item
         - level: 2
           id: king_medal
           type: item
-        - level: 10
+        - level: 20
           id: gold_hard
           type: item
       chapterCompletedRewards:
-      - level: 2
-        id: scroll_tier_3
+      - level: 1
+        id: upgrade_cube
         type: item
       levelData:
         eliteItemsByLevel:
@@ -312,55 +321,64 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_3SpiderCave
       tiers:
-      - totalPower: 2433
+      - totalPower: 428
         multiplier: 1
+        additionalRewards:
+        - level: 5
+          id: book
+          type: item
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 4
+          id: scroll_tier_1
+          type: item
+      - totalPower: 545
+        multiplier: 1.25
         additionalRewards:
         - level: 3
           id: book
           type: item
-      - totalPower: 3049
-        multiplier: 1.25
-        additionalRewards:
-        - level: 2
-          id: king_medal
-          type: item
-        - level: 2
-          id: scroll_tier_1
-          type: item
-      - totalPower: 4677
-        multiplier: 1.5
-        additionalRewards:
         - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
-          id: book
-          type: item
-      - totalPower: 7458
-        multiplier: 2
-        additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
-          id: book
-          type: item
-        - level: 5
-          id: gold_hard
-          type: item
-      - totalPower: 9745
-        multiplier: 2.5
-        additionalRewards:
-        - level: 1
+        - level: 3
           id: scroll_tier_2
           type: item
+      - totalPower: 876
+        multiplier: 1.5
+        additionalRewards:
         - level: 2
+          id: book
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 10
+        - level: 2
+          id: scroll_tier_3
+          type: item
+      - totalPower: 1410
+        multiplier: 2
+        additionalRewards:
+        - level: 2
+          id: book
+          type: item
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 20
+          id: gold_hard
+          type: item
+      - totalPower: 1881
+        multiplier: 2.5
+        additionalRewards:
+        - level: 2
+          id: scroll_tier_3
+          type: item
+        - level: 4
+          id: scroll_tier_2
+          type: item
+        - level: 40
           id: gold_hard
           type: item
       chapterCompletedRewards:
@@ -471,55 +489,64 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_5Underworld
       tiers:
-      - totalPower: 2025
+      - totalPower: 475
         multiplier: 1
         additionalRewards:
         - level: 3
           id: book
           type: item
-      - totalPower: 2685
-        multiplier: 1.25
-        additionalRewards:
         - level: 2
           id: king_medal
-          type: item
-        - level: 2
-          id: scroll_tier_1
-          type: item
-      - totalPower: 4261
-        multiplier: 1.5
-        additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
-          id: book
-          type: item
-      - totalPower: 7097
-        multiplier: 2
-        additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
-          id: book
           type: item
         - level: 5
-          id: gold_hard
+          id: scroll_tier_1
           type: item
-      - totalPower: 9344
-        multiplier: 2.5
+      - totalPower: 612
+        multiplier: 1.25
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 3
+          id: book
           type: item
-        - level: 2
+        - level: 1
           id: king_medal
           type: item
-        - level: 10
+        - level: 4
+          id: scroll_tier_2
+          type: item
+      - totalPower: 1092
+        multiplier: 1.5
+        additionalRewards:
+        - level: 30
+          id: gold_hard
+          type: item
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 3
+          id: scroll_tier_3
+          type: item
+      - totalPower: 1979
+        multiplier: 2
+        additionalRewards:
+        - level: 2
+          id: book
+          type: item
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 40
+          id: gold_hard
+          type: item
+      - totalPower: 2661
+        multiplier: 2.5
+        additionalRewards:
+        - level: 3
+          id: scroll_tier_3
+          type: item
+        - level: 2
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -627,55 +654,64 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_4WinterPole
       tiers:
-      - totalPower: 5902
+      - totalPower: 1054
         multiplier: 1
+        additionalRewards:
+        - level: 4
+          id: book
+          type: item
+        - level: 3
+          id: king_medal
+          type: item
+        - level: 6
+          id: scroll_tier_1
+          type: item
+      - totalPower: 1261
+        multiplier: 1.25
         additionalRewards:
         - level: 3
           id: book
           type: item
-      - totalPower: 7088
-        multiplier: 1.25
-        additionalRewards:
-        - level: 2
+        - level: 1
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 5
+          id: scroll_tier_2
           type: item
-      - totalPower: 10945
+      - totalPower: 2026
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medall
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
+        - level: 4
+          id: scroll_tier_3
           type: item
-        - level: 1
-          id: book
-          type: item
-      - totalPower: 17021
+      - totalPower: 3247
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
-      - totalPower: 21225
+      - totalPower: 4178
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 3
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -798,55 +834,64 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_6DangerousDesert
       tiers:
-      - totalPower: 0
+      - totalPower: 2078
         multiplier: 1
         additionalRewards:
-        - level: 3
+        - level: 5
           id: book
           type: item
-      - totalPower: 0
-        multiplier: 1.25
-        additionalRewards:
-        - level: 2
+        - level: 3
           id: king_medal
           type: item
-        - level: 2
+        - level: 6
           id: scroll_tier_1
           type: item
-      - totalPower: 0
+      - totalPower: 2612
+        multiplier: 1.25
+        additionalRewards:
+        - level: 5
+          id: book
+          type: item
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 6
+          id: scroll_tier_2
+          type: item
+      - totalPower: 3962
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medal
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
+        - level: 4
+          id: scroll_tier_3
           type: item
-        - level: 1
-          id: book
-          type: item
-      - totalPower: 0
+      - totalPower: 5742
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       - totalPower: 0
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -972,52 +1017,61 @@ MonoBehaviour:
       - totalPower: 0
         multiplier: 1
         additionalRewards:
-        - level: 3
+        - level: 6
           id: book
+          type: item
+        - level: 3
+          id: king_medal
+          type: item
+        - level: 6
+          id: scroll_tier_1
           type: item
       - totalPower: 0
         multiplier: 1.25
         additionalRewards:
+        - level: 1
+          id: hero_medal
+          type: item
         - level: 2
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 7
+          id: scroll_tier_2
           type: item
       - totalPower: 0
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medal
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
-          id: book
+        - level: 5
+          id: scroll_tier_3
           type: item
       - totalPower: 0
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       - totalPower: 0
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -1143,52 +1197,61 @@ MonoBehaviour:
       - totalPower: 0
         multiplier: 1
         additionalRewards:
-        - level: 3
+        - level: 7
           id: book
+          type: item
+        - level: 3
+          id: king_medal
+          type: item
+        - level: 8
+          id: scroll_tier_1
           type: item
       - totalPower: 0
         multiplier: 1.25
         additionalRewards:
-        - level: 2
+        - level: 5
+          id: book
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 8
+          id: scroll_tier_2
           type: item
       - totalPower: 0
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medal
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
-          id: book
+        - level: 6
+          id: scroll_tier_3
           type: item
       - totalPower: 0
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       - totalPower: 0
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -1314,52 +1377,61 @@ MonoBehaviour:
       - totalPower: 0
         multiplier: 1
         additionalRewards:
-        - level: 3
+        - level: 7
           id: book
+          type: item
+        - level: 3
+          id: king_medal
+          type: item
+        - level: 8
+          id: scroll_tier_1
           type: item
       - totalPower: 0
         multiplier: 1.25
         additionalRewards:
-        - level: 2
+        - level: 5
+          id: book
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 8
+          id: scroll_tier_2
           type: item
       - totalPower: 0
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medal
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
-          id: book
+        - level: 6
+          id: scroll_tier_3
           type: item
       - totalPower: 0
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       - totalPower: 0
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -1485,52 +1557,61 @@ MonoBehaviour:
       - totalPower: 0
         multiplier: 1
         additionalRewards:
-        - level: 3
+        - level: 7
           id: book
+          type: item
+        - level: 3
+          id: king_medal
+          type: item
+        - level: 8
+          id: scroll_tier_1
           type: item
       - totalPower: 0
         multiplier: 1.25
         additionalRewards:
-        - level: 2
+        - level: 5
+          id: book
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 8
+          id: scroll_tier_2
           type: item
       - totalPower: 0
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medal
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
-          id: book
+        - level: 6
+          id: scroll_tier_3
           type: item
       - totalPower: 0
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       - totalPower: 0
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -1650,57 +1731,60 @@ MonoBehaviour:
     - id: chapter_1
       viewName: Mushroom Fields
       moneyGoldReward: 100
-      playerXpReward: 10
+      playerXpReward: 25
       heroXpReward: 3
       location: Env_1MushroomFields
       tiers:
-      - totalPower: 815
+      - totalPower: 162
         multiplier: 1
         additionalRewards:
         - level: 3
           id: book
           type: item
-        - level: 1
-          id: fury_gauntlet
-          type: relic
-      - totalPower: 983
+        - level: 2
+          id: scroll_tier_1
+          type: item
+      - totalPower: 196
         multiplier: 1.25
         additionalRewards:
         - level: 2
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 1
+          id: scroll_tier_2
           type: item
-      - totalPower: 1703
+      - totalPower: 353
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: book
+          type: item
+        - level: 1
           id: king_medal
           type: item
         - level: 1
-          id: scroll_tier_1
+          id: scroll_tier_3
           type: item
         - level: 1
-          id: book
-          type: item
-      - totalPower: 2835
+          id: flaming_blade
+          type: relic
+      - totalPower: 614
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
+        - level: 2
+          id: book
           type: item
         - level: 1
-          id: book
+          id: king_medal
           type: item
         - level: 5
           id: gold_hard
           type: item
-      - totalPower: 3894
+      - totalPower: 879
         multiplier: 2.5
         additionalRewards:
         - level: 1
-          id: scroll_tier_2
+          id: scroll_tier_3
           type: item
         - level: 2
           id: king_medal
@@ -1709,8 +1793,8 @@ MonoBehaviour:
           id: gold_hard
           type: item
       chapterCompletedRewards:
-      - level: 2
-        id: scroll_tier_2
+      - level: 1
+        id: upgrade_cube
         type: item
       levelData:
         eliteItemsByLevel:
@@ -1801,60 +1885,72 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_2Graveyard
       tiers:
-      - totalPower: 4482
+      - totalPower: 421
         multiplier: 1
         additionalRewards:
         - level: 3
           id: book
           type: item
-      - totalPower: 5616
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 3
+          id: scroll_tier_1
+          type: item
+      - totalPower: 535
         multiplier: 1.25
         additionalRewards:
+        - level: 3
+          id: book
+          type: item
         - level: 2
           id: king_medal
           type: item
         - level: 2
-          id: scroll_tier_1
+          id: scroll_tier_2
           type: item
-      - totalPower: 10159
+      - totalPower: 975
         multiplier: 1.5
         additionalRewards:
         - level: 1
-          id: king_medal
-          type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
           id: book
           type: item
-      - totalPower: 15362
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 2
+          id: scroll_tier_3
+          type: item
+        - level: 1
+          id: wind_orb
+          type: relic
+      - totalPower: 1756
         multiplier: 2
         additionalRewards:
+        - level: 2
+          id: book
+          type: item
         - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: book
-          type: item
-        - level: 5
+        - level: 12
           id: gold_hard
           type: item
-      - totalPower: 20756
+      - totalPower: 2532
         multiplier: 2.5
         additionalRewards:
         - level: 1
-          id: scroll_tier_2
+          id: scroll_tier_3
           type: item
         - level: 2
           id: king_medal
           type: item
-        - level: 10
+        - level: 20
           id: gold_hard
           type: item
       chapterCompletedRewards:
-      - level: 2
-        id: scroll_tier_3
+      - level: 1
+        id: upgrade_cube
         type: item
       levelData:
         eliteItemsByLevel:
@@ -1945,55 +2041,67 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_3SpiderCave
       tiers:
-      - totalPower: 2433
+      - totalPower: 428
         multiplier: 1
+        additionalRewards:
+        - level: 5
+          id: book
+          type: item
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 4
+          id: scroll_tier_1
+          type: item
+      - totalPower: 545
+        multiplier: 1.25
         additionalRewards:
         - level: 3
           id: book
           type: item
-      - totalPower: 3049
-        multiplier: 1.25
-        additionalRewards:
-        - level: 2
-          id: king_medal
-          type: item
-        - level: 2
-          id: scroll_tier_1
-          type: item
-      - totalPower: 4677
-        multiplier: 1.5
-        additionalRewards:
         - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
-          id: book
-          type: item
-      - totalPower: 7458
-        multiplier: 2
-        additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
-          id: book
-          type: item
-        - level: 5
-          id: gold_hard
-          type: item
-      - totalPower: 9745
-        multiplier: 2.5
-        additionalRewards:
-        - level: 1
+        - level: 3
           id: scroll_tier_2
           type: item
+      - totalPower: 876
+        multiplier: 1.5
+        additionalRewards:
         - level: 2
+          id: book
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 10
+        - level: 2
+          id: scroll_tier_3
+          type: item
+        - level: 1
+          id: emerald_shield
+          type: relic
+      - totalPower: 1410
+        multiplier: 2
+        additionalRewards:
+        - level: 2
+          id: book
+          type: item
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 20
+          id: gold_hard
+          type: item
+      - totalPower: 1881
+        multiplier: 2.5
+        additionalRewards:
+        - level: 2
+          id: scroll_tier_3
+          type: item
+        - level: 4
+          id: scroll_tier_2
+          type: item
+        - level: 40
           id: gold_hard
           type: item
       chapterCompletedRewards:
@@ -2104,55 +2212,67 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_5Underworld
       tiers:
-      - totalPower: 2025
+      - totalPower: 475
         multiplier: 1
         additionalRewards:
         - level: 3
           id: book
           type: item
-      - totalPower: 2685
-        multiplier: 1.25
-        additionalRewards:
         - level: 2
           id: king_medal
-          type: item
-        - level: 2
-          id: scroll_tier_1
-          type: item
-      - totalPower: 4261
-        multiplier: 1.5
-        additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
-          id: book
-          type: item
-      - totalPower: 7097
-        multiplier: 2
-        additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
-          id: book
           type: item
         - level: 5
-          id: gold_hard
+          id: scroll_tier_1
           type: item
-      - totalPower: 9344
-        multiplier: 2.5
+      - totalPower: 612
+        multiplier: 1.25
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 3
+          id: book
           type: item
-        - level: 2
+        - level: 1
           id: king_medal
           type: item
-        - level: 10
+        - level: 4
+          id: scroll_tier_2
+          type: item
+      - totalPower: 1092
+        multiplier: 1.5
+        additionalRewards:
+        - level: 30
+          id: gold_hard
+          type: item
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 3
+          id: scroll_tier_3
+          type: item
+        - level: 1
+          id: royal_crown
+          type: relic
+      - totalPower: 1979
+        multiplier: 2
+        additionalRewards:
+        - level: 2
+          id: book
+          type: item
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 40
+          id: gold_hard
+          type: item
+      - totalPower: 2661
+        multiplier: 2.5
+        additionalRewards:
+        - level: 3
+          id: scroll_tier_3
+          type: item
+        - level: 2
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -2260,55 +2380,67 @@ MonoBehaviour:
       heroXpReward: 10
       location: ENV_4WinterPole
       tiers:
-      - totalPower: 5902
+      - totalPower: 1054
         multiplier: 1
+        additionalRewards:
+        - level: 4
+          id: book
+          type: item
+        - level: 3
+          id: king_medal
+          type: item
+        - level: 6
+          id: scroll_tier_1
+          type: item
+      - totalPower: 1261
+        multiplier: 1.25
         additionalRewards:
         - level: 3
           id: book
           type: item
-      - totalPower: 7088
-        multiplier: 1.25
-        additionalRewards:
-        - level: 2
+        - level: 1
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 5
+          id: scroll_tier_2
           type: item
-      - totalPower: 10945
+      - totalPower: 2026
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medall
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 1
-          id: book
-          type: item
-      - totalPower: 17021
+          id: crystal_dagger
+          type: relic
+      - totalPower: 3247
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
-      - totalPower: 21225
+      - totalPower: 4178
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 3
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -2431,55 +2563,67 @@ MonoBehaviour:
       heroXpReward: 10
       location: Env_6DangerousDesert
       tiers:
-      - totalPower: 0
+      - totalPower: 2078
         multiplier: 1
         additionalRewards:
-        - level: 3
+        - level: 5
           id: book
           type: item
-      - totalPower: 0
-        multiplier: 1.25
-        additionalRewards:
-        - level: 2
+        - level: 3
           id: king_medal
           type: item
-        - level: 2
+        - level: 6
           id: scroll_tier_1
           type: item
-      - totalPower: 0
+      - totalPower: 2612
+        multiplier: 1.25
+        additionalRewards:
+        - level: 5
+          id: book
+          type: item
+        - level: 1
+          id: king_medal
+          type: item
+        - level: 6
+          id: scroll_tier_2
+          type: item
+      - totalPower: 3962
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medal
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 1
-          id: book
-          type: item
-      - totalPower: 0
+          id: dark_staff
+          type: relic
+      - totalPower: 5742
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       - totalPower: 0
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -2605,52 +2749,64 @@ MonoBehaviour:
       - totalPower: 0
         multiplier: 1
         additionalRewards:
-        - level: 3
+        - level: 6
           id: book
+          type: item
+        - level: 3
+          id: king_medal
+          type: item
+        - level: 6
+          id: scroll_tier_1
           type: item
       - totalPower: 0
         multiplier: 1.25
         additionalRewards:
+        - level: 1
+          id: hero_medal
+          type: item
         - level: 2
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 7
+          id: scroll_tier_2
           type: item
       - totalPower: 0
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medal
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
+        - level: 5
+          id: scroll_tier_3
           type: item
         - level: 1
-          id: book
-          type: item
+          id: fury_gauntlet
+          type: relic
       - totalPower: 0
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       - totalPower: 0
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -2776,52 +2932,64 @@ MonoBehaviour:
       - totalPower: 0
         multiplier: 1
         additionalRewards:
-        - level: 3
+        - level: 7
           id: book
+          type: item
+        - level: 3
+          id: king_medal
+          type: item
+        - level: 8
+          id: scroll_tier_1
           type: item
       - totalPower: 0
         multiplier: 1.25
         additionalRewards:
-        - level: 2
+        - level: 5
+          id: book
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 8
+          id: scroll_tier_2
           type: item
       - totalPower: 0
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medal
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
+        - level: 6
+          id: scroll_tier_3
           type: item
         - level: 1
-          id: book
-          type: item
+          id: healing_pendant
+          type: relic
       - totalPower: 0
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       - totalPower: 0
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -2947,52 +3115,61 @@ MonoBehaviour:
       - totalPower: 0
         multiplier: 1
         additionalRewards:
-        - level: 3
+        - level: 7
           id: book
+          type: item
+        - level: 3
+          id: king_medal
+          type: item
+        - level: 8
+          id: scroll_tier_1
           type: item
       - totalPower: 0
         multiplier: 1.25
         additionalRewards:
-        - level: 2
+        - level: 5
+          id: book
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 8
+          id: scroll_tier_2
           type: item
       - totalPower: 0
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medal
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
-          id: book
+        - level: 6
+          id: scroll_tier_3
           type: item
       - totalPower: 0
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       - totalPower: 0
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -3118,52 +3295,61 @@ MonoBehaviour:
       - totalPower: 0
         multiplier: 1
         additionalRewards:
-        - level: 3
+        - level: 7
           id: book
+          type: item
+        - level: 3
+          id: king_medal
+          type: item
+        - level: 8
+          id: scroll_tier_1
           type: item
       - totalPower: 0
         multiplier: 1.25
         additionalRewards:
-        - level: 2
+        - level: 5
+          id: book
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 2
-          id: scroll_tier_1
+        - level: 8
+          id: scroll_tier_2
           type: item
       - totalPower: 0
         multiplier: 1.5
         additionalRewards:
         - level: 1
+          id: hero_medal
+          type: item
+        - level: 1
           id: king_medal
           type: item
-        - level: 1
-          id: scroll_tier_1
-          type: item
-        - level: 1
-          id: book
+        - level: 6
+          id: scroll_tier_3
           type: item
       - totalPower: 0
         multiplier: 2
         additionalRewards:
-        - level: 1
-          id: king_medal
-          type: item
-        - level: 1
+        - level: 2
           id: book
           type: item
-        - level: 5
+        - level: 1
+          id: hero_medal
+          type: item
+        - level: 50
           id: gold_hard
           type: item
       - totalPower: 0
         multiplier: 2.5
         additionalRewards:
-        - level: 1
-          id: scroll_tier_2
+        - level: 4
+          id: scroll_tier_3
           type: item
         - level: 2
-          id: king_medal
+          id: hero_medal
           type: item
-        - level: 10
+        - level: 60
           id: gold_hard
           type: item
       chapterCompletedRewards: []
@@ -3279,3 +3465,5 @@ MonoBehaviour:
           reward: 10
           roundType: 3
       prevTierRequired: 2
+  rewards_config_file_path: C:\Users\karte\Downloads\King God Castle Info - chapter
+    rewards.tsv

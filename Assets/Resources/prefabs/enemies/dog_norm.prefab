@@ -87,7 +87,7 @@ Transform:
   m_GameObject: {fileID: 4197807076945284019}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0}
+  m_LocalPosition: {x: 0, y: 1.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -652,7 +652,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
       propertyPath: m_Name
-      value: dog
+      value: dog_norm
       objectReference: {fileID: 0}
     - target: {fileID: 6244770640492081806, guid: ab5df0c4d777aba4a9c5e49be80bcf7f, type: 3}
       propertyPath: m_IsActive
@@ -761,6 +761,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67dc47aaa984549911dfb3aa810befc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackSounds:
+  - {fileID: 11400000, guid: b5c8d6a8855c9d64faa0524286cc31a9, type: 2}
+  spellSounds: []
   _stunnedFxHeight: 1.5
   _heroItemsContainer: {fileID: 5445955109522671905}
   _heroUI: {fileID: 0}

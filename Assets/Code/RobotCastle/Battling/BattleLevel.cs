@@ -454,7 +454,7 @@ namespace RobotCastle.Battling
         {
             var chapterConfig = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
             var playerData = DataHelpers.GetPlayerData();
-            ProgressionManager.CompleteTier(_selectionData.chapterIndex, _selectionData.tierIndex);
+            ProgressionManager.CompleteTier(_selectionData.chapterIndex, _selectionData.tierIndex, out var completedFirstTime);
 
             var rewardMultiplier = _selectionData.multiplierTier * _selectionData.basicRewardMultiplier;
             CLog.Log($"Total reward multiplier: {rewardMultiplier}");
@@ -470,39 +470,45 @@ namespace RobotCastle.Battling
             gm.globalMoney.AddValue(goldReward);
             
             var newPlayerXp = ServiceLocator.Get<CastleXpManager>().AddXp(xpReward);
-            
             var rewardsList = new List<CoreItemData>(5);
-            rewardsList.Add(new CoreItemData(goldReward, "gold", "bonus"));
-            rewardsList.Add(new CoreItemData(goldReward, "player_xp", "bonus"));
-            var inventory = playerData.inventory;
-            foreach (var reward in chapterConfig.chapterCompletedRewards)
-            {
-                var upgReward = new CoreItemData(reward);
-                upgReward.level = Mathf.RoundToInt(upgReward.level * rewardMultiplier);
-                rewardsList.Add(upgReward);
-                switch (reward.type)
-                {
-                    case "item":
-                        inventory.AddItem(reward.id, reward.level);
-                        break;
-                    case "relic":
-                        RelicsManager.AddRelic(playerData.relics, reward.id);
-                        break;
-                    default:
-                        CLog.LogRed($"reward type: \"{reward.type}\" unknown will not add to inventory!");
-                        break;
-                }
-            }
-
-            if (_logRewardItems)
-            {
-                var msg = "Added rewards after level win!";
-                foreach (var it in rewardsList)
-                    msg += $"\n{it.id}  {it.level}";
-                CLog.Log(msg);          
-            }
             
-            var addedXps = new List<float>(6){addedHeroesXp,addedHeroesXp,addedHeroesXp,addedHeroesXp,addedHeroesXp,addedHeroesXp};
+            if (completedFirstTime)
+            {
+                rewardsList.Add(new CoreItemData(goldReward, "gold", "bonus"));
+                rewardsList.Add(new CoreItemData(goldReward, "player_xp", "bonus"));
+                
+                var inventory = playerData.inventory;
+                foreach (var reward in chapterConfig.chapterCompletedRewards)
+                {
+                    var upgReward = new CoreItemData(reward);
+                    upgReward.level = Mathf.RoundToInt(upgReward.level * rewardMultiplier);
+                    rewardsList.Add(upgReward);
+                    switch (reward.type)
+                    {
+                        case "item":
+                            inventory.AddItem(reward.id, reward.level);
+                            break;
+                        case "relic":
+                            RelicsManager.AddRelic(playerData.relics, reward.id);
+                            break;
+                        default:
+                            CLog.LogRed($"reward type: \"{reward.type}\" unknown will not add to inventory!");
+                            break;
+                    }
+                }
+
+                if (_logRewardItems)
+                {
+                    var msg = "Added rewards after level win!";
+                    foreach (var it in rewardsList)
+                        msg += $"\n{it.id}  {it.level}";
+                    CLog.Log(msg);          
+                }
+                
+                
+            }
+           
+            var addedXps = new List<float>(6) { addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp};
             var ui = ServiceLocator.Get<IUIManager>().Show<InvasionLevelWinUI>(UIConstants.UILevelWin, () => {});
             ui.Show(new InvasionWinArgs()
             {

@@ -1,5 +1,10 @@
-﻿using RobotCastle.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.UI;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.InvasionMode
@@ -13,6 +18,116 @@ namespace RobotCastle.InvasionMode
         
         
         #if UNITY_EDITOR
+
+        [Space(20)] 
+        public string rewards_config_file_path;
+
+        [ContextMenu("1 Read Chapter Rewards")]
+        public void ReadChapterRewards()
+        {
+            var perChapter = Read(rewards_config_file_path);
+            for (var i = 0; i < perChapter.Count; i++)
+            {
+                var chapter = database.chapters[i];
+                var chapterRewards = perChapter[i];
+                for (var tierInd = 0; tierInd < chapter.tiers.Count; tierInd++)
+                {
+                    var tier = chapter.tiers[tierInd];
+                    var tierRewards = chapterRewards[tierInd];
+                    tier.additionalRewards = tierRewards;
+                }
+            }
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+
+        /// <summary>
+        /// List of chapters( tiers (rewards) )
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private List<List<List<CoreItemData>>> Read(string path)
+        {
+            if (!File.Exists(path))
+            {
+                CLog.LogRed($"File does not exist");
+                return null;
+            }
+            List<List<List<CoreItemData>>> itemsPerChapter = new List<List<List<CoreItemData>>>(10);
+            var reader = new StreamReader(path);
+            var delimiter = '\t';
+            var columns = reader.ReadLine().Split(delimiter);
+            for (var rowInd = 1; reader.Peek() > 0; rowInd++)
+            {
+                var wholeLine = reader.ReadLine();
+                // CLog.Log($"{rowInd} Line: {line}");
+                if (wholeLine == null)
+                    continue;
+                columns = wholeLine.Split(delimiter);
+                var didParse =false;
+                var column = 0;
+                int chapterNum = 0;
+                for (; column < columns.Length; column++)
+                {
+                     var header = columns[column];
+                     if (string.IsNullOrEmpty(header))
+                         continue;
+                     didParse = Int32.TryParse(header, out chapterNum);
+                     break;
+                }
+                if (!didParse)
+                    continue;
+                CLog.LogGreen($"============= Chapter number: {chapterNum}");
+                var chapterInd = chapterNum - 1;
+                List<List<CoreItemData>> perTier = new List<List<CoreItemData>>(5);
+                for (var tier = 0; tier < 5; tier++)
+                {                
+                    var rewards = new List<CoreItemData>(3);
+                    var columnInd = column + 2 + tier;
+                    var str = columns[columnInd];
+                    if (string.IsNullOrEmpty(str))
+                        continue;
+                    // CLog.Log($"Tier {tier + 1}: {str}");
+                    var lines = str.Split(',');
+                    foreach (var temp in lines)
+                    {
+                        var line = temp;
+                        while (line.Length > 0 && line[0] == ' ')
+                        {
+                            line = line.Remove(0, 1);
+                        }
+
+                        if (string.IsNullOrEmpty(line) || line.Length < 2)
+                            continue;
+                        
+                        // CLog.Log($"ItemLine: {line}");
+                        var entries = line.Split(' ');
+                        if (entries.Length < 2)
+                            continue;
+                        var id = entries[0];
+                        id = id.Replace(" ", "");
+                        id = id.Replace(":", "");
+                        var amountText = entries[1].Replace(" ", "");
+                        amountText = amountText.Replace(":", "");
+                        var amount = 0;
+                        if (!Int32.TryParse(amountText, out amount))
+                        {
+                            CLog.LogRed($"Cannot parse amount: {amountText}");
+                            continue;
+                        }
+                        rewards.Add(new CoreItemData(amount, id, "item"));
+                    }
+                    perTier.Add(rewards);
+                }
+                itemsPerChapter.Add(perTier);
+                var totalCount = 0;
+                foreach (var tt in perTier)
+                    totalCount += tt.Count;
+                CLog.LogGreen($"Chapter: {chapterInd+1}. Items count: {totalCount}");
+            }
+            reader.Close();
+            return itemsPerChapter;
+        }
+
 
         [ContextMenu("E_CalculateTotalPower")]
         public void E_CalculateTotalPower()

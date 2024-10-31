@@ -8,6 +8,7 @@ namespace RobotCastle.InvasionMode
         public int chapterIndex; 
         public int tierLevel;
         public List<ChapterData> chapters;
+        public List<ChapterData> chaptersCorruption;
         
         public SaveInvasionProgression(){}
 
@@ -19,6 +20,12 @@ namespace RobotCastle.InvasionMode
             chapters = new List<ChapterData>(count);
             for (var i = 0; i < count; i++)
                 chapters.Add(new ChapterData(other.chapters[i]));
+            
+            count = other.chaptersCorruption.Count;
+            chaptersCorruption = new List<ChapterData>(count);
+            for (var i = 0; i < count; i++)
+                chaptersCorruption.Add(new ChapterData(other.chaptersCorruption[i]));
+
         }
 
         public void SetFirstTierUnlockedIfChapterUnlocked()

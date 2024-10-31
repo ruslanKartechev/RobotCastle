@@ -108,7 +108,7 @@ namespace RobotCastle.Battling
             _postDamageModifiers.Clear();
         }
         
-        private void Damage(IDamageReceiver receiver, HeroDamageArgs args)
+        public void Damage(IDamageReceiver receiver, HeroDamageArgs args)
         {
             var receivedArgs = receiver.TakeDamage(args);
             StatsCollector.AddDamageDealt(_components.GUID, args.type, (int)args.amount);

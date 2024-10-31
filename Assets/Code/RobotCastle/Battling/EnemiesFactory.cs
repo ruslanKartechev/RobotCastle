@@ -162,11 +162,10 @@ namespace RobotCastle.Battling
                     results.Add(random);
             }
 
-            var msg = $"Added items to elite enemy: ";
-            foreach (var res in results)
-                msg += $" {res.id}_{res.level + 1}, ";
+            // var msg = $"Added items to elite enemy: ";
+            // foreach (var res in results)
+            //     msg += $" {res.id}_{res.level + 1}, ";
             
-            CLog.LogRed(msg);
             var weaponsData = HeroWeaponData.GetDataWithDefaultModifiers(results);
             hero.Components.weaponsContainer.SetItems(weaponsData);
             hero.Components.weaponsContainer.AddAllModifiersToHero(hero.Components);

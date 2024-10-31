@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.UI;
 using SleepDev;
@@ -69,7 +70,6 @@ namespace RobotCastle.Battling
             }
             return new DamageReceivedArgs(damageAmount, health <= 0);
         }
-
 
         public void SetDamageable(bool damageable) => _isDamageable = damageable;
 

@@ -27,7 +27,7 @@ namespace RobotCastle.UI
                     var stats = db.info[id].stats;
                     var atk = HeroStatsManager.GetStatByLevel(stats.attack, lvl, mergeLvl);
                     var atks = HeroStatsManager.GetStatByMergeLevel(stats.attackSpeed, mergeLvl);
-                    var health = HeroStatsManager.GetStatByLevel(stats.health, lvl, mergeLvl);
+                    var health = HeroStatsManager.GetStatByLevel(stats.health, lvl, mergeLvl) / 10;
                     var def = (stats.physicalResist[0] + stats.magicalResist[0]);
                     if(def > 0)
                         health *= (1 / HeroesManager.GetDef(def));
@@ -81,7 +81,7 @@ namespace RobotCastle.UI
                         mergeLvl = 7;
                     var atk = HeroStatsManager.GetStatByLevel(stats.attack, lvl, mergeLvl);
                     var atks = HeroStatsManager.GetStatByMergeLevel(stats.attackSpeed, mergeLvl);
-                    var health = HeroStatsManager.GetStatByLevel(stats.health, lvl, mergeLvl);
+                    var health = HeroStatsManager.GetStatByLevel(stats.health, lvl, mergeLvl) / 10;
                     // var orHealth = health;
                     var def = (stats.physicalResist[0] + stats.magicalResist[0]);
                     if(def > 0)

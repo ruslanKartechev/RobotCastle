@@ -108,10 +108,10 @@ namespace RobotCastle.Battling.Altars
         private void UpdateButtonsState()
         {
             var player = DataHelpers.GetPlayerData();
-            var canBuy = _manager.CanBuyOnFreePoint();
+            var code = _manager.CanBuyOnFreePoint();
             var lvl = player.playerLevel + 1;
             var redColor = "#FF1111";
-            switch (canBuy)
+            switch (code)
             {
                 case 0: // can
                     CLog.Log($"Can buy more points");
@@ -125,11 +125,11 @@ namespace RobotCastle.Battling.Altars
                     _btnPurchasePoint.gameObject.SetActive(true);
                     _costText.text = $"<color={redColor}>{(int)_db.GetNextPointCost(lvl)}</color>";
                     break;
-                case 2: // Level not mey
+                case 2: // Level not met
                     CLog.Log($"Level not met");
                     _btnPurchasePoint.gameObject.SetActive(false);
                     _requirementsObj.gameObject.SetActive(true);
-                    _requiredLevelText.text = $"Requires level <color={redColor}>{lvl}</color>";
+                    _requiredLevelText.text = $"Increase Castle Level";
                     CLog.LogRed($"Player level: {lvl}, cannot buy points");
                     break;
                 case 3: // max points reached

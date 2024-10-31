@@ -24,6 +24,7 @@ namespace RobotCastle.UI
             for (var i = 0; i < rewards.Count && i < _rewardItems.Count; i++)
             {
                 var rew = rewards[i];
+                // CLog.LogRed($"Reward: {rew.id} {rew.level}");
                 Sprite icon = null;
                 switch (rew.type)
                 {
