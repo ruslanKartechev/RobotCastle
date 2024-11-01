@@ -11,6 +11,7 @@ namespace RobotCastle.UI
         public ChapterSelectionData SelectionData { get; set; }
 
         [SerializeField] private GameObject _go;
+        [SerializeField] private ChapterRewardsUI _rewardsUI;
         [Space(10)]
         [SerializeField] private TextMeshProUGUI _txtAdditionalEnergyCost;
         [SerializeField] private TextMeshProUGUI _txtRewardMultiplier;
@@ -74,8 +75,10 @@ namespace RobotCastle.UI
             var data = DataHelpers.GetPlayerData();
             _txtEnergyStat.text = $"{data.playerEnergy}/{data.playerEnergyMax}";
             _txtRewardMultiplier.text = $"Reward x{SelectionData.multiplierTier}";
+            var totalGold = (int)(SelectionData.multiplierTier * SelectionData.goldReward *
+                                  SelectionData.tierRewardMultiplier);
+            _rewardsUI.ModifyGold(totalGold);
             var cost = SelectionData.totalEnergyCost = SelectionData.multiplierTier * ChapterSelectionData.BasicEnergyCost;
-
             _txtAdditionalEnergyCost.text = _txtEnergyCostBtn.text = $"-{cost}";
             
             _btnPrev.SetInteractable(SelectionData.multiplierTier > 1);

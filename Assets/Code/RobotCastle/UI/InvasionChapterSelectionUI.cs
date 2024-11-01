@@ -221,7 +221,8 @@ namespace RobotCastle.UI
             var tierInd = _data.tierIndex;
             var chapter = GetChapter();
             var multiplier = chapter.tiers[tierInd].multiplier;
-            _data.basicRewardMultiplier = multiplier;
+            _data.tierRewardMultiplier = multiplier;
+            _data.goldReward = (int)chapter.moneyGoldReward;
             var goldReward = Mathf.RoundToInt(chapter.moneyGoldReward * multiplier);
             var tierSave = GetChapterSave().tierData[tierInd];
             _playBtn.SetInteractable(tierSave.unlocked);
@@ -234,7 +235,8 @@ namespace RobotCastle.UI
             var tierInd = _data.tierIndex;
             var chapter = GetChapter();
             var multiplier = chapter.tiers[tierInd].multiplier;
-            _data.basicRewardMultiplier = multiplier;
+            _data.tierRewardMultiplier = multiplier;
+            _data.goldReward = (int)chapter.moneyGoldReward;
             var goldReward = Mathf.RoundToInt(chapter.moneyGoldReward * multiplier);
             var tierSave = GetChapterSave().tierData[tierInd];
             _playBtn.SetInteractable(tierSave.unlocked);

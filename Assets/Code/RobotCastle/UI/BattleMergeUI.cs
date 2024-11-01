@@ -35,6 +35,8 @@ namespace RobotCastle.UI
         [SerializeField] private FadePopAnimator _winAnimator;
         [SerializeField] private FadePopAnimator _lostAnimator;
         [SerializeField] private FadePopAnimator _startedAnimator;
+        [SerializeField] private MyButton _btnExit;
+        [SerializeField] private ExitBattleUI _exitBattleUI;
 
         private Battle _battle;
         private LevelData _levelData;
@@ -48,7 +50,10 @@ namespace RobotCastle.UI
             _levelUI.SetLevel(battle.roundIndex, chapter.levelData.levels, false);
             _money.Init(ServiceLocator.Get<GameMoney>().levelMoney);
             _money.DoReact(true);
+            _btnExit.AddMainCallback(Exit);
         }
+
+    
 
         public void AllowButtonsInput(bool allow)
         {
@@ -110,6 +115,16 @@ namespace RobotCastle.UI
         private void OnDisable()
         {
             ServiceLocator.Unbind<ITroopsCountView>();
+        }
+        
+        private void Exit()
+        {
+            _btnExit.gameObject.SetActive(false);
+            _exitBattleUI.Show(() =>
+            {
+                _btnExit.gameObject.SetActive(true);
+                Time.timeScale = 1f;
+            });
         }
     }
 }

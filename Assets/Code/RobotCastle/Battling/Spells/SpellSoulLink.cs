@@ -71,8 +71,7 @@ namespace RobotCastle.Battling
         private readonly List<IHeroController> _boundEnemies = new (3);
         private readonly List<DamageShareMod> _modifiers = new (3);
         private int _damageOnBroken;
-
-
+        
         private void OnAnimEvent()
         {
             if (!_isActive) return;
@@ -163,7 +162,9 @@ namespace RobotCastle.Battling
 
         private async void Work(CancellationToken token)
         {
-            await Task.Delay(_config.duration.SecToMs(), token);
+            await HeroesManager.WaitGameTime(_config.duration, token);
+            if (token.IsCancellationRequested)
+                return;
             if (!_isActive) return;
             UnbindCurrent();
             Complete();

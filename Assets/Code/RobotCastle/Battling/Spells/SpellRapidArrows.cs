@@ -86,7 +86,9 @@ namespace RobotCastle.Battling
             fx.ShowTrackingDefaultDuration(_components.transform);
             
             _components.heroUI.ManaUI.AnimateTimedSpell(1f, 0f, _config.duration);
-            await Task.Delay(_config.duration.SecToMs(), token);
+            await HeroesManager.WaitGameTime(_config.duration, token);
+            if (token.IsCancellationRequested)
+                return;
             
             _components.stats.AttackSpeed.RemoveDecorator(this);
             fx.gameObject.SetActive(false);

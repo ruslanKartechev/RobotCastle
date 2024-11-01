@@ -66,7 +66,9 @@ namespace RobotCastle.Battling
             _components.stats.PhysicalResist.AddDecorator(this);
             
             _components.heroUI.ManaUI.AnimateTimedSpell(1f, 0f, _config.duration);
-            await Task.Delay(_config.duration.SecToMs(), token);
+            await HeroesManager.WaitGameTime(_config.duration, token);
+            if (token.IsCancellationRequested)
+                return;
             _components.attackManager.OnAttackStep -= OnAttackStep;
 
             _components.stats.MagicalResist.RemoveDecorator(this);

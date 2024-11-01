@@ -15,22 +15,24 @@
         /// either 1,2 or 3
         /// </summary>
         public int multiplierTier = 1;
-        public float basicRewardMultiplier = 1;
+        public float tierRewardMultiplier = 1;
         public int totalEnergyCost = BasicEnergyCost;
         public int chapterIndex;
         public int tierIndex;
         public bool corruption;
+        public int goldReward;
         
         public ChapterSelectionData(){}
 
         public ChapterSelectionData(ChapterSelectionData other)
         {
             multiplierTier = other.multiplierTier;
-            basicRewardMultiplier = other.basicRewardMultiplier;
+            tierRewardMultiplier = other.tierRewardMultiplier;
             totalEnergyCost = other.totalEnergyCost;
             chapterIndex = other.chapterIndex;
             tierIndex = other.tierIndex;
             corruption = other.corruption;
+            goldReward = other.goldReward;
         }
     }
 }

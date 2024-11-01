@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Bomber;
 using RobotCastle.Core;
 using RobotCastle.Data;
@@ -10,6 +12,16 @@ namespace RobotCastle.Battling
 {
     public static class HeroesManager
     {
+
+        public static async Task WaitGameTime(float seconds, CancellationToken token)
+        {
+            while (seconds >= 0 && !token.IsCancellationRequested)
+            {
+                seconds -= Time.deltaTime;
+                await Task.Yield();
+            }
+        }
+        
         public const int MaxHeroLevel = 20;
         
         public static float ReduceDamageByDef(float damage, float def)

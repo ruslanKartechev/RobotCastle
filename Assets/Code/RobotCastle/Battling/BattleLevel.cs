@@ -456,7 +456,7 @@ namespace RobotCastle.Battling
             var playerData = DataHelpers.GetPlayerData();
             ProgressionManager.CompleteTier(_selectionData.chapterIndex, _selectionData.tierIndex, out var completedFirstTime);
 
-            var rewardMultiplier = _selectionData.multiplierTier * _selectionData.basicRewardMultiplier;
+            var rewardMultiplier = _selectionData.multiplierTier * _selectionData.tierRewardMultiplier;
             CLog.Log($"Total reward multiplier: {rewardMultiplier}");
             var goldReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.moneyGoldReward);
             var xpReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.playerXpReward);

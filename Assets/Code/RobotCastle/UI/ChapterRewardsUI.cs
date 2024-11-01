@@ -13,7 +13,11 @@ namespace RobotCastle.UI
         [SerializeField] private Sprite _goldSprite;
         [SerializeField] private List<ChapterRewardItemUI> _rewardItems;
         [SerializeField] private float _animationTime = .22f;
-        
+
+        public void ModifyGold(int gold)
+        {
+            _rewardItems[0].SetCount(gold);
+        }
         
         public void SetRewards(int gold, List<CoreItemData> rewards)
         {

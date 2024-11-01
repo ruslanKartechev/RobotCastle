@@ -68,7 +68,7 @@ namespace RobotCastle.Battling
             var allEnemies = HeroesManager.GetHeroesEnemies(_components);
             var map = _components.agent.Map;
             _def = _config.defByTier[lvl];
-            const int waitMs = (int)(.25f * 1000);
+
             await Task.Yield();
             if (token.IsCancellationRequested) return;
             const int frameInside = 5;
@@ -94,7 +94,11 @@ namespace RobotCastle.Battling
                         didFind = true;
                 }
                 else
-                    await Task.Delay(waitMs, token);
+                {
+                    await HeroesManager.WaitGameTime(.25f, token);
+                    if (token.IsCancellationRequested)
+                        return;
+                }
             }
 
             if (token.IsCancellationRequested) return;
@@ -127,7 +131,7 @@ namespace RobotCastle.Battling
                 _components.stats.MagicalResist.AddDecorator(this);
                 
                 _components.heroUI.ManaUI.AnimateTimedSpell(1f, 0f, _config.auraDuration);
-                await Task.Delay(_config.auraDuration.SecToMs());
+                await HeroesManager.WaitGameTime(_config.auraDuration, token);
                 if (token.IsCancellationRequested)
                     return;
                 _components.animationEventReceiver.OnAttackEvent -= OnAttack;

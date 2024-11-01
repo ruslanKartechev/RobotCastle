@@ -12,6 +12,11 @@ namespace RobotCastle.UI
             _text.text = $"x{count}";
         }
 
+        public void SetCount(int count)
+        {
+            _text.text = $"x{count}";
+        }
+
         public void On() => gameObject.SetActive(true);
 
         public void Off() => gameObject.SetActive(false);

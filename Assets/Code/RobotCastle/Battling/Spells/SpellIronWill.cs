@@ -75,9 +75,9 @@ namespace RobotCastle.Battling
 
             _isCasting = false;
             AddShield();
-            
-            await Task.Delay((int)(1000 * afterCastDelay), token);
-            if (token.IsCancellationRequested) return;
+            await HeroesManager.WaitGameTime(afterCastDelay, token);
+            if (token.IsCancellationRequested)
+                return;
 
             hero.ResumeCurrentBehaviour();
             _manaAdder.CanAdd = true;
