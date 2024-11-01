@@ -254,7 +254,7 @@ namespace RobotCastle.Summoning
             var inventory = DataHelpers.GetInventory();
             var config = db.GetConfig(id);
             int money = SummoningManager.GetMoneyAmount(config.currencyId);
-            var save = inventory.scrollsMap[id];
+            var save = inventory.GetScrollSave(id);
             var ownedAmount = save.ownedAmount;
             optionUI.SetPurchasesCount(save.purchasedCount);
             optionUI.invView1.text.text = $"x{ownedAmount}";

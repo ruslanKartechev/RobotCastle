@@ -12,6 +12,7 @@ namespace RobotCastle.Core
             {
                 save.playerEnergy += save.playerEnergyMax >= 40 ? save.playerEnergyMax : 40;
             }
+            save.inventory.Reset();
            
         }
     }

@@ -13,7 +13,8 @@ namespace RobotCastle.Core
         [Space(5)]
         public List<ScrollSave> scrolls;
         public Dictionary<string, InventoryItemData> itemsMap = new (10);
-        public Dictionary<string, ScrollSave> scrollsMap = new(10);
+        
+        private Dictionary<string, ScrollSave> scrollsMap = new(10);
 
         public PlayerInventory(){}
 
@@ -74,11 +75,19 @@ namespace RobotCastle.Core
             itemsMap[id].amount += count;
         }
         
-        public int GetScrollsCount(string id)
+        public ScrollSave GetScrollSave(string id)
         {
             if (scrollsMap.ContainsKey(id))
-                return scrollsMap[id].ownedAmount;
-            return 0;
+                return scrollsMap[id];
+            var save = new ScrollSave()
+            {
+                id = id,
+                ownedAmount = 0,
+                purchasedCount = 0,
+                timerData = new DateTimeData()
+            };
+            scrollsMap.Add(id,save);
+            return save;
         }
 
         public int SetScrollsCount(string id, int amount)

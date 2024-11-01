@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using MadPixel.InApps;
 using MAXHelper;
 using RobotCastle.MainMenu;
@@ -82,6 +83,18 @@ namespace RobotCastle.Core
             InputBtn.Create();
         }
 
+        private void OnApplicationQuit()
+        {
+            ServiceLocator.Get<IDataSaver>().SaveAll();
+        }
+
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            if (pauseStatus)
+            {
+                ServiceLocator.Get<IDataSaver>().SaveAll();
+            }
+        }
 
         public void InitSdk()
         {

@@ -15,20 +15,20 @@ namespace RobotCastle.Summoning
         public static void SetOffTimerAndAddOpenedScrollCount(string id)
         {
             var inv = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;
-            inv.scrollsMap[id].timerData = DateTimeData.FromNow();
-            inv.scrollsMap[id].purchasedCount++;
+            inv.GetScrollSave(id).timerData = DateTimeData.FromNow();
+            inv.GetScrollSave(id).purchasedCount++;
         }
 
         public static void AddOpenedScrollCount(string id)
         {
             var inv = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;
-            inv.scrollsMap[id].purchasedCount++;
+            inv.GetScrollSave(id).purchasedCount++;
         }
 
         public static void SetOffTimer(string id)
         {
             var inv = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;
-            inv.scrollsMap[id].timerData = DateTimeData.FromNow();
+            inv.GetScrollSave(id).timerData = DateTimeData.FromNow();
         }
         
 
@@ -38,7 +38,7 @@ namespace RobotCastle.Summoning
             var data = db.GetConfig(id);
             if(!data.freeAvailable && !data.adAvailable) return false;
             var inv = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;
-            var save = inv.scrollsMap[id];
+            var save = inv.GetScrollSave(id);
             var timePassed = save.timerData.CheckIfTimePassed(TimeSpan.FromHours(data.timePeriodHours));
             CLog.Log($"{id} Time Passed: {timePassed}");
             return timePassed;
@@ -50,7 +50,7 @@ namespace RobotCastle.Summoning
             var data = db.GetConfig(id);
             if(!data.freeAvailable) return false;
             var inv = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;
-            var save = inv.scrollsMap[id];
+            var save = inv.GetScrollSave(id);
             var timePassed = save.timerData.CheckIfTimePassed(TimeSpan.FromHours(data.timePeriodHours));
             CLog.LogRed($" ==== Time Passed: {timePassed}");
             return timePassed;
@@ -62,7 +62,7 @@ namespace RobotCastle.Summoning
             var data = db.GetConfig(id);
             if(!data.adAvailable) return false;
             var inv = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;
-            var save = inv.scrollsMap[id];
+            var save = inv.GetScrollSave(id);
             var timePassed = save.timerData.CheckIfTimePassed(TimeSpan.FromHours(data.timePeriodHours));
             CLog.LogRed($" ==== Time Passed: {timePassed}");
             return timePassed;
@@ -74,7 +74,7 @@ namespace RobotCastle.Summoning
         public static bool TryGetOutputFromScroll(string scrollId, int scrollsCount, float multiplier, out List<SummonOutput> output)
         {
             var inv = DataHelpers.GetInventory();
-            var scrolls = inv.GetScrollsCount(scrollId);
+            var scrolls = inv.GetScrollSave(scrollId).ownedAmount;
             CLog.Log($"[{nameof(TryGetOutputFromScroll)}] id: {scrollId}, owned: {scrolls}, required: {scrollsCount}, multiplier: {multiplier}");
             if (scrolls >= scrollsCount)
             {
@@ -255,7 +255,6 @@ namespace RobotCastle.Summoning
                         existing.data.level += amount;
                     else
                         outputResult.Add(new SummonOutput(SummonConfig.Id_AnyInventoryItem, itemId, amount));
-                        
                     if (inventory.itemsMap.ContainsKey(id) == false)
                         inventory.itemsMap.Add(id, new InventoryItemData(id, amount));
                     else

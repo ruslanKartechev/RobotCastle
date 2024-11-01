@@ -23,6 +23,7 @@ namespace RobotCastle.DevCheat
         
         public void UnlockAll()
         {
+            _chapterData.unlocked = true;
             foreach (var tier in _tierUI)
             {
                 tier.SetUnlocked();
