@@ -20,14 +20,16 @@ namespace RobotCastle.Battling
         
         public void BeginAttack(IDamageReceiver target)
         {
-            if (_isActive) return;
-            _isActive = true;
             _target = target;
             _targetTransform = target.GetGameObject().transform;
-            Hero.Components.state.isAttacking = true;
-            Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
-            Hero.Components.animationEventReceiver.OnAttackEvent += OnAttack;
-            Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, true);
+            if (!_isActive)
+            {
+                _isActive = true;
+                Hero.Components.state.isAttacking = true;
+                Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
+                Hero.Components.animationEventReceiver.OnAttackEvent += OnAttack;
+                Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, true);
+            }
         }
         
         public void Stop()

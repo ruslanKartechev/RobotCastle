@@ -22,6 +22,15 @@ namespace RobotCastle.Battling
             }
         }
         
+        public static async Task WaitGameTimeUnscaled(float seconds, CancellationToken token)
+        {
+            while (seconds >= 0 && !token.IsCancellationRequested)
+            {
+                seconds -= Time.unscaledDeltaTime;
+                await Task.Yield();
+            }
+        }
+        
         public const int MaxHeroLevel = 20;
         
         public static float ReduceDamageByDef(float damage, float def)

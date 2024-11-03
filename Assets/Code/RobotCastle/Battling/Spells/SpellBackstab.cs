@@ -63,7 +63,7 @@ namespace RobotCastle.Battling
             _isActive = true;
             _manaAdder.CanAdd = false;
             _components.stats.ManaResetAfterFull.Reset(_components);
-            var map = _components.agent.Map;
+            var map = _components.movement.Map;
             var canTp = false;
             var maskRef = new CellsMask() {
                 mask = new List<Vector2Int>(1){new(0,-1)}
@@ -128,7 +128,7 @@ namespace RobotCastle.Battling
             await Task.Yield();
             if (token.IsCancellationRequested) return;
             
-            var map = _components.agent.Map;
+            var map = _components.movement.Map;
             var worldPos = map.GetWorldFromCell(cell);
             var rot = Quaternion.LookRotation(enemy.Components.transform.position - worldPos);
             // Debug.DrawLine(_components.transform.position + Vector3.up * .5f, 
@@ -138,7 +138,7 @@ namespace RobotCastle.Battling
             //     enemy.Components.transform.position + Vector3.up * .5f, Color.blue, 10f);
             //
             _components.transform.SetPositionAndRotation(worldPos, rot);
-            _components.agent.SetCurrentCellFromWorldPosition();
+            _components.movement.SyncCellToWorldPos();
             
             await Task.Yield();
             if (token.IsCancellationRequested) return;

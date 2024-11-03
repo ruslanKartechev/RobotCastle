@@ -59,7 +59,7 @@ namespace RobotCastle.Battling
             var lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);
             var mask = _config.cellsMasksByTear[lvl];
             var allEnemies = HeroesManager.GetHeroesEnemies(_components);
-            var map = _components.agent.Map;
+            var map = _components.movement.Map;
 
             const int waitMs = (int)(.25f * 1000);
             await Task.Yield();

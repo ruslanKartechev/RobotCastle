@@ -145,18 +145,21 @@ namespace Bomber
                         continue;
                     if (_map.Grid[nextPos.x, nextPos.y].isPlayerWalkable == false)
                         continue;
-
-                    var otherAgentOccupied = false;
-                    foreach (var agent in _map.ActiveAgents)
+                    
+                    if (nextPos != target)
                     {
-                        if (agent.CurrentCell == nextPos)
+                        var otherAgentOccupied = false;
+                        foreach (var agent in _map.ActiveAgents)
                         {
-                            otherAgentOccupied = true;
-                            break;
+                            if (agent.CurrentCell == nextPos)
+                            {
+                                otherAgentOccupied = true;
+                                break;
+                            }
                         }
+                        if (otherAgentOccupied)
+                            continue;
                     }
-                    if (otherAgentOccupied)
-                        continue;
                     
 #if DRAW_STEP_BY_STEP
                     var drawPos1 = _map.Grid[nextPos.x, nextPos.y].worldPosition;
@@ -197,7 +200,7 @@ namespace Bomber
                 
                 steps++;
                 stepsBeforeAwait++;
-                if (stepsBeforeAwait == StepsPerFrameMax)
+                if (stepsBeforeAwait >= StepsPerFrameMax)
                 {
                     // CLog.LogRed($"[AStar] steps... awaiting ------------");
                     stepsBeforeAwait = 0;

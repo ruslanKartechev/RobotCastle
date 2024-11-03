@@ -32,7 +32,7 @@ namespace RobotCastle.Battling
             if (_didSetMap && !force)
                 return;
             _didSetMap = true;
-            _components.agent.InitAgent(ServiceLocator.Get<IMap>());
+            _components.movement.InitAgent(ServiceLocator.Get<IMap>());
         }
 
         public void MarkDead()
@@ -116,13 +116,8 @@ namespace RobotCastle.Battling
         {
             _stats = gameObject.AddComponent<HeroStatsManager>();
             var health = new HeroHealthManager(_components);
-            var pathfinder = gameObject.AddComponent<Agent>();
             var unitMover = gameObject.AddComponent<HeroMovementManager>();
             unitMover.UnitView = _components;
-            pathfinder.rb = _components.rb;
-            pathfinder.movable = transform;
-            pathfinder.PathfindingAgentAnimatorGO = gameObject;
-            _components.agent = pathfinder;
             _components.movement = unitMover;
             _components.stats = _stats;
             _components.killProcessor = new HeroDeathProcessor(_components);

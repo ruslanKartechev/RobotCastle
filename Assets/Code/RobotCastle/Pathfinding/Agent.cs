@@ -18,7 +18,13 @@ namespace Bomber
         public bool IsMoving => State == AgentState.IsMoving;
         
         public Vector2Int CurrentCell { get; private set; }
-        public IMap Map => _map;
+        public Vector2Int TargetCell { get; private set; }
+
+        public IMap Map
+        {
+            get => _map;
+            set => _map = value;
+        }
         
         public Transform movable
         {
@@ -65,6 +71,8 @@ namespace Bomber
             get => _rotationSpeed;
             set => _rotationSpeed = value;
         }
+
+        public PathfinderAStar PathFinder => _pathfinder;
         
         [SerializeField] private bool _useRb;
         [SerializeField] private float _speed;
@@ -217,7 +225,6 @@ namespace Bomber
         
         public async Task<EPathMovementResult> MakeOneStepTowards(Vector2Int targetCellPos, CancellationToken token)
         {
-            var alreadyMoving = IsMoving;
             _map.GetCellAtPosition(_movable.position, out var mCellPos, out var mCell);
             var path = await _pathfinder.FindPath(mCellPos, targetCellPos);
             if (token.IsCancellationRequested)

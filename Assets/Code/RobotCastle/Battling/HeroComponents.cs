@@ -20,7 +20,6 @@ namespace RobotCastle.Battling
         public Collider collider => _collider;
         public Rigidbody rb => _rb;
             
-        public Agent agent { get; set; }
         public HeroMovementManager movement { get; set; }
         public HeroStatsManager stats { get; set; }
         public HeroAnimationEventReceiver animationEventReceiver => _heroAnimationEvent;

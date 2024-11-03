@@ -1,68 +1,279 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Bomber;
+using RobotCastle.Core;
 using UnityEngine;
 using SleepDev;
+using Random = UnityEngine.Random;
 
 namespace RobotCastle.Battling
 {
-    public class HeroMovementManager : MonoBehaviour, IPathfindingAgentAnimator
+    public class HeroMovementManager : MonoBehaviour, IPathfindingAgentAnimator, IAgent
     {
         public HeroComponents UnitView
         {
             get => _unitView;
             set => _unitView = value;
         }
-        
-        private const float AngleThreshold = 2;
-        [SerializeField] private HeroComponents _unitView;
-        private bool _didSetup;
-        private bool _isRunning;
-        
-        public void SetupAgent()
+
+        public IMap Map => _map;
+
+        public bool IsMoving
         {
-            _unitView.agent.RotationSpeed = HeroesConstants.RotationSpeed;
-            _unitView.agent.SpeedGetter = _unitView.stats.MoveSpeed;
-            if (!_didSetup)
+            get => _isMoving;
+            set
             {
+                _isMoving = value;
+                _unitView.state.isMoving = value;
             }
-            _didSetup = true;
+        }
+        public Vector2Int CurrentCell
+        {
+            get => _cell;
+            set
+            {
+                _cell = value;
+                _unitView.state.currentCell = value;
+            }
         }
 
+        public Vector2Int TargetCell
+        {
+            get => _unitView.state.targetMoveCell;
+            set => _unitView.state.targetMoveCell = value;
+        }
+        
+        private const float AngleThreshold = 2;
+
+        [SerializeField] private HeroComponents _unitView;
+        private Rigidbody _rb;
+        private PathfinderAStar _pathfinder;
+        private CancellationTokenSource _tokenSource;
+        private IMap _map;
+        private IFloatGetter _speedGetter;
+        private float _rotSpeed;
+        private bool _didSetup;
+        private bool _isMoving;
+        private Vector2Int _cell; 
+        
+        private static List<Color> colors 
+            = new List<Color>() { Color.blue, Color.red, Color.yellow, Color.magenta};
+        private Color _dbgColor;
+        private Vector3 _offset;
+
+        public void InitAgent(IMap map)
+        {
+            _rotSpeed  = HeroesConstants.RotationSpeed;
+            _speedGetter = _unitView.stats.MoveSpeed;
+            if (_map != map || !_didSetup)
+            {
+                _map = map;
+                if(_map.ActiveAgents.Contains(this) == false)
+                    _map.ActiveAgents.Add(this);
+                _didSetup = true;
+                if(_pathfinder == null)
+                    _pathfinder = new PathfinderAStar(_map, new DistanceHeuristic());
+                else
+                    _pathfinder.Map = _map;
+                _dbgColor = colors.Random();
+                var r = UnityEngine.Random.insideUnitCircle;
+                _offset = new Vector3(r.x, 0, r.y) * .2f;
+            }
+            SyncCellToWorldPos();
+        }
+        
         public void OnMovementBegan()
         {
-            if (_isRunning) return;
+            var wasMoving = IsMoving;
+            IsMoving = true;
+            if (wasMoving) return;
             // CLog.LogGreen($"{gameObject.name} On Began");
-            _isRunning = true;
             _unitView.animator.SetBool(HeroesConstants.Anim_Move, true);
         }
 
         public void OnMovementStopped()
         {
-            if (!_isRunning) return;
+            var wasMoving = IsMoving;
+            IsMoving = false;
+            if (!wasMoving) return;
+            SyncCellToWorldPos();
+            _unitView.state.SetTargetCellToSelf();
             // CLog.LogRed($"{gameObject.name} On Stopped");
             _unitView.animator.SetBool(HeroesConstants.Anim_Move, false);
-            _unitView.state.SetTargetCellToSelf();
-            _unitView.state.isMoving = false;
-            _isRunning = false;
         }
-   
-        public async Task<EPathMovementResult> MoveToCell(Vector2Int pos, CancellationToken token)
+
+        public void MoveToEnemy(IHeroController enemy, 
+            Action stepCallback, Action endCallback)
         {
-            if (!_didSetup)
-            {
-                CLog.LogRed("Unit Mover NOT setup!!");
-                return EPathMovementResult.WasCancelled;
-            }
-            _unitView.state.isMoving = true;
-            _unitView.state.targetMoveCell = pos;
-            return await _unitView.agent.MakeOneStepTowards(pos, token);
+            _tokenSource?.Cancel();
+            _tokenSource = new CancellationTokenSource();
+            MovingToEnemy(enemy, _tokenSource.Token, stepCallback, endCallback);
         }
         
+        public async Task<EPathMovementResult> MovingToEnemy(IHeroController enemy, 
+            CancellationToken token, Action stepCallback, Action endCallback)
+        {
+            SyncCellToWorldPos();
+            OnMovementBegan();
+            
+            var movable = transform;
+            var myCellPos = _cell;
+            var originalEnemyCell = enemy.Components.state.currentCell;
+            // CLog.Log($"[{_unitView.gameObject.name}] Pathfinding start");
+            var path = await _pathfinder.FindPath(myCellPos, originalEnemyCell);
+            if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+            if (!path.success)
+            {
+                CLog.LogRed($"[{nameof(HeroMovementManager)}] Path failed: from ({myCellPos}), to ({originalEnemyCell})");
+                await Task.Yield();
+                if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+                stepCallback?.Invoke();
+                if(token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+
+                await HeroesManager.WaitGameTime(.2f, token);
+                if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+
+                MoveToEnemy(enemy, stepCallback, endCallback);
+                return EPathMovementResult.FailedToBuild;
+            }
+            if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+            
+            if (path.points.Count < 2)
+            {
+                await Task.Yield();
+                if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+                stepCallback?.Invoke();
+                if(token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+
+                CLog.LogRed($"[{nameof(HeroMovementManager)}] path count < 2...");
+                return EPathMovementResult.FailedToBuild;
+            }
+            
+            foreach (var p in path.points)
+            {
+                var p1 = _map.GetWorldFromCell(p) + _offset;
+                var p2 = p1 + Vector3.up * 2f;
+                Debug.DrawLine(p1, p2, _dbgColor, 3f);
+            }
+            
+            const int CheckEnemyPosIterationsCount = 2;
+            for (var i = 1; i < path.points.Count && !token.IsCancellationRequested; i++)
+            {
+                if (i % CheckEnemyPosIterationsCount == 0)
+                {
+                    if (originalEnemyCell != enemy.Components.state.currentCell)
+                    {
+                        // CLog.Log($"[{_unitView.gameObject.name}] Enemy moved starting over");
+                        MoveToEnemy(enemy, stepCallback, endCallback);
+                        return EPathMovementResult.WasCancelled;
+                    }
+                }    
+                var targetCell =  path.points[i];
+                var targetWorldPos = _map.Grid[targetCell.x, targetCell.y].worldPosition;
+
+#region Rotating
+                var rot1 = movable.rotation;
+                var rot2 = Quaternion.LookRotation(targetWorldPos - movable.position);
+                var angle = Quaternion.Angle(rot1, rot2);
+                var rotTime = angle / _rotSpeed;
+                var elapsed = 0f;
+                while (!token.IsCancellationRequested && elapsed < rotTime)
+                {
+                    movable.rotation = Quaternion.Lerp(rot1, rot2, elapsed / rotTime);
+                    elapsed += Time.deltaTime;
+                    await Task.Yield();
+                }
+                movable.rotation = rot2;
+                if (token.IsCancellationRequested) return EPathMovementResult.WasStopped;
+#endregion
+
+#region EnemyDetection
+                var blocked = false;
+                do
+                {
+                    blocked = false;
+                    // CLog.LogWhite("====================");
+                    // CLog.Log($"Me {name}. Cell: {CurrentCell}, target: {targetCell}");
+                    for (var ind = _map.ActiveAgents.Count-1; ind >= 0 ; ind--)
+                    {
+                        var agent = _map.ActiveAgents[ind];
+                        if(agent == this)
+                            continue;
+                        // CLog.Log($"Agent {ind + 1}, {agent.name}: Cell: {agent.CurrentCell}. Target cell: {agent.TargetCell}");
+                        if (agent.CurrentCell == targetCell || agent.TargetCell == targetCell)
+                        {
+                            stepCallback?.Invoke();
+                            if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+                            if (agent.IsMoving)
+                            {
+                                // CLog.Log($"[{gameObject.name}] Is blocked my moving agent");
+                                blocked = true;
+                                await HeroesManager.WaitGameTime(.2f, token);
+                                if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+                            }
+                            else
+                            {
+                                // CLog.LogRed($"[{gameObject.name}] Is blocked by STANDING moving agent, starting over");
+                                await Task.Yield();
+                                if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+                                MoveToEnemy(enemy, stepCallback, endCallback);
+                                return EPathMovementResult.IsBlockedOnTheWay;
+                            }
+
+                            break;
+                        }
+                    }
+                    if (blocked)
+                    {
+                        await Task.Yield();
+                        if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+                    }
+                } while (blocked);
+#endregion
+
+#region Moving
+                TargetCell = targetCell;
+                var totalDistance = (targetWorldPos - movable.position).magnitude;
+                var travelled = 0f;
+                // var didChangeCell = false;
+                CLog.LogGreen($"[{gameObject.name}] Moving to cell {targetCell}, world: {targetWorldPos}. Speed: {_speedGetter.Get()}");
+                while (!token.IsCancellationRequested && travelled < totalDistance)
+                {
+                    var vec = targetWorldPos - movable.position;
+                    var vecL = vec.magnitude;
+                    var amount = _speedGetter.Get() * Time.deltaTime;
+                    vec *= amount / vecL;
+                    travelled += amount;
+                    movable.position += vec;
+                    // if (!didChangeCell)
+                    // {
+                    //     if (travelled / totalDistance >= .5f)
+                    //     {
+                    //         didChangeCell = true;
+                    //         CurrentCell = targetCell;
+                    //     }
+                    // }
+                    await Task.Yield();
+                }
+                CLog.LogWhite($"[{name}] token cancelled?: {token.IsCancellationRequested}");
+
+                if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+                movable.position = targetWorldPos;
+                CurrentCell = targetCell;
+#endregion
+                stepCallback?.Invoke();
+                if(token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+            }
+            OnMovementStopped();
+            endCallback?.Invoke();
+            return EPathMovementResult.ReachedEnd;
+        }
+
         public bool CheckIfShouldRotate(Vector2Int cellPos)
         {
-            var worldPos = _unitView.agent.Map.GetWorldFromCell(cellPos);
+            var worldPos = _map.GetWorldFromCell(cellPos);
             var rotation = Quaternion.LookRotation(worldPos - transform.position);
             var startRot = transform.rotation;
             var angle = Quaternion.Angle(startRot, rotation);
@@ -72,7 +283,7 @@ namespace RobotCastle.Battling
         public async void RotateIfNecessary(Vector2Int cellPos, CancellationToken token, Action callback = null)
         {
             _unitView.state.isMoving = true;
-            var worldPos = _unitView.agent.Map.GetWorldFromCell(cellPos);
+            var worldPos = _map.GetWorldFromCell(cellPos);
             var rotation = Quaternion.LookRotation(worldPos - transform.position);
             var startRot = transform.rotation;
             var angle = Quaternion.Angle(startRot, rotation);
@@ -80,7 +291,7 @@ namespace RobotCastle.Battling
             if (Mathf.Abs(angle) <= AngleThreshold)
                 return;
             var elapsed = 0f;
-            var time = angle / _unitView.agent.RotationSpeed;
+            var time = angle / _rotSpeed;
             while (elapsed < time && !token.IsCancellationRequested)
             {
                 transform.rotation = Quaternion.Lerp(startRot, rotation, elapsed / time);
@@ -96,14 +307,17 @@ namespace RobotCastle.Battling
 
         public async Task<bool> RotateIfNecessary(Transform target, CancellationToken token)
         {
-            var rotation = Quaternion.LookRotation(target.position - transform.position);
+            var vec = target.position - transform.position;
+            if (vec == Vector3.zero)
+                return false;
+            var rotation = Quaternion.LookRotation(vec);
             var startRot = transform.rotation;
             var angle = Quaternion.Angle(startRot, rotation);
             
             if (Mathf.Abs(angle) <= 2)
                 return false;
             var elapsed = 0f;
-            var time = angle / _unitView.agent.RotationSpeed;
+            var time = angle / _rotSpeed;
             while (elapsed < time && !token.IsCancellationRequested)
             {
                 rotation = Quaternion.LookRotation(target.position - transform.position);
@@ -119,22 +333,49 @@ namespace RobotCastle.Battling
         
         public void Stop()
         {
-            _unitView.agent.Stop();
-            _unitView.state.SetTargetCellToSelf();
-            _isRunning = false;
+            if(!_didSetup) return;
+            _tokenSource?.Cancel();
+            _tokenSource = new CancellationTokenSource();
+            OnMovementStopped();
         }
 
+        public void SyncCellToWorldPos()
+        {
+            CurrentCell = _map.GetCellPositionFromWorld(transform.position);
+        }
+        
         private void Update()
         {
-            if (_didSetup && _unitView != null)
-                _unitView.state.currentCell = _unitView.agent.CurrentCell;
+            if(_map == null)
+                return;
+            foreach (var agent in _map.ActiveAgents)
+            {
+                if (agent == this)
+                    continue;
+                if (agent.CurrentCell == CurrentCell)
+                {
+                    CLog.LogRed($"{_unitView.gameObject.name} ERROR !!");
+                    Debug.Break();
+                    return;
+                }
+            }
+            // if (_didSetup && _map != null)
+            // {
+            //     SyncCellToWorldPos();
+            // }
         }
         
         private void OnDisable()
         {
             _didSetup = false;
-            _isRunning = false;
+            _isMoving = false;
+            if (_map != null)
+            {
+                _map.ActiveAgents.Remove(this);
+            }
         }
+        
+   
     }
 
 }

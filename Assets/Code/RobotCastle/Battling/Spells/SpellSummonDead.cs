@@ -34,7 +34,7 @@ namespace RobotCastle.Battling
                 arg.usePreferredCoordinate = false;
                 args.Add(arg);
             }
-            _components.agent.SetCurrentCellFromWorldPosition();
+            _components.movement.SyncCellToWorldPos();
             BattleManager.SetClosestAvailableDesiredPositions(args, _components.state.currentCell);
             var bm = ServiceLocator.Get<BattleManager>();
             try

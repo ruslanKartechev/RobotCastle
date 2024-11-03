@@ -69,7 +69,7 @@ namespace RobotCastle.Battling
                 mask = new (){new Vector2Int(-1,1), new Vector2Int(0,1), new Vector2Int(1,1)}
             };
             var allEnemies = HeroesManager.GetHeroesEnemies(_components);
-            var map = _components.agent.Map;
+            var map = _components.movement.Map;
             
             const int waitMs = (int)(.25f * 1000);
             await Task.Yield();

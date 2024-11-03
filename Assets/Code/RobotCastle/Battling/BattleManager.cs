@@ -81,13 +81,13 @@ namespace RobotCastle.Battling
             {
                 hero.TeamNum = 1;
                 hero.Battle = _battle;
-                hero.Components.agent.UpdateMap(map);
+                hero.Components.movement.InitAgent(map);
             }
             foreach (var hero in _battle.PlayerUnits)
             {
                 hero.TeamNum = 0;
                 hero.Battle = _battle;
-                hero.Components.agent.UpdateMap(map);
+                hero.Components.movement.InitAgent(map);
             }
             
             PrepareForBattle(_battle.PlayerUnits);
@@ -245,7 +245,7 @@ namespace RobotCastle.Battling
             {
                 hero.TeamNum = 1;
                 hero.Battle = _battle;
-                hero.Components.agent.UpdateMap(map);
+                hero.Components.movement.InitAgent(map);
             }
             
             _battle.Enemies.AddRange(heroes);

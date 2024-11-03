@@ -6,5 +6,8 @@ namespace Bomber
     {
         bool IsMoving { get; }
         Vector2Int CurrentCell { get; }
+        Vector2Int TargetCell { get; }
+        string name { get; }
+        
     }
 }

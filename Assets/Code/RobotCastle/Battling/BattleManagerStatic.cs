@@ -83,10 +83,11 @@ namespace RobotCastle.Battling
 
         public static void PrepareForBattle(List<IHeroController> heroes)
         {
+            var map = ServiceLocator.Get<IMap>();
             foreach (var hero in heroes)
             {
                 var components = hero.Components;
-                components.movement.SetupAgent();
+                components.movement.InitAgent(map);
                 components.stats.ManaResetAfterBattle.Reset(components);
                 components.heroUI.AssignStatsTracking(components);
                 components.healthManager.SetDamageable(true);
@@ -99,7 +100,7 @@ namespace RobotCastle.Battling
 
         public static List<IHeroController> GetBestTargetForAttack(IHeroController hero, IHeroController currentEnemy)
         {
-            var map = hero.Components.agent.Map;
+            var map = hero.Components.movement.Map;
             var myWorldPos = hero.Components.transform.position;
             var myPos = map.GetCellPositionFromWorld(myWorldPos);
             // var cellsMask = hero.View.stats.Range.GetCellsMask();
@@ -111,25 +112,27 @@ namespace RobotCastle.Battling
             
             foreach (var otherHero in enemies)
             {
+                if (otherHero.IsDead)
+                    continue;
                 var enemyPos = otherHero.Components.state.currentCell;
                 var d2 = (enemyPos - myPos).sqrMagnitude;
                 var points = 100 - d2 * 2f;
                 if (otherHero == currentEnemy)
-                    points += 10;
+                    points += 2;
+                if (otherHero.Components.state.attackData.CurrentEnemy == hero)
+                    points += 2;
                 if (otherHero.Components.state.isStunned)
                     points++;
                 if (!otherHero.Components.state.isMoving)
                     points++;
-                if (otherHero.Components.state.attackData.CurrentEnemy == hero)
-                    points += 2;
                 var vec = otherHero.Components.transform.position - myWorldPos;
                 var angle = Mathf.Abs(Vector3.SignedAngle(vec, hero.Components.transform.forward, Vector3.up));
                 if (angle >= 180)
-                    points -= 10;
+                    points -= 4;
                 else if (angle >= 90)
-                    points -= 5;
-                else if (angle >= 10)
                     points -= 2;
+                else if (angle >= 10)
+                    points -= 1;
                 if (points >= maxPoints)
                 {
                     maxPoints = points;
@@ -140,17 +143,6 @@ namespace RobotCastle.Battling
             }
             return results;
         }
-
-        private struct HeroAndPoints
-        {
-            public int points;
-            public IHeroController hero;
-
-            public HeroAndPoints(int points, IHeroController hero)
-            {
-                this.points = points;
-                this.hero = hero;
-            }
-        }
+        
     }
 }

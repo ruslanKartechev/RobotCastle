@@ -73,7 +73,7 @@ namespace RobotCastle.Testing
             
             var mover = unit.gameObject.GetComponent<HeroMovementManager>();
             var token = new CancellationTokenSource();
-            mover.MoveToCell(pos, token.Token);
+            // mover.MoveToCell(pos, token.Token);
         }
 #endif
     }

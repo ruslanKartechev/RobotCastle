@@ -59,7 +59,7 @@ namespace RobotCastle.Battling
             var target = _components.attackManager.LastTarget.GetGameObject();
             var lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);
             var enemies = HeroesManager.GetHeroesEnemies(_components);
-            var map = _components.agent.Map;
+            var map = _components.movement.Map;
             var (affectedEnemies, cells) = HeroesManager.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
                 target.transform.position, map, enemies);
             foreach (var hero in affectedEnemies)

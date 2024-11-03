@@ -39,7 +39,7 @@ namespace RobotCastle.Battling
             var lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);
             var amount = _components.stats.SpellPower.Get();
             var allies = HeroesManager.GetHeroesAllies(_components);
-            var map = _components.agent.Map;
+            var map = _components.movement.Map;
             var (heroesAffected, cells) = HeroesManager.GetCellsHeroesInsideCellMask(_config.cellsMasksByTear[lvl], 
                 _components.transform.position, map, allies);
             

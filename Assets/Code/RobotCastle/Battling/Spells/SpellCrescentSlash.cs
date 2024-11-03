@@ -70,7 +70,7 @@ namespace RobotCastle.Battling
             await Task.Yield();
             if (token.IsCancellationRequested) return;
             
-            var map = _components.agent.Map;
+            var map = _components.movement.Map;
             var lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);
             var mask = _config.cellsMasksByTear[lvl];
             var enemies = HeroesManager.GetHeroesEnemies(_components);
@@ -123,6 +123,16 @@ namespace RobotCastle.Battling
                 _components.spellSounds[0].Play();
             Launch();
             _components.animationEventReceiver.OnAttackEvent -= OnAnimationEvent;
+            _token?.Cancel();
+            _token = new CancellationTokenSource();
+            DelayedComplete(_token.Token);
+        }
+
+        private async void DelayedComplete(CancellationToken token)
+        {
+            if (token.IsCancellationRequested)
+                return;
+            await HeroesManager.WaitGameTime(.25f, _token.Token);
             Complete();
             _hero.ResumeCurrentBehaviour();
         }

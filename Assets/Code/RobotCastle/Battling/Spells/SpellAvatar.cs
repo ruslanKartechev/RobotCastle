@@ -56,6 +56,7 @@ namespace RobotCastle.Battling
         {
             _isActive = true;
             _manaAdder.CanAdd = false;
+            _components.processes.Add(this);
             var fx = GetFxView();
             fx.ShowUntilOff(_components.transform);
             _lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);
@@ -70,6 +71,7 @@ namespace RobotCastle.Battling
             if (token.IsCancellationRequested)
                 return;
             _components.attackManager.OnAttackStep -= OnAttackStep;
+            _components.processes.Remove(this);
 
             _components.stats.MagicalResist.RemoveDecorator(this);
             _components.stats.PhysicalResist.RemoveDecorator(this);
@@ -84,7 +86,7 @@ namespace RobotCastle.Battling
         {
             var range = _config.cellsMasksByTear[_lvl];
             var allEnemies = HeroesManager.GetHeroesEnemies(_components);
-            var map = _components.agent.Map;
+            var map = _components.movement.Map;
             var affectedEnemies = HeroesManager.GetHeroesInsideCellMask(range, _components.transform.position, map, allEnemies);
             foreach (var hero in affectedEnemies)
             {

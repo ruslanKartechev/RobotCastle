@@ -20,7 +20,7 @@ namespace RobotCastle.Battling
         public void OnKilled(HeroComponents components)
         {
             _components.killProcessor.RemoveModifier(this);
-            _components.agent.SetCurrentCellFromWorldPosition();
+            _components.movement.SyncCellToWorldPos();
             BattleManager.SetClosestAvailableDesiredPositions(_spawnArgs, _components.state.currentCell);
             foreach (var arg in _spawnArgs)
             {

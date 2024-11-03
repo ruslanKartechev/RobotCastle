@@ -15,7 +15,7 @@ namespace RobotCastle.Battling
         public void Kill()
         {
             _components.healthManager.SetDamageable(false);
-            _components.agent.Stop();
+            _components.movement.Stop();
 
             var count = _modifiers.Count;
             for (var i = count-1; i >= 0; i--)

@@ -42,14 +42,14 @@ namespace RobotCastle.Battling
 
         public List<Vector2Int> GetPossibleCellsToAttackEnemy(IHeroController hero, IHeroController enemy)
         {
-            var map = hero.Components.agent.Map;
+            var map = hero.Components.movement.Map;
             var myPos = map.GetCellPositionFromWorld(hero.Components.transform.position);
             var cellsMask = hero.Components.stats.Range.GetCellsMask();
             var coveredCells = new List<Vector2Int>(cellsMask.Count);
             var otherUnitsPositions = new List<Vector2Int>(10);
             foreach (var agent in map.ActiveAgents)
             {
-                if (agent != hero.Components.agent)
+                if (agent != hero.Components.movement)
                     otherUnitsPositions.Add(agent.CurrentCell);
             }
             var enemyPos = enemy.Components.state.currentCell;
@@ -76,7 +76,7 @@ namespace RobotCastle.Battling
             out Vector2Int targetCell, 
             out int distance)
         {
-            var map = hero.Components.agent.Map;
+            var map = hero.Components.movement.Map;
             var myPos = map.GetCellPositionFromWorld(hero.Components.transform.position);
             var cellsMask = hero.Components.stats.Range.GetCellsMask();
             var coveredCells = new List<Vector2Int>(cellsMask.Count);
@@ -92,7 +92,7 @@ namespace RobotCastle.Battling
             var otherUnitsPositions = new List<Vector2Int>(10);
             foreach (var agent in map.ActiveAgents)
             {
-                if(agent != hero.Components.agent)
+                if(agent != hero.Components.movement)
                     otherUnitsPositions.Add(agent.CurrentCell);
             }
             coveredCells.Clear();
