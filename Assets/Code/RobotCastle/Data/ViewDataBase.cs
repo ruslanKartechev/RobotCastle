@@ -77,7 +77,7 @@ namespace RobotCastle.Data
             return null;
         }
 
-        public Sprite GetUnitItemSpriteAtLevel(string id, int levelIndex)
+        public Sprite GetWeaponSpriteAtLevel(string id, int levelIndex)
         {
             if (ItemInfo.ContainsKey(id))
             {

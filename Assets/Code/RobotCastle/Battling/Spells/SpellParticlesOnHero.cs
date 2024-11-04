@@ -31,16 +31,18 @@ namespace RobotCastle.Battling
         {
             _token = new CancellationTokenSource();
             gameObject.SetActive(true);
-            Tracking(target, _token.Token);
+            _particles.gameObject.SetActive(true);
             _particles.Play();
+            Tracking(target, _token.Token);
         }
         
         public void ShowTrackingDefaultDuration(Transform target)
         {
             _token = new CancellationTokenSource();
             gameObject.SetActive(true);
-            TrackingForTime(target, duration, _token.Token);
+            _particles.gameObject.SetActive(true);
             _particles.Play();
+            TrackingForTime(target, duration, _token.Token);
         }
 
         private void OnDisable()
@@ -63,7 +65,7 @@ namespace RobotCastle.Battling
         
         private async void Tracking(Transform target, CancellationToken token)
         {
-            while (gameObject.activeSelf)
+            while (!token.IsCancellationRequested && gameObject.activeSelf)
             {
                 transform.position = target.position;
                 await Task.Yield();

@@ -33,7 +33,7 @@ namespace RobotCastle.Battling
         public void OnFullMana(GameObject heroGo)
         {
             if (_isActive) return;
-            CLog.Log($"[{_components.gameObject.name}] [{nameof(SpellRadianceOfLife)}]");
+            // CLog.Log($"[{_components.gameObject.name}] [{nameof(SpellRadianceOfLife)}]");
             _isActive = true;
             _components.stats.ManaResetAfterFull.Reset(_components);
             var lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);

@@ -31,32 +31,45 @@ namespace RobotCastle.Battling
         
         public void Stop()
         {
-            _isActive = false;
-            if (_isCasting)
+            if (_isActive)
             {
-                _components.animationEventReceiver.OnAttackEvent -= OnAnimEvent;
-                _isCasting = false;
+                _isActive = false;
+                _fx.gameObject.SetActive(false);
+                if (_isCasting)
+                {
+                    _components.animationEventReceiver.OnAttackEvent -= OnAnimEvent;
+                    _isCasting = false;
+                }
             }
         }
 
         public void OnFullMana(GameObject heroGo)
         {
             // CLog.Log($"[{_components.gameObject.name}] [{nameof(SpellIronWill)}] Adding shield bonus");
-            _isActive = true;
             _components.processes.Add(this);
             _components.stats.ManaCurrent.Val = 0;
             _manaAdder.CanAdd = false;
             _token?.Cancel();
             _token = new CancellationTokenSource();
+            _isActive = true;
             CastAnimated(_token.Token);
         }
 
+        
+        private SpellConfigIronWill _config;
+        private CancellationTokenSource _token;
+        private SpellParticlesOnHero _fx;
+        private DamageTakeModShield _modShield;
+        private ConditionedManaAdder _manaAdder;
+        private bool _isCasting;
+        
+        
         private void AddShield()
         {
             _modShield.AddToHero(_components.stats.SpellPower.Get());
             _components.heroUI.ShieldBar.TrackUntilZero(_modShield);
-            var fx = GetFxView();
-            fx.ShowTrackingDefaultDuration(_components.transform);
+            _fx = GetFxView();
+            _fx.ShowUntilOff(_components.transform);
         }
 
         private async void CastAnimated(CancellationToken token)
@@ -81,15 +94,12 @@ namespace RobotCastle.Battling
 
             hero.ResumeCurrentBehaviour();
             _manaAdder.CanAdd = true;
+            while (!token.IsCancellationRequested && _modShield.Get() > 0)
+                await Task.Yield();
+            if (token.IsCancellationRequested) return;
+            _fx.gameObject.SetActive(false);
             _isActive = false;
         }
-        
-        private SpellConfigIronWill _config;
-        private CancellationTokenSource _token;
-        private SpellParticlesOnHero _fxView;
-        private DamageTakeModShield _modShield;
-        private ConditionedManaAdder _manaAdder;
-        private bool _isCasting;
 
         private void OnAnimEvent()
         {
@@ -101,10 +111,10 @@ namespace RobotCastle.Battling
 
         private SpellParticlesOnHero GetFxView()
         {
-            if (_fxView != null) return _fxView;
+            if (_fx != null) return _fx;
             var prefab = Resources.Load<GameObject>(HeroesConstants.SpellFXPrefab_IronWill);
             var instance = Object.Instantiate(prefab).GetComponent<SpellParticlesOnHero>();
-            _fxView = instance;
+            _fx = instance;
             return instance;
         }
 

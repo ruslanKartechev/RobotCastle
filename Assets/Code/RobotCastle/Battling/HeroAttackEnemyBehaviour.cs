@@ -99,14 +99,14 @@ namespace RobotCastle.Battling
                 return;
             if (TryStartAttacking())
             {
-                CLog.LogWhite($"[{name}] Already can attack");
+                // CLog.LogWhite($"[{name}] Already can attack");
                 return;
             }
             StopSubProc();
             var targets= BattleManager.GetBestTargetForAttack(_hero, enemy);
             while(targets.Count == 0)
             {
-                CLog.LogRed($"[{name}] No targets, waiting");
+                // CLog.LogRed($"[{name}] No targets, waiting");
                 targets = BattleManager.GetBestTargetForAttack(_hero, enemy);
                 await Task.Delay(250, token);
             }
@@ -138,7 +138,7 @@ namespace RobotCastle.Battling
                 movement.Stop();
                 _logicStep = EAttackLogicStep.Attacking;
                 enemy = targetEnemy;
-                CLog.LogGreen($"[{_hero.Components.gameObject.name}] Starting to attack: {targetEnemy.Components.gameObject.name}");
+                // CLog.LogGreen($"[{_hero.Components.gameObject.name}] Starting to attack: {targetEnemy.Components.gameObject.name}");
                 movement.RotateIfNecessary(enemy.Components.transform, _subToken.Token);
                 BeginAttackAndCheckIfDead(targetEnemy, _subToken.Token);
                 return true;
@@ -158,37 +158,12 @@ namespace RobotCastle.Battling
                 if (inRange)
                 {
                     targetEnemy = tempEnemy;
-                    CLog.LogGreen($"Enemy is in range: {tempEnemy.Components.gameObject.name}");
+                    // CLog.LogGreen($"Enemy is in range: {tempEnemy.Components.gameObject.name}");
                     return true; 
                 }
             }
             targetEnemy = null;
             return false;        
-        }
-
-        // private async void AwaitUntilEnemyStartsAttacking(CancellationToken token)
-        // {
-        //     var enState = enemy.Components.state;
-        //     await Task.Yield();
-        //     myState.SetTargetCellToSelf();
-        //     movement.OnMovementStopped();
-        //     while (token.IsCancellationRequested == false
-        //            && enemy.IsDead == false
-        //            && enState.isAttacking == false
-        //            && enState.isMoving
-        //            && enState.attackData.CurrentEnemy == _hero)
-        //     {
-        //         await Task.Yield();
-        //     }
-        //
-        //     if (token.IsCancellationRequested)
-        //         return;
-        //     DecideNextStep(_mainToken.Token);
-        // }
-        //
-        private void OnRotated()
-        {
-            DecideNextStep(_mainToken.Token);
         }
 
         private void StopSubProc()

@@ -24,7 +24,7 @@ namespace RobotCastle.Data
 
         public static Sprite GetItemIcon(CoreItemData itemData)
         {
-            return ServiceLocator.Get<ViewDataBase>().GetUnitItemSpriteAtLevel(itemData.id, itemData.level);
+            return ServiceLocator.Get<ViewDataBase>().GetWeaponSpriteAtLevel(itemData.id, itemData.level);
         }
 
         public static SaveInvasionProgression GetInvasionProgress()

@@ -8,7 +8,8 @@ namespace RobotCastle.Battling
 
         public void Add(IHeroProcess process)
         {
-            activeProcesses.Add(process);
+            if(activeProcesses.Contains(process ) == false)
+                activeProcesses.Add(process);
         }
 
         public void Remove(IHeroProcess process)

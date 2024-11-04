@@ -43,34 +43,66 @@ namespace RobotCastle.Battling.MerchantOffer
         public ITroopSizeManager troops;
         public CastleHealthView healthView;
         public BattleManager battleManager;
-        private MerchantOfferData.GoodsPreset _currentPreset;
+        private MerchantOfferConfig.GoodsPreset _currentPreset;
         private System.Action _callback;
         private int _offerTier;
         private float _sale;
         
         public void MakeNextOffer(System.Action callback)
         {
-            if (_offerTier >= config.optionsPerTier.Count)
-            {
-                CLog.LogError($"[{nameof(MerchantOfferManager)}] _index >= config.optionsPerTier.Count");
-                return;
-            }
+            // if (_offerTier >= config.optionsPerTier.Count)
+            // {
+            //     CLog.LogError($"[{nameof(MerchantOfferManager)}] _index >= config.optionsPerTier.Count");
+            //     return;
+            // }
             _callback = callback;
             var tier = _offerTier;
             _offerTier++;
-            _currentPreset = config.optionsPerTier[tier].GetRandomPreset();
+            // _currentPreset = config.optionsPerTier[tier];
+            
+            var preset = new MerchantOfferConfig.GoodsPreset();
+            preset.goods = new List<MerchantOfferConfig.Goods>(3);
+            
+            var items = new List<string>(){"sword", "staff", "armor", "bow"};
+            var bonuses = new List<string>() { "bonus_troops" };
+            var health = battleManager.battle.playerHealthPoints;
+            if (health < HeroesConstants.PlayerHealthStart)
+            {
+                bonuses.Add("restore_health");
+            }
+
+            for (var i = 0; i < 2; i++)
+            {
+                var id = items.RemoveRandom();
+                preset.goods.Add(new MerchantOfferConfig.Goods()
+                {
+                    cost = 10,
+                    forAds = false,
+                    ItemData = new CoreItemData(tier, id, MergeConstants.TypeWeapons)
+                });
+            }
+            preset.goods.Add(new MerchantOfferConfig.Goods()
+            {
+                cost = 10,
+                forAds = false,
+                ItemData = new CoreItemData(1, bonuses.RemoveRandom(), MergeConstants.TypeBonus)
+            });
+            var randomIndex = UnityEngine.Random.Range(0, preset.goods.Count);
+            preset.goods[randomIndex].forAds = true;
+            _currentPreset = preset;
+            
             var ui = ServiceLocator.Get<IUIManager>().Show<MerchantOfferUI>(UIConstants.UIMerchantOffer, () => { });
-            var count = _currentPreset.goods.Count;
+            var count = preset.goods.Count;
             var prices = new List<int>(count);
             for(var i = 0; i < count; i++)
             {
-                prices.Add(Mathf.RoundToInt(_currentPreset.goods[i].cost * (1 - _sale)));
+                prices.Add(Mathf.RoundToInt(preset.goods[i].cost * (1 - _sale)));
             }
             
-            ui.Show(_currentPreset, prices, PurchaseItem, Complete);
+            ui.Show(preset, prices, PurchaseItem, Complete);
         }
 
-        private bool PurchaseItem(MerchantOfferData.Goods goods)
+        private bool PurchaseItem(MerchantOfferConfig.Goods goods)
         {
             CLog.Log($"[{nameof(MerchantOfferManager)}] Trying to purchase: {goods.cost}. ads? {goods.forAds}. {goods.ItemData.AsStr()}");
             if (goods.forAds)
@@ -79,7 +111,7 @@ namespace RobotCastle.Battling.MerchantOffer
                 var (res, msg) = AdsPlayer.Instance.PlayReward((res) =>
                 {
                     if(res)
-                        GrantGoods(goods); 
+                        HeroesManager.AddRewardOrBonus(goods.ItemData);
                 },"merchant_offer");
                 return res;
             }
@@ -92,36 +124,11 @@ namespace RobotCastle.Battling.MerchantOffer
                     return false;
                 money -= cost;
                 gm.levelMoney.UpdateWithContext(money, (int)EMoneyChangeContext.AfterPurchase);
-                GrantGoods(goods);
+                HeroesManager.AddRewardOrBonus(goods.ItemData);
                 return true;
             }
         }
 
-        private void GrantGoods(MerchantOfferData.Goods goods)
-        {
-            var data = goods.ItemData;
-            switch (data.type)
-            {
-                case MergeConstants.TypeWeapons:
-                    var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
-                    factory.SpawnHeroOrItem(new SpawnMergeItemArgs(data), playerGrid, sectionsController, out var item);
-                    break;
-                case MergeConstants.TypeBonus:
-                    switch (data.id)
-                    {
-                        case "bonus_troops":
-                            CLog.Log($"Adding troops size by 1");
-                            troops.ExtendBy(1);
-                            break;
-                        case "bonus_money":
-                            CLog.Log($"Adding money +{data.level}");
-                            var gm = ServiceLocator.Get<GameMoney>();
-                            gm.AddMoney(data.level);
-                            break;
-                    }
-                    break;
-            }            
-        }        
 
         private void Complete()
         {
