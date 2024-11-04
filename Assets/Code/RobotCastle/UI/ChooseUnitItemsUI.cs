@@ -42,7 +42,7 @@ namespace RobotCastle.UI
                 var item = items[i];
                 var ui = _elements[i];
                 ui.Index = i;
-                ui.SetIcon(db.GetUnitItemSpriteAtLevel(item.id, item.level));
+                ui.SetIcon(db.GetWeaponSpriteAtLevel(item.id, item.level));
                 ui.Reset();
                 ui.OnStateChange += OnStateChange;
                 _activeUI.Add(ui);

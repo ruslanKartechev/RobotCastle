@@ -54,7 +54,6 @@ namespace RobotCastle.Battling.DevilsOffer
             _currentOption = new (options.Random());
             var ui = ServiceLocator.Get<IUIManager>().Show<DevilsOfferUI>(UIConstants.UIDevilsOffer, () => {});
             ui.Show(_currentOption, tier, ResultCallback);
-
         }
         
         private void ResultCallback(bool playerChoice)

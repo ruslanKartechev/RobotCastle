@@ -9,8 +9,6 @@ using UnityEngine;
 
 namespace RobotCastle.Battling.MerchantOffer
 {
-    public delegate bool PurchaseCallback(MerchantOfferData.Goods goods);
-    
     public class MerchantOfferUI : MonoBehaviour, IScreenUI
     {
         [SerializeField] private List<ItemDescriptionLongUI> _itemDescriptions;
@@ -18,11 +16,11 @@ namespace RobotCastle.Battling.MerchantOffer
         [SerializeField] private MyButton _completedBtn;
         [SerializeField] private BlackoutFadeScreen _fadeScreen;
         [SerializeField] private MoneyUI _moneyUI;
-        private PurchaseCallback _purchaseCallback;
+        private Predicate<MerchantOfferConfig.Goods> _purchaseCallback;
         private Action _endCallback;
-        private MerchantOfferData.GoodsPreset _preset;
+        private MerchantOfferConfig.GoodsPreset _preset;
         
-        public void Show(MerchantOfferData.GoodsPreset preset, List<int> prices, PurchaseCallback purchaseCallback, Action completedCallback)
+        public void Show(MerchantOfferConfig.GoodsPreset preset, List<int> prices, Predicate<MerchantOfferConfig.Goods> purchaseCallback, Action completedCallback)
         {
             _preset = preset;
             _endCallback = completedCallback;
