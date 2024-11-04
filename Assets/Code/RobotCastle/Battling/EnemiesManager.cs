@@ -61,15 +61,34 @@ namespace RobotCastle.Battling
             CLog.Log($"[{nameof(EnemiesManager)}] Adding: {additionalCount} more enemies ({Mathf.RoundToInt(percent*100)}%)");
             var countLeft = additionalCount;
             var newEnemies = new List<IHeroController>(additionalCount);
+            var allFreeCells = new List<ICellView>(50);
+            foreach (var cellView in _gridView.Grid)
+            {
+                if(cellView.itemView == null)
+                    allFreeCells.Add(cellView);
+            }
+            var pool = ServiceLocator.Get<ISimplePoolsManager>();
+            const string particlesId = "new_enemy_spawn";
             while (countLeft > 0)
             {
                 for (var i = 0; i < enemies.Count && countLeft > 0; i++)
                 {
                     var original = enemies[i];
+                    var cell = allFreeCells.RemoveRandom();
                     var mergeView = original.Components.gameObject.GetComponent<IItemView>();
-                    var h = _enemiesFactory.SpawnNew(new SpawnMergeItemArgs(mergeView.itemData.core));
-                    newEnemies.Add(h);
+                    var args = new SpawnMergeItemArgs(mergeView.itemData.core);
+                    args.usePreferredCoordinate = true;
+                    args.preferredCoordinated = cell.cell.Coord;
+                    var hero = _enemiesFactory.SpawnNew(args);
+                    newEnemies.Add(hero);
                     countLeft--;
+                    var particles = pool.GetOne(particlesId) as OneTimeParticles;
+                    particles.Show(cell.WorldPosition);
+                    if (allFreeCells.Count == 0)
+                    {
+                        CLog.LogRed("[IncreaseEnemyForcesBy] No more free cells!");
+                        return;
+                    }
                 }
             }
             AllEnemies.AddRange(newEnemies);
@@ -83,6 +102,8 @@ namespace RobotCastle.Battling
         
         public void RaiseEnemiesTier(List<IHeroController> enemies, int additionalVal)
         {
+            var pool = ServiceLocator.Get<ISimplePoolsManager>();
+            const string particlesId = "new_enemy_spawn";
             foreach (var hero in enemies)
             {
                 var itemView = hero.Components.gameObject.GetComponent<IItemView>();
@@ -94,6 +115,9 @@ namespace RobotCastle.Battling
                         lvl = MergeConstants.HeroMaxMergeLvl;
                     itemView.itemData.core.level = lvl;
                     itemView.UpdateViewToData();
+                    
+                    var particles = pool.GetOne(particlesId) as OneTimeParticles;
+                    particles.Show(itemView.Transform.position);
                 }
             }    
         }

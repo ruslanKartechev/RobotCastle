@@ -77,6 +77,15 @@ namespace SleepDev
                 return default;
             return list[UnityEngine.Random.Range(0, list.Count)];
         }
+        
+        public static T RemoveRandom<T>(this IList<T> list)
+        {
+            if (list.Count == 0)
+                return default;
+            var val= list[UnityEngine.Random.Range(0, list.Count)];
+            list.Remove(val);
+            return val;
+        }
 
         public static float Random(this Vector2 vec)
         {

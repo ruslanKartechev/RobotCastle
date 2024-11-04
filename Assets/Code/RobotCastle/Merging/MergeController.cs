@@ -68,13 +68,19 @@ namespace RobotCastle.Merging
             OnItemPicked?.Invoke(item.itemData);
         }
 
-        public void DropAndHideCurrent()
+        /// <summary>
+        /// </summary>
+        /// <returns>Level of the dropped item</returns>
+        public int DropToReturnItem()
         {
             if (_draggedItem == null || _draggedItem.itemView == null)
-                return;
-            _draggedItem.itemView.Hide();
+                return -1;
+            var lvl = _draggedItem.itemView.itemData.core.level;
+            _draggedItem.originalCellView.itemView = null;
+            _processor.BreakItemToReturn(_draggedItem.itemView);
             NullDragged();
             _isProcessingPut = false;
+            return lvl;
         }
 
         public void OnUp(Vector3 _)

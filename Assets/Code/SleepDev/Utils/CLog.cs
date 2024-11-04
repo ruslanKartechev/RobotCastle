@@ -49,7 +49,7 @@ namespace SleepDev
         
         public static void LogError(string message)
         {
-            Debug.Log("Error! " + message.Color("r"));
+            Debug.LogError("Error!! " + message);
         }
         
         public static void LogPink(string message)

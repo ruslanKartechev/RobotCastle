@@ -56,17 +56,18 @@ namespace RobotCastle.Battling
             {
                 var heroGo = spawnedItem.Transform.gameObject;
                 var hero = heroGo.GetComponent<IHeroController>();
-                var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
-                barsPanel.AssignHeroUI(hero.Components);
+                var ui = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
+                ui.AssignHeroUI(hero.Components);
                 var id = args.coreData.id;
                 // heroSave.isUnlocked = true;
                 var modifiers = HeroesManager.GetModifiersForHero(id);
                 hero.InitHero(id, HeroesManager.GetHeroLevel(id), args.coreData.level, modifiers);
+                var weaponsContainer = heroGo.GetComponent<IHeroWeaponsContainer>();
+                weaponsContainer.SetEmpty();
                 if (args.useAdditionalItems)
                 {
                     var mergedItems = MergeFunctions.TryMergeAll(HeroWeaponData.GetDataWithDefaultModifiers(args.additionalItems), MergeConstants.MaxItemLevel);
-                    var itemsContainer = heroGo.GetComponent<IHeroWeaponsContainer>();
-                    itemsContainer.SetItems(mergedItems);
+                    weaponsContainer.SetItems(mergedItems);
                 }
                 hero.SetBehaviour(new HeroIdleBehaviour());
                 hero.Components.heroUI.UpdateStatsView(hero.Components);

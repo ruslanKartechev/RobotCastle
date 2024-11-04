@@ -64,6 +64,8 @@ namespace RobotCastle.Battling
         private MerchantOfferManager _merchantOffer;
         private SavePlayerData _playerData;
         private IUIManager _uiManager;
+        private int _roundAttemptsCount = 0;
+
         
         public void OnBattleStarted(Battle battle)
         {
@@ -164,7 +166,7 @@ namespace RobotCastle.Battling
         {
             CLog.Log($"[{nameof(BattleLevel)}] Init Offers");
             _smeltingOffer = new SmeltingOfferManager(_smeltingConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager.battle);
-            _devilsOffer = new DevilsOfferManager(_devilsOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
+            _devilsOffer = new DevilsOfferManager(_devilsOfferConfigContainer.config, _battleManager, _playerHealthView);
             _merchantOffer = new MerchantOfferManager(_merchantOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
             ServiceLocator.Bind<SmeltingOfferManager>(_smeltingOffer);
             ServiceLocator.Bind<DevilsOfferManager>(_devilsOffer);
@@ -207,7 +209,7 @@ namespace RobotCastle.Battling
             _mainUI.TroopSizePurchaseUI.SetInteractable(true);
             _mainUI.Init(_battleManager.battle, _chapter);
             _mainUI.StatsCollector.SetCollector(_battleManager.playerDamageStatsCollector);
-            InitCurrentRound();
+            InitCurrentRound(_roundAttemptsCount);
         }
         
         private async void InitProcess(CancellationToken token)
@@ -273,7 +275,7 @@ namespace RobotCastle.Battling
             try
             {
                 InitUI();
-            } catch(System.Exception ex) { CLog.LogError(ex.Message); }
+            } catch(System.Exception ex) { CLog.LogError($"{ex.Message}\n{ex.StackTrace}"); }
             
             await _battleCamera.MoveToMergePoint();
             GrantPlayerInput();
@@ -340,11 +342,13 @@ namespace RobotCastle.Battling
             switch (battle.State)
             {
                 case BattleState.EnemyWin:
+                    _roundAttemptsCount++;
                     if(SubtractHealthAndCheckLoose())
                         return;
                     await _battleManager.ResetStage(token);
                     break;
                 case BattleState.PlayerWin:
+                    _roundAttemptsCount = 0;
                     _battleManager.SetNextStage();
                     _mainUI.UpdateForNextWave();
                     _mainUI.Win();
@@ -370,13 +374,19 @@ namespace RobotCastle.Battling
             
             if (token.IsCancellationRequested) return;
             
-            InitCurrentRound();
+            InitCurrentRound(_roundAttemptsCount);
         }
         
         
-        private void InitCurrentRound()
+        private void InitCurrentRound(int attemptsCount)
         {
             var roundType = _chapter.levelData.levels[_battleManager.battle.roundIndex].roundType;
+            if (attemptsCount > 0)
+            {
+                GrantPlayerInput();
+                return;
+            }
+            AllowPlayerUIInput(false);
             switch (roundType)
             {
                 case RoundType.Default:

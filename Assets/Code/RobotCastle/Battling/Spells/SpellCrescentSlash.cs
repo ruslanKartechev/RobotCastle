@@ -132,7 +132,7 @@ namespace RobotCastle.Battling
         {
             if (token.IsCancellationRequested)
                 return;
-            await HeroesManager.WaitGameTime(.25f, _token.Token);
+            await HeroesManager.WaitGameTime(_config.animaDelaySec, _token.Token);
             Complete();
             _hero.ResumeCurrentBehaviour();
         }

@@ -9,5 +9,10 @@ namespace RobotCastle.Battling
 
         public List<string> ModifierIds => _modifierIds;
 
+        public void OverrideModifiers(List<string> modifiers)
+        {
+            _modifierIds = modifiers;
+        }
+
     }
 }

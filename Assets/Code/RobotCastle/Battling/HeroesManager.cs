@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Bomber;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.Merging;
 using RobotCastle.Saving;
+using SleepDev;
 using SleepDev.Data;
 using UnityEngine;
 
@@ -12,6 +14,60 @@ namespace RobotCastle.Battling
 {
     public static class HeroesManager
     {
+        public static string Red(int val) => $"<color=#BB0000>{val}</color>";
+
+        public static string Red(string msg) => $"<color=#BB0000>{msg}</color>";
+
+        public static void AddRewardOrBonus(CoreItemData data)
+        {
+            var merge = ServiceLocator.Get<MergeManager>();
+            var troops = ServiceLocator.Get<ITroopSizeManager>();
+            switch (data.type)
+            {
+                case MergeConstants.TypeWeapons:
+                    var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
+                    factory.SpawnHeroOrItem(new SpawnMergeItemArgs(data), merge.GridView, merge.SectionsController, out var item);
+                    break;
+                case MergeConstants.TypeBonus:
+                    switch (data.id)
+                    {
+                        case "bonus_troops":
+                            CLog.Log($"[bonus={data.id}] Adding troops size by 1");
+                            troops.ExtendBy(data.level);
+                            break;
+                        case "restore_health":
+                            CLog.Log($"[bonus={data.id}] Adding health");
+                            var battleManager = ServiceLocator.Get<BattleManager>();
+                            var health = battleManager.battle.playerHealthPoints;
+                            health += data.level;
+                            battleManager.battle.playerHealthPoints = health;
+                            ServiceLocator.Get<CastleHealthView>().AddHealth(health);
+                            break;
+                        case "bonus_money":
+                            CLog.Log($"[bonus={data.id}] Adding money +{data.level}");
+                            var gm = ServiceLocator.Get<GameMoney>();
+                            gm.AddMoney(data.level);
+                            break;
+                        case "hero_level_up":
+                            CLog.Log($"[bonus={data.id}] Random hero level up");
+                            var heroes = merge.SectionsController.GetAllItemsViews()
+                                .FindAll(t => t.itemData.core.type == MergeConstants.TypeHeroes 
+                                              && (t.itemData.core.level + 1) < MergeConstants.HeroMaxMergeLvl);
+                            if (heroes.Count == 0)
+                            {
+                                CLog.Log($"Heroes count is 0. Cannot level up");
+                                return;
+                            }
+                            var chosenHero = heroes.Random();
+                            chosenHero.itemData.core.level++;
+                            var animation = ServiceLocator.Get<MergeAnimation>();
+                            animation.PlayUpgradeOnly(chosenHero);
+                            break;
+                    }
+                    break;
+            }
+        }
+        
 
         public static async Task WaitGameTime(float seconds, CancellationToken token)
         {

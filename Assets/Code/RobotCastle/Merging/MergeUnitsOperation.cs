@@ -111,7 +111,7 @@ namespace RobotCastle.Merging
             foreach (var ind in chosenIndices)
                 allWeapons.Add(allWeapons[ind]);   
             _unitStanding.Transform.GetComponent<IHeroWeaponsContainer>().UpdateItems(chosen);
-            var spawner = ServiceLocator.Get<IMergeItemsFactory>();
+            var factory = ServiceLocator.Get<IMergeItemsFactory>();
             var cellPicker = ServiceLocator.Get<IGridSectionsController>();
             foreach (var ind in leftIndices)
             {
@@ -120,7 +120,7 @@ namespace RobotCastle.Merging
                 if (!hasCell)
                     break;
                 var cell = _gridView.GetCell(coords.x, coords.y);
-                spawner.SpawnItemOnCell(cell, itemData);
+                factory.SpawnItemOnCell(cell, itemData);
             }
             // SetPositions();
             Complete();

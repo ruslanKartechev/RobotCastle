@@ -14,10 +14,11 @@ namespace RobotCastle.Battling.DevilsOffer
         [SerializeField] private TextMeshProUGUI _penaltyText;
         [SerializeField] private ItemDescriptionLongUI _itemDescription;
         [SerializeField] private BlackoutFadeScreen _fadeScreen;
+        [SerializeField] private TextMeshProUGUI _tierText;
 
         private Action<bool> _callback;
 
-        public void Show(DevilsOfferData offerData, Action<bool> callback)
+        public void Show(DevilsOfferData offerData, int level, Action<bool> callback)
         {
             gameObject.SetActive(true);
             _fadeScreen.FadeInWithId(UIConstants.UIDevilsOffer);
@@ -26,6 +27,22 @@ namespace RobotCastle.Battling.DevilsOffer
             _btnDecline.AddMainCallback(Decline);
             _btnAccept.SetInteractable(true);
             _btnDecline.SetInteractable(true);
+            var tierText = "";
+            switch (level)
+            {
+                case 0: tierText = "difficult";
+                    break;
+                case 1: tierText = "hard";
+                    break;
+                case 2: tierText = "very hard";
+                    break;
+                case 3: tierText = "super hard";
+                    break;
+                default: tierText = "hard";
+                    break;
+            }
+            _tierText.text = tierText;
+            
             
             var reward = offerData.reward;
             switch (reward.type)
@@ -43,21 +60,18 @@ namespace RobotCastle.Battling.DevilsOffer
             switch (offerData.penaltyType)
             {
                 case EDevilsPenaltyType.CastleDurability:
-                    penaltyText = $"Reduce castle durability by {Red(offerData.penaltyValue)}";
+                    penaltyText = $"Reduce castle durability by {HeroesManager.Red((int)offerData.penaltyValue)}";
                     break;
                 case EDevilsPenaltyType.AdditionalEnemyForces:
-                    penaltyText = $"+{Red(Mathf.RoundToInt(offerData.penaltyValue * 100))}% additional enemy forces";
+                    penaltyText = $"+{HeroesManager.Red(Mathf.RoundToInt(offerData.penaltyValue * 100))}% additional enemy forces";
                     break;
                 case EDevilsPenaltyType.HigherEnemyTier:
-                    penaltyText = $"+{Red(Mathf.RoundToInt(offerData.penaltyValue))} enemy tier upgrade!";
+                    penaltyText = $"+{HeroesManager.Red(Mathf.RoundToInt(offerData.penaltyValue))} enemy tier upgrade!";
                     break;
             }
             _penaltyText.text = penaltyText;
             
-            string Red(float msg)
-            {
-                return $"<color=#FF1111>{msg}</color>";
-            }
+        
         }
 
         private void Accept()

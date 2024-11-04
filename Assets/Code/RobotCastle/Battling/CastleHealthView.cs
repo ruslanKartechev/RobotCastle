@@ -46,7 +46,8 @@ namespace RobotCastle.Battling
                 CLog.LogError("Error. Added health cannot be < 0");
                 return;
             }
-            for (var i = _current; i < totalHealth; i++)
+            var count = _healthPoles.Count;
+            for (var i = _current; i < totalHealth && i < count ; i++)
             {
                 _healthPoles[i].SetTrigger("Repair");
             }

@@ -13,12 +13,13 @@ namespace RobotCastle.Merging
         /// <returns></returns>
         void TryMerge(IItemView item1, IItemView itemViewInto, 
             IGridView gridView, Action<EMergeResult, bool> callback);
+
+        void BreakItemToReturn(IItemView item);
         
         List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem);
 
         List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, IGridView gridView);
         List<IItemView> SortAllItemsPossible(List<IItemView> allItems, IGridView gridView);
-        void MergeAllItemsByPriority(List<IItemView> firstPriority, List<IItemView> secondPriority, IGridView gridView);
 
     }
 }

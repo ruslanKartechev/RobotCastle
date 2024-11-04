@@ -62,8 +62,9 @@ namespace RobotCastle.Merging
         {
             if (_refundMode)
             {
-                ServiceLocator.Get<GameMoney>().levelMoney.AddValue(HeroesConstants.HeroRefundMoney);
-                _mergeController.DropAndHideCurrent();
+                var lvl = _mergeController.DropToReturnItem();
+                var money = (lvl + 1) * HeroesConstants.HeroRefundMoney;
+                ServiceLocator.Get<GameMoney>().levelMoney.AddValue(money);
                 _battleUI.ReturnItemButton.Hide();
                 _refundMode = false;
             }

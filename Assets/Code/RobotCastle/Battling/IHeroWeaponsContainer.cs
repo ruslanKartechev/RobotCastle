@@ -12,5 +12,6 @@ namespace RobotCastle.Battling
         void AddNewItem(HeroWeaponData newItem);
         void UpdateItems(List<HeroWeaponData> items);
         void SetItems(List<HeroWeaponData> items);
+        void SetEmpty();
     }
 }

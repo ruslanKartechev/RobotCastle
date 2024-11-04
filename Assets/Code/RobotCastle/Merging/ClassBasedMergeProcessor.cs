@@ -42,6 +42,34 @@ namespace RobotCastle.Merging
 
         public void ClearAllModifiers() => _modifiers.Clear();
         
+        public void BreakItemToReturn(IItemView item)
+        {
+            var data = item.itemData;
+            var go = item.Transform.gameObject;
+            item.Hide();
+            if (data.core.type == MergeConstants.TypeHeroes)
+            {
+                var weapons = go.GetComponent<IHeroWeaponsContainer>();
+                if (weapons.Items.Count > 0)
+                {
+                    var factory = ServiceLocator.Get<IPlayerMergeItemsFactory>();
+                    foreach (var weaponData in weapons.Items)
+                    {
+                        var itemData = new ItemData(weaponData.core);
+                        var args = new SpawnMergeItemArgs(itemData.core);
+                        var spawned = factory.SpawnHeroOrItem(args);
+                        if (spawned == null)
+                            return;
+                        var container = spawned.Transform.gameObject.GetComponent<ModifiersContainer>();
+                        if(container != null)
+                            container.OverrideModifiers(weaponData.modifierIds);
+                        else
+                            CLog.Log($"[BreakItemToReturn] Couldn't find ModifiersContainer to override modifiers");
+                    }
+                }
+            }
+        }
+
         public void TryMerge(IItemView itemViewTaken, IItemView itemViewInto, IGridView gridView, Action<EMergeResult, bool> callback)
         {
             if (itemViewTaken.itemData.core.id == MergeConstants.UpgradeBookId)
@@ -118,8 +146,7 @@ namespace RobotCastle.Merging
             return list;
         }
 
-        public List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, 
-            IGridView gridView)
+        public List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, IGridView gridView)
         {
             if (allItems.Count < 2)
                 return allItems;
@@ -195,96 +222,11 @@ namespace RobotCastle.Merging
         }
 
         
-        public void MergeAllItemsByPriority(List<IItemView> firstPriority, 
-            List<IItemView> secondPriority,
-            IGridView gridView)
-        {
-             if (firstPriority.Count + secondPriority.Count < 2)
-                return;
-             var db = ServiceLocator.Get<ViewDataBase>();
-             var it = 0;
-             const int itMax = 100;
-             
-             while (it < itMax && TryMakeOneMerge(null, null))
-                 it++;
-             if(it >= itMax)
-                 CLog.LogRed("[MergeAllItemsPossible] it >= it_max !!! ERROR");
-             firstPriority.ClearNulls();
-             secondPriority.ClearNulls();
-            
-             // Nested Methods
-             bool TryMakeOneMerge(IItemView itemOne, List<IItemView> allItems)
-             {
-                 var count = allItems.Count;
-                 // for (var indOne = count - 1; indOne >= 1; indOne--)
-                 // {
-                 //     if (allItems[indOne] == null)
-                 //         continue;
-                 //     var data1 = allItems[indOne].itemData.core;
-                 //     var maxLvl = db.GetMaxMergeLevel(data1.id) - 1; // (not indexed)
-                 //     if (data1.level >= maxLvl)
-                 //         continue;
-                 //     var cellOne = gridView.GetCell(allItems[indOne].itemData.pivotX, allItems[indOne].itemData.pivotY);
-                 //
-                 // }
-                 var data1 = itemOne.itemData.core;
-                 var maxLvl = db.GetMaxMergeLevel(data1.id) - 1; // (not indexed)
-                 if (data1.level >= maxLvl)
-                     return false;
-                 var cellOne = gridView.GetCell(itemOne.itemData.pivotX, itemOne.itemData.pivotY);
-                 
-                 for (var indTwo = count - 1; indTwo >= 0; indTwo--)
-                 {
-                     if (allItems[indTwo] == null)
-                         continue;
-                     var data2 = allItems[indTwo].itemData.core;
-                     if (data1 == data2)
-                     {
-                         switch (data1.type)
-                         {
-                             case MergeConstants.TypeHeroes:
-                                 var itemsCont1 = itemOne.Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
-                                 var itemsCont2 = allItems[indTwo].Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
-                                 if (itemsCont1.ItemsCount + itemsCont2.ItemsCount > 0)
-                                 {
-                                     var merged = MergeItemsList(itemsCont1.Items, itemsCont2.Items);
-                                     if (merged.Count <= MaxItemsCount)
-                                         itemsCont1.UpdateItems(merged);
-                                     else
-                                     {
-                                         CLog.Log($"[MergeAll] All items won't fit into container");
-                                         continue;
-                                     }
-                                 }
-                                 _container.RemoveItem(allItems[indTwo]);
-                                 MergeFunctions.ClearCellAndHideItem(gridView, allItems[indTwo]);
-                                 allItems[indTwo] = null;
-                                 data1.level++;
-                                 itemOne.UpdateViewToData();
-                                 itemOne.OnMerged();
-                                 return true;
-                             case MergeConstants.TypeWeapons:
-                                 _container.RemoveItem(itemOne);
-                                 _container.RemoveItem(allItems[indTwo]);
-                                 MergeFunctions.ClearCellAndHideItem(gridView, itemOne);
-                                 MergeFunctions.ClearCellAndHideItem(gridView, allItems[indTwo]);
-                                 // allItems[indOne] = null;
-                                 // allItems[indTwo] = null;
-                                 // data1.level++;
-                                 // allItems[indOne] = ServiceLocator.Get<IMergeItemsFactory>().SpawnItemOnCell(cellOne, new ItemData(data1));
-                                 return true;
-                         }
-                     }
-                 }
-                 return false;
-             }
-        }
-
         
         public List<IItemView> SortAllItemsPossible(List<IItemView> allItems, IGridView gridView)
         {
             if (allItems.Count < 2)
-                    return allItems;
+                return allItems;
             var result = new List<IItemView>(allItems);
             result.Sort((a, b) =>
             {

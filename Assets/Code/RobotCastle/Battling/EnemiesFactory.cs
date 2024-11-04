@@ -110,13 +110,16 @@ namespace RobotCastle.Battling
                 cellView = cell;
             }
 
-            foreach (var cell in GridView.Grid)
+            if (cellView == null)
             {
-                if (cell.cell.isUnlocked && cell.cell.isOccupied == false)
+                foreach (var cell in GridView.Grid)
                 {
-                    cellView = cell;
-                    break;
-                }
+                    if (cell.cell.isUnlocked && cell.cell.isOccupied == false)
+                    {
+                        cellView = cell;
+                        break;
+                    }
+                }        
             }
             var barsPanel = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
             var factory = ServiceLocator.Get<IMergeItemsFactory>();

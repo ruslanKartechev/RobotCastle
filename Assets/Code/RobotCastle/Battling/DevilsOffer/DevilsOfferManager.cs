@@ -1,6 +1,7 @@
-﻿using RobotCastle.Core;
+﻿using System.Collections.Generic;
+using System.Threading;
+using RobotCastle.Core;
 using RobotCastle.Data;
-using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
 
@@ -8,26 +9,19 @@ namespace RobotCastle.Battling.DevilsOffer
 {
     public class DevilsOfferManager 
     {
-        public DevilsOfferManager(DevilsOfferConfig config, IGridView playerGrid,
-            IGridSectionsController sectionsController, ITroopSizeManager troops, 
-            BattleManager battleManager, CastleHealthView healthView)
+        public DevilsOfferManager(DevilsOfferConfig config, BattleManager battleManager, CastleHealthView healthView)
         {
             this.config = config;
-            this.sectionsController = sectionsController;
-            this.troops = troops;
             this.battleManager = battleManager;
             this.healthView = healthView;
-            this.playerGrid = playerGrid;
         }
 
         public DevilsOfferConfig config;
-        public IGridView playerGrid;
-        public IGridSectionsController sectionsController;
-        public ITroopSizeManager troops;
         public CastleHealthView healthView;
         public BattleManager battleManager;
         private DevilsOfferData _currentOption;
         private System.Action _callback;
+        private CancellationTokenSource _token;
         private int _offerTier;
 
         public void MakeNextOffer(System.Action callback)
@@ -38,20 +32,29 @@ namespace RobotCastle.Battling.DevilsOffer
                 return;
             }
             _callback = callback;
+            _token?.Cancel();
+            _token = new CancellationTokenSource();
+            
             var tier = _offerTier;
             _offerTier++;
-            _currentOption = new (config.optionsPerTier[tier].options[0]);
-            if (_currentOption.penaltyType == EDevilsPenaltyType.CastleDurability
-                && battleManager.battle.playerHealthPoints <= 1)
+            var options = new List<DevilsOfferData>(config.optionsPerTier[tier].options);
+            var health = battleManager.battle.playerHealthPoints;
+            if (health >= HeroesConstants.PlayerHealthStart)
             {
-                CLog.Log($"Random type is -CastleHealth, but health already == 1. Changing type to additional enemy forces");
-                _currentOption.penaltyType = EDevilsPenaltyType.AdditionalEnemyForces;
-                _currentOption.penaltyValue = .25f;
+                options.RemoveAll(t => t.reward.id == "restore_health");
             }
-            
+            else if (health <= 1)
+            {
+                options.RemoveAll(t => t.penaltyType == EDevilsPenaltyType.CastleDurability);
+            }
+            if (options.Count == 0)
+            {
+                CLog.LogError($"[{nameof(DevilsOfferManager)}] Options count == 0 after filtering");
+            }
+            _currentOption = new (options.Random());
             var ui = ServiceLocator.Get<IUIManager>().Show<DevilsOfferUI>(UIConstants.UIDevilsOffer, () => {});
-            ui.Show(_currentOption, ResultCallback);
-            
+            ui.Show(_currentOption, tier, ResultCallback);
+
         }
         
         private void ResultCallback(bool playerChoice)
@@ -59,12 +62,49 @@ namespace RobotCastle.Battling.DevilsOffer
             CLog.Log($"[{nameof(DevilsOfferManager)}] Player response: {playerChoice}");
             if (playerChoice)
             {
-                var data = _currentOption.reward;
-                AddReward(data);
-                AddPenalty(_currentOption.penaltyType, _currentOption.penaltyValue);
+                ShowPenaltyAndRewards(_token.Token);
             }
+            else
+            {
+                _callback?.Invoke();
+            }
+        }
+
+        private async void ShowPenaltyAndRewards(CancellationToken token)
+        {
+            const float waitTime = 1.3f;
+            var cam = ServiceLocator.Get<BattleCamera>();
+            var moveToMergePoint = false;
+            switch (_currentOption.penaltyType)
+            {
+                case EDevilsPenaltyType.AdditionalEnemyForces or EDevilsPenaltyType.HigherEnemyTier:
+                    moveToMergePoint = true;
+                    cam.SetBattlePoint();
+                    break;
+                case EDevilsPenaltyType.CastleDurability:
+                    cam.SetMergePoint();
+                    break;
+            }
+            AddPenalty(_currentOption.penaltyType, _currentOption.penaltyValue);
+
+            await HeroesManager.WaitGameTime(waitTime, token);
+            if (token.IsCancellationRequested) return;
+            if (moveToMergePoint)
+            {
+                await cam.MoveToMergePoint();
+                if (token.IsCancellationRequested) return;
+            }
+            
+            var coreData = _currentOption.reward;
+            HeroesManager.AddRewardOrBonus(coreData);
+            
+            await HeroesManager.WaitGameTime(waitTime, token);
+            if (token.IsCancellationRequested) return;
+
             _callback?.Invoke();
         }
+        
+        
 
         private void AddPenalty(EDevilsPenaltyType type, float val)
         {
@@ -90,31 +130,6 @@ namespace RobotCastle.Battling.DevilsOffer
             }
         }
         
-        private void AddReward(CoreItemData data)
-        {
-            switch (data.type)
-            {
-                case MergeConstants.TypeWeapons:
-                    var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
-                    factory.SpawnHeroOrItem(new SpawnMergeItemArgs(_currentOption.reward), playerGrid, sectionsController, out var item);
-                    break;
-                case MergeConstants.TypeBonus:
-                    switch (data.id)
-                    {
-                        case "bonus_troops":
-                            CLog.Log($"Adding troops size by 1");
-                            troops.ExtendBy(1);
-                            break;
-                        case "bonus_money":
-                            CLog.Log($"Adding money +{data.level}");
-                            var gm = ServiceLocator.Get<GameMoney>();
-                            gm.AddMoney(data.level);
-                            break;
-                    }
-                    break;
-            }
-        }
-
         
     }
 }

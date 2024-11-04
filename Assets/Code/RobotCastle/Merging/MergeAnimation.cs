@@ -7,6 +7,16 @@ namespace RobotCastle.Merging
 {
     public class MergeAnimation : MonoBehaviour
     {
+        public void PlayUpgradeOnly(IItemView item)
+        {
+            gameObject.SetActive(true);
+            transform.position = item.Transform.position;
+            _particle.Play();
+            item.UpdateViewToData();
+            item.OnMerged();
+            SoundManager.Inst.Play(_sound);
+        }
+        
         public void Play(IItemView standing, IItemView moving, IGridView gridView, Action endCallback)
         {
             _moving = moving;

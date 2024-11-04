@@ -216,6 +216,10 @@ namespace RobotCastle.Testing
             }
             else
                 _heroIndex = 0;
+#if UNITY_EDITOR
+            if(Application.isPlaying == false)
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
         }
 
         private void OnValidate()

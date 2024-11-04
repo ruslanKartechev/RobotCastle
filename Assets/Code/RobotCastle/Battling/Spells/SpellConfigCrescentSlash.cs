@@ -9,5 +9,6 @@ namespace RobotCastle.Battling
         public List<CellsMask> cellsMasksByTear;
         public List<float> spellDamage;
         public List<float> physDamage;
+        public float animaDelaySec = .33f;
     }
 }

@@ -4,6 +4,7 @@ using DG.Tweening;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.UI;
+using RobotCastle.Utils;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -87,7 +88,7 @@ namespace RobotCastle.Battling
         {
             transform.DOKill();
             transform.DOMove(_battlePoint.position, _moveTime).SetEase(Ease.Linear);
-            await Task.Delay((int)(_moveTime * 1000));
+            await Task.Delay(_moveTime.SecToMs());
 
         }
 
@@ -95,7 +96,7 @@ namespace RobotCastle.Battling
         {
             transform.DOKill();
             transform.DOMove(_mergePoint.position, _moveTime).SetEase(Ease.Linear);
-            await Task.Delay((int)(_moveTime * 1000));
+            await Task.Delay(_moveTime.SecToMs());
         }
         
     }

@@ -155,6 +155,8 @@ namespace RobotCastle.MainMenu
             callback?.Invoke(EMergeResult.NoMerge, false);
         }
 
+        public void BreakItemToReturn(IItemView item) {}
+        
         public EMergeResult TryMerge(ItemData item1, ItemData item2, out ItemData mergedItem, out bool oneIntoTwo)
         {
             oneIntoTwo = false;
