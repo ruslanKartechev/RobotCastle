@@ -33,11 +33,9 @@ namespace RobotCastle.Battling
         {
             _isActivated = false;
             _logicStep = EAttackLogicStep.Waiting;
-            // CLog.Log($"[{nameof(HeroAttackEnemyBehaviour)}] [Stop]");
-            if(_mainToken != null)
-                _mainToken.Cancel();
-            if (_subToken != null)
-                _subToken.Cancel();
+            _mainToken?.Cancel();
+            _subToken?.Cancel();
+            movement.Stop();
             _hero.Components.attackManager.Stop();
             _hero.Battle.AttackPositionCalculator.RemoveUnit(_hero.Components.state);
             myState.SetTargetCellToSelf();

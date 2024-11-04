@@ -92,8 +92,9 @@ namespace RobotCastle.Battling
             _playerMergeFactory = gameObject.GetComponent<IPlayerMergeItemsFactory>();
             SleepDev.Analytics.OnLevelStarted(_selectionData.chapterIndex, _selectionData.tierIndex);
             _token = new CancellationTokenSource();
-            InitProcess(_token.Token);
+            CameraAndInit(_token.Token);
         }
+        
 
         private void SetLocation()
         {
@@ -209,10 +210,16 @@ namespace RobotCastle.Battling
             _mainUI.TroopSizePurchaseUI.SetInteractable(true);
             _mainUI.Init(_battleManager.battle, _chapter);
             _mainUI.StatsCollector.SetCollector(_battleManager.playerDamageStatsCollector);
+            _mainUI.AnimateShowUp();
             InitCurrentRound(_roundAttemptsCount);
         }
         
-        private async void InitProcess(CancellationToken token)
+        private async void CameraAndInit(CancellationToken token)
+        {
+            await Task.WhenAll(InitProcess(token), _battleCamera.PlayStartAnimation(token));
+        }
+        
+        private async Task InitProcess(CancellationToken token)
         {
             CLog.Log($"[{nameof(BattleLevel)}] Init process");
             _battleCamera.SetBattlePoint();
@@ -277,7 +284,6 @@ namespace RobotCastle.Battling
                 InitUI();
             } catch(System.Exception ex) { CLog.LogError($"{ex.Message}\n{ex.StackTrace}"); }
             
-            await _battleCamera.MoveToMergePoint();
             GrantPlayerInput();
         }
         
@@ -312,7 +318,8 @@ namespace RobotCastle.Battling
                 hero.Components.transform.rotation = Quaternion.Euler(Vector3.zero);
             
             SoundManager.Inst.Play(_battleStartSound);
-            await _battleCamera.MoveToBattlePoint();
+            _battleCamera.Stop();
+            await _battleCamera.MovingAndScalingToBattle(token);
             
             if (token.IsCancellationRequested) return;
             await Task.Yield();
@@ -370,7 +377,8 @@ namespace RobotCastle.Battling
             if(battleUI)
                 battleUI.SetMainAreaUpPos();
             
-            await _battleCamera.MoveToMergePoint();
+            _battleCamera.Stop();
+            await _battleCamera.MovingAndScalingToMerge(token);
             
             if (token.IsCancellationRequested) return;
             
