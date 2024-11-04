@@ -37,6 +37,7 @@ namespace RobotCastle.UI
         [SerializeField] private FadePopAnimator _startedAnimator;
         [SerializeField] private MyButton _btnExit;
         [SerializeField] private ExitBattleUI _exitBattleUI;
+        [SerializeField] private SlideAnimator _slideAnimator;
 
         private Battle _battle;
         private LevelData _levelData;
@@ -53,7 +54,10 @@ namespace RobotCastle.UI
             _btnExit.AddMainCallback(Exit);
         }
 
-    
+        public void AnimateShowUp()
+        {
+            _slideAnimator.SlideIn(() => {});   
+        }
 
         public void AllowButtonsInput(bool allow)
         {
@@ -126,5 +130,7 @@ namespace RobotCastle.UI
                 Time.timeScale = 1f;
             });
         }
+
+      
     }
 }

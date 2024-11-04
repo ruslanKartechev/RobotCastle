@@ -30,18 +30,34 @@ namespace SleepDev
                 StopCoroutine(_working);
         }
         
-        private IEnumerator Sliding(Vector2 from, Vector2 to, float time)
+        private IEnumerator Sliding(Vector2 from, Vector2 to, float timeTotal)
         {
             var elapsed = Time.deltaTime;
+            var time = timeTotal * .78f;
             var t = elapsed / time;
-            while (true)
+            var maxT = 1.16f;
+            while (t < 1f)
             {
-                var p = Vector2.Lerp(from, to ,t);
+                var lerpT = Mathf.Lerp(0f, maxT, t);
+                var p = Vector2.LerpUnclamped(from, to, lerpT);
                 rect.anchoredPosition = p;
                 elapsed += Time.deltaTime;
                 t = elapsed / time;
                 yield return null;
             }
+            elapsed = 0f;
+            time = timeTotal * .22f;
+            t = elapsed / time;
+            while (t < 1f)
+            {
+                var lerpT = Mathf.Lerp(maxT, 1f, t);
+                var p = Vector2.LerpUnclamped(from, to, lerpT);
+                rect.anchoredPosition = p;
+                elapsed += Time.deltaTime;
+                t = elapsed / time;
+                yield return null;
+            }
+            rect.anchoredPosition = to;
         }
         
         

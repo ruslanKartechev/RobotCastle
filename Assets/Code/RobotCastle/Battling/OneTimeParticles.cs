@@ -15,7 +15,7 @@ namespace RobotCastle.Battling
             gameObject.SetActive(true);
             _particles.Play();
             await Task.Delay((int)(HideDelay));
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying || gameObject == null) return;
             gameObject.SetActive(false);
             ServiceLocator.Get<ISimplePoolsManager>().ReturnOne(this);
         }

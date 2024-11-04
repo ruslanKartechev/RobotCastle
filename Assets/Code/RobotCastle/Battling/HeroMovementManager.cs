@@ -6,7 +6,6 @@ using Bomber;
 using RobotCastle.Core;
 using UnityEngine;
 using SleepDev;
-using Random = UnityEngine.Random;
 
 namespace RobotCastle.Battling
 {
@@ -151,12 +150,12 @@ namespace RobotCastle.Battling
                 return EPathMovementResult.FailedToBuild;
             }
             
-            foreach (var p in path.points)
-            {
-                var p1 = _map.GetWorldFromCell(p) + _offset;
-                var p2 = p1 + Vector3.up * 2f;
-                Debug.DrawLine(p1, p2, _dbgColor, 3f);
-            }
+            // foreach (var p in path.points)
+            // {
+            //     var p1 = _map.GetWorldFromCell(p) + _offset;
+            //     var p2 = p1 + Vector3.up * 2f;
+            //     Debug.DrawLine(p1, p2, _dbgColor, 3f);
+            // }
             
             const int CheckEnemyPosIterationsCount = 2;
             for (var i = 1; i < path.points.Count && !token.IsCancellationRequested; i++)
@@ -185,8 +184,8 @@ namespace RobotCastle.Battling
                     elapsed += Time.deltaTime;
                     await Task.Yield();
                 }
-                movable.rotation = rot2;
                 if (token.IsCancellationRequested) return EPathMovementResult.WasStopped;
+                movable.rotation = rot2;
 #endregion
 
 #region EnemyDetection
@@ -196,10 +195,10 @@ namespace RobotCastle.Battling
                     blocked = false;
                     // CLog.LogWhite("====================");
                     // CLog.Log($"Me {name}. Cell: {CurrentCell}, target: {targetCell}");
-                    for (var ind = _map.ActiveAgents.Count-1; ind >= 0 ; ind--)
+                    for (var ind = _map.ActiveAgents.Count - 1; ind >= 0; ind--)
                     {
                         var agent = _map.ActiveAgents[ind];
-                        if(agent == this)
+                        if (agent == this)
                             continue;
                         // CLog.Log($"Agent {ind + 1}, {agent.name}: Cell: {agent.CurrentCell}. Target cell: {agent.TargetCell}");
                         if (agent.CurrentCell == targetCell || agent.TargetCell == targetCell)
@@ -221,23 +220,24 @@ namespace RobotCastle.Battling
                                 MoveToEnemy(enemy, stepCallback, endCallback);
                                 return EPathMovementResult.IsBlockedOnTheWay;
                             }
-
                             break;
                         }
                     }
+
                     if (blocked)
                     {
                         await Task.Yield();
                         if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
                     }
                 } while (blocked);
+                if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
+
 #endregion
 
 #region Moving
                 TargetCell = targetCell;
                 var totalDistance = (targetWorldPos - movable.position).magnitude;
                 var travelled = 0f;
-                // var didChangeCell = false;
                 CLog.LogGreen($"[{gameObject.name}] Moving to cell {targetCell}, world: {targetWorldPos}. Speed: {_speedGetter.Get()}");
                 while (!token.IsCancellationRequested && travelled < totalDistance)
                 {
@@ -247,18 +247,8 @@ namespace RobotCastle.Battling
                     vec *= amount / vecL;
                     travelled += amount;
                     movable.position += vec;
-                    // if (!didChangeCell)
-                    // {
-                    //     if (travelled / totalDistance >= .5f)
-                    //     {
-                    //         didChangeCell = true;
-                    //         CurrentCell = targetCell;
-                    //     }
-                    // }
                     await Task.Yield();
                 }
-                CLog.LogWhite($"[{name}] token cancelled?: {token.IsCancellationRequested}");
-
                 if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
                 movable.position = targetWorldPos;
                 CurrentCell = targetCell;
@@ -266,6 +256,7 @@ namespace RobotCastle.Battling
                 stepCallback?.Invoke();
                 if(token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
             }
+            if(token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
             OnMovementStopped();
             endCallback?.Invoke();
             return EPathMovementResult.ReachedEnd;
@@ -354,15 +345,11 @@ namespace RobotCastle.Battling
                     continue;
                 if (agent.CurrentCell == CurrentCell)
                 {
-                    CLog.LogRed($"{_unitView.gameObject.name} ERROR !!");
+                    CLog.LogRed($"{_unitView.gameObject.name} ERROR !! Another: {((HeroMovementManager)agent).gameObject.name}");
                     Debug.Break();
                     return;
                 }
             }
-            // if (_didSetup && _map != null)
-            // {
-            //     SyncCellToWorldPos();
-            // }
         }
         
         private void OnDisable()

@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4294153064810088032}
-  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -7.734, y: 0, z: 0}
 --- !u!20 &5592276004255277059
 Camera:
   m_ObjectHideFlags: 0
@@ -66,9 +66,9 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 35
   orthographic: 1
-  orthographic size: 7.8
+  orthographic size: 9
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -117,14 +117,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8466731600111633487}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: -0, z: -0, w: 0.8660254}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
   m_LocalPosition: {x: 0, y: 12, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1038330593492286211}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!114 &910037817318768565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +137,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: add03c46d8e9424281b43167b9b32f74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveTime: 1
+  _camera: {fileID: 5592276004255277059}
+  _moveTime: 0.37
   _mergePoint: {fileID: 0}
   _battlePoint: {fileID: 0}
+  _cameraSizeNormal: 9
+  _cameraSizeWide: 10.5
+  _sizeAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2.5244944
+      outSlope: 2.5244944
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.07775227
+    - serializedVersion: 3
+      time: 0.56934214
+      value: 1.0005713
+      inSlope: 0.82248235
+      outSlope: 0.82248235
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.19744664
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.28467783
+      outSlope: -0.28467783
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.1825519
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _sizeAnimationTime: 1
+  _moveBackTime: 1
+  _moveBackAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.05155877
+      outSlope: 0.05155877
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.15467314
+    - serializedVersion: 3
+      time: 1.0078014
+      value: 0.55135435
+      inSlope: 0.08755714
+      outSlope: 0.08755714
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12076802
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

@@ -90,7 +90,8 @@ namespace RobotCastle.Battling.DevilsOffer
             if (token.IsCancellationRequested) return;
             if (moveToMergePoint)
             {
-                await cam.MoveToMergePoint();
+                cam.Stop();
+                await cam.MovingAndScalingToMerge(token);
                 if (token.IsCancellationRequested) return;
             }
             
