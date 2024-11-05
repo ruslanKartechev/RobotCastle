@@ -11,7 +11,6 @@ namespace RobotCastle.Battling
 
         public string BehaviourID => "hero_attack";
 
-        
         public void Activate(IHeroController hero, Action<IHeroBehaviour> endCallback)
         {
             if (_isActivated)
@@ -42,9 +41,6 @@ namespace RobotCastle.Battling
         }
         
         
-        private const float DelayAfterTargetDiedMs = 300;
-        private const int TimeWaitIfPathFailedMs = 250;
-
         private IHeroController _hero;
         private CancellationTokenSource _mainToken;
         private CancellationTokenSource _subToken;
@@ -63,11 +59,6 @@ namespace RobotCastle.Battling
             set => _hero.Components.state.attackData.CurrentEnemy = value;
         }
 
-        
-        // 1 Choose target
-        // 2 go to target
-        // 3 attack target
-        // while going  - check position
         private async void SearchAndAttack(CancellationToken token)
         {
             if (!_isActivated)
@@ -172,7 +163,7 @@ namespace RobotCastle.Battling
 
         private async Task BeginAttackAndCheckIfDead(IHeroController targetEnemy, CancellationToken token)
         {
-            CLog.LogWhite($"[{name}] BeginAttackAndCheckIfDead");
+            // CLog.LogWhite($"[{name}] BeginAttackAndCheckIfDead");
             _hero.Components.attackManager.BeginAttack(targetEnemy.Components.damageReceiver);
             var startEnemyCell = targetEnemy.Components.state.currentCell;
             while (!token.IsCancellationRequested)

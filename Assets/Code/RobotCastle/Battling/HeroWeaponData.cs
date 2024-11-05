@@ -16,34 +16,6 @@ namespace RobotCastle.Battling
         public int level => core.level;
         public string type => core.type;
 
-        public static List<HeroWeaponData> GetDataWithDefaultModifiers(List<CoreItemData> items)
-        {
-            var result = new List<HeroWeaponData>(items.Count);
-            var db = ServiceLocator.Get<ViewDataBase>();
-            foreach (var it in items)
-            {
-                var prefab = db.GetMergePrefabAtLevel(it.id, it.level);
-                if (prefab.TryGetComponent<ModifiersContainer>(out var container))
-                    result.Add(new HeroWeaponData(it, container.ModifierIds));   
-                else
-                    result.Add(new HeroWeaponData(it, new List<string>()));
-
-            }
-            return result;
-        }
-        
-        public static HeroWeaponData GetDataWithDefaultModifiers(CoreItemData it)
-        {
-            HeroWeaponData result;
-            var db = ServiceLocator.Get<ViewDataBase>();
-            var prefab = db.GetMergePrefabAtLevel(it.id, it.level);
-            if (prefab.TryGetComponent<ModifiersContainer>(out var container))
-                result = new HeroWeaponData(it, container.ModifierIds);   
-            else
-                result = new HeroWeaponData(it, new List<string>());
-            return result;
-        }
-
         public HeroWeaponData(CoreItemData core, List<string> modifier)
         {
             this.core = core;

@@ -122,6 +122,10 @@ namespace RobotCastle.Battling
             {
                 _battleManager.AddRoundModifier(new RoundModifierEnemiesTierUp(config.enemyTier, roundsCount));
             }
+            if (config.additionalEliteEnemies > 0)
+            {
+                _battleManager.AddRoundModifier(new RoundModifierEliteEnemies(config.additionalEliteEnemies));
+            }
             if (config.castleDurabilityPenalty > 0)
             {
                 var health = _battleManager.battle.playerHealthPoints - config.castleDurabilityPenalty;

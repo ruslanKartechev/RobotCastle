@@ -1720,6 +1720,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1161594981}
     m_Modifications:
+    - target: {fileID: 654737030268314998, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 866484490312188316, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1
@@ -1760,13 +1764,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1275327426866094623, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1506619627406732816, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2147584397019755118, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_Name
       value: Flag_1
       objectReference: {fileID: 0}
     - target: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_Name
-      value: tower_health_view
+      value: hp_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841464393347167547, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7328389996654390223, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936511514985390943, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3006,7 +3030,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11f5ec1264427254c9f6aa423a164061, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.208
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11f5ec1264427254c9f6aa423a164061, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4641,7 +4665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_Name
-      value: tower_health_view (2)
+      value: hp_3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5775,7 +5799,7 @@ Transform:
   m_GameObject: {fileID: 826876985}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.02, y: 0, z: -0.5}
+  m_LocalPosition: {x: -3.02, y: 0, z: -0.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5832,8 +5856,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8, y: 0.8, z: 0.8}
-  m_Center: {x: 0, y: 0.39, z: 0}
+  m_Size: {x: 0.8, y: 0.6, z: 0.8}
+  m_Center: {x: 0, y: -0.05, z: 0}
 --- !u!1 &850128970
 GameObject:
   m_ObjectHideFlags: 0
@@ -5862,7 +5886,7 @@ Transform:
   m_GameObject: {fileID: 850128970}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.988, y: 0, z: -0.5}
+  m_LocalPosition: {x: -1.988, y: 0, z: -0.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5919,8 +5943,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8, y: 0.8, z: 0.8}
-  m_Center: {x: 0, y: 0.39, z: 0}
+  m_Size: {x: 0.8, y: 0.6, z: 0.8}
+  m_Center: {x: 0, y: -0.05, z: 0}
 --- !u!1001 &850308929
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7029,7 +7053,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ffda48c2f8dd10b4ea2013f9ebde0e92, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.208
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ffda48c2f8dd10b4ea2013f9ebde0e92, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7321,7 +7345,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161594979}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13052616, y: -0, z: -0, w: 0.9914449}
+  m_LocalRotation: {x: 0.1564345, y: 0, z: 0, w: 0.98768836}
   m_LocalPosition: {x: 0, y: 0, z: -0.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7330,7 +7354,7 @@ Transform:
   - {fileID: 1739772003}
   - {fileID: 608422755}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 18, y: 0, z: 0}
 --- !u!95 &1163505802 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2435462845010008029, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
@@ -10024,7 +10048,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2811003847638136284, guid: 81584db4644c27e48928ab01d264fc74, type: 3}
       propertyPath: m_Name
-      value: tower_health_view (1)
+      value: hp_2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

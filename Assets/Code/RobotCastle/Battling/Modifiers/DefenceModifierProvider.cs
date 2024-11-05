@@ -7,14 +7,13 @@ namespace RobotCastle.Battling
     [CreateAssetMenu(menuName = "SO/Modifiers/DefenceModifierProvider", fileName = "DefenceModifierProvider", order = 0)]
     public class DefenceModifierProvider : ModifierProvider, IStatDecorator
     {
-        [SerializeField] private float _addedPercent;
-        [SerializeField] private EStatType _statType;
+        [SerializeField] private int _addedResist;
         
         public int order => 1;
         
         public float Decorate(float val)
         {
-            return val + _addedPercent;
+            return val + _addedResist;
         }
         
         public override void AddTo(GameObject target)
@@ -29,9 +28,7 @@ namespace RobotCastle.Battling
         public override string GetDescription(GameObject target)
         {
             var db = ServiceLocator.Get<DescriptionsDataBase>();
-            return $"+{Mathf.RoundToInt(_addedPercent * 100)}% {db.descriptions[_id].parts[0]}";
+            return $"+{_addedResist} {db.descriptions[_id].parts[0]}";
         }
-
-       
     }
 }

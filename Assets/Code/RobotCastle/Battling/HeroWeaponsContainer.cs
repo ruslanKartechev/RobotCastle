@@ -11,6 +11,8 @@ namespace RobotCastle.Battling
         public int ItemsCount => _items.Count;
         public List<HeroWeaponData> Items => _items;
         
+        public bool CanDrop { get; set; }
+        
         private const int MaxSize = 3;
         
         [SerializeField] private HeroComponents _view;

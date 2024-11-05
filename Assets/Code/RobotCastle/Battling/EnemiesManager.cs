@@ -122,7 +122,6 @@ namespace RobotCastle.Battling
             }    
         }
         
-        
         [SerializeField] private bool _initOnStart = true;
         [SerializeField] private EnemiesFactory _enemiesFactory;
         [SerializeField] private GridView _gridView;

@@ -3,7 +3,7 @@ using SleepDev;
 
 namespace RobotCastle.Battling
 {
-    public class HeroSpellsContainer : IModifiersContainer
+    public class HeroSpellsContainer
     {
         private List<ModifierProvider> _modifiers = new (5);
         private ModifierProvider _current;

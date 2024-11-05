@@ -46,7 +46,8 @@ namespace RobotCastle.Battling.MerchantOffer
                 switch (good.ItemData.type)
                 {
                     case MergeConstants.TypeWeapons:
-                        _itemDescriptions[i].ShowItem(HeroWeaponData.GetDataWithDefaultModifiers(good.ItemData));
+                        var weaponsData = ServiceLocator.Get<ModifiersDataBase>().GetWeaponsWithModifiers(good.ItemData);
+                        _itemDescriptions[i].ShowItem(weaponsData);
                         break;
                     case MergeConstants.TypeBonus:
                         _itemDescriptions[i].ShowBonus(good.ItemData);

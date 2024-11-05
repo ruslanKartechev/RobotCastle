@@ -52,25 +52,35 @@ namespace RobotCastle.Battling
         {
             var spawner = ServiceLocator.Get<IMergeItemsFactory>();
             spawnedItem = spawner.SpawnItemOnCell(cellView, args.ItemData);
-            if (args.coreData.type is MergeConstants.TypeHeroes)
+            switch (args.coreData.type)
             {
-                var heroGo = spawnedItem.Transform.gameObject;
-                var hero = heroGo.GetComponent<IHeroController>();
-                var ui = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
-                ui.AssignHeroUI(hero.Components);
-                var id = args.coreData.id;
-                // heroSave.isUnlocked = true;
-                var modifiers = HeroesManager.GetModifiersForHero(id);
-                hero.InitHero(id, HeroesManager.GetHeroLevel(id), args.coreData.level, modifiers);
-                var weaponsContainer = heroGo.GetComponent<IHeroWeaponsContainer>();
-                weaponsContainer.SetEmpty();
-                if (args.useAdditionalItems)
-                {
-                    var mergedItems = MergeFunctions.TryMergeAll(HeroWeaponData.GetDataWithDefaultModifiers(args.additionalItems), MergeConstants.MaxItemLevel);
-                    weaponsContainer.SetItems(mergedItems);
-                }
-                hero.SetBehaviour(new HeroIdleBehaviour());
-                hero.Components.heroUI.UpdateStatsView(hero.Components);
+                case MergeConstants.TypeHeroes:
+                    var heroGo = spawnedItem.Transform.gameObject;
+                    var hero = heroGo.GetComponent<IHeroController>();
+                    var ui = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
+                    ui.AssignHeroUI(hero.Components);
+                    var id = args.coreData.id;
+                    // heroSave.isUnlocked = true;
+                    var modifiers = HeroesManager.GetModifiersForHero(id);
+                    hero.InitHero(id, HeroesManager.GetHeroLevel(id), args.coreData.level, modifiers);
+                    var weaponsContainer = heroGo.GetComponent<IHeroWeaponsContainer>();
+                    weaponsContainer.SetEmpty();
+                    if (args.useAdditionalItems)
+                    {
+                        var weaponData = ServiceLocator.Get<ModifiersDataBase>()
+                            .GetWeaponsWithModifiers(args.additionalItems);
+                        var mergedItems = MergeFunctions.TryMergeAll(weaponData, MergeConstants.MaxItemLevel);
+                        weaponsContainer.SetItems(mergedItems);
+                    }
+                    hero.SetBehaviour(new HeroIdleBehaviour());
+                    hero.Components.heroUI.UpdateStatsView(hero.Components);
+                    break;
+                case MergeConstants.TypeWeapons:
+                    var mods = ServiceLocator.Get<ModifiersDataBase>().GetWeaponsWithModifiers(args.coreData);
+                    var modsContainer = spawnedItem.Transform.gameObject.GetComponent<ModifiersContainer>();
+                    modsContainer.OverrideModifiers(mods.modifierIds);
+                    break;
+
             }
         }        
         

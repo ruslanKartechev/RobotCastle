@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public enum EUnitType {Default, Elite, Boss}
     [System.Serializable]
     public class EnemyPreset
     {
@@ -17,6 +16,8 @@ namespace RobotCastle.Battling
         public List<CoreItemData> items;
         public List<string> modifiers;
         public EUnitType unitType = EUnitType.Default;
+        public bool canDropItems;
+        public bool giveRandomItem;
 
         public EnemyPreset()
         {
@@ -25,6 +26,8 @@ namespace RobotCastle.Battling
             gridPos = default;
             items = new ();
             modifiers = new ();
+            canDropItems = true;
+            giveRandomItem = false;
         }
 
         public EnemyPreset(EnemyPreset other)
@@ -41,6 +44,8 @@ namespace RobotCastle.Battling
             for(var i = 0; i < count; i++)
                 modifiers.Add(other.modifiers[i]);
             unitType = other.unitType;
+            canDropItems = other.canDropItems;
+            giveRandomItem = other.giveRandomItem;
         }
     }
 }

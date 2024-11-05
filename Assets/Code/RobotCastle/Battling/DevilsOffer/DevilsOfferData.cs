@@ -2,7 +2,7 @@
 
 namespace RobotCastle.Battling.DevilsOffer
 {
-    public enum EDevilsPenaltyType { CastleDurability, AdditionalEnemyForces, HigherEnemyTier }
+    public enum EDevilsPenaltyType { CastleDurability, AdditionalEnemyForces, HigherEnemyTier, MoreEliteEnemies }
     
     [System.Serializable]
     public class DevilsOfferData

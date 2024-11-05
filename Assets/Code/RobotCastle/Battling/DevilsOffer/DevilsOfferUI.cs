@@ -1,4 +1,5 @@
 ﻿using System;
+using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
@@ -43,16 +44,15 @@ namespace RobotCastle.Battling.DevilsOffer
             }
             _tierText.text = tierText;
             
-            
-            var reward = offerData.reward;
-            switch (reward.type)
+            var rewardItem = offerData.reward;
+            switch (rewardItem.type)
             {
                 case MergeConstants.TypeWeapons:
-                    var heroItemdata = HeroWeaponData.GetDataWithDefaultModifiers(reward);
+                    var heroItemdata = ServiceLocator.Get<ModifiersDataBase>().GetWeaponsWithModifiers(rewardItem);
                     _itemDescription.ShowItem(heroItemdata);
                     break;
                 case MergeConstants.TypeBonus:
-                    _itemDescription.ShowBonus(reward);
+                    _itemDescription.ShowBonus(rewardItem);
                     break;
             }
     

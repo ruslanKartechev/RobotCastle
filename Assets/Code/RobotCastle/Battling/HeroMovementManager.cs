@@ -238,7 +238,7 @@ namespace RobotCastle.Battling
                 TargetCell = targetCell;
                 var totalDistance = (targetWorldPos - movable.position).magnitude;
                 var travelled = 0f;
-                CLog.LogGreen($"[{gameObject.name}] Moving to cell {targetCell}, world: {targetWorldPos}. Speed: {_speedGetter.Get()}");
+                // CLog.LogGreen($"[{gameObject.name}] Moving to cell {targetCell}, world: {targetWorldPos}. Speed: {_speedGetter.Get()}");
                 while (!token.IsCancellationRequested && travelled < totalDistance)
                 {
                     var vec = targetWorldPos - movable.position;

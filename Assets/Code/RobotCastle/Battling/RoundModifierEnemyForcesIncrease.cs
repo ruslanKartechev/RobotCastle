@@ -1,4 +1,5 @@
 ﻿using RobotCastle.Core;
+using RobotCastle.InvasionMode;
 using SleepDev;
 
 namespace RobotCastle.Battling
@@ -14,8 +15,9 @@ namespace RobotCastle.Battling
             _maxRounds = maxRounds;
             _additionalEnemiesPercent = enemiesPercent;
         }
-        
-        
+
+        public EnemyPackPreset ModifyPreset(EnemyPackPreset preset, RoundType roundType) => preset;
+
         public void OnRoundSet(BattleManager battleManager)
         {
             if (battleManager.isRoundBoss)
@@ -34,37 +36,6 @@ namespace RobotCastle.Battling
                 battleManager.RemoveRoundModifier(this);
             }
         }
-    }
-    
-    
-    public class RoundModifierEnemiesTierUp : IRoundModifier
-    {
-        private int _maxRounds;
-        private int _passedRounds;
-        private int _tierBonus;
-        
-        public RoundModifierEnemiesTierUp(int tierBonus, int maxRounds)
-        {
-            _maxRounds = maxRounds;
-            _tierBonus = tierBonus;
-        }
-        
-        public void OnRoundSet(BattleManager battleManager)
-        {
-            if (battleManager.isRoundBoss)
-                return;
-            CLog.Log($"[EnemyForcesIncreaseRoundModifier] Applying !");
-            var enManager = ServiceLocator.Get<EnemiesManager>();
-            enManager.RaiseEnemiesTierAll(_tierBonus);
-        }
 
-        public void OnRoundCompleted(BattleManager battleManager)
-        {
-            _passedRounds++;
-            if (_passedRounds >= _maxRounds)
-            {
-                battleManager.RemoveRoundModifier(this);
-            }
-        }
     }
 }

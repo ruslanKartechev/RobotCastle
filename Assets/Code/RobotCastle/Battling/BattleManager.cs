@@ -21,9 +21,11 @@ namespace RobotCastle.Battling
 
         public BattleRewardCalculator rewardCalculator => _rewardCalculator;
         public RoundData currentRound => _levelData.levels[_battle.roundIndex];
-        public BattleEnemiesWeaponsDropper dropper => _dropper;
         public BattleDamageStatsCollector playerDamageStatsCollector => _playerDamageStatsCollector;
+        public BattleEnemiesWeaponsDropper dropper => _dropper;
         public BattleDamageStatsCollector enemiesStatsCollector => _enemiesStatsCollector;
+        public LevelData levelData => _levelData;
+        
         
         [SerializeField] private bool _activateEnemies = true;
         [SerializeField] private bool _activatePlayers = true;
@@ -59,6 +61,12 @@ namespace RobotCastle.Battling
                 return false;
             }
             return true;
+        }
+
+        public EliteItemsPreset GetCurrentItemsPreset()
+        {
+            var itemsPresetInd = (_battle.roundIndex + 1) / 5;
+            return _levelData.eliteItemsByLevel[itemsPresetInd];
         }
 
         public void SetGoingState() => _battle.State = BattleState.Going;
@@ -151,10 +159,9 @@ namespace RobotCastle.Battling
 
         public async Task SetRound(int roundInd, CancellationToken token)
         {
-            var enemiesManager = ServiceLocator.Get<EnemiesManager>();
-            _rewardCalculator.RewardPerStageCompletion = _levelData.levels[roundInd].reward;
             _battle.roundIndex = roundInd;
-            
+            _rewardCalculator.RewardPerStageCompletion = _levelData.levels[roundInd].reward;
+            var enemiesManager = ServiceLocator.Get<EnemiesManager>();
             if (_battle.Enemies.Count > 0)
             {
                 enemiesManager.DestroyCurrentUnits();
@@ -165,18 +172,23 @@ namespace RobotCastle.Battling
             _battle.Enemies.Clear();
             _battle.enemiesAlive.Clear();
 
-            EliteItemsPreset itemsPreset = null;
-            if (_levelData.levels[roundInd].roundType == RoundType.EliteEnemy)
-            {
-                var itemsPresetInd = (roundInd + 1) / 5;
-                itemsPreset = _levelData.eliteItemsByLevel[itemsPresetInd];
-            }
-            await enemiesManager.factory.SpawnPreset(_levelData.levels[roundInd].enemyPreset, itemsPreset, token);
+            var roundType = _levelData.levels[roundInd].roundType;
+        
+            CLog.Log($"Round: {roundInd + 1}, type: {roundType.ToString()}");
+            
+            var preset = EnemiesFactory.GetPackPreset(_levelData.levels[roundInd].enemyPreset);
             for (var i = 0; i < _roundModifiers.Count; i++)
-                _roundModifiers[i].OnRoundSet(this);
+                preset = _roundModifiers[i].ModifyPreset(preset, roundType);
+            
+            var itemsPreset = GetCurrentItemsPreset();
+            await enemiesManager.factory.SpawnPresetEnemies(preset, itemsPreset, token);
+            
             if (token.IsCancellationRequested) return;
 
+            for (var i = 0; i < _roundModifiers.Count; i++)
+                _roundModifiers[i].OnRoundSet(this);
             _battle.Enemies = enemiesManager.AllEnemies;
+
             // do something for merge reset
             _battle.PlayerUnits = ServiceLocator.Get<IGridSectionsController>()
                 .GetItemsInActiveArea<IHeroController>(_ => true);

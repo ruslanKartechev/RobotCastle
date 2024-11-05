@@ -70,6 +70,8 @@ namespace RobotCastle.Battling.Altars
 
         public override string GetDetailedDescription() => _detailedDescription;
 
+        public EnemyPackPreset ModifyPreset(EnemyPackPreset preset, RoundType roundType) => preset;
+
         public void OnRoundSet(BattleManager battleManager)
         {
             if (battleManager.currentRound.roundType == RoundType.EliteEnemy)

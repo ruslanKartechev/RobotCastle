@@ -30,6 +30,8 @@ namespace RobotCastle.Battling
         
         public void OnKilled(IHeroController hero)
         {
+            if (!hero.Components.weaponsContainer.CanDrop) 
+                return;
             if (hero.Components.weaponsContainer.ItemsCount > 0)
             {
                CLog.Log($"[{nameof(BattleEnemiesWeaponsDropper)}] OnKilled with weapons");

@@ -66,39 +66,30 @@ namespace RobotCastle.InvasionMode
 
         #region SCRIPTS EDITOR HELPERs
         #if UNITY_EDITOR
-        // [ContextMenu("RenameFilesToUnderworld")]
-        public void RenameWinterToUnderworld()
+
+        [ContextMenu("E_RewriteAll")]
+        public void E_RewriteAll()
         {
-            var title = "the_underworld";
+            var pathParent = GetFoldersPath();
             for (var i = 0; i < presetFiles.Count; i++)
             {
-                var newName = $"{title}_{i + 1}.json";
-                var pathParent = GetFoldersPath();
-                var srcFile = $"{pathParent}/winter_forest_{i+1}.json";
-                var newFile = $"{pathParent}/{newName}";
+                var srcFile = $"{pathParent}/{presetFiles[i].name}.json";
                 var content = System.IO.File.ReadAllText(srcFile);
-                
-                File.Delete(srcFile);
-                File.WriteAllText(newFile, content);
+
+                var preset = JsonConvert.DeserializeObject<EnemyPackPreset>(content);
+                if(preset == null)
+                {
+                    CLog.LogRed("Preset is null");
+                }
+                else
+                {
+                    // CLog.Log($"Ok: {srcFile}");
+                    content = JsonConvert.SerializeObject(preset, Formatting.Indented);
+                    File.WriteAllText(srcFile, content);
+                }
             }
-            UnityEditor.EditorUtility.SetDirty(this);
-            UnityEditor.AssetDatabase.Refresh();
         }
 
-        [ContextMenu("CreateWinterFiles")]
-        public void CreateWinterFiles()
-        {
-            var title = "winter_forest";
-            for (var i = 0; i < 20; i++)
-            {
-                var newName = $"{title}_{i + 1}.json";
-                var pathParent = GetFoldersPath();
-                var srcFile = $"{pathParent}/{newName}";
-                File.WriteAllText(srcFile, " ");
-            }
-            UnityEditor.EditorUtility.SetDirty(this);
-            UnityEditor.AssetDatabase.Refresh();
-        }
         #endif
         #endregion
         

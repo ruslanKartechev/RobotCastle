@@ -125,7 +125,7 @@ namespace RobotCastle.Battling.DevilsOffer
                 case EDevilsPenaltyType.HigherEnemyTier:
                     var modifier2 = new RoundModifierEnemiesTierUp((int)val, 1);
                     battleManager.AddRoundModifier(modifier2);
-                    modifier2.OnRoundSet(battleManager);
+                    modifier2.ApplyNow(battleManager);
                     break;
             }
         }

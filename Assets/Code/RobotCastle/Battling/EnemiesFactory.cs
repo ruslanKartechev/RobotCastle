@@ -16,7 +16,6 @@ namespace RobotCastle.Battling
 {
     public class EnemiesFactory : MonoBehaviour
     {
-    
         public static EnemyPackPreset GetPackPreset(string presetPath)
         {
             var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
@@ -34,33 +33,11 @@ namespace RobotCastle.Battling
             return preset;
         }
         
-    
-        
         public List<IHeroController> SpawnedEnemies => _spawnedEnemies;
         
         public IGridView GridView { get; set; }
-        
-        
-        public async Task SpawnPreset(string presetPath, EliteItemsPreset items, CancellationToken token)
-        {
-            var asset = Resources.Load<TextAsset>($"enemy_presets/{presetPath}");
-            if (asset == null)
-            {
-                CLog.LogError($"{presetPath} DIDN'T find the preset!");
-                _spawnedEnemies = null;
-                return;
-            }
-            var presetStr = asset.text;
-            var preset = Newtonsoft.Json.JsonConvert.DeserializeObject<EnemyPackPreset>(presetStr);
-            if (preset == null)
-            {
-                CLog.LogError($"[{nameof(EnemiesFactory)}] Cannot Deserialize preset at {presetPath}");
-            }
 
-            await SpawnPresetEnemies(preset, items, token);
-        }
-
-        private async Task SpawnPresetEnemies(EnemyPackPreset packPreset, EliteItemsPreset items, CancellationToken token)
+        public async Task SpawnPresetEnemies(EnemyPackPreset packPreset, EliteItemsPreset items, CancellationToken token)
         {
             _spawnedEnemies = new List<IHeroController>(packPreset.enemies.Count);
             var factory = ServiceLocator.Get<IMergeItemsFactory>();
@@ -76,20 +53,22 @@ namespace RobotCastle.Battling
                 {
                     case EUnitType.Default or EUnitType.Elite:
                         barsPanel.AssignEnemyUI(hero.Components);
-                        hero.Components.weaponsContainer.SetEmpty();
                         AnimateSpawn(hero);
                         break;
                     case EUnitType.Boss:
                         barsPanel.AssignBossUI(hero.Components);
-                        hero.Components.weaponsContainer.SetEmpty();
                         hero.Components.animator.Play("Appear", 0, 0);
                         break;
                 }
+                hero.Components.weaponsContainer.SetEmpty();
                 var spells = HeroesManager.GetModifiers(enemyPreset.modifiers);
                 hero.InitHero(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level, spells);
-                if (enemyPreset.unitType is EUnitType.Elite)
+                
+                CLog.LogGreen($"Random item?! {enemyPreset.giveRandomItem}. Item options Count: {items.itemsOptions.Count}");
+                if (enemyPreset.unitType is EUnitType.Elite || enemyPreset.giveRandomItem)
                 {
                     SetItems(hero, items);
+                    hero.Components.weaponsContainer.CanDrop = enemyPreset.canDropItems;
                 }
                 hero.Components.heroUI.AssignStatsTracking(hero.Components);
                 _spawnedEnemies.Add(hero);
@@ -137,10 +116,11 @@ namespace RobotCastle.Battling
                 AnimateSpawn(hero);
             return hero;
         }
-        
             
+        
         [SerializeField] private string _presetsDirectory;
         private List<IHeroController> _spawnedEnemies;
+        
         
         private void SetItems(IHeroController hero, EliteItemsPreset itemsPreset)
         {
@@ -152,24 +132,25 @@ namespace RobotCastle.Battling
             }
 
             var count = UnityEngine.Random.Range(itemsPreset.itemsCountMin, itemsPreset.itemsCountMax);
-            var results = new List<CoreItemData>(3);
-            while (results.Count < count)
+            var items = new List<CoreItemData>(3);
+            var it = 0;
+            const int it_max = 100;
+            while (items.Count < count && it < it_max)
             {
                 var random = itemsPreset.itemsOptions.Random();
-                if (results.Contains(random))
+                if (items.Contains(random))
                 {
-                    if (results.Count >= itemsPreset.itemsOptions.Count)
+                    if (items.Count >= itemsPreset.itemsOptions.Count)
                         break;
                 }
                 else
-                    results.Add(random);
+                    items.Add(random);
+                it++;
             }
-
-            // var msg = $"Added items to elite enemy: ";
-            // foreach (var res in results)
-            //     msg += $" {res.id}_{res.level + 1}, ";
+            if (it >= it_max)
+                CLog.LogError($"Too many iterations. Error trying to add random items");
             
-            var weaponsData = HeroWeaponData.GetDataWithDefaultModifiers(results);
+            var weaponsData = ServiceLocator.Get<ModifiersDataBase>().GetWeaponsWithModifiers(items);
             hero.Components.weaponsContainer.SetItems(weaponsData);
             hero.Components.weaponsContainer.AddAllModifiersToHero(hero.Components);
         }

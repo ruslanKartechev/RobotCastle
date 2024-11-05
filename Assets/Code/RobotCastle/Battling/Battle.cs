@@ -168,9 +168,4 @@ namespace RobotCastle.Battling
         private List<IHeroController> _playersAlive = new(20);
         
     }
-
-    public interface IBattleHeroKilledListener
-    {
-        void OnKilled(IHeroController hero);
-    }
 }
