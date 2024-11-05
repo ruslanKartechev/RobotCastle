@@ -75,6 +75,9 @@ namespace RobotCastle.Battling
 
             components.damageSource.ClearDamageCalculationModifiers();
             components.damageSource.ClearPostDamageModifiers();
+            
+            components.weaponsContainer.AddAllModifiersToHero(components);
+
             foreach (var mod in components.preBattleRecurringMods)
                 mod.Deactivate();
 

@@ -42,7 +42,7 @@ namespace RobotCastle.UI
             {
                 CLog.Log($"[{source}] does not have a spell!");
             }
-            Show(stats, info, spell);
+            ShowStats(stats, info, spell);
 
             var heroItems = source.GetComponent<IHeroWeaponsContainer>();
             var hasItems = false;
@@ -84,63 +84,24 @@ namespace RobotCastle.UI
             highlighter.ShowUnderCell(center);
             _rangeHighlighter = highlighter;
         }
-        
-        public void Show(HeroStatsManager stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
+
+        public void ShowStats(HeroStatsManager stats, HeroViewInfo viewInfo, SpellProvider spellProvider)
         {
-            var atkTxt = (stats.Attack.Get()).ToString(CultureInfo.InvariantCulture);
-            var spTxt = stats.SpellPower.Get().ToString(CultureInfo.InvariantCulture);
-            var atkSpTxt = $"{Mathf.RoundToInt(stats.AttackSpeed.Get() * 100)}";
-            
-            var items = stats.gameObject.GetComponent<HeroWeaponsContainer>();
-            if (items.Items.Count > 0)
-            {
-                var db = ServiceLocator.Get<ModifiersDataBase>();
-                var addedAtk = 0f;
-                var addedSp = 0f;
-                var addedAtkSpeed = 0f;
-                foreach (var itemData in items.Items)
-                {
-                    foreach (var id in itemData.modifierIds)
-                    {
-                        var dd = db.GetModifier(id);
-                        if (dd is StatsModifierProvider statMod)
-                        {
-                            switch (statMod.StatType)
-                            {
-                                case EStatType.Attack:
-                                    addedAtk += statMod.AddedPercent;
-                                    break;
-                                case EStatType.SpellPower:
-                                    addedSp += statMod.AddedPercent;
-                                    break;
-                                case EStatType.AttackSpeed:
-                                    addedAtkSpeed += statMod.AddedPercent;
-                                    break;
-                            }
-                        }
-                    }
-                }
-                if (addedAtk > 0)
-                {
-                    var addedVal = Mathf.RoundToInt(addedAtk * stats.Attack.Get());
-                    atkTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
-                    // atkTxt += $"+{addedVal}";
-                }
-                if (addedSp > 0)
-                {
-                    var addedVal = Mathf.RoundToInt(addedSp * stats.SpellPower.Get());
-                    spTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}%</color>";
-                }
-                if (addedAtkSpeed > 0)
-                {
-                    var addedVal = Mathf.RoundToInt(100 * addedAtkSpeed * stats.AttackSpeed.Get());
-                    atkSpTxt += $"+<color={HeroesConstants.ColorAddedStats}>{addedVal}</color>";
-                }
-            }
+            var atk = stats.Attack.Get();
+            var sp = stats.SpellPower.Get();
+            var atkSpeed = stats.AttackSpeed.Get();
+
+            string atkTxt;
+            string spTxt;
+            string atkSpeedTxt;
+   
+            atkTxt = Mathf.RoundToInt(atk).ToString();
+            spTxt = Mathf.RoundToInt(sp).ToString();
+            atkSpeedTxt = $"{Mathf.RoundToInt(atkSpeed * 100)}%";
             
             _attackText.text = atkTxt;
             _spellPowerText.text = spTxt;
-            _attackSpeedText.text = atkSpTxt;
+            _attackSpeedText.text = atkSpeedTxt;
             _health.AssignStats(stats.HealthCurrent, stats.HealthMax);
             _lvlText.text = (stats.MergeTier + 1).ToString();
 

@@ -8,7 +8,6 @@ namespace RobotCastle.Merging
 {
     public class MergeUnitsOperation : IItemsChoiceListener
     {
-        
         private Action<EMergeResult, bool> _callback;
         private IItemView _unitStanding;
         private IItemView _unitMoving;
@@ -126,17 +125,12 @@ namespace RobotCastle.Merging
             Complete();
         }
 
-        private void SetPositions()
-        {
-            // _container.RemoveItem(_unitMoving);
-            MergeFunctions.ClearCellAndHideItem(_gridView, _unitMoving);
-        }
-        
         private void Complete()
         {
             _container.RemoveItem(_unitMoving);
-
             _unitStanding.itemData.core.level++;
+            HeroesManager.UpdateWeaponModifiers(_unitStanding.Transform.gameObject);
+
             ServiceLocator.Get<MergeAnimation>().Play(_unitStanding, _unitMoving, _gridView, AnimationCallback);
         }
 

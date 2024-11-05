@@ -70,6 +70,29 @@ namespace RobotCastle.Merging
             }
         }
 
+
+        public void TryMergeWithAny(IItemView itemView, IGridView gridView, Action<EMergeResult, bool> callback)
+        {
+            IItemView otherItem = null;
+            foreach (var cell in gridView.Grid)
+            {
+                if (cell.itemView == null || itemView == cell.itemView)
+                    continue;
+                if (itemView.itemData.core == cell.itemView.itemData.core)
+                {
+                    otherItem = cell.itemView;
+                    break;
+                }
+            }
+            if (otherItem == null)
+            {
+                CLog.LogRed("Nothing to merge with");
+                callback.Invoke(EMergeResult.NoMerge, false);
+                return;
+            }
+            TryMerge(itemView, otherItem, gridView, callback);
+        }
+
         public void TryMerge(IItemView itemViewTaken, IItemView itemViewInto, IGridView gridView, Action<EMergeResult, bool> callback)
         {
             if (itemViewTaken.itemData.core.id == MergeConstants.UpgradeBookId)

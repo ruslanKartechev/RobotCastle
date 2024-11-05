@@ -155,6 +155,9 @@ namespace RobotCastle.MainMenu
             callback?.Invoke(EMergeResult.NoMerge, false);
         }
 
+        public void TryMergeWithAny(IItemView itemView, IGridView gridView, Action<EMergeResult, bool> callback)
+        { }
+
         public void BreakItemToReturn(IItemView item) {}
         
         public EMergeResult TryMerge(ItemData item1, ItemData item2, out ItemData mergedItem, out bool oneIntoTwo)

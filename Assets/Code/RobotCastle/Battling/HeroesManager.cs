@@ -14,6 +14,20 @@ namespace RobotCastle.Battling
 {
     public static class HeroesManager
     {
+    
+        public static void UpdateWeaponModifiers(GameObject hero)
+        {
+            var components = hero.gameObject.GetComponent<HeroComponents>();
+            components.stats.ClearDecorators();
+            hero.GetComponent<IHeroWeaponsContainer>().AddAllModifiersToHero(components);
+        }
+        public static void UpdateWeaponModifiers(GameObject hero, IHeroWeaponsContainer weaponsContainer)
+        {
+            var components = hero.gameObject.GetComponent<HeroComponents>();
+            components.stats.ClearDecorators();
+            weaponsContainer.AddAllModifiersToHero(components);
+        }
+        
         public static string Red(int val) => $"<color=#BB0000>{val}</color>";
 
         public static string Red(string msg) => $"<color=#BB0000>{msg}</color>";

@@ -14,6 +14,8 @@ namespace RobotCastle.Merging
         void TryMerge(IItemView item1, IItemView itemViewInto, 
             IGridView gridView, Action<EMergeResult, bool> callback);
 
+        void TryMergeWithAny(IItemView itemView, IGridView gridView, Action<EMergeResult, bool> callback);
+        
         void BreakItemToReturn(IItemView item);
         
         List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem);

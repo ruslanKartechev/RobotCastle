@@ -124,16 +124,16 @@ namespace RobotCastle.Merging
             var chosenItems = new List<HeroWeaponData>(allWeapons.Count);
             foreach (var ind in chosen)
                 chosenItems.Add(allWeapons[ind]);
+            
+            var container = _hero.Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
+            container.SetItems(chosenItems);
+            
             if (_oneIntoTwo) // dragged into standing. Unit is standing
             {
-                var container = _hero.Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
-                container.SetItems(chosenItems);
                 MergeFunctions.ClearCellAndHideItem(_gridView, _weapon);
             }
             else // standing into dragged. Unit is dragged
             {
-                var container = _hero.Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
-                container.SetItems(chosenItems);
                 MergeFunctions.ClearCell(_gridView, _hero);
                 var targetCell = _gridView.GetCell(_weapon.itemData.pivotX, _weapon.itemData.pivotY);
                 MergeFunctions.ClearCellAndHideItem(_gridView, _weapon);
@@ -158,6 +158,8 @@ namespace RobotCastle.Merging
         
         private void Complete()
         {
+            HeroesManager.UpdateWeaponModifiers(_hero.Transform.gameObject);
+            
             foreach (var mod in _modifiers)
                 mod.OnMergedOneIntoAnother(_weapon, _hero);
             

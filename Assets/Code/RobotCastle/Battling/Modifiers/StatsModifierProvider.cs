@@ -10,21 +10,6 @@ namespace RobotCastle.Battling
         public float AddedPercent => _addedPercent;
         public EStatType StatType => _statType;
         
-        [SerializeField] private float _addedPercent;
-        [SerializeField] private EStatType _statType;
-        private PercentStatDecorator _decorator;
-   
-
-        private static readonly Dictionary<EStatType, string> DescriptionMap = new()
-        {
-            { EStatType.Attack, "ATK "},
-            { EStatType.AttackSpeed, "ATK Speed "},
-            { EStatType.Health, "HP "},
-            { EStatType.SpellPower, "SP "},
-            { EStatType.MoveSpeed, "Speed "},
-            { EStatType.PhysicalResist, "Phys DEF "},
-            { EStatType.MagicResist, "Magic DEF "},
-        };
 
         public override void AddTo(GameObject target)
         {
@@ -44,6 +29,7 @@ namespace RobotCastle.Battling
                     break;
                 case EStatType.Health:
                     stats.HealthMax.AddDecorator(_decorator);
+                    stats.HealthReset.Reset(components);
                     break;
                 case EStatType.MoveSpeed:
                     stats.MoveSpeed.AddDecorator(_decorator);
@@ -68,6 +54,22 @@ namespace RobotCastle.Battling
             return $"{DescriptionMap[_statType]}\n+{Mathf.RoundToInt(_addedPercent * 100)}%";
         }
         
+        [SerializeField] private float _addedPercent;
+        [SerializeField] private EStatType _statType;
+        private PercentStatDecorator _decorator;
+   
+
+        private static readonly Dictionary<EStatType, string> DescriptionMap = new()
+        {
+            { EStatType.Attack, "ATK "},
+            { EStatType.AttackSpeed, "ATK Speed "},
+            { EStatType.Health, "HP "},
+            { EStatType.SpellPower, "SP "},
+            { EStatType.MoveSpeed, "Speed "},
+            { EStatType.PhysicalResist, "Phys DEF "},
+            { EStatType.MagicResist, "Magic DEF "},
+        };
+
         
         private void OnEnable()
         {

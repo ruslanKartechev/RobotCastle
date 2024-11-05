@@ -41,6 +41,7 @@ namespace RobotCastle.Merging
             {
                 ui.OnDownLongClick += OnDown;
                 ui.OnUpMain += OnUp;
+                ui.OnDoubleClick += OnDoubleClick;
                 if (_refundAllowed)
                     _battleUI = ServiceLocator.Get<IUIManager>()
                         .Show<BattleMergeUI>(UIConstants.UIBattleMerge, () => { });
@@ -49,6 +50,7 @@ namespace RobotCastle.Merging
             {
                 ui.OnDownLongClick -= OnDown;
                 ui.OnUpMain -= OnUp;
+                ui.OnDoubleClick -= OnDoubleClick;
                 _mergeController.OnUp(Input.mousePosition);
                 if (_refundMode)
                 {
@@ -56,6 +58,11 @@ namespace RobotCastle.Merging
                     _battleUI.ReturnItemButton.Hide();
                 }
             }
+        }
+
+        private void OnDoubleClick(Vector3 obj)
+        {
+            _mergeController.MergeIfPossible(obj);
         }
 
         private void OnUp(Vector3 pos)

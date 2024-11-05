@@ -75,6 +75,8 @@ namespace RobotCastle.Battling
 
         public void AddDecorator(IStatDecorator decorator)
         {
+            if (_decorators.Contains(decorator))
+                return;
             _decorators.Add(decorator);
             OnDecoratorAdded?.Invoke(this);
         }

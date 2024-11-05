@@ -42,24 +42,38 @@ namespace RobotCastle.Merging
             _layerMask = db.cellsMask;
         }
 
+        public void MergeIfPossible(Vector3 screenPosition)
+        {
+            if (_isProcessingPut)
+                return;
+            var cell = RaycastForCellView(screenPosition);
+            if (cell == null 
+                || cell.GridId != _gridView.GridId
+                || !cell.cell.isOccupied)
+            {
+                NullDragged();
+                return;
+            }
+            _isProcessingPut  = true;
+            var item = cell.itemView;
+            _processor.TryMergeWithAny(item, _gridView, AutoMergeCallback);
+
+        }
+        
         public void OnDown(Vector3 screenPosition)
         {
             // CLog.Log($"[{nameof(MergeController)}] On Down");
             if (_isProcessingPut)
                 return;
             var cell = RaycastForCellView(screenPosition);
-            if (cell == null)
+            if (cell == null 
+                || cell.GridId != _gridView.GridId
+                || !cell.cell.isOccupied)
             {
                 NullDragged();
                 return;
             }
-            if (cell.GridId != _gridView.GridId)
-                return;
-            if (!cell.cell.isOccupied)
-            {
-                NullDragged();
-                return;
-            }
+       
             var item = cell.itemView;
             _draggedItem = new DraggedItem(cell, item, _gridView, useHighlight);
             cell.OnPicked();
@@ -119,7 +133,7 @@ namespace RobotCastle.Merging
                 }
                 else // cell is occupied
                 {
-                    _processor.TryMerge(_draggedItem.itemView, cellView.itemView, _gridView, MergeCallback);
+                    _processor.TryMerge(_draggedItem.itemView, cellView.itemView, _gridView, DraggedMergeCallback);
                     return;
                 }
             }
@@ -171,8 +185,19 @@ namespace RobotCastle.Merging
             }
             return resultCell;
         }
+
         
-        private void MergeCallback(EMergeResult mergeResult, bool oneIntoTwo)
+        private void AutoMergeCallback(EMergeResult mergeResult, bool oneIntoTwo)
+        {
+            _isProcessingPut = false;
+            _sectionsController.OnGridUpdated();
+            var result = MergePutResult.Merged;
+            if (mergeResult == EMergeResult.NoMerge)
+                result = MergePutResult.MergeFailed;
+            OnPutItem?.Invoke(result);
+        }
+        
+        private void DraggedMergeCallback(EMergeResult mergeResult, bool oneIntoTwo)
         {
             var putResult = MergePutResult.Merged;
             switch (mergeResult)
@@ -230,6 +255,7 @@ namespace RobotCastle.Merging
             }
             return null;
         }
-        
+
+    
     }
 }

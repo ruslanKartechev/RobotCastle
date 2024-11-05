@@ -11,6 +11,7 @@ namespace RobotCastle.Core
         public event Action<Vector3> OnUpIgnoreUI;
         public event Action<Vector3> OnDownLongIgnoreUIClick;
 
+        public event Action<Vector3> OnDoubleClick;
         public event Action<Vector3> OnDownLongClick;
         public event Action<Vector3> OnShortClick;
 
@@ -36,8 +37,23 @@ namespace RobotCastle.Core
         private bool _didSlide;
         private Vector3 _slide;
         private float _slideMinD2 = 200f * 200f;
+        private float _prevClickTime;
+        private int _clicksCount;
+        private bool _inputAllowed = true;
         
-        public bool InputAllowed { get; set; } = true;
+        public bool InputAllowed
+        {
+            get => _inputAllowed;
+            set
+            {
+                _inputAllowed = value;
+                if (!value)
+                {
+                    _clicksCount = 0;
+                    _mainDown = _secondDown = _didSlide = false;
+                }
+            } 
+        } 
         
         public Vector3 MainMousePosition
         {
@@ -115,10 +131,23 @@ namespace RobotCastle.Core
                 }
             }
         }
+
+        private void CheckDoubleUIClick()
+        {
+            // if (_prevClickTime == 0)
+            // {
+            //     _prevClickTime = _mainClickTime;
+            //     return;
+            // }
+            if (_mainClickTime - _prevClickTime < _longClockTime)
+                OnDoubleClick?.Invoke(MainMousePosition);
+            _prevClickTime = _mainClickTime;
+        }
         
         private void DownMain()
         {
             _mainClickTime = Time.time;
+            CheckDoubleUIClick();
             _clickPos = MainMousePosition;
             _mainDown = true;
             WorldButtons(true, _clickPos);
@@ -128,6 +157,7 @@ namespace RobotCastle.Core
             _longClickWaiting = StartCoroutine(LongClickChecking());
         }
 
+  
         private void UpMain()
         {
             ResetSlide();
@@ -141,6 +171,8 @@ namespace RobotCastle.Core
                 OnShortClick?.Invoke(MainMousePosition);
             }
             OnUpMain?.Invoke(MainMousePosition);
+            
+      
         }
         
         private void WorldButtons(bool down, Vector3 screenPos)
