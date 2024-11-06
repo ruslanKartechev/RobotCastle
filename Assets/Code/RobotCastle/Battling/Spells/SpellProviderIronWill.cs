@@ -8,9 +8,14 @@ namespace RobotCastle.Battling
         public override float manaMax => _config.manaMax;
         
         public override float manaStart => _config.manaStart;
-        
+
         public override void AddTo(GameObject target)
-        { }
+        {
+            if (target.TryGetComponent<HeroComponents>(out var comp))
+            {
+                AddToHero(comp);
+            }
+        }
         
         public override void AddToHero(HeroComponents components)
         {

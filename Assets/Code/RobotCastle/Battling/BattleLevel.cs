@@ -301,7 +301,14 @@ namespace RobotCastle.Battling
             }
             if (_battleManager.CanStart())
             {
-                StartingBattle(_token.Token);
+                try
+                {
+                    StartingBattle(_token.Token);
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"{ex.Message}. {ex.StackTrace}");                    
+                }
             }
             else
             {

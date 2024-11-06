@@ -30,6 +30,18 @@ namespace RobotCastle.Battling
                     return new AttackRangeRectangle(1,1);
                 case "alberon":
                     return new AttackRangeRectangle(2, 2);
+                case "zupitere":
+                    return new AttackRangeRectangle(3, 3);
+                case "rie":
+                    return new AttackRangeRectangle(3, 3);
+                case "saras":
+                    return new AttackRangeRectangle(4, 4);
+                case "bombie":
+                    return new AttackRangeRectangle(3, 3);
+                case "behemus":
+                    return new AttackRangeSingle();
+                case "draco":
+                    return new AttackRangeSingle();
                 
                 case "mushroom_1":
                     return new AttackRangeSingle();
@@ -85,6 +97,7 @@ namespace RobotCastle.Battling
                     return new AttackRangeRectangle(2,5);
                 case "burrow":
                     return new AttackRangeRhombus(2);
+                
             }
             CLog.Log($"[AttackRangeFactory] No preset attack range for: {id}. Returning basic 1x1 \"PlusShape\" ");
             return new AttackRangeSingle();

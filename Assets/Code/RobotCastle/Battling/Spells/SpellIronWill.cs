@@ -11,7 +11,9 @@ namespace RobotCastle.Battling
         public float BaseSpellPower => _config.spellResist[(int)HeroesManager.GetSpellTier(_components.stats.MergeTier)];
         
         public string name => "spell";
+        
         public int order => 10;
+        
         public float Decorate(float val)
         {
             return val + BaseSpellPower;
@@ -56,11 +58,11 @@ namespace RobotCastle.Battling
         }
 
         
-        private SpellConfigIronWill _config;
         private CancellationTokenSource _token;
-        private SpellParticlesOnHero _fx;
-        private DamageTakeModShield _modShield;
         private ConditionedManaAdder _manaAdder;
+        private SpellParticlesOnHero _fx;
+        private SpellConfigIronWill _config;
+        private DamageTakeModShield _modShield;
         private bool _isCasting;
         
         

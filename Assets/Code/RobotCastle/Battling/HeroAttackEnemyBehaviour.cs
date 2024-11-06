@@ -20,6 +20,7 @@ namespace RobotCastle.Battling
             }
             _isActivated = true;
             _hero = hero;
+            // CLog.LogRed($"{name} Attack Activate");
             if (_rangeCoverCheck == null)
                 _rangeCoverCheck = new HeroRangeCoverCheck(_hero);
             _hero.Battle.AttackPositionCalculator.AddUnit(_hero.Components.state);
@@ -30,11 +31,12 @@ namespace RobotCastle.Battling
 
         public void Stop()
         {
+            // CLog.LogRed($"{name} Attack behaviour stopped");
+            movement.Stop();
             _isActivated = false;
             _logicStep = EAttackLogicStep.Waiting;
             _mainToken?.Cancel();
             _subToken?.Cancel();
-            movement.Stop();
             _hero.Components.attackManager.Stop();
             _hero.Battle.AttackPositionCalculator.RemoveUnit(_hero.Components.state);
             myState.SetTargetCellToSelf();
