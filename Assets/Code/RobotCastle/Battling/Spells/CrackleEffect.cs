@@ -12,6 +12,20 @@ namespace RobotCastle.Battling
         {
             _affectedTargets.Clear();
             transform.position = startPoint;
+            if (_startParticles != null)
+            {
+                _startParticles.gameObject.SetActive(true);
+                _startParticles.transform.parent = transform.parent;
+                _startParticles.transform.position = startPoint;
+            }
+            var mat = _lineRenderer.material;
+            SetAlpha(1f);            
+            foreach (var p in _hitParticles)
+                p.gameObject.SetActive(false);
+            var positions = new List<Vector3>(10);
+            var elapsed = 0f;
+            _lineRenderer.enabled = true;
+            var particleInd = 0;
             for (var i = 0; i < jumps+1 && !token.IsCancellationRequested; i++)
             {
                 var enemy = GetClosestEnemy(hero);
@@ -23,28 +37,54 @@ namespace RobotCastle.Battling
                 }
                 _affectedTargets.Add(enemy);
                 var target = enemy.Components.transform;
-                var startPos = transform.position;
-                var time = (target.position - transform.position).magnitude / _moveSpeed;
-                var elapsed = 0f;
-                while (!token.IsCancellationRequested && elapsed < time)
+
+                positions.Clear();
+                positions.Add(startPoint);
+                for (var k = 0; k < _affectedTargets.Count; k++)
                 {
-                    transform.position = Vector3.Lerp(startPos, target.position, elapsed / time);
-                    elapsed += Time.deltaTime;
-                    await Task.Yield();
+                    var tt = _affectedTargets[k];
+                    if(tt.IsDead)
+                        continue;
+                    var pos = tt.Components.transform.position + Vector3.up;
+                    positions.Add(pos);
                 }
-                if (token.IsCancellationRequested)
-                    return;
+                _lineRenderer.positionCount = positions.Count;
+                _lineRenderer.SetPositions(positions.ToArray());
+
+                await Task.Yield();
+                if (token.IsCancellationRequested) return;
+                
                 transform.position = target.position;
                 hero.Components.damageSource.DamageSpellAndPhys(damagePhys, damageSpell, enemy.Components.damageReceiver);
-                if (_hitParticle != null)
-                {
-                    _hitParticle.gameObject.SetActive(true);
-                    _hitParticle.Play();
-                }
+                var particles = _hitParticles[particleInd];
+                particles.gameObject.SetActive(true);
+                particles.transform.position = target.position + Vector3.up;
+                particleInd++;
             }
-            if (token.IsCancellationRequested)
-                return;
+            elapsed = 0f;
+            while (!token.IsCancellationRequested && elapsed < _stayTime)
+            {
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
+            elapsed = 0f;
+            while (!token.IsCancellationRequested && elapsed < _hideTime)
+            {
+                var a = Mathf.Lerp(1f, 0f, elapsed / _hideTime);
+                SetAlpha(a);
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
+            if (token.IsCancellationRequested) return;
             Hide();
+
+            void SetAlpha(float a)
+            {
+                var col = mat.GetColor(BaseColor);
+                col.a = a;
+                mat.SetColor(BaseColor, col);
+
+            }
         }
 
         private IHeroController GetClosestEnemy(IHeroController hero)
@@ -86,7 +126,7 @@ namespace RobotCastle.Battling
         public void Show()
         {
             gameObject.SetActive(true);
-            _particle.Play();
+            // _particle.Play();
         }
 
         public void Hide()
@@ -94,10 +134,13 @@ namespace RobotCastle.Battling
             gameObject.SetActive(false);
         }
 
-        [SerializeField] private float _moveSpeed;
-        [SerializeField] private ParticleSystem _particle;
-        [SerializeField] private ParticleSystem _hitParticle;
+        [SerializeField] private float _stayTime = 2f;
+        [SerializeField] private float _hideTime = .5f;
+        [SerializeField] private ParticleSystem _startParticles;
+        [SerializeField] private List<ParticleSystem> _hitParticles;
+        [SerializeField] private LineRenderer _lineRenderer;
+        
         private List<IHeroController> _affectedTargets = new (5);
-
+        private static readonly int BaseColor = Shader.PropertyToID("_Color");
     }
 }
