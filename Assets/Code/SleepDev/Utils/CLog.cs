@@ -5,6 +5,11 @@ namespace SleepDev
 {
     public static class CLog
     {
+        public static void LogException(string msg, string trace)
+        {
+            Debug.LogError($"[Exception] {msg}\n{trace}");
+        }
+        
         public static void LogError(string name, string msg)
         {
             Debug.LogError($"[{name}] {msg}");

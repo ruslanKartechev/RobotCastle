@@ -45,6 +45,7 @@ namespace RobotCastle.Battling
         public MaterialFlicker Flicker => _flicker;
         
         public Transform pointVamp => _pointVamp;
+        public Transform SpellPoint => _spellPoint;
 
         public Transform pointMightyBlock => _pointMightyBlock;
 
@@ -61,6 +62,7 @@ namespace RobotCastle.Battling
         [SerializeField] private MaterialFlicker _flicker;
         [Space(10)]
         [SerializeField] private Transform _projectileSpawnPoint;
+        [SerializeField] private Transform _spellPoint;
         [SerializeField] private ParticleSystem _shootParticles;
         [SerializeField] private Transform _uiTrackingPoint;
         [Space(10)]

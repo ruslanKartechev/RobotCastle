@@ -9,6 +9,18 @@ namespace RobotCastle.Battling
     [System.Serializable]
     public class CellsMask
     {
+        public CellsMask(){}
+
+        public CellsMask(List<Vector2Int> mask)
+        {
+            var count = mask.Count;
+            this.mask = new List<Vector2Int>(mask.Capacity);
+            for (var i = 0; i < count; i++)
+            {
+                this.mask.Add(mask[i]);
+            }
+        }
+        
         public List<Vector2Int> mask;
 
         public List<Vector2Int> GetCellsAround(Vector2Int center, IMap map)

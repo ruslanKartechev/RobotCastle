@@ -53,7 +53,7 @@ namespace RobotCastle.Battling
             _manaAdder.CanAdd = false;
             var hero = _components.gameObject.GetComponent<IHeroController>();
             hero.PauseCurrentBehaviour();
-            _components.animator.Play("Cast");
+            _components.animator.Play("Cast",0,0);
             _components.animationEventReceiver.OnAttackEvent += OnAnimEvent;
             _isCasting = true;
             while (!token.IsCancellationRequested && _isCasting)

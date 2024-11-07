@@ -64,7 +64,7 @@ namespace RobotCastle.Battling
                 var spells = HeroesManager.GetModifiers(enemyPreset.modifiers);
                 hero.InitHero(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level, spells);
                 
-                CLog.LogGreen($"Random item?! {enemyPreset.giveRandomItem}. Item options Count: {items.itemsOptions.Count}");
+                // CLog.LogGreen($"Random item?! {enemyPreset.giveRandomItem}. Item options Count: {items.itemsOptions.Count}");
                 if (enemyPreset.unitType is EUnitType.Elite || enemyPreset.giveRandomItem)
                 {
                     SetItems(hero, items);

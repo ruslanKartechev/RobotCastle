@@ -41,7 +41,7 @@ namespace RobotCastle.Battling
                 case "behemus":
                     return new AttackRangeSingle();
                 case "draco":
-                    return new AttackRangeSingle();
+                    return new AttackRangeRhombus(2);
                 
                 case "mushroom_1":
                     return new AttackRangeSingle();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -8,6 +9,24 @@ namespace RobotCastle.Battling
     {
         [SerializeField] private List<ParticleSystem> _particles;
         [SerializeField] private float _duration = 1.5f;
+
+        public void ShowUnTillOff(int level, Transform point)
+        {
+            foreach (var tp in _particles)
+                tp.gameObject.SetActive(false);
+            gameObject.SetActive(true);
+            var p = _particles[level];
+            p.gameObject.SetActive(true);
+            p.Play();
+            StartCoroutine(TrackingPosition(point));
+        }
+
+  
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
         
         public async void Show(int level)
         {
@@ -32,5 +51,13 @@ namespace RobotCastle.Battling
             gameObject.SetActive(false);
         }
         
+        private IEnumerator TrackingPosition(Transform point)
+        {
+            while (true)
+            {
+                transform.SetPositionAndRotation(point.position, point.rotation);
+                yield return null;
+            }
+        }
     }
 }
