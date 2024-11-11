@@ -52,7 +52,7 @@ namespace RobotCastle.Battling.Altars
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
             _val = _percentage[tier];
             
-            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
+            ServiceLocator.Get<IPlayerFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()
@@ -91,7 +91,7 @@ namespace RobotCastle.Battling.Altars
             if (_tier < 1) return;
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
             _val = _percentage[tier];
-            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
+            ServiceLocator.Get<IPlayerFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()
@@ -133,7 +133,7 @@ namespace RobotCastle.Battling.Altars
         {
             if (_tier < 1) return;
             
-            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
+            ServiceLocator.Get<IPlayerFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()

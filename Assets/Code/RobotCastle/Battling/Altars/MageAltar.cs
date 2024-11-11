@@ -33,7 +33,7 @@ namespace RobotCastle.Battling.Altars
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
             _val = _percentage[tier];
             CLog.Log($"[AltarMp_InitialMp] Tier {tier}, initial mp percentage: {_val * 100}%");
-            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
+            ServiceLocator.Get<IPlayerFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()
@@ -76,7 +76,7 @@ namespace RobotCastle.Battling.Altars
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
             _val = _percentage[tier];
             CLog.Log($"[AltarMp_FinalSp] Tier {tier}, final spell power: {_val * 100}%");
-            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
+            ServiceLocator.Get<IPlayerFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()

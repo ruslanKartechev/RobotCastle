@@ -10,12 +10,12 @@ namespace RobotCastle.Testing
     public class EnemiesTester : MonoBehaviour
     {
         [SerializeField] private bool _doSpawnHero = true;
-        [SerializeField] private SpawnMergeItemArgs _heroSpawnArgs;
+        [SerializeField] private SpawnArgs _heroSpawnArgs;
         [SerializeField] private bool _addItems;
         [SerializeField] private List<CoreItemData> _heroItems;
         [Space(10)]
         [SerializeField] private bool _doSpawnEnemy = false;
-        [SerializeField] private SpawnMergeItemArgs _enemySpawnArgs;
+        [SerializeField] private SpawnArgs _enemySpawnArgs;
 
 
         [ContextMenu("Run")]

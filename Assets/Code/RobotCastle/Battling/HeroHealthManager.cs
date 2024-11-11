@@ -21,17 +21,17 @@ namespace RobotCastle.Battling
             if (!_isDamageable)
                 return default;
             var stats = _components.stats;
-            var DEF = 0f;
+            var resist = 0f;
             switch (args.type)
             {
                 case EDamageType.Magical:
-                    DEF = stats.PhysicalResist.Val;
+                    resist = stats.PhysicalResist.Val;
                     break;
                 case EDamageType.Physical:
-                    DEF = stats.MagicalResist.Val;
+                    resist = stats.MagicalResist.Val;
                     break;
             }
-            args.amount = HeroesManager.ReduceDamageByDef(args.amount, DEF);
+            args.amount = HeroesManager.ReduceDamageByDef(args.amount, resist);
 
             foreach (var mod in _modifiers)
             {
@@ -54,7 +54,7 @@ namespace RobotCastle.Battling
                 if (health < 0) 
                     health = 0;
             }
-            StatsCollector.AddDamageReceived(_components.GUID, args.type, (int)damageAmount);
+            StatsCollector.AddDamageReceived(_components.StatCollectionId, args.type, (int)damageAmount);
             stats.HealthCurrent.Val = health;
             if (health <= 0)
             {
@@ -91,8 +91,6 @@ namespace RobotCastle.Battling
 
         public void ClearAllModifiers()
         {
-            // for (var i = _modifiers.Count - 1; i >= 0; i++)
-                    // _modifiers.RemoveAt(i);
             _modifiers.Clear();
             _deleteQueue.Clear();
         }

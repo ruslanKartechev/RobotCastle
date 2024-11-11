@@ -42,7 +42,7 @@ namespace RobotCastle.Battling
                 for (var i = 0; i < items.Count; i++)
                 {
                     var it = items[i];
-                    var args = new SpawnMergeItemArgs(it.core);
+                    var args = new SpawnArgs(it.core);
                     var didSpawn = factory.SpawnHeroOrItem(args, merge.GridView, merge.SectionsController, out var view);
                     if (didSpawn)
                     {

@@ -125,7 +125,7 @@ namespace RobotCastle.Battling
             if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
             if (!path.success)
             {
-                CLog.LogRed($"[{nameof(HeroMovementManager)}] Path failed: from ({myCellPos}), to ({originalEnemyCell})");
+                // CLog.LogRed($"[{nameof(HeroMovementManager)}] Path failed: from ({myCellPos}), to ({originalEnemyCell})");
                 await Task.Yield();
                 if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
                 stepCallback?.Invoke();
@@ -149,14 +149,7 @@ namespace RobotCastle.Battling
                 CLog.LogRed($"[{nameof(HeroMovementManager)}] path count < 2...");
                 return EPathMovementResult.FailedToBuild;
             }
-            
-            // foreach (var p in path.points)
-            // {
-            //     var p1 = _map.GetWorldFromCell(p) + _offset;
-            //     var p2 = p1 + Vector3.up * 2f;
-            //     Debug.DrawLine(p1, p2, _dbgColor, 3f);
-            // }
-            
+       
             const int CheckEnemyPosIterationsCount = 2;
             for (var i = 1; i < path.points.Count && !token.IsCancellationRequested; i++)
             {
@@ -193,14 +186,11 @@ namespace RobotCastle.Battling
                 do
                 {
                     blocked = false;
-                    // CLog.LogWhite("====================");
-                    // CLog.Log($"Me {name}. Cell: {CurrentCell}, target: {targetCell}");
                     for (var ind = _map.ActiveAgents.Count - 1; ind >= 0; ind--)
                     {
                         var agent = _map.ActiveAgents[ind];
                         if (agent == this)
                             continue;
-                        // CLog.Log($"Agent {ind + 1}, {agent.name}: Cell: {agent.CurrentCell}. Target cell: {agent.TargetCell}");
                         if (agent.CurrentCell == targetCell || agent.TargetCell == targetCell)
                         {
                             stepCallback?.Invoke();
@@ -262,15 +252,6 @@ namespace RobotCastle.Battling
             return EPathMovementResult.ReachedEnd;
         }
 
-        public bool CheckIfShouldRotate(Vector2Int cellPos)
-        {
-            var worldPos = _map.GetWorldFromCell(cellPos);
-            var rotation = Quaternion.LookRotation(worldPos - transform.position);
-            var startRot = transform.rotation;
-            var angle = Quaternion.Angle(startRot, rotation);
-            return Mathf.Abs(angle) > AngleThreshold;
-        }
-        
         public async void RotateIfNecessary(Vector2Int cellPos, CancellationToken token, Action callback = null)
         {
             _unitView.state.isMoving = true;
@@ -334,6 +315,29 @@ namespace RobotCastle.Battling
         {
             CurrentCell = _map.GetCellPositionFromWorld(transform.position);
         }
+
+        public async Task JumpToCell(Vector2Int cell, CancellationToken token, float time, float height)
+        {
+            TargetCell = cell;
+            var tr = _unitView.transform;
+            var p1 = tr.position;
+            var p3 = _map.GetWorldFromCell(cell);
+            var p2 = Vector3.Lerp(p1, p3, .5f) + Vector3.up * height;
+            var elapsed = 0f;
+            while (elapsed < time && !token.IsCancellationRequested)
+            {
+                var t = elapsed / time;
+                var pos = Bezier.GetPosition(p1, p2, p3, t);
+                tr.position = pos;
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
+            if (token.IsCancellationRequested) return;
+            tr.position = p3;
+            CurrentCell = cell;
+        }
+        
+        
         
         private void Update()
         {

@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f801474f7446bc8882a74809c4635b, type: 3}
+  m_Name: Devils Offer Config 1 testing
+  m_EditorClassIdentifier: 
+  config:
+    optionsPerTier:
+    - options:
+      - penaltyType: 2
+        penaltyValue: 1
+        reward:
+          level: 1
+          id: restore_health
+          type: bonus
+      - penaltyType: 1
+        penaltyValue: 1
+        reward:
+          level: 1
+          id: bonus_troops
+          type: bonus
+    - options:
+      - penaltyType: 1
+        penaltyValue: 0.5
+        reward:
+          level: 18
+          id: bonus_money
+          type: bonus
+      - penaltyType: 0
+        penaltyValue: 1
+        reward:
+          level: 1
+          id: bonus_troops
+          type: bonus
+      - penaltyType: 2
+        penaltyValue: 1
+        reward:
+          level: 1
+          id: hero_level_up
+          type: bonus
+      - penaltyType: 2
+        penaltyValue: 1
+        reward:
+          level: 1
+          id: armor
+          type: item
+      - penaltyType: 0
+        penaltyValue: 1
+        reward:
+          level: 2
+          id: bow
+          type: item
+      - penaltyType: 1
+        penaltyValue: 0.5
+        reward:
+          level: 1
+          id: bonus_troops
+          type: bonus
+      - penaltyType: 2
+        penaltyValue: 1
+        reward:
+          level: 1
+          id: bonus_troops
+          type: bonus
+      - penaltyType: 1
+        penaltyValue: 100
+        reward:
+          level: 1
+          id: restore_health
+          type: bonus
+      - penaltyType: 2
+        penaltyValue: 1
+        reward:
+          level: 1
+          id: restore_health
+          type: bonus
+    - options:
+      - penaltyType: 1
+        penaltyValue: 0.5
+        reward:
+          level: 20
+          id: bonus_money
+          type: bonus
+      - penaltyType: 1
+        penaltyValue: 0.5
+        reward:
+          level: 1
+          id: bonus_troops
+          type: bonus
+      - penaltyType: 1
+        penaltyValue: 0.5
+        reward:
+          level: 1
+          id: hero_level_up
+          type: bonus
+      - penaltyType: 2
+        penaltyValue: 1
+        reward:
+          level: 3
+          id: staff
+          type: item
+      - penaltyType: 1
+        penaltyValue: 1
+        reward:
+          level: 3
+          id: bow
+          type: item
+      - penaltyType: 2
+        penaltyValue: 1
+        reward:
+          level: 1
+          id: restore_health
+          type: bonus
+    - options:
+      - penaltyType: 1
+        penaltyValue: 0.5
+        reward:
+          level: 1
+          id: bonus_troops
+          type: bonus
+      - penaltyType: 0
+        penaltyValue: 1
+        reward:
+          level: 1
+          id: bonus_troops
+          type: bonus
+      - penaltyType: 2
+        penaltyValue: 1
+        reward:
+          level: 2
+          id: sword
+          type: item
+      - penaltyType: 2
+        penaltyValue: 1
+        reward:
+          level: 1
+          id: armor
+          type: item
+      - penaltyType: 0
+        penaltyValue: 1
+        reward:
+          level: 2
+          id: bow
+          type: item

@@ -117,8 +117,8 @@ namespace RobotCastle.Battling.SmeltingOffer
             switch (data.type)
             {
                 case MergeConstants.TypeWeapons:
-                    var factory = ServiceLocator.Get<IPlayerMergeItemsFactory>();
-                    var view = factory.SpawnHeroOrItem(new SpawnMergeItemArgs(data));
+                    var factory = ServiceLocator.Get<IPlayerFactory>();
+                    var view = factory.SpawnHeroOrItem(new SpawnArgs(data));
                     if(data.level > originalLevel)
                         MergeFunctions.PlayMergeFX(view);
                     break;

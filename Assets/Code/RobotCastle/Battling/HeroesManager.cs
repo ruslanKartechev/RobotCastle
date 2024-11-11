@@ -40,7 +40,7 @@ namespace RobotCastle.Battling
             {
                 case MergeConstants.TypeWeapons:
                     var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
-                    factory.SpawnHeroOrItem(new SpawnMergeItemArgs(data), merge.GridView, merge.SectionsController, out var item);
+                    factory.SpawnHeroOrItem(new SpawnArgs(data), merge.GridView, merge.SectionsController, out var item);
                     break;
                 case MergeConstants.TypeBonus:
                     switch (data.id)
@@ -163,11 +163,10 @@ namespace RobotCastle.Battling
             var spellInfo = ServiceLocator.Get<HeroesDatabase>().GetHeroSpellInfo(id);
             var db = ServiceLocator.Get<ModifiersDataBase>();
             var list = new List<ModifierProvider>(3);
-            if(spellInfo.mainSpellId.Length > 0)
+            if(!string.IsNullOrEmpty(spellInfo.mainSpellId))
                 list.Add(db.GetSpell(spellInfo.mainSpellId));
             return list;
         }
-
         
         public static (List<IHeroController>, List<Vector2Int> ) GetCellsHeroesInsideCellMask(
             CellsMask cellsMask, 
@@ -314,6 +313,60 @@ namespace RobotCastle.Battling
             if (heroSave.level < MaxHeroLevel)
                 heroSave.xpForNext = db.heroXpLevels[heroSave.level];
         }
-        
+
+        public static (bool, Vector2Int) GetClosestFreeCell(Vector2Int center, IMap map)
+        {
+            Vector2Int result = default;
+            var maxRad = map.Size.x >= map.Size.y ? map.Size.x : map.Size.y;
+            for (var rad = 1; rad < maxRad; rad++)
+            {
+                int x = 0;
+                int y = rad;
+                for (x = -rad; x <= rad; x++)
+                {
+                    var cell = center + new Vector2Int(x, y);
+                    if (map.IsFullyFree(cell))
+                    {
+                        result = cell;
+                        return (true, result);
+                    }
+                }
+
+                y = -rad;
+                for (x = -rad; x <= rad; x++)
+                {
+                    var cell = center + new Vector2Int(x, y);
+                    if (map.IsFullyFree(cell))
+                    {
+                        result = cell;
+                        return (true, result);
+                    }
+                }
+
+                x = rad;
+                for (y = rad - 1; y > -rad; y--)
+                {
+                    var cell = center + new Vector2Int(x, y);
+                    if (map.IsFullyFree(cell))
+                    {
+                        result = cell;
+                        return (true, result);
+                    }
+                }
+                
+                x = -rad;
+                for (y = rad - 1; y > -rad; y--)
+                {
+                    var cell = center + new Vector2Int(x, y);
+                    if (map.IsFullyFree(cell))
+                    {
+                        result = cell;
+                        return (true, result);
+                    }
+                }
+            }
+                        
+            return (false, result);
+        }
     }
 }

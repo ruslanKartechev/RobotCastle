@@ -94,6 +94,12 @@ namespace RobotCastle.Battling
             _enemies.Add(hero);
             _enemiesAlive.Add(hero);
         }
+
+        public void RemovePlayer(IHeroController hero)
+        {
+            _players.Remove(hero);
+            _playersAlive.Remove(hero);
+        }
         
         public void AddPlayer(IHeroController hero)
         {

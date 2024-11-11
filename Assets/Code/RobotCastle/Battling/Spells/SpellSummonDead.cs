@@ -26,10 +26,10 @@ namespace RobotCastle.Battling
             if (_isActive) return;
             _isActive = true;
             _components.stats.ManaResetAfterFull.Reset(_components);
-            var args = new List<SpawnMergeItemArgs>(_config.enemiesToSpawn.Count);
+            var args = new List<SpawnArgs>(_config.enemiesToSpawn.Count);
             foreach (var core in _config.enemiesToSpawn)
             {
-                var arg = new SpawnMergeItemArgs(core);
+                var arg = new SpawnArgs(core);
                 arg.coreData.level = _components.stats.MergeTier;
                 arg.usePreferredCoordinate = false;
                 args.Add(arg);

@@ -5,8 +5,18 @@ namespace Bomber
 {
     public class Map : IMap
     {
-        public List<IAgent> ActiveAgents { get; } = new(20);
+    
+        public Map(Vector2Int size, float cellSize, Vector3 worldOrigin)
+        {
+            _size = size;
+            Grid = new MapCell[size.x, size.y];
+            CellSize = cellSize;
+            WorldOrigin = worldOrigin;
+        }
 
+        
+        public List<IAgent> ActiveAgents { get; } = new(20);
+        
         public Vector2Int Size => _size;
         
         public MapCell[,] Grid { get; private set;}
@@ -24,6 +34,23 @@ namespace Bomber
             return false;
         }
         
+        public bool IsFullyFree(Vector2Int coord)
+        {
+            if (IsOutOfBounce(coord)) 
+                return false;
+            if (Grid[coord.x, coord.y].isPlayerWalkable == false || 
+                Grid[coord.x, coord.y].isAIWalkable == false)
+            {
+                return false;
+            }
+            foreach (var ag in ActiveAgents)
+            {
+                if(ag.CurrentCell == coord || ag.TargetCell == coord)
+                    return false;
+            }
+            return true;
+        }
+        
         public Vector2Int GetCellPositionFromWorld(Vector3 worldPosition)
         {
             var p = worldPosition - WorldOrigin;
@@ -37,14 +64,7 @@ namespace Bomber
             return WorldOrigin + new Vector3(cell.x * CellSize, 0f, cell.y * CellSize);
         }
 
-        public Map(Vector2Int size, float cellSize, Vector3 worldOrigin)
-        {
-            _size = size;
-            Grid = new MapCell[size.x, size.y];
-            CellSize = cellSize;
-            WorldOrigin = worldOrigin;
-        }
-        
+   
         public MapCell GetCellAtPosition(Vector3 worldPosition)
         {
             var p = worldPosition - WorldOrigin;

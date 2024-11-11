@@ -52,11 +52,11 @@ namespace RobotCastle.Merging
                 var weapons = go.GetComponent<IHeroWeaponsContainer>();
                 if (weapons.Items.Count > 0)
                 {
-                    var factory = ServiceLocator.Get<IPlayerMergeItemsFactory>();
+                    var factory = ServiceLocator.Get<IPlayerFactory>();
                     foreach (var weaponData in weapons.Items)
                     {
                         var itemData = new ItemData(weaponData.core);
-                        var args = new SpawnMergeItemArgs(itemData.core);
+                        var args = new SpawnArgs(itemData.core);
                         var spawned = factory.SpawnHeroOrItem(args);
                         if (spawned == null)
                             return;
@@ -86,7 +86,6 @@ namespace RobotCastle.Merging
             }
             if (otherItem == null)
             {
-                CLog.LogRed("Nothing to merge with");
                 callback.Invoke(EMergeResult.NoMerge, false);
                 return;
             }

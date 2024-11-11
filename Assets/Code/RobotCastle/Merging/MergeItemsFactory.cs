@@ -12,9 +12,28 @@ namespace RobotCastle.Merging
         {
             instance.gameObject.name = instance.gameObject.name.Replace(ReplaceString, $"_{(int)(UnityEngine.Random.Range(0, 1f) * NameMult)}");
         }
-        
-        private const int NameMult = 10000;
-        private const string ReplaceString = "(Clone)";
+
+        public GameObject SpawnItem(ItemData itemData)
+        {
+            var db = ServiceLocator.Get<ViewDataBaseContainer>();
+            GameObject prefab = null;
+            GameObject instance = null;
+            switch (itemData.core.type)
+            {
+                case MergeConstants.TypeWeapons:
+                    prefab = db.viewDb.GetMergePrefabAtLevel(itemData.core.id, itemData.core.level);
+                    break;
+                case MergeConstants.TypeHeroes:
+                    prefab = db.viewDb.GetMergePrefab(itemData.core.id);
+                    break;
+                default:
+                    CLog.LogRed($"[GridItemsSpawner] {itemData.core.type} Unknown type");
+                    break;
+            }
+            instance = SleepDev.MiscUtils.Spawn(prefab, transform);
+            Rename(instance);
+            return instance;
+        }        
         
         public IItemView SpawnItemOnCell(ICellView pivotCell, ItemData itemData)
         {
@@ -41,7 +60,6 @@ namespace RobotCastle.Merging
             // extend for case of multi cell items!
             return itemView;
         }
-
    
         public List<IItemView> SpawnItems(List<CoreItemData> items)
         {
@@ -75,5 +93,9 @@ namespace RobotCastle.Merging
             return result;
         }
         
+        
+        private const int NameMult = 10000;
+        
+        private const string ReplaceString = "(Clone)";
     }
 }

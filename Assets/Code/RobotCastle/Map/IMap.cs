@@ -7,6 +7,8 @@ namespace Bomber
     {
         List<IAgent> ActiveAgents { get; }
         public bool IsOutOfBounce(Vector2Int coord);
+        public bool IsFullyFree(Vector2Int coord);
+
         Vector2Int Size { get; }
         MapCell[,] Grid { get; }
         void GetCellAtPosition(Vector3 worldPosition, out Vector2Int mapCoord, out MapCell cell);

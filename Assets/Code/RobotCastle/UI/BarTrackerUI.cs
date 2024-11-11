@@ -30,6 +30,7 @@ namespace RobotCastle.UI
 
         public void DisplayStats(Stat stat, Stat statMax)
         {
+            StopAnimating();
             _prevVal = (int)stat.Get();
             _prevMax = (int)statMax.Get();
             _prevT = (float)(_prevVal) / _prevMax;
@@ -49,6 +50,7 @@ namespace RobotCastle.UI
 
             if (_stat != null && _statMax != null)
             {
+                StopAnimating();
                 DisplayStats(_stat, _statMax);
                 // CLog.LogRed($"[Assign] {_prevVal}, {_prevMax}, {_prevT}");
                 enabled = true;
@@ -61,9 +63,20 @@ namespace RobotCastle.UI
 
         public void AnimateTimedSpell(float from, float to, float time)
         {
+            StopAnimating();
+            _changing = StartCoroutine(ChangingFillOnly(from, to, time));   
+        }
+
+        public void StopAnimating()
+        {
             if(_changing != null)
                 StopCoroutine(_changing);
-            _changing = StartCoroutine(ChangingFillOnly(from, to, _fillTime));   
+        }
+        
+        public void Hide()
+        {
+            StopAnimating();
+            gameObject.SetActive(false);
         }
         
         protected void OnEnable()
@@ -146,5 +159,7 @@ namespace RobotCastle.UI
 
             _fillImageBack.fillAmount = t2;
         }
+
+     
     }
 }

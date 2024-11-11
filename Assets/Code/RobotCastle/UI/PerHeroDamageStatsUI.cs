@@ -22,7 +22,7 @@ namespace RobotCastle.UI
         {
             _data = data;
             var db = ServiceLocator.Get<HeroesDatabase>();
-            var info = db.GetHeroViewInfo(data.id);
+            var info = db.GetHeroViewInfo(data.heroId);
             _nameText.text = info.name;
             _icon.sprite = ViewDataBase.GetHeroSprite(info.iconId);
         }

@@ -21,9 +21,9 @@ namespace RobotCastle.Battling
 
         public BattleRewardCalculator rewardCalculator => _rewardCalculator;
         public RoundData currentRound => _levelData.levels[_battle.roundIndex];
-        public BattleDamageStatsCollector playerDamageStatsCollector => _playerDamageStatsCollector;
+        public IBattleDamageStatsCollector playerStatCollector => _playerStatsCollector;
+        public IBattleDamageStatsCollector enemiesStatsCollector => _enemiesStatsCollector;
         public BattleEnemiesWeaponsDropper dropper => _dropper;
-        public BattleDamageStatsCollector enemiesStatsCollector => _enemiesStatsCollector;
         public LevelData levelData => _levelData;
         
         
@@ -34,7 +34,7 @@ namespace RobotCastle.Battling
         private BattleRewardCalculator _rewardCalculator;
         private BattleEnemiesWeaponsDropper _dropper;
         private List<IRoundModifier> _roundModifiers = new(5);
-        private BattleDamageStatsCollector _playerDamageStatsCollector = new();
+        private BattleDamageStatsCollector _playerStatsCollector = new();
         private BattleDamageStatsCollector _enemiesStatsCollector = new();
         
         
@@ -85,6 +85,8 @@ namespace RobotCastle.Battling
             _battle.State = BattleState.Going;
             _battle.WinCallback = OnTeamWin;
             var map = ServiceLocator.Get<Bomber.IMap>();
+            _battle.PlayerUnits.RemoveNulls();
+            _battle.Enemies.RemoveNulls();
             foreach (var hero in _battle.Enemies)
             {
                 hero.TeamNum = 1;
@@ -97,10 +99,9 @@ namespace RobotCastle.Battling
                 hero.Battle = _battle;
                 hero.Components.movement.InitAgent(map);
             }
-            
             PrepareForBattle(_battle.PlayerUnits);
             PrepareForBattle(_battle.Enemies);
-            _playerDamageStatsCollector.ResetForNewHeroes(_battle.PlayerUnits);
+            _playerStatsCollector.ResetForNewHeroes(_battle.PlayerUnits);
             _enemiesStatsCollector.ResetForNewHeroes(_battle.Enemies);
             if (_activatePlayers)
             {
@@ -173,7 +174,6 @@ namespace RobotCastle.Battling
             _battle.enemiesAlive.Clear();
 
             var roundType = _levelData.levels[roundInd].roundType;
-        
             CLog.Log($"Round: {roundInd + 1}, type: {roundType.ToString()}");
             
             var preset = EnemiesFactory.GetPackPreset(_levelData.levels[roundInd].enemyPreset);
@@ -230,12 +230,16 @@ namespace RobotCastle.Battling
         public void RecollectPlayerUnits()
         {
             var mergeManager = ServiceLocator.Get<MergeManager>();
-            foreach (var playerUnit in _battle.PlayerUnits)
-                ResetHeroAfterBattle(playerUnit);
+            _battle.PlayerUnits.RemoveNulls();
+            _battle.playersAlive.RemoveNulls();
+            foreach (var unit in _battle.PlayerUnits)
+            {
+                ResetHeroAfterBattle(unit);
+            }
             mergeManager.ResetAllItemsPositions();
         }
 
-        public void AddNewEnemiesDuringBattle(List<SpawnMergeItemArgs> args)
+        public void AddNewEnemiesDuringBattle(List<SpawnArgs> args)
         {
             if (_battle.State != BattleState.Going)
             {

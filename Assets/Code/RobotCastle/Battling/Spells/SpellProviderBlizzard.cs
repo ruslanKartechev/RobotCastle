@@ -9,10 +9,12 @@ namespace RobotCastle.Battling
         
         public override float manaStart => _config.manaStart;
 
-        [SerializeField] private SpellConfigBlizzard _config;
         
         public override void AddTo(GameObject target)
-        { }
+        {
+            if(target.TryGetComponent<HeroComponents>(out var hero))
+                AddToHero(hero);
+        }
         
         public override void AddToHero(HeroComponents components)
         {
@@ -37,6 +39,8 @@ namespace RobotCastle.Battling
             }
             return str;
         }
+
+        [SerializeField] private SpellConfigBlizzard _config;
 
     }
 }

@@ -12,7 +12,7 @@ namespace RobotCastle.Battling
     [DefaultExecutionOrder(5)]
     public class HeroesAndItemsFactory : MonoBehaviour, IHeroesAndItemsFactory
     {
-        public bool SpawnHeroOrItem(SpawnMergeItemArgs args, 
+        public bool SpawnHeroOrItem(SpawnArgs args, 
             IGridView grid, 
             IGridSectionsController sectionsController, 
             out IItemView spawnedItem)
@@ -48,7 +48,7 @@ namespace RobotCastle.Battling
             return true;
         }        
         
-        public void SpawnOnCell(SpawnMergeItemArgs args, ICellView cellView, out IItemView spawnedItem)
+        public void SpawnOnCell(SpawnArgs args, ICellView cellView, out IItemView spawnedItem)
         {
             var spawner = ServiceLocator.Get<IMergeItemsFactory>();
             spawnedItem = spawner.SpawnItemOnCell(cellView, args.ItemData);
@@ -80,10 +80,34 @@ namespace RobotCastle.Battling
                     var modsContainer = spawnedItem.Transform.gameObject.GetComponent<ModifiersContainer>();
                     modsContainer.OverrideModifiers(mods.modifierIds);
                     break;
-
             }
-        }        
-        
+        }
+
+        public IHeroController SpawnHero(SpawnArgs args, Vector3 position, Quaternion rotation)
+        {
+            var spawner = ServiceLocator.Get<IMergeItemsFactory>();
+            var spawnedItem = spawner.SpawnItem(args.ItemData);
+            spawnedItem.transform.SetPositionAndRotation(position, rotation);
+            var hero = spawnedItem.GetComponent<IHeroController>();
+            var ui = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
+            ui.AssignHeroUI(hero.Components);
+            var id = args.coreData.id;
+            var modifiers = HeroesManager.GetModifiersForHero(id);
+            hero.InitHero(id, HeroesManager.GetHeroLevel(id), args.coreData.level, modifiers);
+            var weaponsContainer = spawnedItem.GetComponent<IHeroWeaponsContainer>();
+            weaponsContainer.SetEmpty();
+            if (args.useAdditionalItems)
+            {
+                var weaponData = ServiceLocator.Get<ModifiersDataBase>()
+                    .GetWeaponsWithModifiers(args.additionalItems);
+                var mergedItems = MergeFunctions.TryMergeAll(weaponData, MergeConstants.MaxItemLevel);
+                weaponsContainer.SetItems(mergedItems);
+            }
+            hero.SetBehaviour(new HeroIdleBehaviour());
+            hero.Components.heroUI.UpdateStatsView(hero.Components);
+            return hero;
+        }
+
 
         private void OnEnable()
         {

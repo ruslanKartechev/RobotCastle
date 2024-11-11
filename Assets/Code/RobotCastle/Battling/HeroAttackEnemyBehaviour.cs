@@ -86,21 +86,26 @@ namespace RobotCastle.Battling
         private async void DecideNextStep(CancellationToken token)
         {
             await Task.Yield();
-            if (token.IsCancellationRequested)
-                return;
+            if (token.IsCancellationRequested) return;
+            
             if (TryStartAttacking())
-            {
-                // CLog.LogWhite($"[{name}] Already can attack");
                 return;
-            }
+            
+            if (token.IsCancellationRequested) return;
+            
+            if (_logicStep == EAttackLogicStep.Attacking)
+                _hero.Components.attackManager.Stop();
+            _logicStep = EAttackLogicStep.Moving;
+
             StopSubProc();
             var targets= BattleManager.GetBestTargetForAttack(_hero, enemy);
-            while(targets.Count == 0)
+            while(targets.Count == 0 && !token.IsCancellationRequested)
             {
-                // CLog.LogRed($"[{name}] No targets, waiting");
                 targets = BattleManager.GetBestTargetForAttack(_hero, enemy);
                 await Task.Delay(250, token);
             }
+            if (token.IsCancellationRequested) return;
+            
             if(_logicStep == EAttackLogicStep.Attacking)
                 _hero.Components.attackManager.Stop();
             _logicStep = EAttackLogicStep.Moving;
@@ -122,7 +127,6 @@ namespace RobotCastle.Battling
 
         private bool TryStartAttacking()
         {
-            // CLog.Log($"[{name}] TryStartAttacking");
             if (CheckAttackCondition(out var targetEnemy))
             {
                 StopSubProc();
@@ -165,7 +169,6 @@ namespace RobotCastle.Battling
 
         private async Task BeginAttackAndCheckIfDead(IHeroController targetEnemy, CancellationToken token)
         {
-            // CLog.LogWhite($"[{name}] BeginAttackAndCheckIfDead");
             _hero.Components.attackManager.BeginAttack(targetEnemy.Components.damageReceiver);
             var startEnemyCell = targetEnemy.Components.state.currentCell;
             while (!token.IsCancellationRequested)

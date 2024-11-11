@@ -8,12 +8,12 @@ namespace RobotCastle.UI
     public class PurchaseNewHeroButton : MyButton
     {
         [SerializeField] private CostViewUI _costView;
-        private IPlayerMergeItemsFactory _factory;
+        private IPlayerFactory _factory;
 
         private void Start()
         {
             var gm = ServiceLocator.Get<GameMoney>();
-            _factory = ServiceLocator.Get<IPlayerMergeItemsFactory>();
+            _factory = ServiceLocator.Get<IPlayerFactory>();
             _costView.InitWithCost(gm.levelMoney, _factory.NextCost);
             _costView.DoReact(true);   
             AddMainCallback(Purchase);

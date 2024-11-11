@@ -83,7 +83,7 @@ namespace RobotCastle.Merging
             filler.Fill();
         }
         
-        public bool SpawnNewMergeItem(SpawnMergeItemArgs args)
+        public bool SpawnNewMergeItem(SpawnArgs args)
         {
             var didSpawn = ServiceLocator.Get<IHeroesAndItemsFactory>()
                 .SpawnHeroOrItem(args, _gridView, _sectionsController, out var view);

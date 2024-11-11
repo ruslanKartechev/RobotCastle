@@ -15,8 +15,11 @@ namespace RobotCastle.Battling
         {
             hero.Components.healthManager.StatsCollector = this;
             hero.Components.damageSource.StatsCollector = this;
-            _data.Add(hero.Components.GUID ,new PerHeroData() { id = hero.Components.stats.HeroId });
-            onListUpdated?.Invoke();
+            if(_data.ContainsKey(hero.Components.StatCollectionId) == false)
+            {
+                _data.Add(hero.Components.StatCollectionId, new PerHeroData() { heroId = hero.Components.stats.HeroId });
+                onListUpdated?.Invoke();
+            }
         }
         
         public void AddHeroes(List<IHeroController> heroes)
@@ -25,7 +28,7 @@ namespace RobotCastle.Battling
             {
                 hero.Components.healthManager.StatsCollector = this;
                 hero.Components.damageSource.StatsCollector = this;
-                _data.Add(hero.Components.GUID, new PerHeroData() { id = hero.Components.stats.HeroId });
+                _data.Add(hero.Components.StatCollectionId, new PerHeroData() { heroId = hero.Components.stats.HeroId });
             }
             onListUpdated?.Invoke();
         }
@@ -37,7 +40,7 @@ namespace RobotCastle.Battling
             {
                 hero.Components.healthManager.StatsCollector = this;
                 hero.Components.damageSource.StatsCollector = this;
-                _data.Add(hero.Components.GUID, new PerHeroData(){ id = hero.Components.stats.HeroId });
+                _data.Add(hero.Components.StatCollectionId, new PerHeroData(){ heroId = hero.Components.stats.HeroId });
             }
             onListUpdated?.Invoke();
         }
@@ -78,7 +81,7 @@ namespace RobotCastle.Battling
 
         public class PerHeroData
         {
-            public string id;
+            public string heroId;
             public int damageDealtPhys;
             public int damageDealtMag;
             public int damageReceivedPhys;

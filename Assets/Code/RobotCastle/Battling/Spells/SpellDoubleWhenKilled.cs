@@ -5,14 +5,14 @@ namespace RobotCastle.Battling
 {
     public class SpellDoubleWhenKilled : IKIllModifier
     {
-        public SpellDoubleWhenKilled(List<SpawnMergeItemArgs> spawnArgs, HeroComponents components)
+        public SpellDoubleWhenKilled(List<SpawnArgs> spawnArgs, HeroComponents components)
         {
             _components = components;
             _components.killProcessor.AddModifier(this);
             var count = spawnArgs.Count;
-            _spawnArgs = new List<SpawnMergeItemArgs>(count);
+            _spawnArgs = new List<SpawnArgs>(count);
             for (var i = 0; i < count; i++)
-                _spawnArgs.Add(new SpawnMergeItemArgs(spawnArgs[i]));
+                _spawnArgs.Add(new SpawnArgs(spawnArgs[i]));
         }
 
         public int order => 100;
@@ -30,7 +30,7 @@ namespace RobotCastle.Battling
             ServiceLocator.Get<BattleManager>().AddNewEnemiesDuringBattle(_spawnArgs);
         }
         
-        private List<SpawnMergeItemArgs> _spawnArgs;
+        private List<SpawnArgs> _spawnArgs;
         private HeroComponents _components;
         
     }

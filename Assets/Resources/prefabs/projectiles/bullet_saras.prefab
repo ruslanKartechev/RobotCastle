@@ -48,9 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isPooled: 1
   _hitParticles: {fileID: 5189287899455884751}
-  _trailParticles: {fileID: 0}
   _disableOnHitGo:
-  - {fileID: 0}
+  - {fileID: 6258656356836343561}
 --- !u!1001 &5189287899474073049
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65,15 +64,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 443864, guid: 658fc6655c1c78e45a80243a241f1b1e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 443864, guid: 658fc6655c1c78e45a80243a241f1b1e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 443864, guid: 658fc6655c1c78e45a80243a241f1b1e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.3
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 443864, guid: 658fc6655c1c78e45a80243a241f1b1e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -247,6 +246,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7749172714586908880}
     m_Modifications:
+    - target: {fileID: 1913480666485755334, guid: 8b5ea34e990395f4ba2b5feaf1fee519, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1913480666500652682, guid: 8b5ea34e990395f4ba2b5feaf1fee519, type: 3}
       propertyPath: m_Name
       value: FX_Saras_Bullet
@@ -296,6 +299,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b5ea34e990395f4ba2b5feaf1fee519, type: 3}
+--- !u!1 &6258656356836343561 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1913480666500652682, guid: 8b5ea34e990395f4ba2b5feaf1fee519, type: 3}
+  m_PrefabInstance: {fileID: 5500366621402800515}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6258656356836783983 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1913480666500962028, guid: 8b5ea34e990395f4ba2b5feaf1fee519, type: 3}

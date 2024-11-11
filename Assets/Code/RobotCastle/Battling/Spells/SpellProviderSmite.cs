@@ -5,8 +5,6 @@ namespace RobotCastle.Battling
     [CreateAssetMenu(menuName = "SO/Spells/smite", fileName = "smite", order = 0)]
     public class SpellProviderSmite : SpellProvider
     {
-        [SerializeField] private SpellConfigSmite _config;
-
         public override void AddTo(GameObject target)
         {
             var components = target.GetComponent<HeroComponents>();
@@ -21,5 +19,8 @@ namespace RobotCastle.Battling
 
         public override float manaMax => _config.manaMax;
         public override float manaStart => _config.manaStart;
+        
+        [SerializeField] private SpellConfigSmite _config;
+
     }
 }

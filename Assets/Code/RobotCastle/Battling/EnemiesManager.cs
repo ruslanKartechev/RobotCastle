@@ -26,7 +26,7 @@ namespace RobotCastle.Battling
             _enemiesFactory.GridView = _gridView;
         }
 
-        public IHeroController SpawnNewEnemy(SpawnMergeItemArgs args, int heroLvl = 0, bool addToList = true)
+        public IHeroController SpawnNewEnemy(SpawnArgs args, int heroLvl = 0, bool addToList = true)
         {
             var h = _enemiesFactory.SpawnNew(args, heroLvl);
             if(addToList)
@@ -76,7 +76,7 @@ namespace RobotCastle.Battling
                     var original = enemies[i];
                     var cell = allFreeCells.RemoveRandom();
                     var mergeView = original.Components.gameObject.GetComponent<IItemView>();
-                    var args = new SpawnMergeItemArgs(mergeView.itemData.core);
+                    var args = new SpawnArgs(mergeView.itemData.core);
                     args.usePreferredCoordinate = true;
                     args.preferredCoordinated = cell.cell.Coord;
                     var hero = _enemiesFactory.SpawnNew(args);

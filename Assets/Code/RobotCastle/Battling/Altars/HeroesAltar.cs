@@ -32,7 +32,7 @@ namespace RobotCastle.Battling.Altars
             if (_tier < 1)
                 return;
             CLog.Log($"[AltarMp_SummonLevelUp] Applied");
-            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
+            ServiceLocator.Get<IPlayerFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()

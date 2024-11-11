@@ -8,15 +8,13 @@ namespace RobotCastle.Battling
 {
     public class SimpleProjectile : MonoBehaviour, IProjectile, IPoolItem
     {
-        [SerializeField] private bool _isPooled = true;
-        [SerializeField] private ParticleSystem _hitParticles;
-        [SerializeField] private ParticleSystem _trailParticles;
-        [SerializeField] private List<GameObject> _disableOnHitGo;
-        private Action<object> _hitCallback;
-        private object _target;
-        
         public void LaunchProjectile(Transform startPoint, Transform endPoint, float speed, Action<object> hitCallback, object target)
         {
+            if (!endPoint || !startPoint)
+            {
+                Return();
+                return;
+            }
             _hitCallback = hitCallback;
             _target = target;
             var dirVec = endPoint.position - startPoint.position;
@@ -32,9 +30,19 @@ namespace RobotCastle.Battling
         }
 
         public GameObject GetGameObject() => gameObject;
+        
         public string PoolId { get; set; }
         public void PoolHide() => gameObject.SetActive(false);
         public void PoolShow() => gameObject.SetActive(true);
+        
+        
+        private const float HideDelay = 1f;
+        
+        [SerializeField] private bool _isPooled = true;
+        [SerializeField] private ParticleSystem _hitParticles;
+        [SerializeField] private List<GameObject> _disableOnHitGo;
+        private Action<object> _hitCallback;
+        private object _target;
         
         private IEnumerator Moving(Transform startPoint, Transform endPoint, float speed)
         {
@@ -48,8 +56,6 @@ namespace RobotCastle.Battling
             
             while (elapsed <= time)
             {
-                // endPos = endPoint.position;
-                // endPos.y = startPoint.position.y;
                 transform.position = Vector3.Lerp(startPos, endPos, elapsed / time);
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -63,8 +69,13 @@ namespace RobotCastle.Battling
             {
                 _hitParticles.gameObject.SetActive(true);
                 _hitParticles.Play();
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(HideDelay);
             }
+            Return();
+        }
+
+        private void Return()
+        {
             if(_isPooled)
                 ServiceLocator.Get<ISimplePoolsManager>().ReturnOne(this);
             else

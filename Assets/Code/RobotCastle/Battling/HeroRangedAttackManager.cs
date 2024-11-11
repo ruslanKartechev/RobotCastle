@@ -28,6 +28,8 @@ namespace RobotCastle.Battling
                 Hero.Components.state.isAttacking = true;
                 Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
                 Hero.Components.animationEventReceiver.OnAttackEvent += OnAttack;
+                Hero.Components.animationEventReceiver.OnAttackEvent2 -= OnAttack2;
+                Hero.Components.animationEventReceiver.OnAttackEvent2 += OnAttack2;
                 Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, true);
             }
         }
@@ -39,6 +41,7 @@ namespace RobotCastle.Battling
             Hero.Components.state.isAttacking = false;
             Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, false);
             Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
+            Hero.Components.animationEventReceiver.OnAttackEvent2 -= OnAttack2;
         }
 
         private Transform _targetTransform;
@@ -48,10 +51,21 @@ namespace RobotCastle.Battling
         
         private void OnAttack()
         {
+            Attack(Hero.Components.projectileSpawnPoint);
+        }
+
+        private void OnAttack2()
+        {
+            Attack(Hero.Components.projectileSpawnPoint2);
+        }
+
+        private void Attack(Transform projectilePoint)
+        {
             if(Hero.Components.shootParticles != null)
                 Hero.Components.shootParticles.Play();
             var projectile = _projectileFactory.GetProjectile();
-            projectile.LaunchProjectile(Hero.Components.projectileSpawnPoint, _targetTransform, Hero.Components.stats.ProjectileSpeed, HitCallback, _target);
+            projectile.LaunchProjectile(projectilePoint, _targetTransform, 
+                Hero.Components.stats.ProjectileSpeed, HitCallback, _target);
 
             if (Hero.Components.attackSounds.Count > 0)
             {

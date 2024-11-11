@@ -8,6 +8,12 @@ namespace RobotCastle.Battling
 {
     public class HeroStunnedBehaviour : IHeroBehaviour
     {
+        public HeroStunnedBehaviour(float duration)
+        {
+            _duration = duration;
+            _particles = ServiceLocator.Get<ISimplePoolsManager>().GetOne(ObjectPoolConstants.FxPoolId_Stunned);
+        }
+        
         public string BehaviourID => "stunned";
         
         private Action<IHeroBehaviour> _callback;
@@ -15,12 +21,6 @@ namespace RobotCastle.Battling
         private IPoolItem _particles;
         private float _duration;
         private CancellationTokenSource _token;
-
-        public HeroStunnedBehaviour(float duration)
-        {
-            _duration = duration;
-            _particles = ServiceLocator.Get<ISimplePoolsManager>().GetOne(ObjectPoolConstants.FxPoolId_Stunned);
-        }
         
         public void Activate(IHeroController hero, Action<IHeroBehaviour> endCallback)
         {

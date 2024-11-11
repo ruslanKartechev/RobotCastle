@@ -51,6 +51,8 @@ namespace RobotCastle.Testing
             }
             attack.OnAttackEvent -= OnAttack;
             attack.OnAttackEvent += OnAttack;
+            attack.OnAttackEvent2 -= OnAttack;
+            attack.OnAttackEvent2 += OnAttack;
             #endif
         }
         

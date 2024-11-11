@@ -24,7 +24,7 @@ namespace RobotCastle.Relics
         public override void Apply()
         {
             CLog.Log($"Applying: {nameof(RelicStatModifier)}");   
-            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
+            ServiceLocator.Get<IPlayerFactory>().AddModifier(this);
             if (_atkDecor == null)
             {
                 _atkDecor = new StatDecorMult(_atkMod);

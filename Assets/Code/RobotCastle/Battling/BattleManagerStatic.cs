@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Bomber;
 using RobotCastle.Core;
+using RobotCastle.Data;
+using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
 
@@ -8,7 +11,7 @@ namespace RobotCastle.Battling
 {
     public partial class BattleManager
     {
-        public static void SetClosestAvailableDesiredPositions(List<SpawnMergeItemArgs> args, Vector2Int center)
+        public static void SetClosestAvailableDesiredPositions(List<SpawnArgs> args, Vector2Int center)
         {
             var map = ServiceLocator.Get<IMap>();
             var battle = ServiceLocator.Get<BattleManager>()._battle;
@@ -77,7 +80,8 @@ namespace RobotCastle.Battling
             components.damageSource.ClearPostDamageModifiers();
             
             components.weaponsContainer.AddAllModifiersToHero(components);
-
+            components.summonedContainer.DestroyAll();
+            
             foreach (var mod in components.preBattleRecurringMods)
                 mod.Deactivate();
 
@@ -89,6 +93,7 @@ namespace RobotCastle.Battling
             var map = ServiceLocator.Get<IMap>();
             foreach (var hero in heroes)
             {
+                if (hero == null) continue;
                 var components = hero.Components;
                 components.movement.InitAgent(map);
                 components.stats.ManaResetAfterBattle.Reset(components);
@@ -106,10 +111,7 @@ namespace RobotCastle.Battling
             var map = hero.Components.movement.Map;
             var myWorldPos = hero.Components.transform.position;
             var myPos = map.GetCellPositionFromWorld(myWorldPos);
-            // var cellsMask = hero.View.stats.Range.GetCellsMask();
             var enemies = hero.Battle.GetTeam(hero.TeamNum).enemyUnits;
-            // var pointsData = new List<HeroAttackPoints>(enemies.Count);
-            IHeroController bestTarget = null;
             var maxPoints = -float.MaxValue;
             var results = new List<IHeroController>(5);
             
@@ -130,12 +132,8 @@ namespace RobotCastle.Battling
                     points++;
                 var vec = otherHero.Components.transform.position - myWorldPos;
                 var angle = Mathf.Abs(Vector3.SignedAngle(vec, hero.Components.transform.forward, Vector3.up));
-                if (angle >= 180)
-                    points -= 4;
-                else if (angle >= 90)
-                    points -= 2;
-                else if (angle >= 10)
-                    points -= 1;
+                var turns = Mathf.RoundToInt(angle / 4);
+                points -= turns * 2;
                 if (points >= maxPoints)
                 {
                     maxPoints = points;
@@ -146,6 +144,39 @@ namespace RobotCastle.Battling
             }
             return results;
         }
-        
+
+
+        public static void SpawnHeroesInBattle(string id, int count, IHeroController parent,
+            Vector2Int center, List<IHeroController> container, Action<IHeroController> initCallback)
+        {
+            var statCollector = ServiceLocator.Get<BattleManager>().playerStatCollector;
+            var components = parent.Components;
+            var map = components.movement.Map;
+            var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
+            var data = new CoreItemData(components.stats.MergeTier, id, MergeConstants.TypeHeroes);
+            var args = new SpawnArgs(data);
+            var rot = components.transform.rotation;
+            for (var i = 0; i < count; i++)
+            {
+                var (didFind, pos) = HeroesManager.GetClosestFreeCell(center, parent.Components.movement.Map);
+                if (!didFind)
+                {
+                    CLog.LogRed($"Didn't find a free point!!!");
+                    break;
+                }
+                var worldPos = map.GetWorldFromCell(pos);
+                Debug.DrawLine(worldPos, worldPos + Vector3.up * 5f, Color.magenta, 5f);
+                
+                var hero = factory.SpawnHero(args, worldPos, rot);
+                if (hero == null)
+                {
+                    CLog.LogRed("Could not spawn hero!!!");
+                    break;
+                }
+                container.Add(hero);
+                initCallback?.Invoke(hero);
+                
+            }
+        }
     }
 }

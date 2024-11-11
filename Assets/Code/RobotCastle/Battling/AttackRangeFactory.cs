@@ -34,6 +34,9 @@ namespace RobotCastle.Battling
                     return new AttackRangeRectangle(3, 3);
                 case "rie":
                     return new AttackRangeRectangle(3, 3);
+                case "doll":
+                    return new AttackRangeRectangle(1, 1);
+                                
                 case "saras":
                     return new AttackRangeRectangle(4, 4);
                 case "bombie":

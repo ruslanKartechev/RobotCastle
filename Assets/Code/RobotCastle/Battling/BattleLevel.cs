@@ -53,7 +53,7 @@ namespace RobotCastle.Battling
         [Space(10)] 
         [SerializeField] private SoundID _battleStartSound;
         
-        private IPlayerMergeItemsFactory _playerMergeFactory;
+        private IPlayerFactory _playerMergeFactory;
         private ITroopSizeManager _troopSizeManager;
         private BattleMergeUI _mainUI;
         private Chapter _chapter;
@@ -89,7 +89,7 @@ namespace RobotCastle.Battling
             _selectionData = _playerData.chapterSelectionData;
             _uiManager = ServiceLocator.Get<IUIManager>(); 
             _chapter = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
-            _playerMergeFactory = gameObject.GetComponent<IPlayerMergeItemsFactory>();
+            _playerMergeFactory = gameObject.GetComponent<IPlayerFactory>();
             SleepDev.Analytics.OnLevelStarted(_selectionData.chapterIndex, _selectionData.tierIndex);
             _token = new CancellationTokenSource();
             CameraAndInit(_token.Token);
@@ -143,7 +143,7 @@ namespace RobotCastle.Battling
                 ServiceLocator.Bind<EnemiesManager>(_enemiesManager);
                 ServiceLocator.Bind<CastleHealthView>(_playerHealthView);
                 ServiceLocator.Bind<ITroopSizeManager>(_troopSizeManager);
-                ServiceLocator.Bind<IPlayerMergeItemsFactory>(_playerMergeFactory);
+                ServiceLocator.Bind<IPlayerFactory>(_playerMergeFactory);
                 ServiceLocator.Bind<IBattleStartData>(_startData);
                 ServiceLocator.Bind<BattleLevel>(this);
                 
@@ -155,7 +155,7 @@ namespace RobotCastle.Battling
                 ServiceLocator.Unbind<EnemiesManager>();
                 ServiceLocator.Unbind<CastleHealthView>();
                 ServiceLocator.Unbind<ITroopSizeManager>();
-                ServiceLocator.Unbind<IPlayerMergeItemsFactory>();
+                ServiceLocator.Unbind<IPlayerFactory>();
                 ServiceLocator.Unbind<IBattleStartData>();
                 ServiceLocator.Unbind<BattleLevel>();
             }
@@ -197,7 +197,7 @@ namespace RobotCastle.Battling
             ServiceLocator.Get<GameMoney>().levelMoney.SetValue(_startData.StartMoney);
             foreach (var item in _startData.StartItems)
             {
-                _mergeManager.SpawnNewMergeItem(new SpawnMergeItemArgs(item));
+                _mergeManager.SpawnNewMergeItem(new SpawnArgs(item));
             }
         }
         
@@ -213,7 +213,7 @@ namespace RobotCastle.Battling
             _mainUI.BtnStart2.AddMainCallback(StartBattle);
             _mainUI.TroopSizePurchaseUI.SetInteractable(true);
             _mainUI.Init(_battleManager.battle, _chapter);
-            _mainUI.StatsCollector.SetCollector(_battleManager.playerDamageStatsCollector);
+            _mainUI.StatsCollector.SetCollector((BattleDamageStatsCollector)_battleManager.playerStatCollector);
             _mainUI.AnimateShowUp();
             InitCurrentRound(_roundAttemptsCount);
         }
@@ -248,27 +248,27 @@ namespace RobotCastle.Battling
             try
             {
                 AddTierBasedDifficultyModifiers();
-            } catch(System.Exception ex) { CLog.LogError(ex.Message); }
+            } catch(System.Exception ex) { CLog.LogException(ex.Message, ex.StackTrace); }
 
             try
             { 
                 InitOffers();
-            } catch(System.Exception ex) { CLog.LogError(ex.Message); }
+            } catch(System.Exception ex) { CLog.LogException(ex.Message, ex.StackTrace); }
 
             try
             {
                 InitAltars();
-            } catch(System.Exception ex) { CLog.LogError(ex.Message); }
+            } catch(System.Exception ex) { CLog.LogException(ex.Message, ex.StackTrace); }
 
             try
             {
                 InitRelics();
-            } catch(System.Exception ex) { CLog.LogError(ex.Message); }
+            } catch(System.Exception ex) { CLog.LogException(ex.Message,  ex.StackTrace); }
 
             try
             {
                 SetStartData();
-            } catch(System.Exception ex) { CLog.LogError(ex.Message); }
+            } catch(System.Exception ex) { CLog.LogException(ex.Message, ex.StackTrace); }
             
             
             await Task.Yield();
@@ -320,7 +320,6 @@ namespace RobotCastle.Battling
         private async Task StartingBattle(CancellationToken token)
         {
             AllowPlayerUIInput(false);
-            
             if(_fillActiveAreaBeforeStart)
                 _mergeManager.FillActiveArea();
             _battleManager.SetGoingState();
@@ -335,9 +334,15 @@ namespace RobotCastle.Battling
             if (token.IsCancellationRequested) return;
             await Task.Yield();
             if (token.IsCancellationRequested) return;
-
             await Task.Delay(110, token);
-            _battleManager.BeginBattle();
+            try
+            {
+                _battleManager.BeginBattle();
+            }
+            catch (System.Exception ex)
+            {
+                CLog.LogError(ex.Message, ex.StackTrace);
+            }
         }
 
         private async Task BattleRoundCompletion(Battle battle, CancellationToken token)
@@ -345,7 +350,7 @@ namespace RobotCastle.Battling
             CLog.Log($"[{nameof(BattleLevel)}] Round index: {battle.roundIndex}. Max Index: {_chapter.levelData.levels.Count - 1}");
             if (battle.roundIndex >= _chapter.levelData.levels.Count - 1)
             {
-                CLog.Log($"Level Completed!");
+                CLog.Log($"[Battle level] Level Completed!");
                 await Task.Delay((int)(_winFailDelay * 1000), token);
                 if (token.IsCancellationRequested) return;
                 SleepDev.Analytics.OnLevelCompleted(_selectionData.chapterIndex, _selectionData.tierIndex);

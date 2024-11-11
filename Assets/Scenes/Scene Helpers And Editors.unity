@@ -123,6 +123,72 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &29925871 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+  m_PrefabInstance: {fileID: 678621022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &61915925
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1912687615}
+    m_Modifications:
+    - target: {fileID: 3947409286934964776, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_Name
+      value: bombie
+      objectReference: {fileID: 0}
+    - target: {fileID: 3947409286934964776, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
 --- !u!1001 &86460555
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2003,6 +2069,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -2013,6 +2081,8 @@ MonoBehaviour:
     modifiers:
     - double_on_death
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -2023,6 +2093,8 @@ MonoBehaviour:
     modifiers:
     - double_on_death
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -2033,6 +2105,8 @@ MonoBehaviour:
     modifiers:
     - double_on_death
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -2043,6 +2117,8 @@ MonoBehaviour:
     modifiers:
     - double_on_death
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -2053,6 +2129,8 @@ MonoBehaviour:
     modifiers:
     - double_on_death
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   showEditor: 1
   presetFiles:
   - {fileID: 4900000, guid: 3caaa2fce6a1d2449bc1745f760e1dce, type: 3}
@@ -2088,6 +2166,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2097,6 +2177,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2106,6 +2188,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2115,6 +2199,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2124,6 +2210,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2133,6 +2221,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2142,6 +2232,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -2152,6 +2244,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -2162,6 +2256,8 @@ MonoBehaviour:
         modifiers:
         - double_on_death
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2171,6 +2267,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2184,6 +2282,8 @@ MonoBehaviour:
         modifiers:
         - double_on_death
         unitType: 1
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2193,6 +2293,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2203,6 +2305,8 @@ MonoBehaviour:
         modifiers:
         - double_on_death
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2212,6 +2316,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -2222,6 +2328,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2231,6 +2339,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2240,6 +2350,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2249,6 +2361,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2258,6 +2372,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2267,6 +2383,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2276,6 +2394,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -2286,6 +2406,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2295,6 +2417,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2304,6 +2428,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2313,6 +2439,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2322,6 +2450,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2331,6 +2461,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2340,6 +2472,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
   currentPack:
     enemies:
     - heroLevel: 0
@@ -2352,6 +2486,8 @@ MonoBehaviour:
       modifiers:
       - double_on_death
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 0
@@ -2365,6 +2501,8 @@ MonoBehaviour:
       modifiers:
       - double_on_death
       unitType: 1
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 0
@@ -2375,6 +2513,8 @@ MonoBehaviour:
       modifiers:
       - double_on_death
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
   currentEnemy:
     heroLevel: 0
     enemy:
@@ -2389,6 +2529,8 @@ MonoBehaviour:
     modifiers:
     - double_on_death
     unitType: 1
+    canDropItems: 1
+    giveRandomItem: 0
 --- !u!4 &227464861
 Transform:
   m_ObjectHideFlags: 0
@@ -2666,6 +2808,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -2675,6 +2819,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -2685,6 +2831,8 @@ MonoBehaviour:
     modifiers:
     - summon_dead
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -2694,6 +2842,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -2703,6 +2853,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -2712,6 +2864,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 2
+    canDropItems: 1
+    giveRandomItem: 0
   showEditor: 1
   presetFiles:
   - {fileID: 4900000, guid: 1278af725cd7d0d4f85208c9f5db77a8, type: 3}
@@ -2752,6 +2906,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2761,6 +2917,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2770,6 +2928,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2779,6 +2939,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2788,6 +2950,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2797,6 +2961,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2806,6 +2972,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -2816,6 +2984,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -2825,6 +2995,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2834,6 +3006,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2843,6 +3017,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2852,6 +3028,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -2862,6 +3040,8 @@ MonoBehaviour:
         modifiers:
         - summon_dead
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2871,6 +3051,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -2881,6 +3063,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2890,6 +3074,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2899,6 +3085,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -2908,6 +3096,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2917,6 +3107,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2926,6 +3118,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2935,6 +3129,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -2945,6 +3141,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2954,6 +3152,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2963,6 +3163,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2972,6 +3174,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2981,6 +3185,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2990,6 +3196,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -2999,6 +3207,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
   currentPack:
     enemies:
     - heroLevel: 0
@@ -3010,6 +3220,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 1
@@ -3019,6 +3231,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 1
@@ -3029,6 +3243,8 @@ MonoBehaviour:
       modifiers:
       - summon_dead
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
   currentEnemy:
     heroLevel: 0
     enemy:
@@ -3039,6 +3255,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
 --- !u!4 &331089854
 Transform:
   m_ObjectHideFlags: 0
@@ -3094,6 +3312,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -3103,6 +3323,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -3113,6 +3335,8 @@ MonoBehaviour:
     modifiers:
     - summon_dead
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -3122,6 +3346,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -3131,6 +3357,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 2
+    canDropItems: 1
+    giveRandomItem: 0
   showEditor: 1
   presetFiles:
   - {fileID: 4900000, guid: 47f716b067dc7a04da5d6a038582754c, type: 3}
@@ -3171,6 +3399,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -3180,6 +3410,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3189,6 +3421,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -3198,6 +3432,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3207,6 +3443,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -3216,6 +3454,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3225,6 +3465,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -3235,6 +3477,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3244,6 +3488,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3253,6 +3499,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3262,6 +3510,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3271,6 +3521,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3280,6 +3532,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3289,6 +3543,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -3299,6 +3555,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3308,6 +3566,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3317,6 +3577,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -3326,6 +3588,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 1
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3335,6 +3599,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3344,6 +3610,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3353,6 +3621,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -3363,6 +3633,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3372,6 +3644,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3381,6 +3655,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3390,6 +3666,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3399,6 +3677,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3408,6 +3688,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -3417,6 +3699,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
   currentPack:
     enemies:
     - heroLevel: 0
@@ -3428,6 +3712,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 1
@@ -3437,6 +3723,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 1
@@ -3446,6 +3734,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 1
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 1
@@ -3455,6 +3745,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
   currentEnemy:
     heroLevel: 0
     enemy:
@@ -3465,6 +3757,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 1
+    canDropItems: 1
+    giveRandomItem: 0
 --- !u!4 &344909845
 Transform:
   m_ObjectHideFlags: 0
@@ -3604,7 +3898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &460782847
 Transform:
   m_ObjectHideFlags: 0
@@ -3703,17 +3997,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 509777247984832941, guid: ca5133f491b9f4f408504cd2d7055a09, type: 3}
   m_PrefabInstance: {fileID: 4026047791361140399}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &498743176 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 797034737986706939, guid: ca5133f491b9f4f408504cd2d7055a09, type: 3}
-  m_PrefabInstance: {fileID: 4026047791361140399}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0953b44b17e8488db0e2170b43089638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &503271354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4725,6 +5008,67 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4560926120565050433, guid: 43381a171241e634b90bf05e5226a65c, type: 3}
   m_PrefabInstance: {fileID: 665033594}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &678621022
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1912687615}
+    m_Modifications:
+    - target: {fileID: 3947409286934964776, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_Name
+      value: zupitere
+      objectReference: {fileID: 0}
+    - target: {fileID: 3947409286934964776, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 940099b21e124304195767fb539ab4a6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 940099b21e124304195767fb539ab4a6, type: 3}
 --- !u!1001 &691814997
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5404,6 +5748,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -5413,6 +5759,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -5423,6 +5771,8 @@ MonoBehaviour:
     modifiers:
     - summon_dead
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -5432,6 +5782,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -5441,6 +5793,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   showEditor: 1
   presetFiles:
   - {fileID: 4900000, guid: bba18788eec399b42bc1d4a237bc9d38, type: 3}
@@ -5476,6 +5830,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5485,6 +5841,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5494,6 +5852,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -5506,6 +5866,8 @@ MonoBehaviour:
           type: item
         modifiers: []
         unitType: 1
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5515,6 +5877,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5524,6 +5888,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5533,6 +5899,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -5543,6 +5911,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5552,6 +5922,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5561,6 +5933,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5570,6 +5944,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5579,6 +5955,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5588,6 +5966,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5597,6 +5977,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -5607,6 +5989,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -5617,6 +6001,8 @@ MonoBehaviour:
         modifiers:
         - summon_dead
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5626,6 +6012,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5635,6 +6023,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5644,6 +6034,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 1
@@ -5654,6 +6046,8 @@ MonoBehaviour:
         modifiers:
         - summon_dead
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5663,6 +6057,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -5673,6 +6069,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5682,6 +6080,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5691,6 +6091,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5700,6 +6102,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5709,6 +6113,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5718,6 +6124,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -5727,6 +6135,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
   currentPack:
     enemies:
     - heroLevel: 0
@@ -5739,6 +6149,8 @@ MonoBehaviour:
       modifiers:
       - summon_dead
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 1
@@ -5751,6 +6163,8 @@ MonoBehaviour:
         type: item
       modifiers: []
       unitType: 1
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 1
@@ -5761,6 +6175,8 @@ MonoBehaviour:
       modifiers:
       - summon_dead
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
   currentEnemy:
     heroLevel: 0
     enemy:
@@ -5774,6 +6190,8 @@ MonoBehaviour:
       type: item
     modifiers: []
     unitType: 1
+    canDropItems: 1
+    giveRandomItem: 0
 --- !u!4 &804887322
 Transform:
   m_ObjectHideFlags: 0
@@ -5789,15 +6207,67 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &810536739 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 704645367182892207, guid: eda4aebd55a8b734f9d53380fc7311cf, type: 3}
-  m_PrefabInstance: {fileID: 8360021144017327618}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &810536748 stripped
+--- !u!1001 &807222287
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1912687615}
+    m_Modifications:
+    - target: {fileID: 3947409286934964776, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_Name
+      value: saras
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+--- !u!114 &807222288 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 422162238248440057, guid: eda4aebd55a8b734f9d53380fc7311cf, type: 3}
-  m_PrefabInstance: {fileID: 8360021144017327618}
+  m_CorrespondingSourceObject: {fileID: 8532524190324852302, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+  m_PrefabInstance: {fileID: 807222287}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -5805,6 +6275,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0953b44b17e8488db0e2170b43089638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &807222289 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4560926120565050433, guid: af33fdf84596ac041a4547d2ce06b7e6, type: 3}
+  m_PrefabInstance: {fileID: 807222287}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &810536739 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 704645367182892207, guid: eda4aebd55a8b734f9d53380fc7311cf, type: 3}
+  m_PrefabInstance: {fileID: 8360021144017327618}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &827535571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6043,6 +6523,72 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3388665542463873641, guid: 473bc70460c9924449812d9a3abcac47, type: 3}
   m_PrefabInstance: {fileID: 3492273402966856560}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &877861755
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1912687615}
+    m_Modifications:
+    - target: {fileID: 3947409286934964776, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_Name
+      value: behemus
+      objectReference: {fileID: 0}
+    - target: {fileID: 3947409286934964776, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+--- !u!4 &877861756 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4560926120565050433, guid: 80574918ecfc6da4a93f88b49e34fb8d, type: 3}
+  m_PrefabInstance: {fileID: 877861755}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &901519914
 PrefabInstance:
@@ -6933,7 +7479,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &952838574
 Transform:
   m_ObjectHideFlags: 0
@@ -7000,6 +7546,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -7009,6 +7557,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -7019,6 +7569,8 @@ MonoBehaviour:
     modifiers:
     - summon_dead
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -7028,6 +7580,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -7037,6 +7591,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 2
+    canDropItems: 1
+    giveRandomItem: 0
   showEditor: 1
   presetFiles:
   - {fileID: 4900000, guid: 47f716b067dc7a04da5d6a038582754c, type: 3}
@@ -7077,6 +7633,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7086,6 +7644,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7095,6 +7655,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7104,6 +7666,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7113,6 +7677,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7122,6 +7688,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7131,6 +7699,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -7141,6 +7711,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7150,6 +7722,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 3
@@ -7159,6 +7733,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7168,6 +7744,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 3
@@ -7177,6 +7755,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7186,6 +7766,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7195,6 +7777,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -7205,6 +7789,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7214,6 +7800,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7223,6 +7811,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 3
@@ -7232,6 +7822,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 2
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7241,6 +7833,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7250,6 +7844,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7259,6 +7855,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -7269,6 +7867,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7278,6 +7878,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7287,6 +7889,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7296,6 +7900,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7305,6 +7911,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7314,6 +7922,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -7323,6 +7933,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
   currentPack:
     enemies:
     - heroLevel: 0
@@ -7334,6 +7946,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 3
@@ -7343,6 +7957,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 2
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 3
@@ -7352,6 +7968,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
   currentEnemy:
     heroLevel: 0
     enemy:
@@ -7362,6 +7980,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
 --- !u!4 &1111225244
 Transform:
   m_ObjectHideFlags: 0
@@ -8555,17 +9175,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5092322350098556877, guid: 65fe71f6b657d164a9eb8929b35e4d92, type: 3}
   m_PrefabInstance: {fileID: 6023262658624753921}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1198631452 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5383812946889960347, guid: 65fe71f6b657d164a9eb8929b35e4d92, type: 3}
-  m_PrefabInstance: {fileID: 6023262658624753921}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0953b44b17e8488db0e2170b43089638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1200998033
 GameObject:
   m_ObjectHideFlags: 0
@@ -9123,6 +9732,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -9132,6 +9743,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -9141,6 +9754,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -9150,6 +9765,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -9159,6 +9776,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   showEditor: 1
   presetFiles:
   - {fileID: 4900000, guid: a324bb9a89aa7ed4ea1ab4f9dd855003, type: 3}
@@ -9189,6 +9808,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9198,6 +9819,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9207,6 +9830,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9216,6 +9841,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9225,6 +9852,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9234,6 +9863,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9243,6 +9874,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -9253,6 +9886,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9262,6 +9897,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9271,6 +9908,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9280,6 +9919,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9289,6 +9930,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9298,6 +9941,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9307,6 +9952,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -9317,6 +9964,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9326,6 +9975,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9335,6 +9986,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9347,6 +10000,8 @@ MonoBehaviour:
           type: item
         modifiers: []
         unitType: 1
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9356,6 +10011,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9365,6 +10022,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9374,6 +10033,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -9384,6 +10045,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9393,6 +10056,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9402,6 +10067,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9411,6 +10078,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9420,6 +10089,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9429,6 +10100,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -9438,6 +10111,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
   currentPack:
     enemies:
     - heroLevel: 0
@@ -9449,6 +10124,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 0
@@ -9458,6 +10135,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 0
@@ -9470,6 +10149,8 @@ MonoBehaviour:
         type: item
       modifiers: []
       unitType: 1
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 0
@@ -9479,6 +10160,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 0
@@ -9488,6 +10171,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
   currentEnemy:
     heroLevel: 0
     enemy:
@@ -9501,6 +10186,8 @@ MonoBehaviour:
       type: item
     modifiers: []
     unitType: 1
+    canDropItems: 1
+    giveRandomItem: 0
 --- !u!4 &1447613777
 Transform:
   m_ObjectHideFlags: 0
@@ -9812,7 +10499,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1502444431
 Transform:
   m_ObjectHideFlags: 0
@@ -10898,17 +11585,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7569041073362293861, guid: 81de6f6dae50d5742b692cce09a61895, type: 3}
   m_PrefabInstance: {fileID: 4508741787844300466}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1807640915 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7284035471598393395, guid: 81de6f6dae50d5742b692cce09a61895, type: 3}
-  m_PrefabInstance: {fileID: 4508741787844300466}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0953b44b17e8488db0e2170b43089638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1846224729
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11642,17 +12318,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7865044114115904444, guid: f8a4955a192c1fa4f902153ebcd10be9, type: 3}
   m_PrefabInstance: {fileID: 7622083942048762037}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1888657046 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7006064558977159146, guid: f8a4955a192c1fa4f902153ebcd10be9, type: 3}
-  m_PrefabInstance: {fileID: 7622083942048762037}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0953b44b17e8488db0e2170b43089638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1890339607
 GameObject:
   m_ObjectHideFlags: 0
@@ -11698,12 +12363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawned:
-  - {fileID: 3366933735263196345}
-  - {fileID: 1198631452}
-  - {fileID: 810536748}
-  - {fileID: 1807640915}
-  - {fileID: 498743176}
-  - {fileID: 1888657046}
+  - {fileID: 807222288}
   _spawnData:
   - root: {fileID: 1618084259}
     grid: {x: 10, y: 2}
@@ -11799,6 +12459,7 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 1ec9fd5ee6c37d042aff7af7b7ed8f98, type: 2}
   - {fileID: 9100000, guid: 7827069c978ed44419abf268ba337298, type: 2}
   - {fileID: 9100000, guid: 05654e873ce04c9498ed934fca40b599, type: 2}
+  - {fileID: 9100000, guid: 7cfd17cba474f1247840c48c0c597928, type: 2}
   _poolsManager: {fileID: 1890339608}
   _heroesFactory: {fileID: 1890339609}
 --- !u!4 &1890339611
@@ -11814,6 +12475,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1912687615}
   - {fileID: 1618084259}
   - {fileID: 1389145090}
   - {fileID: 2059502638}
@@ -11887,10 +12549,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1165777555934774593, guid: f26bb71b30763b54caf0dec157f06f59, type: 3}
   m_PrefabInstance: {fileID: 1899589870}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1912687614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1912687615}
+  m_Layer: 0
+  m_Name: heroes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1912687615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912687614}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 29925871}
+  - {fileID: 1924759571}
+  - {fileID: 877861756}
+  - {fileID: 807222289}
+  m_Father: {fileID: 1890339611}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1920177123 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4560926120565050433, guid: 2ded65039c6395947ab1419d43d742d7, type: 3}
   m_PrefabInstance: {fileID: 97308839}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1924759571 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4560926120565050433, guid: eec4b56a142c21647bd40bfc59d32878, type: 3}
+  m_PrefabInstance: {fileID: 61915925}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1928263186
 GameObject:
@@ -11932,6 +12634,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -11941,6 +12645,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -11950,6 +12656,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -11959,6 +12667,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -11968,6 +12678,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   showEditor: 1
   presetFiles:
   - {fileID: 4900000, guid: ef18250cd0c6e5242a60eb6b82077d6e, type: 3}
@@ -11998,6 +12710,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12007,6 +12721,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12016,6 +12732,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12025,6 +12743,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 1
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12034,6 +12754,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12043,6 +12765,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12052,6 +12776,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -12062,6 +12788,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12071,6 +12799,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12080,6 +12810,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12089,6 +12821,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12098,6 +12832,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12107,6 +12843,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12116,6 +12854,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -12126,6 +12866,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12135,6 +12877,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12144,6 +12888,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12153,6 +12899,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12162,6 +12910,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12171,6 +12921,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12180,6 +12932,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -12190,6 +12944,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12199,6 +12955,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12208,6 +12966,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12217,6 +12977,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12226,6 +12988,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12235,6 +12999,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -12244,6 +13010,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
   currentPack:
     enemies:
     - heroLevel: 0
@@ -12255,6 +13023,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 0
@@ -12264,6 +13034,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 0
@@ -12273,6 +13045,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 0
@@ -12282,6 +13056,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
   currentEnemy:
     heroLevel: 0
     enemy:
@@ -12292,6 +13068,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
 --- !u!4 &1928263188
 Transform:
   m_ObjectHideFlags: 0
@@ -13069,6 +13847,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -13078,6 +13858,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -13088,6 +13870,8 @@ MonoBehaviour:
     modifiers:
     - summon_dead
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -13097,6 +13881,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -13106,6 +13892,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -13115,6 +13903,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
   - heroLevel: 0
     enemy:
       level: 0
@@ -13124,6 +13914,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 2
+    canDropItems: 1
+    giveRandomItem: 0
   showEditor: 1
   presetFiles:
   - {fileID: 4900000, guid: 7b6caf1415b243f4b9176834e0455490, type: 3}
@@ -13164,6 +13956,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13173,6 +13967,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13182,6 +13978,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 3
@@ -13191,6 +13989,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 2
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13200,6 +14000,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13209,6 +14011,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13218,6 +14022,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -13228,6 +14034,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13237,6 +14045,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13246,6 +14056,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13255,6 +14067,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13264,6 +14078,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13273,6 +14089,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13282,6 +14100,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -13292,6 +14112,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 3
@@ -13301,6 +14123,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13310,6 +14134,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 3
@@ -13319,6 +14145,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13328,6 +14156,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 3
@@ -13337,6 +14167,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13346,6 +14178,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
     - columns:
       - heroLevel: 0
         enemy:
@@ -13356,6 +14190,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13365,6 +14201,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13374,6 +14212,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13383,6 +14223,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13392,6 +14234,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13401,6 +14245,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -13410,6 +14256,8 @@ MonoBehaviour:
         items: []
         modifiers: []
         unitType: 0
+        canDropItems: 1
+        giveRandomItem: 0
   currentPack:
     enemies:
     - heroLevel: 0
@@ -13421,6 +14269,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 3
@@ -13430,6 +14280,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 2
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 3
@@ -13439,6 +14291,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
     - heroLevel: 0
       enemy:
         level: 3
@@ -13448,6 +14302,8 @@ MonoBehaviour:
       items: []
       modifiers: []
       unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
   currentEnemy:
     heroLevel: 0
     enemy:
@@ -13458,6 +14314,8 @@ MonoBehaviour:
     items: []
     modifiers: []
     unitType: 0
+    canDropItems: 1
+    giveRandomItem: 0
 --- !u!4 &2058050873
 Transform:
   m_ObjectHideFlags: 0
@@ -14257,17 +15115,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2617240641675957744, guid: 3e120135d75d09249a622d99b64e8ab2, type: 3}
   m_PrefabInstance: {fileID: 8880609354320032715}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3366933735263196345 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2904534877198211494, guid: 3e120135d75d09249a622d99b64e8ab2, type: 3}
-  m_PrefabInstance: {fileID: 8880609354320032715}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0953b44b17e8488db0e2170b43089638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3485226652610837038
 PrefabInstance:
   m_ObjectHideFlags: 0

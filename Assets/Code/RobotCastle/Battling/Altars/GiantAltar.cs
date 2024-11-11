@@ -32,7 +32,7 @@ namespace RobotCastle.Battling.Altars
             _val = _defence[tier];
             CLog.Log($"[AltarMp_AddedDEF] Tier {tier}, added DEF: {_val}");
             
-            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
+            ServiceLocator.Get<IPlayerFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()
@@ -71,7 +71,7 @@ namespace RobotCastle.Battling.Altars
             var tier = _tier >= _healthPercent.Count ? _healthPercent.Count - 1 : _tier;
             _val = _healthPercent[tier];
             CLog.Log($"[AltarMp_HealthAdded] Tier {tier}, added max health: {_val*100}%");
-            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
+            ServiceLocator.Get<IPlayerFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()
@@ -113,7 +113,7 @@ namespace RobotCastle.Battling.Altars
             var tier = _tier >= _percentage.Count ? _percentage.Count - 1 : _tier;
             _val = _percentage[tier];
             CLog.Log($"[AltarMp_ReflectDamage] Tier {tier}, reflected percentage: {_val}");
-            ServiceLocator.Get<IPlayerMergeItemsFactory>().AddModifier(this);
+            ServiceLocator.Get<IPlayerFactory>().AddModifier(this);
         }
 
         public override string GetShortDescription()

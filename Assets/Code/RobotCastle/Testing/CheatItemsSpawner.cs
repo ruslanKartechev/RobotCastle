@@ -195,12 +195,12 @@ namespace RobotCastle.Testing
                 CLog.LogError("No MergeManager found!");
                 return null;
             }
-            var args = new SpawnMergeItemArgs(data);
+            var args = new SpawnArgs(data);
             args.useAdditionalItems = (items is {Count: > 0});
             args.additionalItems = items;
             args.preferredCoordinated = coord;
             args.usePreferredCoordinate = useSpecificCoord;
-            if (ServiceLocator.GetIfContains(out IPlayerMergeItemsFactory spawner))
+            if (ServiceLocator.GetIfContains(out IPlayerFactory spawner))
                 return spawner.SpawnHeroOrItem(args);
             
             CLog.LogRed($"IPlayerMergeItemPurchaser not found");

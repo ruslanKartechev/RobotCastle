@@ -86,7 +86,7 @@ namespace RobotCastle.Battling.Altars
                 var item = new CoreItemData(_items.Random());
                 item.level = itemLevel;
                 CLog.Log($"[AltarMp_SmeltUpgrade] Will spawn {item.id} lvl_{itemLevel} at the start");
-                ServiceLocator.Get<IPlayerMergeItemsFactory>().SpawnHeroOrItem(new SpawnMergeItemArgs(item));
+                ServiceLocator.Get<IPlayerFactory>().SpawnHeroOrItem(new SpawnArgs(item));
             }
         }
 

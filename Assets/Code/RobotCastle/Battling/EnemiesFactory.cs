@@ -78,7 +78,7 @@ namespace RobotCastle.Battling
             }
         }
 
-        public IHeroController SpawnNew(SpawnMergeItemArgs args, int heroLvl = 0, bool animate = true)
+        public IHeroController SpawnNew(SpawnArgs args, int heroLvl = 0, bool animate = true)
         {
             ICellView cellView = null;
             if (args.usePreferredCoordinate)

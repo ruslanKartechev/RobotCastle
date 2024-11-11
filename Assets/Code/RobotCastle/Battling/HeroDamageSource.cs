@@ -111,7 +111,7 @@ namespace RobotCastle.Battling
         public void Damage(IDamageReceiver receiver, HeroDamageArgs args)
         {
             var receivedArgs = receiver.TakeDamage(args);
-            StatsCollector.AddDamageDealt(_components.GUID, args.type, (int)args.amount);
+            StatsCollector.AddDamageDealt(_components.StatCollectionId, args.type, (int)args.amount);
             var vamp = _components.stats.Vampirism.Get();
             if (vamp > 0)
             {

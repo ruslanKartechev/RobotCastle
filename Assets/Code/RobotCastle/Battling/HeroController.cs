@@ -13,12 +13,12 @@ namespace RobotCastle.Battling
         public Battle Battle { get; set; }
         
         public int TeamNum { get; set; }
-        public string GUID => _components.GUID;
         public HeroComponents Components => _components;
    
         public void InitHero(string id, int heroLevel, int mergeLevel, List<ModifierProvider> spells)
         {
-            _components.GUID = System.Guid.NewGuid().ToString();
+            _components.GUID = _components.StatCollectionId = System.Guid.NewGuid().ToString();
+            
             AddHeroComponents();
             _stats.LoadAndSetHeroStats(id, heroLevel, mergeLevel);
             _components.statAnimationSync.Init(true);

@@ -21,7 +21,12 @@ namespace RobotCastle.Battling
             StartCoroutine(TrackingPosition(point));
         }
 
-  
+        public void PlayLevelAtPoint(Vector3 point, int level)
+        {
+            _particles[level].transform.position = point;
+            _particles[level].gameObject.SetActive(true);
+            _particles[level].Play();
+        }
 
         public void Hide()
         {

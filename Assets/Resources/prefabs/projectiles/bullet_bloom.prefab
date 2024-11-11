@@ -49,7 +49,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isPooled: 1
   _hitParticles: {fileID: 4162946714177861983}
-  _trailParticles: {fileID: 3447839007678725426}
   _disableOnHitGo:
   - {fileID: 3447839007659259910}
   - {fileID: 5441187895159693807}
@@ -240,11 +239,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 421518, guid: 39c5f821e16dbb64d99b2695d6bdb2d5, type: 3}
   m_PrefabInstance: {fileID: 3447839007659135784}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &3447839007678725426 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 19852826, guid: 39c5f821e16dbb64d99b2695d6bdb2d5, type: 3}
-  m_PrefabInstance: {fileID: 3447839007659135784}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4162946714159635817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -259,15 +253,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 437254, guid: c83fb3ef04bb383408bb2064b89690b2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 437254, guid: c83fb3ef04bb383408bb2064b89690b2, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 437254, guid: c83fb3ef04bb383408bb2064b89690b2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 437254, guid: c83fb3ef04bb383408bb2064b89690b2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -308,6 +302,10 @@ PrefabInstance:
     - target: {fileID: 437254, guid: c83fb3ef04bb383408bb2064b89690b2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 437254, guid: c83fb3ef04bb383408bb2064b89690b2, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8247018, guid: c83fb3ef04bb383408bb2064b89690b2, type: 3}
       propertyPath: m_Enabled
