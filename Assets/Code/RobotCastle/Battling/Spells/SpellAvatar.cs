@@ -68,7 +68,7 @@ namespace RobotCastle.Battling
             
             _components.heroUI.ManaUI.AnimateTimedSpell(1f, 0f, _config.duration);
             await HeroesManager.WaitGameTime(_config.duration, token);
-            if (token.IsCancellationRequested)
+            if (token.IsCancellationRequested) 
                 return;
             _components.attackManager.OnAttackStep -= OnAttackStep;
             _components.processes.Remove(this);

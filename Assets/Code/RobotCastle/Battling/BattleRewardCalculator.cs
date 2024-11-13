@@ -38,7 +38,7 @@ namespace RobotCastle.Battling
             }
         }
 
-        public void AddRewardForStage()
+        public void AddRewardForStage(bool win)
         {
             var gm = ServiceLocator.Get<GameMoney>();
             gm.AddMoney(_perStageCompletion);

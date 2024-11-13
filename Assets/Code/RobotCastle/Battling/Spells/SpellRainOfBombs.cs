@@ -87,6 +87,7 @@ namespace RobotCastle.Battling
             _components.stats.ManaResetAfterFull.Reset(_components);
             _components.stats.AttackSpeed.RemoveDecorator(_multiplier);
             _components.processes.Remove(this);
+            hero.ResumeCurrentBehaviour();
             _manaAdder.CanAdd = true;
             _isActive = false;
         }

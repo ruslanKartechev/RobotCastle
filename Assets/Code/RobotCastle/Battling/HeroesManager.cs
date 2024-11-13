@@ -216,6 +216,29 @@ namespace RobotCastle.Battling
             return result;
         }
 
+        public static List<IHeroController> GetHeroesInsideCellMask(
+            CellsMask cellsMask, 
+            Vector2Int center,
+            IMap map,
+            IList<IHeroController> allHeroes,
+            float cellRadius = .5f)
+        {
+            var affected = cellsMask.GetCellsAround(center, map);
+            var rad2 = cellRadius * cellRadius;
+            var result = new List<IHeroController>(allHeroes.Count);
+            foreach (var cell in affected)
+            {
+                var cellWorldPos = map.GetWorldFromCell(cell);
+                foreach (var hh in allHeroes)
+                {
+                    var d2 = (cellWorldPos - hh.Components.transform.position).sqrMagnitude;
+                    if (d2 <= rad2)
+                        result.Add(hh);   
+                }
+            }
+            return result;
+        }
+
         
         public static bool CheckIfAtLeastOneHeroInMask(
             CellsMask cellsMask, 

@@ -131,12 +131,7 @@ namespace RobotCastle.Battling
             var map = _components.movement.Map;
             var worldPos = map.GetWorldFromCell(cell);
             var rot = Quaternion.LookRotation(enemy.Components.transform.position - worldPos);
-            // Debug.DrawLine(_components.transform.position + Vector3.up * .5f, 
-            //     worldPos + Vector3.up * .5f, Color.red, 10f);
-            //
-            // Debug.DrawLine(worldPos + Vector3.up * .5f, 
-            //     enemy.Components.transform.position + Vector3.up * .5f, Color.blue, 10f);
-            //
+         
             _components.transform.SetPositionAndRotation(worldPos, rot);
             _components.movement.SyncCellToWorldPos();
             

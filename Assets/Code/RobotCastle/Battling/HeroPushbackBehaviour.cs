@@ -63,7 +63,7 @@ namespace RobotCastle.Battling
             Vector2Int endCell = default;
             var didFindCell = false;
             var currentCell = movement.CurrentCell;
-            for (var d = _distance; d > 0; d++)
+            for (var d = _distance; d > 0; d--)
             {
                 var cell = currentCell + backDirection * d;
                 if (map.IsOutOfBounce(cell))

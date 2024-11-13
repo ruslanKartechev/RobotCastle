@@ -118,21 +118,11 @@ namespace RobotCastle.Battling
             return true;
         }
         
-        public void AddRoundModifier(IRoundModifier modifier)
-        {
-            _roundModifiers.Add(modifier);
-        }
+        public void AddRoundModifier(IRoundModifier modifier) => _roundModifiers.Add(modifier);
 
-        public void RemoveRoundModifier(IRoundModifier modifier)
-        {
-            _roundModifiers.Remove(modifier);
-        }
+        public void RemoveRoundModifier(IRoundModifier modifier) => _roundModifiers.Remove(modifier);
 
-        public void ClearAllModifiers()
-        {
-            _roundModifiers.Clear();
-        }
-
+        public void ClearAllModifiers() => _roundModifiers.Clear();
 
         public void SetNextStage()
         {

@@ -222,6 +222,16 @@ namespace RobotCastle.Battling
         {
             await Task.WhenAll(InitProcess(token), _battleCamera.PlayStartAnimation(token));
         }
+
+        private Battle CreateBattle()
+        {
+            var lvlData = new LevelData(_chapter.levelData);
+            if (_selectionData.tierIndex > 0)
+            {
+                lvlData.levels[^1].enemyPreset += "_boss";
+            }
+            return _battleManager.CreateBattle(lvlData);
+        }
         
         private async Task InitProcess(CancellationToken token)
         {
@@ -237,8 +247,8 @@ namespace RobotCastle.Battling
 
             _battleManager.startProcessor = this;
             _battleManager.endProcessor = this;
-            var battle = _battleManager.CreateBattle(_chapter.levelData);
-            
+
+            var battle = CreateBattle();
             _mergeManager.Init();
             _troopSizeManager = new BattleTroopSizeManager(battle, _mergeManager.SectionsController, _troopSizeExpansion);
             _enemiesManager.Init();
@@ -347,40 +357,38 @@ namespace RobotCastle.Battling
 
         private async Task BattleRoundCompletion(Battle battle, CancellationToken token)
         {
-            CLog.Log($"[{nameof(BattleLevel)}] Round index: {battle.roundIndex}. Max Index: {_chapter.levelData.levels.Count - 1}");
-            if (battle.roundIndex >= _chapter.levelData.levels.Count - 1)
+            var didWin = battle.State == BattleState.PlayerWin;
+            CLog.Log($"[{nameof(BattleLevel)}] Round index: {battle.roundIndex}, status: {didWin}");
+            if (didWin && battle.roundIndex >= _chapter.levelData.levels.Count - 1)
             {
-                CLog.Log($"[Battle level] Level Completed!");
+                CLog.Log($"[Battle Level] Level Completed!");
                 await Task.Delay((int)(_winFailDelay * 1000), token);
                 if (token.IsCancellationRequested) return;
                 SleepDev.Analytics.OnLevelCompleted(_selectionData.chapterIndex, _selectionData.tierIndex);
                 AddRewardForLevelAndShowUI();
                 return;
             }
-            _battleManager.rewardCalculator.AddRewardForStage();
+            _battleManager.rewardCalculator.AddRewardForStage(didWin);
             await Task.Delay((int)(_endDelay * .5f * 1000), token);
             if (token.IsCancellationRequested) return;
 
             _gridSwitch.SetMergeMode();
-            switch (battle.State)
+            if (didWin)
             {
-                case BattleState.EnemyWin:
-                    _roundAttemptsCount++;
-                    if(SubtractHealthAndCheckLoose())
-                        return;
-                    await _battleManager.ResetStage(token);
-                    break;
-                case BattleState.PlayerWin:
-                    _roundAttemptsCount = 0;
-                    _battleManager.SetNextStage();
-                    _mainUI.UpdateForNextWave();
-                    _mainUI.Win();
-                    await _battleManager.SetCurrentStage(token);
-                    break;
-                default:
-                    CLog.LogRed($"[{nameof(BattleLevel)}] Error!");
-                    break;
+                _roundAttemptsCount = 0;
+                _battleManager.SetNextStage();
+                _mainUI.UpdateForNextWave();
+                _mainUI.Win();
+                await _battleManager.SetCurrentStage(token);
             }
+            else
+            {
+                _roundAttemptsCount++;
+                if(SubtractHealthAndCheckLoose())
+                    return;
+                await _battleManager.ResetStage(token);
+            }
+        
             await Task.Yield();
             if (token.IsCancellationRequested) return;
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9790,10 +9790,11 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 8f963021d5267b349a754a31a7640bb7, type: 3}
   - {fileID: 4900000, guid: 4fc08ead003c4ee42ad906e21ba80247, type: 3}
   - {fileID: 4900000, guid: 04b22008ab9842441a5ca7b44e3dfb75, type: 3}
-  presetIndex: 4
-  enemyIndex: 2
-  currentPresetFile: {fileID: 4900000, guid: c5d55e5c1421f8e4d9094752b3b74845, type: 3}
-  currentCellCoord: {x: 3, y: 2}
+  - {fileID: 4900000, guid: 4ea2385487d8b7d4089f137a290af61e, type: 3}
+  presetIndex: 10
+  enemyIndex: 3
+  currentPresetFile: {fileID: 4900000, guid: 4ea2385487d8b7d4089f137a290af61e, type: 3}
+  currentCellCoord: {x: 3, y: 0}
   _dbContainer: {fileID: 11400000, guid: 58513560c179fd04594e34e41030e433, type: 2}
   _enemiesGrid:
     size: {x: 7, y: 4}
@@ -9802,7 +9803,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: 
+          id: mushroom_3
           type: unit
         gridPos: {x: 0, y: 0}
         items: []
@@ -9824,7 +9825,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: flower
+          id: 
           type: unit
         gridPos: {x: 2, y: 0}
         items: []
@@ -9834,19 +9835,19 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 2
+          id: flower
           type: unit
         gridPos: {x: 3, y: 0}
         items: []
         modifiers: []
         unitType: 0
         canDropItems: 1
-        giveRandomItem: 0
+        giveRandomItem: 1
       - heroLevel: 0
         enemy:
           level: 0
-          id: flower
+          id: 
           type: unit
         gridPos: {x: 4, y: 0}
         items: []
@@ -9868,7 +9869,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: 
+          id: mushroom_3
           type: unit
         gridPos: {x: 6, y: 0}
         items: []
@@ -9880,7 +9881,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: mushroom_2
+          id: 
           type: unit
         gridPos: {x: 0, y: 1}
         items: []
@@ -9891,7 +9892,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: 
+          id: mushroom_2
           type: unit
         gridPos: {x: 1, y: 1}
         items: []
@@ -9935,7 +9936,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: 
+          id: mushroom_2
           type: unit
         gridPos: {x: 5, y: 1}
         items: []
@@ -9946,7 +9947,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: mushroom_2
+          id: 
           type: unit
         gridPos: {x: 6, y: 1}
         items: []
@@ -9991,15 +9992,12 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: mushroom_3
+          id: 
           type: unit
         gridPos: {x: 3, y: 2}
-        items:
-        - level: 0
-          id: sword
-          type: item
+        items: []
         modifiers: []
-        unitType: 1
+        unitType: 0
         canDropItems: 1
         giveRandomItem: 0
       - heroLevel: 0
@@ -10072,13 +10070,13 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: 
+          id: shade
           type: unit
         gridPos: {x: 3, y: 3}
         items: []
         modifiers: []
-        unitType: 0
-        canDropItems: 1
+        unitType: 2
+        canDropItems: 0
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
@@ -10118,9 +10116,9 @@ MonoBehaviour:
     - heroLevel: 0
       enemy:
         level: 0
-        id: mushroom_2
+        id: mushroom_3
         type: unit
-      gridPos: {x: 0, y: 1}
+      gridPos: {x: 0, y: 0}
       items: []
       modifiers: []
       unitType: 0
@@ -10129,9 +10127,42 @@ MonoBehaviour:
     - heroLevel: 0
       enemy:
         level: 0
+        id: mushroom_2
+        type: unit
+      gridPos: {x: 1, y: 1}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 2
         id: flower
         type: unit
-      gridPos: {x: 2, y: 0}
+      gridPos: {x: 3, y: 0}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 1
+    - heroLevel: 0
+      enemy:
+        level: 0
+        id: shade
+        type: unit
+      gridPos: {x: 3, y: 3}
+      items: []
+      modifiers: []
+      unitType: 2
+      canDropItems: 0
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 0
+        id: mushroom_2
+        type: unit
+      gridPos: {x: 5, y: 1}
       items: []
       modifiers: []
       unitType: 0
@@ -10142,32 +10173,7 @@ MonoBehaviour:
         level: 0
         id: mushroom_3
         type: unit
-      gridPos: {x: 3, y: 2}
-      items:
-      - level: 0
-        id: sword
-        type: item
-      modifiers: []
-      unitType: 1
-      canDropItems: 1
-      giveRandomItem: 0
-    - heroLevel: 0
-      enemy:
-        level: 0
-        id: flower
-        type: unit
-      gridPos: {x: 4, y: 0}
-      items: []
-      modifiers: []
-      unitType: 0
-      canDropItems: 1
-      giveRandomItem: 0
-    - heroLevel: 0
-      enemy:
-        level: 0
-        id: mushroom_2
-        type: unit
-      gridPos: {x: 6, y: 1}
+      gridPos: {x: 6, y: 0}
       items: []
       modifiers: []
       unitType: 0
@@ -10176,18 +10182,15 @@ MonoBehaviour:
   currentEnemy:
     heroLevel: 0
     enemy:
-      level: 0
-      id: mushroom_3
+      level: 2
+      id: flower
       type: unit
-    gridPos: {x: 3, y: 2}
-    items:
-    - level: 0
-      id: sword
-      type: item
+    gridPos: {x: 3, y: 0}
+    items: []
     modifiers: []
-    unitType: 1
+    unitType: 0
     canDropItems: 1
-    giveRandomItem: 0
+    giveRandomItem: 1
 --- !u!4 &1447613777
 Transform:
   m_ObjectHideFlags: 0
@@ -12692,10 +12695,11 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 1e18b24fcc2558046b8b86ebe772f4cb, type: 3}
   - {fileID: 4900000, guid: 2d6d51790c91a184d99001b7f4e383bf, type: 3}
   - {fileID: 4900000, guid: ea253c5ac7fe8804fb9f75764ea07462, type: 3}
-  presetIndex: 4
-  enemyIndex: 0
-  currentPresetFile: {fileID: 4900000, guid: a2afbbf1594e80f4db805f2f76bce6ea, type: 3}
-  currentCellCoord: {x: 3, y: 3}
+  - {fileID: 4900000, guid: bb5dd534dcfa4db408462fc1537d5d57, type: 3}
+  presetIndex: 10
+  enemyIndex: 4
+  currentPresetFile: {fileID: 4900000, guid: bb5dd534dcfa4db408462fc1537d5d57, type: 3}
+  currentCellCoord: {x: 3, y: 0}
   _dbContainer: {fileID: 11400000, guid: 58513560c179fd04594e34e41030e433, type: 2}
   _enemiesGrid:
     size: {x: 7, y: 4}
@@ -12736,13 +12740,13 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: skelet_giant
           type: unit
         gridPos: {x: 3, y: 0}
         items: []
         modifiers: []
-        unitType: 1
+        unitType: 0
         canDropItems: 1
         giveRandomItem: 0
       - heroLevel: 0
@@ -12782,7 +12786,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: 
+          id: spook
           type: unit
         gridPos: {x: 0, y: 1}
         items: []
@@ -12804,7 +12808,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: skelet_norm
+          id: 
           type: unit
         gridPos: {x: 2, y: 1}
         items: []
@@ -12815,7 +12819,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: skelet_norm
+          id: 
           type: unit
         gridPos: {x: 3, y: 1}
         items: []
@@ -12826,7 +12830,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: skelet_norm
+          id: 
           type: unit
         gridPos: {x: 4, y: 1}
         items: []
@@ -12848,7 +12852,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: 
+          id: spook
           type: unit
         gridPos: {x: 6, y: 1}
         items: []
@@ -12882,7 +12886,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: 
+          id: skelet_norm
           type: unit
         gridPos: {x: 2, y: 2}
         items: []
@@ -12904,7 +12908,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: 
+          id: skelet_norm
           type: unit
         gridPos: {x: 4, y: 2}
         items: []
@@ -12971,7 +12975,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: skelet_norm
+          id: 
           type: unit
         gridPos: {x: 3, y: 3}
         items: []
@@ -13017,9 +13021,9 @@ MonoBehaviour:
     - heroLevel: 0
       enemy:
         level: 0
-        id: skelet_norm
+        id: spook
         type: unit
-      gridPos: {x: 2, y: 1}
+      gridPos: {x: 0, y: 1}
       items: []
       modifiers: []
       unitType: 0
@@ -13030,7 +13034,18 @@ MonoBehaviour:
         level: 0
         id: skelet_norm
         type: unit
-      gridPos: {x: 3, y: 1}
+      gridPos: {x: 2, y: 2}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 1
+        id: skelet_giant
+        type: unit
+      gridPos: {x: 3, y: 0}
       items: []
       modifiers: []
       unitType: 0
@@ -13041,7 +13056,7 @@ MonoBehaviour:
         level: 0
         id: skelet_norm
         type: unit
-      gridPos: {x: 3, y: 3}
+      gridPos: {x: 4, y: 2}
       items: []
       modifiers: []
       unitType: 0
@@ -13050,9 +13065,9 @@ MonoBehaviour:
     - heroLevel: 0
       enemy:
         level: 0
-        id: skelet_norm
+        id: spook
         type: unit
-      gridPos: {x: 4, y: 1}
+      gridPos: {x: 6, y: 1}
       items: []
       modifiers: []
       unitType: 0
@@ -13061,10 +13076,10 @@ MonoBehaviour:
   currentEnemy:
     heroLevel: 0
     enemy:
-      level: 0
-      id: skelet_norm
+      level: 1
+      id: skelet_giant
       type: unit
-    gridPos: {x: 3, y: 3}
+    gridPos: {x: 3, y: 0}
     items: []
     modifiers: []
     unitType: 0

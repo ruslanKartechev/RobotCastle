@@ -62,6 +62,20 @@ namespace RobotCastle.Battling
                 }
                 hero.Components.weaponsContainer.SetEmpty();
                 var spells = HeroesManager.GetModifiers(enemyPreset.modifiers);
+                if (spells.Count == 0)
+                {
+                    var db = ServiceLocator.Get<HeroesDatabase>();
+                    var stats = db.GetHeroSpellInfo(enemyPreset.enemy.id);
+                    
+                    var ids = new List<string>(3);
+                    if(!string.IsNullOrEmpty( stats.mainSpellId))
+                        ids.Add(stats.mainSpellId);
+                    if(!string.IsNullOrEmpty(stats.secondSpellId))
+                        ids.Add(stats.secondSpellId);
+                    if(!string.IsNullOrEmpty(stats.thirdSpellId))
+                        ids.Add(stats.thirdSpellId);
+                    spells = HeroesManager.GetModifiers(ids);
+                }
                 hero.InitHero(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level, spells);
                 
                 // CLog.LogGreen($"Random item?! {enemyPreset.giveRandomItem}. Item options Count: {items.itemsOptions.Count}");

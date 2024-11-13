@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using RobotCastle.Data;
 using SleepDev;
@@ -15,7 +17,24 @@ namespace RobotCastle.Battling
         [SerializeField] private List<ModifierProvider> _otherModifiers;
         private readonly Dictionary<string, ModifierProvider> _map = new(100);
         private ModifiersConfig _config;
-        
+
+        #if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (Application.isPlaying == false)
+            {
+                var count1 = _spells.Count;
+                var count2 = _otherModifiers.Count;
+                _spells = _spells.Distinct().ToList();
+                _otherModifiers = _otherModifiers.Distinct().ToList();
+                if (_spells.Count != count1 || _otherModifiers.Count != count2)
+                {
+                    UnityEditor.EditorUtility.SetDirty(this);
+                }
+            }
+        }
+        #endif
+
         public void Load()
         {
             var file = Resources.Load<TextAsset>(ConfigFileName);

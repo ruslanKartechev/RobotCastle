@@ -55,7 +55,7 @@ namespace RobotCastle.Battling
                 case "flower":
                     return new AttackRangeRhombus(2);
                 case "shade":
-                    return new AttackRangeSingle();
+                    return new AttackRangeRectangle(2,2);
                 case "bat":
                     return new AttackRangeRectangle(1, 1);
                 case "bumble":
