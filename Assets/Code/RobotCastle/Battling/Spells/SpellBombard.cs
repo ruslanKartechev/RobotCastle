@@ -8,7 +8,6 @@ namespace RobotCastle.Battling
 {
     public class SpellBombard : Spell, IHeroProcess, IFullManaListener
     {
-
         public SpellBombard(SpellConfigBombard config, HeroComponents components)
         {
             _components = components;
@@ -66,6 +65,8 @@ namespace RobotCastle.Battling
                 while (!token.IsCancellationRequested && _isCasting)
                     await Task.Yield();
                 if (token.IsCancellationRequested) return;
+                var fx = GetFxView();
+                fx.PlayLevelAtPoint(_components.transform.position, 0);
                 Spawn();
                 
                 if (token.IsCancellationRequested) return;
@@ -74,6 +75,7 @@ namespace RobotCastle.Battling
 
         private void OnAttack()
         {
+            _components.animationEventReceiver.OnAttackEvent -= OnAttack;
             _isCasting = false;   
         }
 
@@ -90,5 +92,18 @@ namespace RobotCastle.Battling
             BattleManager.SetClosestAvailableDesiredPositions(args, _components.state.currentCell);
             ServiceLocator.Get<BattleManager>().AddNewEnemiesDuringBattle(args);
         }
+        
+        private SpellParticlesByLevel GetFxView()
+        {
+            if(_fxView == null)
+            {
+                var prefab = Resources.Load<GameObject>(HeroesConstants.SpellFXPrefab_Bombard);
+                _fxView = Object.Instantiate(prefab).GetComponent<SpellParticlesByLevel>();
+            }
+            _fxView.transform.position = _components.transform.position;
+            _fxView.transform.rotation = _components.transform.rotation;
+            return _fxView;
+        }
+
     }
 }

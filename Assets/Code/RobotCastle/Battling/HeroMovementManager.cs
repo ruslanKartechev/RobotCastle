@@ -201,14 +201,14 @@ namespace RobotCastle.Battling
                             if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
                             if (agent.IsMoving && agent.TargetCell != targetCell)
                             {
-                                CLog.Log($"[{gameObject.name}] Is blocked my moving agent");
+                                // CLog.Log($"[{gameObject.name}] Is blocked my moving agent");
                                 blocked = true;
                                 await HeroesManager.WaitGameTime(.2f, token);
                                 if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
                             }
                             else
                             {
-                                CLog.LogRed($"[{gameObject.name}] Is blocked by STANDING agent, starting over");
+                                // CLog.LogRed($"[{gameObject.name}] Is blocked by STANDING agent, starting over");
                                 await Task.Yield();
                                 if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
                                 MoveToEnemy(enemy, stepCallback, endCallback);

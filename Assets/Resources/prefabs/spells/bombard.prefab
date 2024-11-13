@@ -4856,8 +4856,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 34272648502441889}
   - {fileID: 34272648502408115}
@@ -4873,7 +4873,7 @@ ParticleSystem:
   m_GameObject: {fileID: 34272648502054421}
   serializedVersion: 8
   lengthInSec: 1
-  simulationSpeed: 1
+  simulationSpeed: 0.66
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
@@ -19288,9 +19288,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6398661928424833024}
-  - component: {fileID: 8494356893395419381}
+  - component: {fileID: 5559327009522153864}
   m_Layer: 0
-  m_Name: _bombard
+  m_Name: bombard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19312,7 +19312,7 @@ Transform:
   - {fileID: 34272648502345707}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8494356893395419381
+--- !u!114 &5559327009522153864
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19321,12 +19321,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 627580313084904977}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e97b338193a40a8a81c6bd61a2adb49, type: 3}
+  m_Script: {fileID: 11500000, guid: e6ad39ff9e354509a20447e11a01c01d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _particles: {fileID: 0}
-  _hitParticles:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _particles:
+  - {fileID: 34272648482948099}
+  _duration: 1.5

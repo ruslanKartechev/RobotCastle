@@ -32,18 +32,16 @@ namespace RobotCastle.Battling
         
         public void Stop()
         {
-            if (!_isActive)
+            if (!_isActive) return;
+            _isActive = false;
+            _token?.Cancel();
+            if (_isCasting)
             {
-                _isActive = false;
-                _token?.Cancel();
-                if (_isCasting)
-                {
-                    _isCasting = false;
-                    _components.animationEventReceiver.OnAttackEvent += OnAttacked;
-                    _components.animator.SetBool("Cast", false);
-                }
-                _fx?.Hide();
+                _isCasting = false;
+                _components.animationEventReceiver.OnAttackEvent += OnAttacked;
+                _components.animator.SetBool("Cast", false);
             }
+            _fx?.Hide();
         }
         
         private CancellationTokenSource _token;
@@ -109,9 +107,9 @@ namespace RobotCastle.Battling
             _components.stats.ManaResetAfterFull.Reset(_components);
             _components.processes.Remove(this);
             _manaAdder.CanAdd = true;
-            _isActive = false;
             hero.ResumeCurrentBehaviour();
             _token?.Cancel();
+            _isActive = false;
         }
 
         private async Task Damaging(CellsMask coneMask, CellsMask rotMask, float damage, CancellationToken token)

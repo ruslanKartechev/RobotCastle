@@ -6016,9 +6016,10 @@ MonoBehaviour:
   - {fileID: 4900000, guid: c56fb800ab1676140b180210140de1f0, type: 3}
   - {fileID: 4900000, guid: b8902a2d7637a6246be7b399bf61eed6, type: 3}
   - {fileID: 4900000, guid: bd1a097c766ce6444b4463a1b1e31a07, type: 3}
-  presetIndex: 9
+  - {fileID: 4900000, guid: b018f7d26b9c3f1408938d0344338d8d, type: 3}
+  presetIndex: 15
   enemyIndex: 4
-  currentPresetFile: {fileID: 4900000, guid: 7d96ba8912c74344189892e3323fda6c, type: 3}
+  currentPresetFile: {fileID: 4900000, guid: b018f7d26b9c3f1408938d0344338d8d, type: 3}
   currentCellCoord: {x: 3, y: 0}
   _dbContainer: {fileID: 11400000, guid: 58513560c179fd04594e34e41030e433, type: 2}
   _enemiesGrid:
@@ -6060,16 +6061,13 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 1
-          id: reaper
+          level: 2
+          id: wraith
           type: unit
         gridPos: {x: 3, y: 0}
-        items:
-        - level: 1
-          id: sword
-          type: item
+        items: []
         modifiers: []
-        unitType: 1
+        unitType: 2
         canDropItems: 1
         giveRandomItem: 0
       - heroLevel: 0
@@ -6197,13 +6195,12 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 1
-          id: devil_hades
+          level: 0
+          id: 
           type: unit
         gridPos: {x: 1, y: 2}
         items: []
-        modifiers:
-        - summon_dead
+        modifiers: []
         unitType: 0
         canDropItems: 1
         giveRandomItem: 0
@@ -6242,13 +6239,12 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 1
-          id: devil_hades
+          level: 0
+          id: 
           type: unit
         gridPos: {x: 5, y: 2}
         items: []
-        modifiers:
-        - summon_dead
+        modifiers: []
         unitType: 0
         canDropItems: 1
         giveRandomItem: 0
@@ -6345,55 +6341,25 @@ MonoBehaviour:
     enemies:
     - heroLevel: 0
       enemy:
-        level: 1
-        id: devil_hades
-        type: unit
-      gridPos: {x: 1, y: 2}
-      items: []
-      modifiers:
-      - summon_dead
-      unitType: 0
-      canDropItems: 1
-      giveRandomItem: 0
-    - heroLevel: 0
-      enemy:
-        level: 1
-        id: reaper
+        level: 2
+        id: wraith
         type: unit
       gridPos: {x: 3, y: 0}
-      items:
-      - level: 1
-        id: sword
-        type: item
-      modifiers: []
-      unitType: 1
-      canDropItems: 1
-      giveRandomItem: 0
-    - heroLevel: 0
-      enemy:
-        level: 1
-        id: devil_hades
-        type: unit
-      gridPos: {x: 5, y: 2}
       items: []
-      modifiers:
-      - summon_dead
-      unitType: 0
+      modifiers: []
+      unitType: 2
       canDropItems: 1
       giveRandomItem: 0
   currentEnemy:
     heroLevel: 0
     enemy:
-      level: 1
-      id: reaper
+      level: 0
+      id: 
       type: unit
-    gridPos: {x: 3, y: 0}
-    items:
-    - level: 1
-      id: sword
-      type: item
+    gridPos: {x: 0, y: 0}
+    items: []
     modifiers: []
-    unitType: 1
+    unitType: 0
     canDropItems: 1
     giveRandomItem: 0
 --- !u!4 &804887322

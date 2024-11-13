@@ -14,13 +14,13 @@ namespace RobotCastle.Battling
 
         public override void AddToHero(HeroComponents components)
         {
-            components.stats.FullManaListener = new SpellAnimateUndead(_config, components);
+            components.stats.FullManaListener = new SpellRaiseTheDead(_config, components);
         }
 
         public override float manaMax => _config.manaMax;
         
         public override float manaStart => _config.manaStart;
         
-        [SerializeField] private SpellConfigAnimateUndead _config;
+        [SerializeField] private SpellConfigRaiseTheDead _config;
     }
 }

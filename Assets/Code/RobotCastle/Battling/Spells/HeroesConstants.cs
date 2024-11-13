@@ -47,7 +47,9 @@ namespace RobotCastle.Battling
         public const string SpellFXPrefab_Crackle = "prefabs/spells/crackle";
         public const string SpellFXPrefab_FlameBreath = "prefabs/spells/flamebreath";
         public const string SpellFXPrefab_RecklessProtection = "prefabs/spells/reckless_protection";
+        
         public const string SpellFXPrefab_Earthquake = "prefabs/spells/earthquake";
+        public const string SpellFXPrefab_Bombard = "prefabs/spells/bombard";
 
 
     }
