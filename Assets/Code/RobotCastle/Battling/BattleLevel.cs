@@ -574,12 +574,9 @@ namespace RobotCastle.Battling
         {
             CLog.Log($"[{nameof(BattleLevel)}] Replay call");
             SleepDev.Analytics.LevelReplayCalled(_selectionData.chapterIndex, _selectionData.tierIndex);
-            var playerData = DataHelpers.GetPlayerData();
-            playerData.playerEnergy -= ChapterSelectionData.BasicEnergyCost;
+            ServiceLocator.Get<PlayerEnergyManager>().Subtract(_selectionData.totalEnergyCost);
             SceneManager.LoadScene(GlobalConfig.SceneBattle);
         }
-
-
    
     }
 }

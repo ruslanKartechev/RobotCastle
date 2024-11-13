@@ -16,6 +16,7 @@ namespace RobotCastle.UI
         [SerializeField] private FadeInOutAnimator _fadeAnimatorButtons;
         [SerializeField] private TextMeshProUGUI _lvlText;
         [SerializeField] private Image _xpImage;
+        [SerializeField] private TextMeshProUGUI _energyText;
         private Action _replay;
         private Action _return;
         private bool _inputActive;
@@ -30,6 +31,9 @@ namespace RobotCastle.UI
             var xp = ServiceLocator.Get<CastleXpManager>();
             _xpImage.fillAmount = xp.GetProgressToNextLvl();
             _lvlText.text = $"{xp.GetLevel() + 1}";
+            var energy = ServiceLocator.Get<PlayerEnergyManager>();
+            _energyText.text = energy.GetAsStr();
+            
             StartCoroutine(Animating());
             _inputActive = true;
             _btnReturn.AddMainCallback(Return);

@@ -100,6 +100,8 @@ namespace RobotCastle.Battling
                     return new AttackRangeRectangle(2,5);
                 case "burrow":
                     return new AttackRangeRhombus(2);
+                case "skelet_giant":
+                    return new AttackRangeRectangle(2,2);
                 
             }
             CLog.Log($"[AttackRangeFactory] No preset attack range for: {id}. Returning basic 1x1 \"PlusShape\" ");

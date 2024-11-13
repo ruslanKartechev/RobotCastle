@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5419131371383726250}
-  - component: {fileID: 5592790282890777118}
+  - component: {fileID: 69472552738386188}
   m_Layer: 0
   m_Name: backstab
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 3947451009787553132}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5592790282890777118
+--- !u!114 &69472552738386188
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,12 +42,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3808014681559242828}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e97b338193a40a8a81c6bd61a2adb49, type: 3}
+  m_Script: {fileID: 11500000, guid: e6ad39ff9e354509a20447e11a01c01d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _particles: {fileID: 2154861573806616929}
-  _hitParticles:
+  _particles:
   - {fileID: 2154861573806616929}
+  _duration: 1.5
 --- !u!1001 &2087504703948062661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56,21 +56,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5419131371383726250}
     m_Modifications:
+    - target: {fileID: 81017896262045348, guid: a68382029e88d2643885c7a6225be7ac, type: 3}
+      propertyPath: stopAction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 817019086381089859, guid: a68382029e88d2643885c7a6225be7ac, type: 3}
       propertyPath: m_Name
       value: FX_11_Skill_Mara
       objectReference: {fileID: 0}
     - target: {fileID: 3040043757297932969, guid: a68382029e88d2643885c7a6225be7ac, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 1.55
       objectReference: {fileID: 0}
     - target: {fileID: 3040043757297932969, guid: a68382029e88d2643885c7a6225be7ac, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 1.55
       objectReference: {fileID: 0}
     - target: {fileID: 3040043757297932969, guid: a68382029e88d2643885c7a6225be7ac, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5
+      value: 1.55
       objectReference: {fileID: 0}
     - target: {fileID: 3040043757297932969, guid: a68382029e88d2643885c7a6225be7ac, type: 3}
       propertyPath: m_LocalPosition.x

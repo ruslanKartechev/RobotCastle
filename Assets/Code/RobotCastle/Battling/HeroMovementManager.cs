@@ -182,9 +182,13 @@ namespace RobotCastle.Battling
 #endregion
 
 #region EnemyDetection
+
+                var it = 0;
+                var itMax = 100;
                 var blocked = false;
                 do
                 {
+                    it++;
                     blocked = false;
                     for (var ind = _map.ActiveAgents.Count - 1; ind >= 0; ind--)
                     {
@@ -195,16 +199,16 @@ namespace RobotCastle.Battling
                         {
                             stepCallback?.Invoke();
                             if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
-                            if (agent.IsMoving)
+                            if (agent.IsMoving && agent.TargetCell != targetCell)
                             {
-                                // CLog.Log($"[{gameObject.name}] Is blocked my moving agent");
+                                CLog.Log($"[{gameObject.name}] Is blocked my moving agent");
                                 blocked = true;
                                 await HeroesManager.WaitGameTime(.2f, token);
                                 if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
                             }
                             else
                             {
-                                // CLog.LogRed($"[{gameObject.name}] Is blocked by STANDING moving agent, starting over");
+                                CLog.LogRed($"[{gameObject.name}] Is blocked by STANDING agent, starting over");
                                 await Task.Yield();
                                 if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
                                 MoveToEnemy(enemy, stepCallback, endCallback);
@@ -212,14 +216,9 @@ namespace RobotCastle.Battling
                             }
                             break;
                         }
+                        it++;
                     }
-
-                    if (blocked)
-                    {
-                        await Task.Yield();
-                        if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
-                    }
-                } while (blocked);
+                } while (blocked && !token.IsCancellationRequested && _map.ActiveAgents.Count > 0 && it < itMax);
                 if (token.IsCancellationRequested) return EPathMovementResult.WasCancelled;
 
 #endregion

@@ -25,12 +25,13 @@ namespace RobotCastle.Battling
         public override string GetDescription(GameObject target)
         {
             var components = target.GetComponent<HeroComponents>();
-            if (components == null)
-                return base.GetDescription(target);
-            
             var str = base.GetDescription(target);
-            // var lvl = (int)HeroesManager.GetSpellTier(components.stats.MergeTier);
-            // str = str.Replace("<def>", _config.defByTier[lvl].ToString());
+            if (components == null)
+            {
+                str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>SP</color>");
+                return str;
+            }
+            str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{components.stats.SpellPower.Get()}</color>");
             return str;
         }
 

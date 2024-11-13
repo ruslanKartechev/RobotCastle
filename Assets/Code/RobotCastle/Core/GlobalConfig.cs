@@ -13,8 +13,6 @@ namespace RobotCastle.Core
 
         public const int MaxUnitsItemsCount = 3;
 
-        public float BattleStartEnemyShowTime = 1f;
-        public float BattleStartInputDelay =.5f;
 
     }
 }

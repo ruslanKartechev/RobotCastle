@@ -33,9 +33,7 @@ namespace RobotCastle.Battling
             {
                 _components.attackManager.OnAttackStep -= OnAttack;
                 _isAttacking = false;
-
             }
-
             if (_isActive)
             {
                 _token?.Cancel();
@@ -43,20 +41,19 @@ namespace RobotCastle.Battling
                 _manaAdder.CanAdd = true;
             }
         }
-        
+
+        private const float MoveTime = .3f;
         private CancellationTokenSource _token;
         private SpellConfigBackstab _config;
         private ConditionedManaAdder _manaAdder;
-        private SpellParticlesOnHero _fx1;
-        private SpellParticlesOnHero _fx2;
+        private SpellParticlesByLevel _fx1;
+        private SpellParticlesByLevel _fx2;
 
         private IHeroController _hero;
         private bool _isAttacking;
-
         
         private async void Work(CancellationToken token)
         {
-            await Task.Yield();
             await Task.Yield();
             if (token.IsCancellationRequested)
                 return;
@@ -88,21 +85,16 @@ namespace RobotCastle.Battling
                     rotMask.SetAsRotated(maskRef, rot);
                     cell = rotMask.mask[0] + enemy.Components.state.currentCell;
                     cellFree = !map.IsOutOfBounce(cell);
-                    if (cellFree)
+                    if (map.IsFullyFree(cell))
                     {
-                        cellFree &= map.Grid[cell.x, cell.y].isPlayerWalkable;
-                        cellFree &= IsCellFree(cell);
-                        if (cellFree)
-                        {
-                            canTp = true;
-                            TeleportToAttack(cell, enemy, token);
-                            return;
-                        }
+                        canTp = true;
+                        TeleportToAttack(cell, enemy, token);
+                        return;
                     }
                     await Task.Delay(150, token);
                     if (token.IsCancellationRequested)
                         return;
-                } while (!cellFree);
+                } while (!cellFree && !token.IsCancellationRequested);
             }
 
             bool IsCellFree(Vector2Int cell)
@@ -121,23 +113,38 @@ namespace RobotCastle.Battling
             _isAttacking = true;
             _hero.StopCurrentBehaviour();
             _components.movement.Stop();
-            _components.animator.Play("Idle");
-            _fx1.PlayHitParticles();
+            _components.animator.Play("Idle", 0, 0);
+            _components.movement.TargetCell = cell;
+            _fx1.PlayLevelAtPoint(_components.transform.position, 0);
             if (_components.spellSounds.Count > 0)
                 _components.spellSounds[0].Play();
+            
+            await Task.Yield();
+            if (token.IsCancellationRequested) return;
+            var lowPos = _components.transform.position;
+            lowPos.y = -100;
+            _components.transform.position = lowPos;
             await Task.Yield();
             if (token.IsCancellationRequested) return;
             
             var map = _components.movement.Map;
             var worldPos = map.GetWorldFromCell(cell);
             var rot = Quaternion.LookRotation(enemy.Components.transform.position - worldPos);
-         
-            _components.transform.SetPositionAndRotation(worldPos, rot);
-            _components.movement.SyncCellToWorldPos();
-            
-            await Task.Yield();
+            var tr = _components.transform;
+            tr.rotation = rot;
+            var elapsed = 0f;
+            while (elapsed < MoveTime && !token.IsCancellationRequested)
+            {
+                tr.position = Vector3.Lerp(lowPos, worldPos, elapsed / MoveTime);                
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
             if (token.IsCancellationRequested) return;
-            _fx2.PlayHitParticles();
+            _components.animator.Play("Cast", 0,0);
+            tr.position = worldPos;
+            _components.movement.SyncCellToWorldPos();
+            _fx2.PlayLevelAtPoint(_components.transform.position, 0);
+
             _components.attackManager.OnAttackStep += OnAttack;
             _components.attackManager.BeginAttack(enemy.Components.damageReceiver);
         }
@@ -149,6 +156,7 @@ namespace RobotCastle.Battling
             _components.attackManager.OnAttackStep -= OnAttack;
             _components.damageSource.DamageSpell(_components.attackManager.LastTarget);
             _components.attackManager.Stop();
+            _hero.SetBehaviour(new HeroAttackEnemyBehaviour());
             Complete();
         }
 
@@ -159,7 +167,6 @@ namespace RobotCastle.Battling
             _isActive = false;
             _components.stats.ManaResetAfterFull.Reset(_components);
             _components.processes.Remove(this);
-            _hero.SetBehaviour(new HeroAttackEnemyBehaviour());
         }
 
         private async Task<IHeroController> WaitForTarget(CancellationToken token)
@@ -173,7 +180,7 @@ namespace RobotCastle.Battling
 
         private void InitFx()
         {
-            var prefab = Resources.Load<SpellParticlesOnHero>(HeroesConstants.SpellFXPrefab_Backstab);
+            var prefab = Resources.Load<SpellParticlesByLevel>(HeroesConstants.SpellFXPrefab_Backstab);
             _fx1 = Object.Instantiate(prefab);
             _fx2 = Object.Instantiate(prefab);
             _fx1.gameObject.SetActive(false);

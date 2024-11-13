@@ -13,13 +13,6 @@ namespace RobotCastle.Battling
         [SerializeField] private List<ParticleSystem> _hitParticles;
         private CancellationTokenSource _token;
 
-        public void PlayHitParticles()
-        {
-            var p = _hitParticles[0];
-            p.gameObject.SetActive(true);
-            p.Play();
-        }
-
         public void PlayHitParticles(int lvl)
         {
             var p = _hitParticles[lvl];

@@ -22,6 +22,7 @@ namespace RobotCastle.MainMenu
         /// Passes current and max
         /// </summary>
         public event UpdateDelegate<int> OnEnergySet;
+        public const int PlayLevelEnergyCost = 5;
         
         private SavePlayerData _playerData;
         
@@ -34,11 +35,26 @@ namespace RobotCastle.MainMenu
         {
             return _playerData.playerEnergyMax;
         }
+        
+        public string GetAsStr() => $"{GetCurrent()}/{GetMax()}";
 
         public void Set(int energy)
         {
+            var prev = _playerData.playerEnergy;
             _playerData.playerEnergy = energy;
-            OnEnergySet?.Invoke(energy, GetMax());
+            OnEnergySet?.Invoke(energy, prev);
+        }
+
+        public void Subtract()
+        {
+            Subtract(PlayLevelEnergyCost);
+        }
+
+        public void Subtract(int amount)
+        {
+            var prev = _playerData.playerEnergy;
+            _playerData.playerEnergy = prev - amount;
+            OnEnergySet?.Invoke(_playerData.playerEnergy, prev);
         }
         
         private PlayerEnergyManager(){}
