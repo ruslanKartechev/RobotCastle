@@ -7,10 +7,11 @@ namespace RobotCastle.Battling
 {
     public class SpellAvatar :  Spell, IFullManaListener, IHeroProcess, IStatDecorator
     {
-        public SpellAvatar(SpellConfigAvatar config, HeroComponents components)
+        public SpellAvatar(SpellConfigAvatar config, HeroComponents components, string fxId)
         {
             _config = config;
             _components = components;
+            _fxId = fxId;
             _components.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
             _components.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart); 
             _components.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(_components);
@@ -33,10 +34,12 @@ namespace RobotCastle.Battling
                 _isActive = false;
                 _components.attackManager.OnAttackStep += OnAttackStep;
                 _manaAdder.CanAdd = true;
-                _fxView.gameObject.SetActive(false);
+                if(_fxView != null)
+                    _fxView.gameObject.SetActive(false);
                 _components.stats.MagicalResist.RemoveDecorator(this);
                 _components.stats.PhysicalResist.RemoveDecorator(this);
                 _token.Cancel();
+                
             }
         }
         
@@ -51,6 +54,7 @@ namespace RobotCastle.Battling
         private SimpleDecoratorAdd _spDecor;
         private float _def;
         private int _lvl;
+        private string _fxId;
 
         private async void Working(CancellationToken token)
         {
@@ -99,7 +103,7 @@ namespace RobotCastle.Battling
         {
             if(_fxView == null)
             {
-                var prefab = Resources.Load<GameObject>(HeroesConstants.SpellFXPrefab_Avatar);
+                var prefab = Resources.Load<GameObject>(_fxId);
                 _fxView = Object.Instantiate(prefab).GetComponent<SpellParticlesOnHero>();
             }
             _fxView.transform.position = _components.transform.position;

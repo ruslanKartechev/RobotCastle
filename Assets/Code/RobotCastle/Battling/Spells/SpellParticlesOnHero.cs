@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace RobotCastle.Battling
         [SerializeField] private ParticleSystem _particles;
         [SerializeField] private List<ParticleSystem> _hitParticles;
         private CancellationTokenSource _token;
+        private Coroutine _tracking;
 
         public void PlayHitParticles(int lvl)
         {
@@ -26,7 +28,9 @@ namespace RobotCastle.Battling
             gameObject.SetActive(true);
             _particles.gameObject.SetActive(true);
             _particles.Play();
-            Tracking(target, _token.Token);
+            if(_tracking != null)
+                StopCoroutine(_tracking);
+            _tracking = StartCoroutine(Tracking(target));
         }
         
         public void ShowTrackingDefaultDuration(Transform target)
@@ -40,6 +44,8 @@ namespace RobotCastle.Battling
 
         private void OnDisable()
         {
+            if (_particles != null)
+                _particles.transform.parent = transform;
             _token?.Cancel();
         }
 
@@ -56,14 +62,12 @@ namespace RobotCastle.Battling
             gameObject.SetActive(false);
         }
         
-        private async void Tracking(Transform target, CancellationToken token)
+        private IEnumerator Tracking(Transform target)
         {
-            while (!token.IsCancellationRequested && gameObject.activeSelf)
+            while (gameObject.activeSelf)
             {
                 transform.position = target.position;
-                await Task.Yield();
-                if(token.IsCancellationRequested)
-                    return;
+                yield return null;
             }
         }
     }

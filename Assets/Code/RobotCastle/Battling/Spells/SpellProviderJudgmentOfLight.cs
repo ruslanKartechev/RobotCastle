@@ -25,7 +25,7 @@ namespace RobotCastle.Battling
             if (target != null)
             {
                 var stats = target.GetComponent<HeroStatsManager>();
-                lvl = stats.MergeTier;
+                lvl = (int)HeroesManager.GetSpellTier(stats.MergeTier);
                 str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
                 str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
             }

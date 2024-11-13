@@ -2,9 +2,10 @@
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/Avatar", fileName = "avatar", order = 11)]
+    [CreateAssetMenu(menuName = "SO/Spells/avatar", fileName = "avatar", order = 11)]
     public class SpellProviderAvatar : SpellProvider
     {
+        [SerializeField] private string _fxId;
         [SerializeField] private SpellConfigAvatar _config;
 
         public override void AddTo(GameObject target)
@@ -16,7 +17,7 @@ namespace RobotCastle.Battling
         
         public override void AddToHero(HeroComponents components)
         {
-            components.stats.FullManaListener = new SpellAvatar(_config, components);
+            components.stats.FullManaListener = new SpellAvatar(_config, components, _fxId);
         }
         
         public override string GetDescription(GameObject target)
@@ -35,4 +36,5 @@ namespace RobotCastle.Battling
         public override float manaMax => _config.manaMax;
         public override float manaStart => _config.manaStart;
     }
+    
 }

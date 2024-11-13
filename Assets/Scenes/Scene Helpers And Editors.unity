@@ -3366,9 +3366,10 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 0771f4560aafa9a43b09134949af431c, type: 3}
   - {fileID: 4900000, guid: 06a10e98e140ad14f826015c5c061b97, type: 3}
   - {fileID: 4900000, guid: 8d088118a933f7a439d0ac890aa8e8af, type: 3}
-  presetIndex: 4
-  enemyIndex: 4
-  currentPresetFile: {fileID: 4900000, guid: 9830740691aaf7f4fb1200c53d18aefc, type: 3}
+  - {fileID: 4900000, guid: 9d6a5769683e74d4892a22c96fa029cd, type: 3}
+  presetIndex: 20
+  enemyIndex: 3
+  currentPresetFile: {fileID: 4900000, guid: 9d6a5769683e74d4892a22c96fa029cd, type: 3}
   currentCellCoord: {x: 3, y: 2}
   _dbContainer: {fileID: 11400000, guid: 58513560c179fd04594e34e41030e433, type: 2}
   _enemiesGrid:
@@ -3388,8 +3389,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 1
-          id: cyclop_small
+          level: 0
+          id: 
           type: unit
         gridPos: {x: 1, y: 0}
         items: []
@@ -3410,8 +3411,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 1
-          id: wolf_big
+          level: 0
+          id: 
           type: unit
         gridPos: {x: 3, y: 0}
         items: []
@@ -3432,8 +3433,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 1
-          id: cyclop_small
+          level: 0
+          id: 
           type: unit
         gridPos: {x: 5, y: 0}
         items: []
@@ -3477,8 +3478,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: werewolf
           type: unit
         gridPos: {x: 2, y: 1}
         items: []
@@ -3499,8 +3500,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: werewolf
           type: unit
         gridPos: {x: 4, y: 1}
         items: []
@@ -3566,13 +3567,13 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 1
-          id: wolf_big
+          level: 3
+          id: golem_ice
           type: unit
         gridPos: {x: 3, y: 2}
         items: []
         modifiers: []
-        unitType: 1
+        unitType: 2
         canDropItems: 1
         giveRandomItem: 0
       - heroLevel: 0
@@ -3690,10 +3691,10 @@ MonoBehaviour:
     enemies:
     - heroLevel: 0
       enemy:
-        level: 1
-        id: cyclop_small
+        level: 3
+        id: werewolf
         type: unit
-      gridPos: {x: 1, y: 0}
+      gridPos: {x: 2, y: 1}
       items: []
       modifiers: []
       unitType: 0
@@ -3701,32 +3702,21 @@ MonoBehaviour:
       giveRandomItem: 0
     - heroLevel: 0
       enemy:
-        level: 1
-        id: wolf_big
-        type: unit
-      gridPos: {x: 3, y: 0}
-      items: []
-      modifiers: []
-      unitType: 0
-      canDropItems: 1
-      giveRandomItem: 0
-    - heroLevel: 0
-      enemy:
-        level: 1
-        id: wolf_big
+        level: 3
+        id: golem_ice
         type: unit
       gridPos: {x: 3, y: 2}
       items: []
       modifiers: []
-      unitType: 1
+      unitType: 2
       canDropItems: 1
       giveRandomItem: 0
     - heroLevel: 0
       enemy:
-        level: 1
-        id: cyclop_small
+        level: 3
+        id: werewolf
         type: unit
-      gridPos: {x: 5, y: 0}
+      gridPos: {x: 4, y: 1}
       items: []
       modifiers: []
       unitType: 0
@@ -3735,13 +3725,13 @@ MonoBehaviour:
   currentEnemy:
     heroLevel: 0
     enemy:
-      level: 1
-      id: wolf_big
+      level: 3
+      id: golem_ice
       type: unit
     gridPos: {x: 3, y: 2}
     items: []
     modifiers: []
-    unitType: 1
+    unitType: 2
     canDropItems: 1
     giveRandomItem: 0
 --- !u!4 &344909845
