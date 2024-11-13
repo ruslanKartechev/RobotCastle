@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3801784902150931929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2912746624701648516}
+  m_Layer: 0
+  m_Name: projectile point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2912746624701648516
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3801784902150931929}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: -0.149, y: 0.364, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7459413874596853053}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 180}
 --- !u!1001 &673900042141434580
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -798,7 +829,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7989110728474834921, guid: a4a21fb2311c52a4c9a0103cc48ab3d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2912746624701648516}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 105820634711721051, guid: a4a21fb2311c52a4c9a0103cc48ab3d4, type: 3}
       insertIndex: -1
@@ -855,6 +889,11 @@ Animator:
 --- !u!137 &7271126989962682715 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 7904406674479063951, guid: a4a21fb2311c52a4c9a0103cc48ab3d4, type: 3}
+  m_PrefabInstance: {fileID: 673900042141434580}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7459413874596853053 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7989110728474834921, guid: a4a21fb2311c52a4c9a0103cc48ab3d4, type: 3}
   m_PrefabInstance: {fileID: 673900042141434580}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2985847917399007393
@@ -950,9 +989,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6162652391605634639}
     - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _spellPoint
+      value: 
+      objectReference: {fileID: 2912746624701648516}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       propertyPath: _heroAnimationEvent
       value: 
       objectReference: {fileID: 1981268527367568418}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _projectileSpawnPoint
+      value: 
+      objectReference: {fileID: 2912746624701648516}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _projectileSpawnPoint2
+      value: 
+      objectReference: {fileID: 2912746624701648516}
     - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       propertyPath: attackSounds.Array.size
       value: 1
@@ -970,7 +1021,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2378445773442730016, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5422737876613663647}
+      addedObject: {fileID: 8013526690297261968}
+    - targetCorrespondingSourceObject: {fileID: 2378445773442730016, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 565147268949036043}
   m_SourcePrefab: {fileID: 100100000, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
 --- !u!4 &138937559429385960 stripped
 Transform:
@@ -982,7 +1036,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2378445773442730016, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
   m_PrefabInstance: {fileID: 2985847917399007393}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5422737876613663647
+--- !u!114 &8013526690297261968
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -991,6 +1045,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 607479109840087169}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58110171326f4872acbf1725c3caba12, type: 3}
+  m_Script: {fileID: 11500000, guid: 400fbce984344766b340efa88840dd10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &565147268949036043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607479109840087169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7fada622a2b430388acb90bb7025c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projId: bullet_devil_hades
+  _projPrefab: prefabs/projectiles/bullet_devil_hades
+  _startCount: 4

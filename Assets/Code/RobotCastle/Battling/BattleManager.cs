@@ -66,6 +66,12 @@ namespace RobotCastle.Battling
         public EliteItemsPreset GetCurrentItemsPreset()
         {
             var itemsPresetInd = (_battle.roundIndex + 1) / 5;
+            var count = _levelData.eliteItemsByLevel.Count;
+            if (itemsPresetInd >= count)
+            {
+                CLog.Log($"ItemsPresetInd {itemsPresetInd} is >= presets count: {count}");
+                itemsPresetInd = count - 1;
+            }
             return _levelData.eliteItemsByLevel[itemsPresetInd];
         }
 
@@ -150,6 +156,7 @@ namespace RobotCastle.Battling
 
         public async Task SetRound(int roundInd, CancellationToken token)
         {
+            CLog.Log($"Levels total: {_levelData.levels.Count}. RoundInd: {roundInd} ");
             _battle.roundIndex = roundInd;
             _rewardCalculator.RewardPerStageCompletion = _levelData.levels[roundInd].reward;
             var enemiesManager = ServiceLocator.Get<EnemiesManager>();

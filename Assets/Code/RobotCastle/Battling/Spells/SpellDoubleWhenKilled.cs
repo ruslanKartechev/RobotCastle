@@ -9,6 +9,8 @@ namespace RobotCastle.Battling
         {
             _components = components;
             _components.killProcessor.AddModifier(this);
+            _components.stats.ManaMax.SetBaseAndCurrent(100);
+            _components.stats.ManaCurrent.SetBaseAndCurrent(0); 
             var count = spawnArgs.Count;
             _spawnArgs = new List<SpawnArgs>(count);
             for (var i = 0; i < count; i++)

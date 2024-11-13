@@ -340,7 +340,7 @@ namespace RobotCastle.Battling
         
         private void Update()
         {
-            if(_map == null)
+            if(!_didSetup || _map == null)
                 return;
             foreach (var agent in _map.ActiveAgents)
             {

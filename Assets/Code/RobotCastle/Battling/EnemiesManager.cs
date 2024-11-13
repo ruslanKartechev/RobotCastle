@@ -56,8 +56,11 @@ namespace RobotCastle.Battling
             var enemies = AllEnemies;
             var totalCount = enemies.Count;
             var additionalCount = Mathf.RoundToInt(totalCount * percent);
-            if(additionalCount == 0 && percent > 0)
-                additionalCount = 1;
+            CLog.Log($"Additional enemies count: {additionalCount}");
+            if (additionalCount == 0)
+                return;
+            // if(additionalCount == 0 && percent > 0)
+                // additionalCount = 1;
             CLog.Log($"[{nameof(EnemiesManager)}] Adding: {additionalCount} more enemies ({Mathf.RoundToInt(percent*100)}%)");
             var countLeft = additionalCount;
             var newEnemies = new List<IHeroController>(additionalCount);

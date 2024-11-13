@@ -83,6 +83,11 @@ namespace RobotCastle.InvasionMode
                 }
                 else
                 {
+                    foreach (var ep in preset.enemies)
+                    {
+                        ep.modifiers?.Clear();
+                    }
+                    
                     // CLog.Log($"Ok: {srcFile}");
                     content = JsonConvert.SerializeObject(preset, Formatting.Indented);
                     File.WriteAllText(srcFile, content);

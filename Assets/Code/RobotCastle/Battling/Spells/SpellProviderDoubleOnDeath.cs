@@ -20,7 +20,7 @@ namespace RobotCastle.Battling
             var spell = new SpellDoubleWhenKilled(_spawnArgs, components);
         }
 
-        public override float manaMax => 0;
+        public override float manaMax => 100;
         public override float manaStart => 0;
 
         public override string GetDescription(GameObject target)
