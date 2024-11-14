@@ -9,6 +9,9 @@ namespace RobotCastle.Battling
         Battle Battle { get; set; }
         HeroComponents Components { get; }
 
+        IBehaviourProvider DefaultBehaviourProvider { get; set; }
+        void SetDefaultBehaviour();
+        
         void InitHero(string id, int heroLevel, int mergeLevel, List<ModifierProvider> spells);
         void SetBehaviour(IHeroBehaviour behaviour);
         void StopCurrentBehaviour();

@@ -21,6 +21,17 @@ namespace RobotCastle.Battling
             if (!_isDamageable)
                 return default;
             var stats = _components.stats;
+            
+            var blocks = stats.MightyBlock.Get();
+            if (blocks >= 1)
+            {
+                blocks--;
+                stats.MightyBlock.Val = blocks;
+                
+                ServiceLocator.Get<IDamageDisplay>().ShowMightyBlock(_components.pointMightyBlock.position);
+                return new DamageReceivedArgs(0, false, true);
+            }
+            
             var resist = 0f;
             switch (args.type)
             {

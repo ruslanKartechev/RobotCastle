@@ -36,5 +36,4 @@ namespace RobotCastle.Battling
         public override float manaMax => _config.manaMax;
         public override float manaStart => _config.manaStart;
     }
-    
 }

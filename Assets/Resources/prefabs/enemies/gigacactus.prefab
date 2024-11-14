@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5315305692781525326
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5547365923378603515}
+  m_Layer: 0
+  m_Name: attack point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5547365923378603515
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5315305692781525326}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: -0, y: 1.13, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2108542841009685670}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 180}
 --- !u!1001 &1153926708644975100
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -278,15 +309,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4379659005204729158, guid: a92d309b1feb19b4b9cc9a1ecc0ee8cc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 4379659005204729158, guid: a92d309b1feb19b4b9cc9a1ecc0ee8cc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 4379659005204729158, guid: a92d309b1feb19b4b9cc9a1ecc0ee8cc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.6
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 4379659005204729158, guid: a92d309b1feb19b4b9cc9a1ecc0ee8cc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -634,7 +665,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 954937602263078234, guid: a92d309b1feb19b4b9cc9a1ecc0ee8cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5547365923378603515}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4002710532697217020, guid: a92d309b1feb19b4b9cc9a1ecc0ee8cc, type: 3}
       insertIndex: -1
@@ -643,6 +677,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3467166532834268270}
   m_SourcePrefab: {fileID: 100100000, guid: a92d309b1feb19b4b9cc9a1ecc0ee8cc, type: 3}
+--- !u!4 &2108542841009685670 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 954937602263078234, guid: a92d309b1feb19b4b9cc9a1ecc0ee8cc, type: 3}
+  m_PrefabInstance: {fileID: 1153926708644975100}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2850759047756334592 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4002710532697217020, guid: a92d309b1feb19b4b9cc9a1ecc0ee8cc, type: 3}
@@ -782,6 +821,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8801179671739942592}
     - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _spellPoint
+      value: 
+      objectReference: {fileID: 5547365923378603515}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       propertyPath: _stunnedFxHeight
       value: 2
       objectReference: {fileID: 0}
@@ -789,6 +832,14 @@ PrefabInstance:
       propertyPath: _heroAnimationEvent
       value: 
       objectReference: {fileID: 1233630415757378931}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _projectileSpawnPoint
+      value: 
+      objectReference: {fileID: 5547365923378603515}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _projectileSpawnPoint2
+      value: 
+      objectReference: {fileID: 5547365923378603515}
     - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       propertyPath: attackSounds.Array.size
       value: 1

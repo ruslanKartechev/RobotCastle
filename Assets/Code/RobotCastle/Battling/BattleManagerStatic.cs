@@ -117,7 +117,7 @@ namespace RobotCastle.Battling
             
             foreach (var otherHero in enemies)
             {
-                if (otherHero.IsDead)
+                if (otherHero.IsDead || otherHero.Components.state.isOutOfMap)
                     continue;
                 var enemyPos = otherHero.Components.state.currentCell;
                 var d2 = (enemyPos - myPos).sqrMagnitude;

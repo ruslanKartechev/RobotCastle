@@ -33,15 +33,14 @@ namespace RobotCastle.Battling
         
         public void Stop()
         {
-            if (_isActive)
-            {
-                _isActive = false;
+            if (!_isActive) return;
+            _isActive = false;
+            if(_fx != null)
                 _fx.gameObject.SetActive(false);
-                if (_isCasting)
-                {
-                    _components.animationEventReceiver.OnAttackEvent -= OnAnimEvent;
-                    _isCasting = false;
-                }
+            if (_isCasting)
+            {
+                _components.animationEventReceiver.OnAttackEvent -= OnAnimEvent;
+                _isCasting = false;
             }
         }
 
@@ -68,7 +67,9 @@ namespace RobotCastle.Battling
         
         private void AddShield()
         {
-            _modShield.AddToHero(_components.stats.SpellPower.Get());
+            var lvl = (int)HeroesManager.GetSpellTier(_components.stats.MergeTier);
+            _modShield.AddToHero(_config.physResist[lvl]);
+            
             _components.heroUI.ShieldBar.TrackUntilZero(_modShield);
             _fx = GetFxView();
             _fx.ShowUntilOff(_components.transform);

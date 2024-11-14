@@ -96,7 +96,7 @@ namespace RobotCastle.Battling
                         var d2 = (en.Components.transform.position - worldPoint).sqrMagnitude;
                         if (d2 < cellRadius)
                         {
-                            en.Components.damageReceiver.TakeDamage(damageArgs);
+                            damageSource.Damage(en.Components.damageReceiver, damageArgs);
                             alreadyDamaged.Add(en.Components.damageReceiver);
                         }
                     }

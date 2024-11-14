@@ -111,7 +111,5 @@ namespace RobotCastle.Battling
             return _fxView;
         }
 
-
-
     }
 }

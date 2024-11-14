@@ -93,7 +93,7 @@ namespace RobotCastle.Battling
                 case "scorpling":
                     return new AttackRangeSingle();
                 case "queen_worm":
-                    return new AttackRangeRectangle(1,1);
+                    return new AttackRangeRectangle(2,2);
                 case "sprout":
                     return new AttackRangeRectangle(3,6);
                 case "mole_rat":

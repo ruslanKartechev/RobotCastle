@@ -49,7 +49,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isPooled: 1
   _hitParticles: {fileID: 5189287899455884751}
-  _trailParticles: {fileID: 5022094708655057677}
   _disableOnHitGo:
   - {fileID: 5022094708641347649}
   - {fileID: 8360864671452878568}
@@ -165,11 +164,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 119216, guid: e85f4a610ef9e5b4aa9cedce76136489, type: 3}
   m_PrefabInstance: {fileID: 5022094708641262065}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &5022094708655057677 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 19825404, guid: e85f4a610ef9e5b4aa9cedce76136489, type: 3}
-  m_PrefabInstance: {fileID: 5022094708641262065}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5189287899474073049
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -184,15 +178,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 443864, guid: 658fc6655c1c78e45a80243a241f1b1e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 443864, guid: 658fc6655c1c78e45a80243a241f1b1e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 443864, guid: 658fc6655c1c78e45a80243a241f1b1e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 443864, guid: 658fc6655c1c78e45a80243a241f1b1e, type: 3}
       propertyPath: m_LocalPosition.x

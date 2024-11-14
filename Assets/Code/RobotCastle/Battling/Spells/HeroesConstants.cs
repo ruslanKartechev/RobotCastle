@@ -39,7 +39,6 @@ namespace RobotCastle.Battling
         public const string SpellFXPrefab_RadianceOfLife = "prefabs/spells/radiance_of_life";
         public const string SpellFXPrefab_IronWill = "prefabs/spells/iron_will";
         public const string SpellFXPrefab_Smite = "prefabs/spells/smite";
-        public const string SpellFXPrefab_Avatar = "prefabs/spells/avatar";
         public const string SpellFXPrefab_RapidArrow = "prefabs/spells/rapid_arrows";
         public const string SpellFXPrefab_PowerOfRock = "prefabs/spells/power_of_rock";
         public const string SpellFXPrefab_Backstab = "prefabs/spells/backstab";
@@ -50,6 +49,7 @@ namespace RobotCastle.Battling
         
         public const string SpellFXPrefab_Earthquake = "prefabs/spells/earthquake";
         public const string SpellFXPrefab_Bombard = "prefabs/spells/bombard";
+        public const string SpellFXPrefab_Cheapshot = "prefabs/spells/cheapshot";
 
 
     }

@@ -6,7 +6,8 @@ using UnityEngine;
 namespace RobotCastle.Battling
 {
     [System.Serializable]
-    public class SpellHeadshot : Spell, IFullManaListener, IStatDecorator, IProjectileFactory, IHeroProcess
+    public class SpellHeadshot : Spell, IFullManaListener, 
+        IProjectileFactory, IHeroProcess, IAttackHitAction, IAttackAction
     {
         public SpellHeadshot(HeroComponents components, SpellConfigHeadshot config)
         {
@@ -17,7 +18,7 @@ namespace RobotCastle.Battling
             _components.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
             _components.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
             _components.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
-            _components.stats.SpellPower.AddPermanentDecorator(this);
+            // _components.stats.SpellPower.AddPermanentDecorator(this);
         }
         
         public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_components.stats.MergeTier)];
@@ -27,7 +28,13 @@ namespace RobotCastle.Battling
         
         public void OnFullMana(GameObject heroGo)
         {
-            Execute();
+            if (_isActive)
+                return;
+            _isActive = true;
+            _components.processes.Add(this);
+            _token?.Cancel();
+            _token = new CancellationTokenSource();
+            Working(_token.Token);
         }
 
         public IProjectile GetProjectile()
@@ -45,11 +52,13 @@ namespace RobotCastle.Battling
                 _isActive = false;
                 _manaAdder.CanAdd = true;
                 _components.attackManager.OnAttackStep -= OnAttack;
-                var atk = ((HeroRangedAttackManager)_components.attackManager);
-                if (atk && atk.ProjectileFactory == this)
-                    atk.ProjectileFactory = _prevFactory;
+                var atk = _components.attackManager;
+                if (atk != null)
+                {
+                    atk.HitAction = _prevHitAction;
+                    atk.AttackAction = _prevAttackAction;
+                }
                 _token.Cancel();
-
             }
         }
         
@@ -58,27 +67,37 @@ namespace RobotCastle.Battling
         private ConditionedManaAdder _manaAdder;
         private CancellationTokenSource _token;
         private bool _isActive;
-        private IProjectileFactory _prevFactory;
+        private bool _isWaiting;
+        private IAttackHitAction _prevHitAction;
+        private IAttackAction _prevAttackAction;
+        
 
-        private void Execute()
+        private async void Working(CancellationToken token)
         {
-            if (_isActive)
-                return;
-            _isActive = true;
-            _components.processes.Add(this);
             CLog.LogWhite($"[{_components.gameObject.name}] Spell headshot executed");
             var atk = ((HeroRangedAttackManager)_components.attackManager);
             if (atk == null)
                 throw new System.Exception($"{nameof(SpellHeadshot)}  cannot cast AttackManager to HeroRangedAttackManager");
-            atk.OnHit -= OnHit;
-            atk.OnHit += OnHit;
-            atk.OnAttackStep += OnAttack;
+            
+            _prevHitAction = atk.HitAction;
+            _prevAttackAction = atk.AttackAction;
+
+            atk.HitAction = this;
+            atk.AttackAction = this;
+            
+            _isWaiting = true;
             _manaAdder.CanAdd = false;
-            _damageMod.addedMagicDamage = _components.stats.SpellPower.Get();
-            _damageMod.addedPhysDamage = _config.physDamage[(int)HeroesManager.GetSpellTier(_components.stats.MergeTier)];
-            _components.damageSource.AddModifier(_damageMod);
-            _prevFactory = atk.ProjectileFactory;
-            atk.ProjectileFactory = this;
+            while (!token.IsCancellationRequested && _isWaiting)
+                await Task.Yield();
+            if (token.IsCancellationRequested) return;
+            
+            atk.HitAction = _prevHitAction;
+            atk.AttackAction = _prevAttackAction;
+            _components.damageSource.RemoveModifier(_damageMod);
+            _components.stats.ManaResetAfterFull.Reset(_components);
+            _isActive = false;
+            _manaAdder.CanAdd = true;
+            _components.processes.Remove(this);
         }
 
         private void OnAttack()
@@ -88,27 +107,38 @@ namespace RobotCastle.Battling
                 _components.spellSounds[0].Play();
         }
 
-        private void OnHit()
+        public void Hit(object target)
         {
-            _token = new CancellationTokenSource();
-            DelayedEnd(_token.Token);
-        }
-
-        private async void DelayedEnd(CancellationToken token)
-        {
-            await Task.Yield();            
-            await Task.Yield();
-            if (token.IsCancellationRequested || !_isActive) return;
-            var atk = ((HeroRangedAttackManager)_components.attackManager);
-            atk.OnHit -= OnHit;
+            _damageMod.addedMagicDamage = _components.stats.SpellPower.Get();
+            _damageMod.addedPhysDamage = _config.physDamage[(int)HeroesManager.GetSpellTier(_components.stats.MergeTier)];
+            _components.damageSource.AddModifier(_damageMod);
+            
+            var dm = (IDamageReceiver)target;
+            if (dm != null)
+            {
+                _components.damageSource.DamagePhys(dm);
+                _components.damageSource.DamageSpell(dm);
+            }
+            
             _components.damageSource.RemoveModifier(_damageMod);
-            _components.stats.ManaResetAfterFull.Reset(_components);
-            _isActive = false;
-            _manaAdder.CanAdd = true;
-            atk.ProjectileFactory = _prevFactory;
-            _components.processes.Remove(this);
+            _isWaiting = false;
         }
 
-    
+        public void Attack(IDamageReceiver target, int animationIndex)
+        {
+            if(_components.shootParticles != null)
+                _components.shootParticles.Play();
+
+            var pp = animationIndex == 0 ? _components.projectileSpawnPoint : _components.projectileSpawnPoint2;
+            
+            GetProjectile().LaunchProjectile(pp, target.GetGameObject().transform, 
+                _components.stats.ProjectileSpeed, Hit, target);
+
+            if (_components.attackSounds.Count > 0)
+            {
+                var s = _components.attackSounds.Random();
+                s.Play();
+            }
+        }
     }
 }

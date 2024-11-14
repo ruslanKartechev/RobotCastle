@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -13,18 +11,31 @@ namespace RobotCastle.Battling
         public IDamageReceiver CurrentTarget => _target;
         public IDamageReceiver LastTarget => _target;
 
-        private IDamageReceiver _target;
-        private bool _activated;
-
+        public IAttackAction AttackAction
+        {
+            get => _attackAction;
+            set => _attackAction = value;
+        }        
+        
+        public IAttackHitAction HitAction
+        {
+            get => _hitAction;
+            set => _hitAction = value;
+        }       
+        
         public void BeginAttack(IDamageReceiver target)
         {
+            if (HitAction == null)
+                HitAction = new MeleeHitAction(Hero.Components);
+            if (AttackAction == null)
+                AttackAction = new MeleeAttackAction(Hero.Components);
+            
             _target = target;
             if (!_activated)
             {
                 _activated = true;
                 Hero.Components.animationEventReceiver.OnAttackEvent -= OnAttack;
                 Hero.Components.animationEventReceiver.OnAttackEvent += OnAttack;
-        
             }
             Hero.Components.state.isAttacking = true;
             Hero.Components.animator.SetBool(HeroesConstants.Anim_Attack, true);
@@ -40,20 +51,25 @@ namespace RobotCastle.Battling
             Hero.Components.state.isAttacking = false;
         }
 
+        public void SetDefaultActions()
+        {
+            HitAction = new MeleeHitAction(Hero.Components);
+            AttackAction = new MeleeAttackAction(Hero.Components);
+        }
+
+        private IDamageReceiver _target;
+        private bool _activated;
+        private IAttackAction _attackAction;
+        private IAttackHitAction _hitAction;
+
         private void OnAttack()
         {
             if (!_activated)
                 return;
-            Hero.Components.damageSource.DamagePhys(_target);
+            AttackAction.Attack(_target, 0);
+            HitAction.Hit(_target);
             OnAttackStep?.Invoke();
-            Hero.Components.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
-            if (Hero.Components.attackSounds.Count > 0)
-            {
-                var s = Hero.Components.attackSounds.Random();
-                s.Play();
-            }
         }
 
-      
     }
 }

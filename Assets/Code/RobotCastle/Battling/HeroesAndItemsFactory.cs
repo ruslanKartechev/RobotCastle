@@ -78,7 +78,10 @@ namespace RobotCastle.Battling
                 case MergeConstants.TypeWeapons:
                     var mods = ServiceLocator.Get<ModifiersDataBase>().GetWeaponsWithModifiers(args.coreData);
                     var modsContainer = spawnedItem.Transform.gameObject.GetComponent<ModifiersContainer>();
-                    modsContainer.OverrideModifiers(mods.modifierIds);
+                    if(modsContainer == null)
+                        CLog.Log("modsContainer == null");
+                    else
+                        modsContainer.OverrideModifiers(mods.modifierIds);
                     break;
             }
         }

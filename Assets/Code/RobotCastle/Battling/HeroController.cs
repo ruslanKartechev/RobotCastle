@@ -14,7 +14,9 @@ namespace RobotCastle.Battling
         
         public int TeamNum { get; set; }
         public HeroComponents Components => _components;
-   
+
+        public IBehaviourProvider DefaultBehaviourProvider { get; set; } = new DefaultBehaviourProvider();
+
         public void InitHero(string id, int heroLevel, int mergeLevel, List<ModifierProvider> spells)
         {
             _components.GUID = _components.StatCollectionId = System.Guid.NewGuid().ToString();
@@ -78,19 +80,30 @@ namespace RobotCastle.Battling
             _currentBehaviour = behaviour;
             _currentBehaviour.Activate(this, OnBehaviourEnd);
         }
-        
-             
+
+        public void SetDefaultBehaviour()
+        {
+            if (DefaultBehaviourProvider != null)
+            {
+                var b = DefaultBehaviourProvider.GetBehaviour(this);
+                if (b != null)
+                {
+                    SetBehaviour(b);
+                    return;
+                }
+            }
+            SetBehaviour(new HeroAttackEnemyBehaviour());
+        }
+
         [SerializeField] private HeroComponents _components;
         private HeroStatsManager _stats;
         private IHeroBehaviour _currentBehaviour;
         private bool _didSetMap;
 
-
         private void OnBehaviourEnd(IHeroBehaviour behaviour)
         {
             if (IsDead) return;
-            _currentBehaviour = new HeroAttackEnemyBehaviour();
-            _currentBehaviour.Activate(this, OnBehaviourEnd);
+            SetDefaultBehaviour();
         }
 
         private void OnDisable()

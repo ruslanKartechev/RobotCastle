@@ -14,18 +14,11 @@ namespace RobotCastle.Battling
 {
     public static class HeroesManager
     {
-    
         public static void UpdateWeaponModifiers(GameObject hero)
         {
             var components = hero.gameObject.GetComponent<HeroComponents>();
             components.stats.ClearDecorators();
             hero.GetComponent<IHeroWeaponsContainer>().AddAllModifiersToHero(components);
-        }
-        public static void UpdateWeaponModifiers(GameObject hero, IHeroWeaponsContainer weaponsContainer)
-        {
-            var components = hero.gameObject.GetComponent<HeroComponents>();
-            components.stats.ClearDecorators();
-            weaponsContainer.AddAllModifiersToHero(components);
         }
         
         public static string Red(int val) => $"<color=#BB0000>{val}</color>";
@@ -114,11 +107,8 @@ namespace RobotCastle.Battling
         /// <summary>
         /// Always less than 1
         /// </summary>
-        public static float GetDef(float def)
-        {
-            return (def) / (900 + def);
-        }
-        
+        public static float GetDef(float def) => (def) / (900 + def);
+
         public static ESpellTier GetSpellTier(int mergeLevel)
         {
             for (var i = HeroesConstants.SpellTiersByMergeLevel.Count - 1; i >= 0; i--)
@@ -151,6 +141,7 @@ namespace RobotCastle.Battling
             var cc = view.gameObject.GetComponent<IHeroController>();
             return cc.Battle.GetTeam(cc.TeamNum).enemyUnits;
         }
+     
 
         public static List<IHeroController> GetHeroesAllies(HeroComponents view)
         {
@@ -184,6 +175,8 @@ namespace RobotCastle.Battling
                 var cellWorldPos = map.GetWorldFromCell(cell);
                 foreach (var hh in allHeroes)
                 {
+                    if (hh.IsDead || hh.Components.state.isOutOfMap)
+                        continue;
                     var d2 = (cellWorldPos - hh.Components.transform.position).sqrMagnitude;
                     if (d2 <= rad2)
                         result.Add(hh);   
@@ -208,6 +201,8 @@ namespace RobotCastle.Battling
                 var cellWorldPos = map.GetWorldFromCell(cell);
                 foreach (var hh in allHeroes)
                 {
+                    if (hh.IsDead || hh.Components.state.isOutOfMap)
+                        continue;
                     var d2 = (cellWorldPos - hh.Components.transform.position).sqrMagnitude;
                     if (d2 <= rad2)
                         result.Add(hh);   
@@ -231,6 +226,8 @@ namespace RobotCastle.Battling
                 var cellWorldPos = map.GetWorldFromCell(cell);
                 foreach (var hh in allHeroes)
                 {
+                    if (hh.IsDead || hh.Components.state.isOutOfMap)
+                        continue;
                     var d2 = (cellWorldPos - hh.Components.transform.position).sqrMagnitude;
                     if (d2 <= rad2)
                         result.Add(hh);   
@@ -254,6 +251,8 @@ namespace RobotCastle.Battling
                 var heroPos = map.GetWorldFromCell(cell);
                 foreach (var hh in allHeroes)
                 {
+                    if (hh.IsDead || hh.Components.state.isOutOfMap)
+                        continue;
                     var d2 = (heroPos - hh.Components.transform.position).sqrMagnitude;
                     if (d2 <= rad2)
                         return true;
@@ -388,8 +387,9 @@ namespace RobotCastle.Battling
                     }
                 }
             }
-                        
             return (false, result);
         }
+        
+        
     }
 }

@@ -112,12 +112,12 @@ namespace RobotCastle.Battling
             if (_activatePlayers)
             {
                 foreach (var hero in _battle.playersAlive)
-                    hero.SetBehaviour(new HeroAttackEnemyBehaviour());
+                    hero.SetDefaultBehaviour();
             }
             if (_activateEnemies)
             {
                 foreach (var hero in _battle.enemiesAlive)
-                    hero.SetBehaviour(new HeroAttackEnemyBehaviour());
+                    hero.SetDefaultBehaviour();
             }
             _battle.State = BattleState.Going;
             startProcessor?.OnBattleStarted(_battle);

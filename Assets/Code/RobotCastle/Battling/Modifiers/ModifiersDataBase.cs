@@ -29,6 +29,7 @@ namespace RobotCastle.Battling
                 _otherModifiers = _otherModifiers.Distinct().ToList();
                 if (_spells.Count != count1 || _otherModifiers.Count != count2)
                 {
+                    Debug.Log("Removed duplicates");
                     UnityEditor.EditorUtility.SetDirty(this);
                 }
             }
@@ -64,10 +65,6 @@ namespace RobotCastle.Battling
             if (_map.ContainsKey(id) == false)
             {
                 CLog.LogRed($"NO {id} stored. Stored count: {_map.Count}");
-                foreach (var (a,b) in _map)
-                {
-                    CLog.Log($"{a}");
-                }
             }
             return _map[id];
         }
@@ -75,6 +72,8 @@ namespace RobotCastle.Battling
         public List<string> GetModifiersIdsForWeapon(string id, int lvl)
         {
             id += $"_lvl_{lvl+1}";
+            if (!_config.weaponsModifiersMap.ContainsKey(id))
+                return new List<string>();
             var config = _config.weaponsModifiersMap[id];
             var modifiers = new List<string>(3);
             string modId;

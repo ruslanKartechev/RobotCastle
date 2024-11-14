@@ -147,7 +147,7 @@ namespace RobotCastle.Battling
             var enemies = _hero.Battle.GetTeam(_hero.TeamNum).enemyUnits;
             foreach (var tempEnemy in enemies)
             {
-                if (tempEnemy.IsDead)
+                if (tempEnemy.IsDead || tempEnemy.Components.state.isOutOfMap)
                     continue;
                 var inRange = _rangeCoverCheck.IsHeroWithinRange(tempEnemy);
                 if (inRange)
@@ -173,7 +173,7 @@ namespace RobotCastle.Battling
             var startEnemyCell = targetEnemy.Components.state.currentCell;
             while (!token.IsCancellationRequested)
             {
-                if (targetEnemy.IsDead)
+                if (targetEnemy.IsDead || targetEnemy.Components.state.isOutOfMap)
                 {
                     // enemy.Components.attackManager.Stop();
                     DecideNextStep(_mainToken.Token);
