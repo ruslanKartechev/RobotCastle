@@ -7,6 +7,7 @@ using SleepDev;
 
 namespace RobotCastle.Battling.SmeltingOffer
 {
+    
     public class SmeltingOfferManager : IModifiable<ISmeltModifier>
     {
         public SmeltingOfferManager(SmeltingConfig config,

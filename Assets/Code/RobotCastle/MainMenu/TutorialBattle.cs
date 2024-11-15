@@ -215,6 +215,11 @@ namespace RobotCastle.MainMenu
                 {
                     _it1 = it1;
                     _it2 = it2;
+                    if (it2.itemData.pivotY >= 2)
+                    {
+                        _it1 = it2;
+                        _it2 = it1;
+                    }
                     _didMerge = true;
                 }
                 yield return null;

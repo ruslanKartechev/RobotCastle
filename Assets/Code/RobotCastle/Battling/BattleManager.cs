@@ -171,7 +171,7 @@ namespace RobotCastle.Battling
             _battle.enemiesAlive.Clear();
 
             var roundType = _levelData.levels[roundInd].roundType;
-            CLog.Log($"Round: {roundInd + 1}, type: {roundType.ToString()}");
+            // CLog.Log($"Round: {roundInd + 1}, type: {roundType.ToString()}");
             
             var preset = EnemiesFactory.GetPackPreset(_levelData.levels[roundInd].enemyPreset);
             for (var i = 0; i < _roundModifiers.Count; i++)

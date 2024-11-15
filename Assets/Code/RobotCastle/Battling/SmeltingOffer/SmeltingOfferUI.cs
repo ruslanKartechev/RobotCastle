@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.MainMenu;
 using RobotCastle.UI;
 using SleepDev;
 using SleepDev.Inventory;
@@ -13,6 +14,11 @@ namespace RobotCastle.Battling.SmeltingOffer
 {
     public class SmeltingOfferUI : MonoBehaviour, IScreenUI
     {
+        public List<SmeltingItemUI> ItemsUI => _itemsUI;
+        
+        public MyButton ConfirmButton => _confirmButton;
+        public InventoryController Inventory => _inventory;
+
         [SerializeField] private TextMeshProUGUI _txtDescription;
         [SerializeField] private TextMeshProUGUI _txtItemName;
         [SerializeField] private TextMeshProUGUI _txtItemLevel;
@@ -23,9 +29,9 @@ namespace RobotCastle.Battling.SmeltingOffer
         [SerializeField] private TextMeshProUGUI _rerollsText;
         [SerializeField] private MyButton _rerollsBtn;
         [SerializeField] private BlackoutFadeScreen _fadeScreen;
-
         private List<CoreItemData> _options;
         private SmeltingOfferManager _manager;
+        private TutorialSmelting _smelting;
 
         public void ShowOffer(List<CoreItemData> options, SmeltingOfferManager manager)
         {
@@ -50,6 +56,30 @@ namespace RobotCastle.Battling.SmeltingOffer
             _inventory.OnNothingPicked -= OnNothingPicked;
             _inventory.OnNewPicked += OnItemPicked;
             _inventory.OnNothingPicked += OnNothingPicked;
+
+            TryTutorial();
+        }
+
+        private void TryTutorial()
+        {
+            Debug.Log("======= TryTutorial");
+            var save = DataHelpers.GetPlayerData().tutorials;
+            Debug.Log($"Save data: {save.merge}");
+            if (!save.merge)
+            {
+                Debug.Log($"SHOWING TUTOR");
+                var prefab = Resources.Load<TutorialSmelting>("prefabs/tutorials/ui_tutor_smelting");
+                var instance = Instantiate(prefab, transform);
+                instance.SetSmeltingUI(this);
+                instance.Begin(() => { save.merge = true;});                
+            }
+        }
+
+        private void OnDisable()
+        {
+            _inventory.OnNewPicked -= OnItemPicked;
+            _inventory.OnNothingPicked -= OnNothingPicked;
+            _smelting?.Stop();
         }
 
         private void ShowOptions(List<CoreItemData> options)

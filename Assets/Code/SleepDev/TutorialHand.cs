@@ -109,7 +109,8 @@ namespace SleepDev
         
         public void MoveBetween(Vector3 pos1, Vector3 pos2, float timeTo2, float timeTo1, float delay)
         {
-            // Debug.Log($"moving between {pos1} and {pos2}, time {time}");
+            if(_moving != null)
+                StopCoroutine(_moving);
             StopMoving();
             movable.position = pos1;
             movable.localScale = Vector3.one;
@@ -139,7 +140,7 @@ namespace SleepDev
 
         private IEnumerator Tracking(Transform point, Vector3 offset, float moveTime)
         {
-            var p1 = transform.position;
+            var p1 = movable.position;
             var elapsed = 0f;
             while (elapsed < moveTime)
             {

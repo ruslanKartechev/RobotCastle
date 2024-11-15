@@ -59,7 +59,7 @@ namespace RobotCastle.MainMenu
             if (save.enterPlay == false)
             {
                 var canvas = ServiceLocator.Get<IUIManager>().ParentCanvas;
-                var prefab = Resources.Load<TutorialEnterBattle>("prefabs/tutorials/ui_tutor_enter_play");
+                var prefab = Resources.Load<TutorialBase>("prefabs/tutorials/ui_tutor_enter_play");
                 var instance = Instantiate(prefab, canvas.transform);
                 instance.Begin(() =>
                 {

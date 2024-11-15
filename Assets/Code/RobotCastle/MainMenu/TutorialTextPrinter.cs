@@ -57,16 +57,23 @@ namespace RobotCastle.MainMenu
 
         private void Start()
         {
-            _skipBtn.AddMainCallback(Skip);
+            _skipBtn.AddMainCallback(OnBtnSkip);
+            _skipBtn.SetInteractable(true);
         }
 
-        private void Skip()
+        private void OnBtnSkip()
         {
             CLog.LogRed("=== Btn skip text");
+            Next();            
+        }
+        
+        private void Next()
+        {
             if(!_isWorking) return;
             _index++;
             if (_index >= _messages.Count)
             {
+                CLog.LogRed("END ++++++");
                 _textFiller.StopFilling();
                 _textFiller.SetText(_messages[^1]);
                 _isWorking = false;
@@ -83,7 +90,7 @@ namespace RobotCastle.MainMenu
             else
                 _currentFullMsg = _messages[_index];
             _textFiller.StopFilling();
-            _textFiller.AnimateText(_currentFullMsg, Skip);
+            _textFiller.AnimateText(_currentFullMsg, Next);
         }
 
     }
