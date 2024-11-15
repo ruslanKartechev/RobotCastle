@@ -87,8 +87,11 @@ namespace RobotCastle.UI
         private void MainCallback()
         {
             if (!_doRespond) return;
-            foreach (var callback in _callbacks)
+            for (var i = _callbacks.Count-1; i >= 0; i--)
+            {
+                var callback = _callbacks[i];
                 callback.Invoke();
+            }
         }
 
         private void FXCallback()

@@ -16,14 +16,11 @@ namespace RobotCastle.UI
         public bool IsCorruption
         {
             get => _isCorruption;
-            set
-            {
-                _isCorruption = value;
-                _selectionData.corruption = value;
-            }
+            set => _isCorruption = value;
         }
         
         public Action ReturnCallback { get; set; }
+        public MyButton PlayBtn => _playBtn;
         
         [SerializeField] private bool _isCorruption;
         [SerializeField] private Canvas _canvas;
@@ -72,7 +69,7 @@ namespace RobotCastle.UI
                 _selectionData = new ChapterSelectionData();
                 playerData.chapterSelectionData = _selectionData;
             }
-
+            _selectionData.corruption = IsCorruption;
             for (var i = 0; i < _inventory.AllItems.Count; i++)
             {
                 var it = _inventory.AllItems[i];
@@ -146,6 +143,19 @@ namespace RobotCastle.UI
                 return;
             _selectionData.chapterIndex = prevIndex;
             UpdateChapter(1);
+        }
+
+        public void DisableInputButPlayButton()
+        {
+            _returnBtn.SetInteractable(false);
+            _nextChapterBtn.SetInteractable(false);
+            _prevChapterBtn.SetInteractable(false);
+            
+        }
+
+        public void HideAdditionalReward()
+        {
+            _additionalReward.Off();
         }
         
         private void OnNewTierPicked(Item item)

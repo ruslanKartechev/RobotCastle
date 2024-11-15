@@ -25,13 +25,7 @@ namespace RobotCastle.Merging
             {
                 var coords = _mergeProcessor.GetCellsForPotentialMerge(allItems, item);
                 if (coords != null)
-                {
                     cellsForMerge.AddRange(coords);
-                    // var msg = $"Item at: {item.core.ItemDataStr()}\n";
-                    // foreach (var cc in coords)
-                    //     msg += $"{cc}, ";
-                    // CLog.LogWhite(msg);
-                }
             }
             if (cellsForMerge.Count == 0)
             {

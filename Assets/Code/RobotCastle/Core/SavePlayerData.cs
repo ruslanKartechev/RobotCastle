@@ -25,6 +25,7 @@ namespace RobotCastle.Core
         public SaveInvasionProgression progression;
         public ChapterSelectionData chapterSelectionData;
         public AltarsSave altars;
+        public TutorialSave tutorials;
         
         public SavePlayerData(){}
 
@@ -47,6 +48,7 @@ namespace RobotCastle.Core
             chapterSelectionData = new ChapterSelectionData(other.chapterSelectionData);
             altars = new AltarsSave(other.altars);
             relics = new RelicsInventorySave(other.relics);
+            tutorials = new TutorialSave(other.tutorials);
         }
     }
 }

@@ -28,6 +28,11 @@ namespace RobotCastle.Battling
             get => _moveTime;
             set => _moveTime = value;
         }
+
+        /// <summary>
+        /// 0 - merge, 1 - battle
+        /// </summary>
+        public int PositionIndex => _positionIndex;
         
         [SerializeField] private Camera _camera;
         [SerializeField] private float _moveTime;
@@ -43,6 +48,7 @@ namespace RobotCastle.Battling
         [SerializeField] private AnimationCurve _moveBackAnimationCurve;
         private CancellationTokenSource _tokenSource;
         private int _slideBlockers;
+        private int _positionIndex;
     
         public void AllowPlayerInput(bool allowed)
         {
@@ -77,11 +83,13 @@ namespace RobotCastle.Battling
 
         public void SetMergePoint()
         {
+            _positionIndex = 0;
             transform.position = _mergePoint.position;
         }
 
         public void SetBattlePoint()
         {
+            _positionIndex= 1;
             transform.position = _battlePoint.position;
         }
 
@@ -91,20 +99,6 @@ namespace RobotCastle.Battling
             _tokenSource = new CancellationTokenSource();
         }
                 
-        public async Task MoveToBattlePoint()
-        {
-            transform.DOKill();
-            transform.DOMove(_battlePoint.position, _moveTime).SetEase(Ease.Linear);
-            await Task.Delay(_moveTime.SecToMs());
-        }
-
-        public async Task MoveToMergePoint()
-        {
-            transform.DOKill();
-            transform.DOMove(_mergePoint.position, _moveTime).SetEase(Ease.Linear);
-            await Task.Delay(_moveTime.SecToMs());
-        }
-
         public void MoveAndSizeToBattlePoint()
         {
             Stop();
@@ -119,23 +113,27 @@ namespace RobotCastle.Battling
 
         public async Task MovingAndScalingToMerge(CancellationToken token)
         {
+            _positionIndex = 0;
             await Task.WhenAll(MovingCamera(transform.position, _mergePoint.position, _moveTime, _moveBackAnimationCurve, token),
                 ChangeCameraSize(_camera.orthographicSize, _cameraSizeMerge, _moveTime, token));
         }
         
         public async Task MovingAndScalingToBattle(CancellationToken token)
         {
+            _positionIndex = 1;
             await Task.WhenAll(MovingCamera(transform.position, _battlePoint.position, _moveTime, _moveBackAnimationCurve, token),
                 ChangeCameraSize(_camera.orthographicSize, _cameraSizeNormal, _moveTime, token));
         }
         
         public async Task PlayStartAnimation(CancellationToken token)
         {
+            _positionIndex = 1;
             await AnimateCameraSize(token);
             if (token.IsCancellationRequested) return;
             await HeroesManager.WaitGameTime(_moveBackDelay, token);
             if (token.IsCancellationRequested) return;
             
+            _positionIndex = 0;
             var t1 = MovingCamera(_battlePoint.position, _mergePoint.position, _moveBackTime, _moveBackAnimationCurve, token );
             var t2 = ChangeCameraSize(_camera.orthographicSize, _cameraSizeMerge, _moveTime, token);
             await Task.WhenAll(t1, t2);

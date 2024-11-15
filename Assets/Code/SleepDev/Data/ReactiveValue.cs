@@ -34,8 +34,6 @@
 
         public ContextUpdateDelegate<T> OnUpdatedWithContext;
 
-        public event UpdateDelegate<T> On;
-
         public void SetValue(T newVal)
         {
             var prevVal = val;

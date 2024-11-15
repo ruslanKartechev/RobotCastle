@@ -8,7 +8,8 @@ namespace RobotCastle.UI
         /// Will add new callback, if it is not already in the list
         /// </summary>
         void AddMainCallback(Action callback);
-        
+
+        void RemoveMainCallback(Action callback);
         /// <summary>
         /// Will clean callbacks list and then add the new one
         /// </summary>

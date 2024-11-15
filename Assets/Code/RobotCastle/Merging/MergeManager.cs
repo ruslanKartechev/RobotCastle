@@ -11,6 +11,7 @@ namespace RobotCastle.Merging
         public IGridView GridView => _gridView;
         public IGridSectionsController SectionsController => _sectionsController;
         public IMergeProcessor MergeProcessor => _mergeProcessor;
+        public MergeController MergeController => _mergeController;
         public PlayerMergeItemsContainer Container => _itemsContainer;
             
         [SerializeField] private bool _autoInit;

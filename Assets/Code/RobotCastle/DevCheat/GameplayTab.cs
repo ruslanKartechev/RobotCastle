@@ -25,7 +25,9 @@ namespace RobotCastle.DevCheat
             _btnWin.AddMainCallback(Win);
             _btnFail.AddMainCallback(Fail);
             _btnReturn.AddMainCallback(Return);
+            _btnAddMoney.AddMainCallback(AddMoney);
             gameObject.SetActive(true);
+            _addMoneyText.text = $"+{_addedMoney}";
             
             _textLevel.text = (_lvl + 1).ToString();     
             var id = _heroOptions[_heroInd];
@@ -33,6 +35,13 @@ namespace RobotCastle.DevCheat
             var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             _isSceneCorrect = scene == GlobalConfig.SceneBattle;
             CLog.Log($"Scene: {scene}. Correct? {_isSceneCorrect}");
+            
+            
+        }
+
+        private void AddMoney()
+        {
+            ServiceLocator.Get<GameMoney>().AddMoney(_addedMoney);
         }
 
         public override void Close()
@@ -53,6 +62,10 @@ namespace RobotCastle.DevCheat
         [SerializeField] private MyButton _btnFail;
         [SerializeField] private MyButton _btnWin;
         [SerializeField] private MyButton _btnReturn;
+        [Space(10)]
+        [SerializeField] private MyButton _btnAddMoney;
+        [SerializeField] private TextMeshProUGUI _addMoneyText;
+        [SerializeField] private int _addedMoney;
         private Action _closedCallback;
         private bool _isSceneCorrect;
         private int _lvl;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
@@ -11,10 +12,18 @@ namespace RobotCastle.Battling
 {
     public class PlayerFactory : MonoBehaviour, IPlayerFactory
     {
+        public event Action<PurchaseHeroResult> OnPurchase;
+
+        public bool PurchaseAllowed { get; set; } = true; 
         public ReactiveInt NextCost => _costReact;
    
-        public void TryPurchaseItem(bool promptUser = true)
+        public PurchaseHeroResult TryPurchaseItem(bool promptUser = true)
         {
+            if (!PurchaseAllowed)
+            {
+                OnPurchase?.Invoke(PurchaseHeroResult.NotAllowed);
+                return PurchaseHeroResult.NotAllowed;
+            }
             var gameMoney = ServiceLocator.Get<GameMoney>();
             var money = gameMoney.levelMoney.Val;
             if (money < _costReact.Val)
@@ -25,7 +34,8 @@ namespace RobotCastle.Battling
                     var ui = ServiceLocator.Get<IUIManager>().Show<MergeInfoUI>(UIConstants.UIMergeInfo, () => {});
                     ui.ShowNotEnoughMoney();
                 }
-                return;
+                OnPurchase?.Invoke(PurchaseHeroResult.NotEnoughMoney);
+                return PurchaseHeroResult.NotEnoughMoney;
             }
 
             var item = _itemsPicker.GetNext();
@@ -47,7 +57,11 @@ namespace RobotCastle.Battling
                     mod.OnNewItemSpawned(newItem);
                 
                 SoundManager.Inst.Play(_sound);
+                OnPurchase?.Invoke(PurchaseHeroResult.Success);
+                return PurchaseHeroResult.Success;
             }
+            OnPurchase?.Invoke(PurchaseHeroResult.Error);
+            return PurchaseHeroResult.Error;
         }
 
         public IItemView SpawnHeroOrItem(SpawnArgs args)

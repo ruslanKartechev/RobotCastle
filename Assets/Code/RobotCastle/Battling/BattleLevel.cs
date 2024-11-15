@@ -15,6 +15,7 @@ using RobotCastle.Relics;
 using RobotCastle.Saving;
 using RobotCastle.UI;
 using SleepDev;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -92,7 +93,7 @@ namespace RobotCastle.Battling
             _playerMergeFactory = gameObject.GetComponent<IPlayerFactory>();
             SleepDev.Analytics.OnLevelStarted(_selectionData.chapterIndex, _selectionData.tierIndex);
             _token = new CancellationTokenSource();
-            CameraAndInit(_token.Token);
+            MoveCameraAndInit(_token.Token);
         }
         
 
@@ -218,9 +219,21 @@ namespace RobotCastle.Battling
             InitCurrentRound(_roundAttemptsCount);
         }
         
-        private async void CameraAndInit(CancellationToken token)
+        private async void MoveCameraAndInit(CancellationToken token)
         {
-            await Task.WhenAll(InitProcess(token), _battleCamera.PlayStartAnimation(token));
+            await Task.WhenAll(InitProcess(token), 
+                _battleCamera.PlayStartAnimation(token));
+            if(token.IsCancellationRequested)return;
+            var save = DataHelpers.GetPlayerData().tutorials;
+            if (!save.battle)
+            {
+                var canvas = ServiceLocator.Get<IUIManager>().ParentCanvas;
+                var prefab = Resources.Load<TutorialBattle>("prefabs/tutorials/ui_tutor_battle");
+                var instance = Instantiate(prefab, canvas.transform);
+                instance.Begin(() => {
+                    save.enterPlay = true;
+                });
+            }
         }
 
         private Battle CreateBattle()
@@ -286,6 +299,8 @@ namespace RobotCastle.Battling
 
             try
             {
+                if (_startRoundIndex >= _chapter.levelData.levels.Count)
+                    _startRoundIndex = 0;
                 await _battleManager.SetRound(_startRoundIndex, token);
             }
             catch (System.Exception ex) { CLog.LogError($"Exception: {ex.Message}\n{ex.StackTrace}"); }

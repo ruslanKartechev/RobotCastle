@@ -1,4 +1,5 @@
-﻿using RobotCastle.Core;
+﻿using System.Collections;
+using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
@@ -21,13 +22,13 @@ namespace RobotCastle.MainMenu
         [SerializeField] private BarracksManager _barracksManager;
         [SerializeField] private BarracksHeroView _barrackHeroView;
 
-        
+
         private void Awake()
         {
             ServiceLocator.Get<IUIManager>().Refresh();
             GameState.Mode = GameState.EGameMode.MainMenu;
             // if(!SleepDev.AdsPlayer.Instance.BannerCalled)
-                // SleepDev.AdsPlayer.Instance.ShowBanner();
+            // SleepDev.AdsPlayer.Instance.ShowBanner();
         }
 
         private void Start()
@@ -45,9 +46,26 @@ namespace RobotCastle.MainMenu
             ui.AddAsShown(UIConstants.UIGateTab, _gateTabUI);
             ui.AddAsShown(UIConstants.UIPlayerData, _playerPanel);
             _barracksManager.Init();
-            
+
             _heroesPool.SpawnAll();
             _tabsSwitcher.SetGateTab();
+            
+            TryStartTutorial();
+        }
+
+        private void TryStartTutorial()
+        {
+            var save = DataHelpers.GetPlayerData().tutorials;
+            if (save.enterPlay == false)
+            {
+                var canvas = ServiceLocator.Get<IUIManager>().ParentCanvas;
+                var prefab = Resources.Load<TutorialEnterBattle>("prefabs/tutorials/ui_tutor_enter_play");
+                var instance = Instantiate(prefab, canvas.transform);
+                instance.Begin(() =>
+                {
+                    save.enterPlay = true;
+                });
+            }
         }
 
         private void OnDisable()

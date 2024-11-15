@@ -15,7 +15,30 @@ namespace RobotCastle.Saving
         public MergeGrid mergeGrid;
 
 
+
         #if UNITY_EDITOR
+
+        [ContextMenu("SetHeroesLevel 10")]
+        public void E_SetHeroesLevel10()
+        {
+            E_SetAllHeroesLevel(10);
+        }
+
+        [ContextMenu("SetHeroesLevel 0")]
+        public void E_SetHeroesLevel0()
+        {
+            E_SetAllHeroesLevel(0);
+        }
+        
+        private void E_SetAllHeroesLevel(int level)
+        {
+            var list = PlayerHeroes.heroSaves;
+            foreach (var h in list)
+            {
+                h.level = level;
+            }
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
  
         [ContextMenu("1_Set_InitialSave")]
         public void E_SetInitialSave()

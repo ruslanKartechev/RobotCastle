@@ -7,6 +7,15 @@ namespace RobotCastle.UI
 {
     public class GameModeSelectionUI : MonoBehaviour, IScreenUI
     {
+
+        public MyButton btnChapters1 => _btnChapters1;
+
+        public MyButton btnChapters2 => _btnChapters2;
+
+        public MyButton closeBtn => _closeBtn;
+        
+        public InvasionChapterSelectionUI ChapterSelectionUI => _chapters1;
+
         [SerializeField] private MyButton _btnChapters1;
         [SerializeField] private MyButton _btnChapters2;
         [SerializeField] private MyButton _closeBtn;

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Threading.Tasks;
 using RobotCastle.Core;
 using UnityEngine;
 
@@ -6,18 +7,15 @@ namespace RobotCastle.Battling
 {
     public class OneTimeParticles : MonoBehaviour, IPoolItem
     {
-        private const float HideDelay = 1.5f * 1000;
+        private const float HideDelay = 1.5f;
         [SerializeField] private ParticleSystem _particles;
         
-        public async void Show(Vector3 worldPos)
+        public void Show(Vector3 worldPos)
         {
             transform.position = worldPos;
             gameObject.SetActive(true);
             _particles.Play();
-            await Task.Delay((int)(HideDelay));
-            if (!Application.isPlaying || gameObject == null) return;
-            gameObject.SetActive(false);
-            ServiceLocator.Get<ISimplePoolsManager>().ReturnOne(this);
+            StartCoroutine(DelayHide());
         }
 
         public GameObject GetGameObject() => gameObject;
@@ -25,5 +23,12 @@ namespace RobotCastle.Battling
         public string PoolId { get; set; }
         public void PoolHide() => gameObject.SetActive(false);
         public void PoolShow() => gameObject.SetActive(false);
+        
+        private IEnumerator DelayHide()
+        {
+            yield return new WaitForSeconds(HideDelay);
+            gameObject.SetActive(false);
+            ServiceLocator.Get<ISimplePoolsManager>().ReturnOne(this);
+        }
     }
 }
