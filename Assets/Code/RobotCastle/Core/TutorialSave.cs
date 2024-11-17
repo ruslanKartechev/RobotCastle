@@ -6,11 +6,10 @@
         public bool enterPlay;
         public bool battle;
         public bool smelt;
-        
         public bool win;
         public bool heroUpgrade;
         public bool heroSummon;
-        public bool difficultyPick;
+        public bool altars;
         
         public TutorialSave(){}
 
@@ -22,7 +21,7 @@
             win = other.win;
             heroUpgrade = other.heroUpgrade;
             heroSummon = other.heroSummon;
-            difficultyPick = other.difficultyPick;
+            altars = other.altars;
         }
         
     }

@@ -5,11 +5,6 @@ using UnityEngine;
 
 namespace RobotCastle.MainMenu
 {
-    public interface IItemValidator
-    {
-        bool CheckIfValid(IItemView itemView);
-    }
-    
     public class BarracksHeroViewInput : MonoBehaviour
     {
         

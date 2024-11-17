@@ -13,7 +13,6 @@ namespace RobotCastle.MainMenu
 {
     public class TutorialEnterBattle : TutorialBase
     {
-    
         public override void Begin(Action finishedCallback)
         {
             CLog.LogGreen($"[TutorialEnterBattle] Begin");
@@ -65,7 +64,7 @@ namespace RobotCastle.MainMenu
         {
             _hand.StopAllActions();
             _hand.Off();
-            _textPrinter.Hide();
+            _textPrinter.Off();
             yield return null;
             _btn.RemoveMainCallback(OnPlayBtn);
             var gameModeUI = ServiceLocator.Get<IUIManager>().Show<GameModeSelectionUI>(UIConstants.UIGameModeSelection, () => { });
@@ -87,6 +86,7 @@ namespace RobotCastle.MainMenu
             chapterUI.HideAdditionalReward();
             _hand.On();
             _hand.MoveToAndLoopClicking(chapterUI.PlayBtn.transform.position + _handPointOffset3, _handMoveTime);
+            _finishedCallback?.Invoke();
         }
         
     }

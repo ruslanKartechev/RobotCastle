@@ -182,6 +182,7 @@ namespace RobotCastle.MainMenu
                 yield return null;
             btn.RemoveMainCallback(StopWaiting);
             _hand.Off();
+            _finishedCallback?.Invoke();
         }
 
         private IEnumerator PurchaseTutoring()

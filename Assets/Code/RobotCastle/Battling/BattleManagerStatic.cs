@@ -145,6 +145,43 @@ namespace RobotCastle.Battling
             return results;
         }
 
+        public static IHeroController GetBestTarget(IHeroController hero, List<IHeroController> enemies)
+        {
+            var map = hero.Components.movement.Map;
+            var currentEnemy = hero.Components.state.attackData.CurrentEnemy;
+            var myWorldPos = hero.Components.transform.position;
+            var myPos = map.GetCellPositionFromWorld(myWorldPos);
+            var maxPoints = -float.MaxValue;
+            IHeroController result = null;
+            foreach (var otherHero in enemies)
+            {
+                if (otherHero.IsDead || otherHero.Components.state.isOutOfMap)
+                    continue;
+                var enemyPos = otherHero.Components.state.currentCell;
+                var d2 = (enemyPos - myPos).sqrMagnitude;
+                var points = 100 - d2 * 2f;
+                if (otherHero == currentEnemy)
+                    points += 2;
+                if (otherHero.Components.state.attackData.CurrentEnemy == hero)
+                    points += 2;
+                if (otherHero.Components.state.isStunned)
+                    points++;
+                if (!otherHero.Components.state.isMoving)
+                    points++;
+                var vec = otherHero.Components.transform.position - myWorldPos;
+                var angle = Mathf.Abs(Vector3.SignedAngle(vec, hero.Components.transform.forward, Vector3.up));
+                var turns = Mathf.RoundToInt(angle / 4);
+                points -= turns * 2;
+                if (points >= maxPoints)
+                {
+                    maxPoints = points;
+                    result = otherHero;
+                }
+            }
+            return result;
+        }
+
+
 
         public static void SpawnHeroesInBattle(string id, int count, IHeroController parent,
             Vector2Int center, List<IHeroController> container, Action<IHeroController> initCallback)

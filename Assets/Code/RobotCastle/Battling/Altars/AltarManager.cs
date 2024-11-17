@@ -117,23 +117,36 @@ namespace RobotCastle.Battling.Altars
             OnFreePointsCountChanged?.Invoke(prevFree, _save.pointsFree);
         }
 
+        public int GetPointCost()
+        {
+            var player = DataHelpers.GetPlayerData();
+            return (int)_db.GetNextPointCost(player.playerLevel + 1);
+        }
+        
+        public int GetLevel()
+        {
+            var player = DataHelpers.GetPlayerData();
+            return player.playerLevel + 1;
+        }
+        
         /// <summary>
         /// </summary>
         /// <returns>0 - can, 1 - not enough money, 2 - level not met, 3 - max points</returns>
         public int CanBuyOnFreePoint()
         {
             var player = DataHelpers.GetPlayerData();
-            if (player.playerLevel < 2)
+            if (player.playerLevel < 1)
                 return 2;
             if (_db.HasReachedMaxPoints(player.altars.pointsTotal))
                 return 3;
-            var cost = (int)_db.GetNextPointCost(player.playerLevel + 1);
+            var lvl = player.playerLevel + 1;
+            var cost = (int)_db.GetNextPointCost(lvl);
             if(cost == 0) return 3; // max level reached case
             
-            var money = player.globalMoney;
+            var money = ServiceLocator.Get<GameMoney>().globalMoney.Val;
             if (money < cost)
                 return 1;
-            if (_db.CanBuyMorePoints(player.altars.pointsTotal, player.playerLevel + 1) == false)
+            if (_db.CanBuyMorePoints(player.altars.pointsTotal, lvl) == false)
                 return 2;
             return 0;
         }
@@ -146,7 +159,7 @@ namespace RobotCastle.Battling.Altars
             var cost = (int)_db.GetNextPointCost(player.playerLevel + 1);
             if(cost == 0) return false; // max level reached case
 
-            var money = player.globalMoney;
+            var money = ServiceLocator.Get<GameMoney>().globalMoney.Val;
             if (money < cost)
                 return false;
             var prevFree = _save.pointsFree;

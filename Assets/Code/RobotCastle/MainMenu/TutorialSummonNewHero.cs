@@ -28,7 +28,6 @@ namespace RobotCastle.MainMenu
         [SerializeField] private float _handMoveTime = .6f;
         private SubParent _subParent = new();
 
-
         private IEnumerator Working()
         {
             _hand.Off();
@@ -63,7 +62,7 @@ namespace RobotCastle.MainMenu
             var pos = barracks.summonBtn.transform.position + _btnSummonOffset;
             _hand.MoveToAndLoopClicking(pos, _handMoveTime);
             var barracksManager = ServiceLocator.Get<BarracksManager>();
-            barracksManager.BarracksInput.enabled = false;
+            barracksManager.BarracksInput.SetActive(false);
        
             yield return WaitForBtn(barracks.summonBtn);
      
@@ -72,22 +71,26 @@ namespace RobotCastle.MainMenu
             _textPrinter.ShowMessages(_messages2);
             _textPrinter.Callback = StopWaiting;
             _background.enabled = true;
+            
             _isWaiting = true;
             while(_isWaiting)
                 yield return null;
             yield return new WaitForSeconds(_hideDelaySec);
-                        
+            tabs.SetAllInteractable(true);
             Complete();
         }
         
-        
-
         private void Complete()
         {
             _panelAnimator.FadeOut();
             var barracksManager = ServiceLocator.Get<BarracksManager>();
-            barracksManager.BarracksInput.enabled = true;
+            barracksManager.BarracksInput.SetActive(true);
+            var tabs = ServiceLocator.Get<IUIManager>().GetIfShown<MainMenuTabsUI>(UIConstants.UIMainMenuTabs);
+            if(tabs != null)
+                tabs.SetAllInteractable(true);
             _finishedCallback?.Invoke();
         }
+        
+        
     }
 }

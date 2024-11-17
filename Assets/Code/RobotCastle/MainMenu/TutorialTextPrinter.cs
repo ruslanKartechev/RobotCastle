@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using RobotCastle.UI;
+using SleepDev;
 using TMPro;
 using UnityEngine;
 
@@ -20,9 +21,16 @@ namespace RobotCastle.MainMenu
 
         public void SetTitle(string title) => _titleText.text = title;
 
-        public void Show() => _fadeInOutAnimator.FadeIn();
+        public void Show()
+        {
+            gameObject.SetActive(true);
+            _fadeInOutAnimator.FadeIn();
+        }
 
-        public void Hide() => _fadeInOutAnimator.FadeOut();
+        public void Hide()
+        {
+            _fadeInOutAnimator.FadeOut();
+        }
         
         public void On() => _fadeInOutAnimator.On();
         

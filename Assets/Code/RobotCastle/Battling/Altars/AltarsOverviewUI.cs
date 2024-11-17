@@ -13,6 +13,11 @@ namespace RobotCastle.Battling.Altars
 {
     public class AltarsOverviewUI : MonoBehaviour, IScreenUI
     {
+        public MyButton BtnClose => _BtnClose;
+        public MyButton BtnPurchasePoint => _btnPurchasePoint;
+        public MyButton BtnRetrievePoints => _btnRetrievePoints;
+        public List<AltarUI> Altars => _uiAltars;
+        
         [SerializeField] private List<AltarUI> _uiAltars;
         [SerializeField] private TextMeshProUGUI _pointsAvailable;
         [SerializeField] private TextMeshProUGUI _costText;
@@ -38,6 +43,7 @@ namespace RobotCastle.Battling.Altars
             _save = DataHelpers.GetAltarsSave();
             _db = ServiceLocator.Get<AltarsDatabase>();
             _manager = ServiceLocator.Get<AltarManager>();
+
             _manager.SetupData();
             _manager.OnFreePointsCountChanged -= OnFreePointsUpdated;
             _manager.OnFreePointsCountChanged += OnFreePointsUpdated;
@@ -107,33 +113,32 @@ namespace RobotCastle.Battling.Altars
 
         private void UpdateButtonsState()
         {
-            var player = DataHelpers.GetPlayerData();
             var code = _manager.CanBuyOnFreePoint();
-            var lvl = player.playerLevel + 1;
+            var lvl = _manager.GetLevel();
             var redColor = "#FF1111";
             switch (code)
             {
                 case 0: // can
-                    CLog.Log($"Can buy more points");
+                    CLog.Log($"[Altars] Can buy more points");
                     _requirementsObj.gameObject.SetActive(false);
                     _btnPurchasePoint.gameObject.SetActive(true);
                     _costText.text = ((int)_db.GetNextPointCost(lvl)).ToString();
                     break;
                 case 1: // no money
-                    CLog.Log($"Not enough money");
+                    CLog.Log($"[Altars] Not enough money");
                     _requirementsObj.gameObject.SetActive(false);
                     _btnPurchasePoint.gameObject.SetActive(true);
                     _costText.text = $"<color={redColor}>{(int)_db.GetNextPointCost(lvl)}</color>";
                     break;
                 case 2: // Level not met
-                    CLog.Log($"Level not met");
+                    CLog.Log($"[Altars] Level not met");
                     _btnPurchasePoint.gameObject.SetActive(false);
                     _requirementsObj.gameObject.SetActive(true);
                     _requiredLevelText.text = $"Increase Castle Level";
-                    CLog.LogRed($"Player level: {lvl}, cannot buy points");
+                    CLog.Log($"[Altars] Player level: {lvl}, cannot buy points");
                     break;
                 case 3: // max points reached
-                    CLog.Log($"Max points already");
+                    CLog.Log($"[Altars] Max points already");
                     _btnPurchasePoint.gameObject.SetActive(false);
                     _requirementsObj.gameObject.SetActive(false);
                     break;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SleepDev;
@@ -40,6 +41,7 @@ namespace RobotCastle.Battling
             _hero.Components.attackManager.Stop();
             _hero.Battle.AttackPositionCalculator.RemoveUnit(_hero.Components.state);
             myState.SetTargetCellToSelf();
+            _enemiesInRange.Clear();
         }
         
         
@@ -49,6 +51,8 @@ namespace RobotCastle.Battling
         private HeroRangeCoverCheck _rangeCoverCheck;
         private EAttackLogicStep _logicStep;
         private bool _isActivated;
+        private List<IHeroController> _enemiesInRange = new (10);
+
         private string name => _hero.Components.gameObject.name;
 
         private HeroStateData myState => _hero.Components.state;
@@ -65,6 +69,7 @@ namespace RobotCastle.Battling
         {
             if (!_isActivated)
                 return;
+            _enemiesInRange.Clear();
             myState.attackData.IsMovingForDuel = false;
             myState.SetTargetCellToSelf();
             _rangeCoverCheck.Update(_hero.Components.transform.position, true);
@@ -140,25 +145,27 @@ namespace RobotCastle.Battling
             }
             return false;
         }
+
         
         private bool CheckAttackCondition(out IHeroController targetEnemy)
         {
             _rangeCoverCheck.Update(myState.currentCell, true);
             var enemies = _hero.Battle.GetTeam(_hero.TeamNum).enemyUnits;
+            _enemiesInRange.Clear();
             foreach (var tempEnemy in enemies)
             {
                 if (tempEnemy.IsDead || tempEnemy.Components.state.isOutOfMap)
                     continue;
-                var inRange = _rangeCoverCheck.IsHeroWithinRange(tempEnemy);
-                if (inRange)
-                {
-                    targetEnemy = tempEnemy;
-                    // CLog.LogGreen($"Enemy is in range: {tempEnemy.Components.gameObject.name}");
-                    return true; 
-                }
+                if (_rangeCoverCheck.IsHeroWithinRange(tempEnemy))
+                    _enemiesInRange.Add(tempEnemy);
             }
-            targetEnemy = null;
-            return false;        
+            if (_enemiesInRange.Count == 0)
+            {
+                targetEnemy = null;
+                return false;
+            }
+            targetEnemy = BattleManager.GetBestTarget(_hero, _enemiesInRange);
+            return true;        
         }
 
         private void StopSubProc()
@@ -175,14 +182,12 @@ namespace RobotCastle.Battling
             {
                 if (targetEnemy.IsDead || targetEnemy.Components.state.isOutOfMap)
                 {
-                    // enemy.Components.attackManager.Stop();
                     DecideNextStep(_mainToken.Token);
                     return;
                 }
                 var currentEnemyCell = targetEnemy.Components.state.currentCell;
                 if (startEnemyCell != currentEnemyCell)
                 {
-                    // enemy.Components.attackManager.Stop();
                     DecideNextStep(_mainToken.Token);
                     if (token.IsCancellationRequested)
                         return;

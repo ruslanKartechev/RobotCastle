@@ -10,6 +10,8 @@ namespace RobotCastle.Battling.Altars
 {
     public class AltarUI : MonoBehaviour
     {
+        public MyButton LvlUpBtnOne => _lvlUpBtnOne;
+    
         [SerializeField] private TextMeshProUGUI _nameText;
         [SerializeField] private TextMeshProUGUI _pointsCountText;
         [SerializeField] private List<AltarPointsHighlight> _levelHighlights;
@@ -18,12 +20,10 @@ namespace RobotCastle.Battling.Altars
         [SerializeField] private MyButton _lvlUpBtnMultiple;
         private Altar _altar;
 
-
         public void Init(Altar altar)
         {
             _altar = altar;
             _nameText.text = altar.ViewName;
-            ServiceLocator.Get<AltarManager>().SetupData();
             _lvlUpBtnOne.AddMainCallback(PurchaseOne);
             _lvlUpBtnMultiple.AddMainCallback(PurchaseMultiple);
             for (var i = 0; i < _modifiersUI.Count; i++)
@@ -86,7 +86,7 @@ namespace RobotCastle.Battling.Altars
         
         private void OnPointsUpdated(int prevVal, int newVal)
         {
-            CLog.Log($"[OnPointsUpdated][{gameObject.name}] new val {newVal}");
+            // CLog.Log($"[OnPointsUpdated][{gameObject.name}] new val {newVal}");
             if (prevVal != newVal)
             {
                 SetPointsAndAnimate(newVal);

@@ -56,7 +56,8 @@ namespace RobotCastle.MainMenu
 
         private void TryStartTutorial()
         {
-            var save = DataHelpers.GetPlayerData().tutorials;
+            var playerData = DataHelpers.GetPlayerData();
+            var save = playerData.tutorials;
             if (save.enterPlay == false)
             {
                 var canvas = ServiceLocator.Get<IUIManager>().ParentCanvas;
@@ -68,7 +69,7 @@ namespace RobotCastle.MainMenu
                     CLog.Log($"Enter Play tutor completed");
                 });
             }
-            else if (save.enterPlay && save.battle && !save.heroUpgrade)
+            else if (save.enterPlay && !save.heroUpgrade)
             {
                 var canvas = ServiceLocator.Get<IUIManager>().ParentCanvas;
                 var prefab = Resources.Load<TutorialBase>("prefabs/tutorials/ui_tutor_barracks");
@@ -88,6 +89,17 @@ namespace RobotCastle.MainMenu
                 {
                     save.heroSummon = true;
                     CLog.Log($"Summon tutorial completed");
+                });
+            }
+            else if(save.heroSummon && !save.altars && playerData.playerLevel > 0)
+            {
+                var canvas = ServiceLocator.Get<IUIManager>().ParentCanvas;
+                var prefab = Resources.Load<TutorialBase>("prefabs/tutorials/ui_tutor_altars");
+                var instance = Instantiate(prefab, canvas.transform);
+                instance.Begin(() =>
+                {
+                    save.altars = true;
+                    CLog.Log($"Altars tutorial completed");
                 });
             }
         }

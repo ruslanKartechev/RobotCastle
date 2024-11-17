@@ -74,6 +74,8 @@ namespace RobotCastle.UI
 
         public void OnClosed(string id)
         {
+            if (!_closedCallbacks.ContainsKey(id))
+                return;
             var callback = _closedCallbacks[id];
             _closedCallbacks.Remove(id);
             callback?.Invoke();
