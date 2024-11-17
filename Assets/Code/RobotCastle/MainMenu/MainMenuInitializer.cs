@@ -3,6 +3,7 @@ using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.MainMenu
@@ -64,6 +65,29 @@ namespace RobotCastle.MainMenu
                 instance.Begin(() =>
                 {
                     save.enterPlay = true;
+                    CLog.Log($"Enter Play tutor completed");
+                });
+            }
+            else if (save.enterPlay && save.battle && !save.heroUpgrade)
+            {
+                var canvas = ServiceLocator.Get<IUIManager>().ParentCanvas;
+                var prefab = Resources.Load<TutorialBase>("prefabs/tutorials/ui_tutor_barracks");
+                var instance = Instantiate(prefab, canvas.transform);
+                instance.Begin(() =>
+                {
+                    save.heroUpgrade = true;
+                    CLog.Log($"Barracks tutorial completed");
+                });
+            }
+            else if (save.heroUpgrade && !save.heroSummon)
+            {
+                var canvas = ServiceLocator.Get<IUIManager>().ParentCanvas;
+                var prefab = Resources.Load<TutorialBase>("prefabs/tutorials/ui_tutor_summon");
+                var instance = Instantiate(prefab, canvas.transform);
+                instance.Begin(() =>
+                {
+                    save.heroSummon = true;
+                    CLog.Log($"Barracks tutorial completed");
                 });
             }
         }

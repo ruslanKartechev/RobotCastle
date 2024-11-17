@@ -31,7 +31,6 @@ namespace RobotCastle.MainMenu
         [SerializeField] private Vector3 _clickOffsetBtn;
         [SerializeField] private List<string> _messages;
         private SmeltingOfferUI _smeltingUI;
-        private bool _isWaiting;
         private Coroutine _working;
 
         private void OnDisable()

@@ -15,8 +15,14 @@ namespace RobotCastle.UI
 {
     public partial class HeroGrowthPanel : MonoBehaviour, IScreenUI
     {
-        private enum Mode {UpgradeForMoney, UpgradeFree, GrantXp}
 
+        public Button BtnGrowth => _btnGrowth;
+        public Button BtnGrowthXp => _btnGrowthXp;
+        public Button BtnBack => _btnBack;
+        
+        
+        private enum Mode {UpgradeForMoney, UpgradeFree, GrantXp}
+        
         [SerializeField] private XpAddAnimation _addAnimation;
         [SerializeField] private TextMeshProUGUI _statTxtHealth;
         [SerializeField] private TextMeshProUGUI _statTxtAttack;

@@ -9,8 +9,12 @@ using UnityEngine;
 
 namespace RobotCastle.MainMenu
 {
-    public class BarracksManager : MonoBehaviour, IMergeProcessor, IGridSectionsController, ISwapAllowedCheck
+    public class BarracksManager : MonoBehaviour, IMergeProcessor, 
+        IGridSectionsController, ISwapAllowedCheck
     {
+        public GridView GridView => _gridView;
+        public BarracksHeroViewInput BarracksInput =>  _barracksInput;
+            
         [SerializeField] private bool _logActiveParty;
         [SerializeField] private GridView _gridView;
         [SerializeField] private MergeInput _mergeInput;

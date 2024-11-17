@@ -15,6 +15,11 @@ namespace RobotCastle.UI
 {
     public class InvasionLevelWinUI : MonoBehaviour, IScreenUI
     {
+
+        public MyButton BtnPlayAgain => _btnPlayAgain;
+        
+        public MyButton BtnReturn => _btnReturn;
+        
         [SerializeField] private RectTransform _rectRewards;
         [SerializeField] private RectTransform _rectHeroes;
         [SerializeField] private RectTransform _rectXp;
@@ -86,8 +91,8 @@ namespace RobotCastle.UI
 
         private IEnumerator Animating(InvasionWinArgs args)
         {
+      
             _inputActive = true;
-
             _rectRewards.gameObject.SetActive(false);
             _rectHeroes.gameObject.SetActive(false);
             _rectXp.gameObject.SetActive(false);
@@ -121,7 +126,21 @@ namespace RobotCastle.UI
             yield return new WaitForSeconds(scaleDownDelay);
             _rectButtons.DOScale(Vector3.one, scaleTime).SetEase(_scaleDownEase);
             _inputActive = true;
+            TryStartTutorial();
+        }
 
+        private void TryStartTutorial()
+        {
+            var tutorSave = DataHelpers.GetPlayerData().tutorials;
+            if (!tutorSave.win)
+            {
+                var prefab = Resources.Load<TutorialWin>("prefabs/tutorials/ui_tutor_win");
+                var instance = Instantiate(prefab, transform);
+                instance.SetUI(this);
+                instance.Begin(() => {
+                    tutorSave.win = true;
+                });                
+            }
         }
 
         private void FadeAnimate()

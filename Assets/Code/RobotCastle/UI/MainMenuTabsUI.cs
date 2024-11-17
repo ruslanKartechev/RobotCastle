@@ -12,6 +12,9 @@ namespace RobotCastle.UI
 
         public MyButton shopBtn => _shopBtn;
 
+        public Transform ButtonsParent => _buttonsParent;
+
+        [SerializeField] private Transform _buttonsParent;
         [SerializeField] private MyButton _gateBtn;
         [SerializeField] private MyButton _barracksBtn;
         [SerializeField] private MyButton _shopBtn;

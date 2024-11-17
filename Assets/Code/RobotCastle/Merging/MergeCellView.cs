@@ -46,14 +46,11 @@ namespace RobotCastle.Merging
         public Vector3 WorldPosition => transform.position;
         public Quaternion WorldRotation => transform.rotation;
 
-        public void OnPicked()
-        { }
+        public void OnPicked() { }
 
-        public void OnPut()
-        { }
+        public void OnPut() { }
 
-        public void OnDroppedBack()
-        { }
+        public void OnDroppedBack() { }
 
         public void SetHighlightForMerge(bool on, int type)
         {

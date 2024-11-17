@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.UI;
@@ -8,11 +9,16 @@ namespace RobotCastle.MainMenu
 {
     public class BarracksHeroView : MonoBehaviour
     {
+        public event Action OnHeroShown;
+        
+        public string HeroId { get; private set; }
+        
         [SerializeField] private Transform _heroPoint;
         private BarracksHeroPanel _descriptionPanel;
         
         public void ShowHero(string heroId)
         {
+            HeroId = heroId;
             var pool = ServiceLocator.Get<BarracksHeroesPool>();
             var hero = pool.GetHero(heroId);
             var tr = hero.Transform;
@@ -24,6 +30,7 @@ namespace RobotCastle.MainMenu
                 _descriptionPanel = ServiceLocator.Get<IUIManager>().Show<BarracksHeroPanel>(UIConstants.UIBarracksHeroDescription, () => {});
             }
             _descriptionPanel.Show(heroId);
+            OnHeroShown?.Invoke();
         }
 
         public void Close()

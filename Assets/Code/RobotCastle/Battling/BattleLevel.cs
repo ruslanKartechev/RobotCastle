@@ -231,7 +231,7 @@ namespace RobotCastle.Battling
                 var prefab = Resources.Load<TutorialBattle>("prefabs/tutorials/ui_tutor_battle");
                 var instance = Instantiate(prefab, canvas.transform);
                 instance.Begin(() => {
-                    save.enterPlay = true;
+                    save.battle = true;
                 });
             }
         }

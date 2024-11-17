@@ -42,6 +42,11 @@ namespace RobotCastle.Data
             return ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>();
         }
         
+        public static SavePlayerHeroes GetHeroesSave()
+        {
+            return ServiceLocator.Get<IDataSaver>().GetData<SavePlayerHeroes>();
+        }
+        
         public static PlayerInventory GetInventory()
         {
             return ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>().inventory;

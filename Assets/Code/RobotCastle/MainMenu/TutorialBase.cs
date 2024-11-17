@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
@@ -7,13 +8,35 @@ namespace RobotCastle.MainMenu
 {
     public abstract class TutorialBase : MonoBehaviour
     {
+        public abstract void Begin(Action finishedCallback);
+
         [SerializeField] protected FadeInOutAnimator _panelAnimator;
         [SerializeField] protected TutorialTextPrinter _textPrinter;
         [SerializeField] protected TutorialHand _hand;
         [SerializeField] protected RectTransform _parent;
         protected Action _finishedCallback;
+        protected bool _isWaiting;
 
-        public abstract void Begin(Action finishedCallback);
+        protected IEnumerator WaitForBtn(MyButton btn)
+        {
+            btn.AddMainCallback(StopWaiting);
+            _isWaiting = true;
+            while(_isWaiting)
+                yield return null;
+            btn.RemoveMainCallback(StopWaiting);
+        }
+        
+        protected IEnumerator WaitForBtn(UnityEngine.UI.Button btn)
+        {
+            btn.onClick.AddListener(StopWaiting);
+            _isWaiting = true;
+            while(_isWaiting)
+                yield return null;
+            btn.onClick.RemoveListener(StopWaiting);
+        }
+        
+        protected void StopWaiting() => _isWaiting = false;
+        
 
 
 

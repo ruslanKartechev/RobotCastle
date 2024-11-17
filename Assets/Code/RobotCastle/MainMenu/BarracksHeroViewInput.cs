@@ -5,26 +5,30 @@ using UnityEngine;
 
 namespace RobotCastle.MainMenu
 {
+    public interface IItemValidator
+    {
+        bool CheckIfValid(IItemView itemView);
+    }
+    
     public class BarracksHeroViewInput : MonoBehaviour
     {
-        [SerializeField] private LayerMask _layerMask;
-        private bool _isActive;
+        
+        public IItemValidator Validator { get; set; }
         
         public void SetActive(bool active)
         {
-            CLog.Log($"Set Active: {active}, prev: {_isActive}");
+            CLog.Log($"[{nameof(BarracksHeroViewInput)}] Set Active: {active}, prev: {_isActive}");
             if (active == _isActive) return;
             if (active)
-            {
                 ServiceLocator.Get<GameInput>().OnShortClick += OnShortClick;
-            }
             else
-            {
                 ServiceLocator.Get<GameInput>().OnShortClick -= OnShortClick;
-            }
             _isActive = active;
         }
 
+        [SerializeField] private LayerMask _layerMask;
+        private bool _isActive;
+        
         private void OnShortClick(Vector3 screenPos)
         {
             var ray = Camera.main.ScreenPointToRay(screenPos);
@@ -44,6 +48,11 @@ namespace RobotCastle.MainMenu
 
             void TryOpen(IItemView itemView)
             {
+                if (Validator != null
+                    && !(Validator.CheckIfValid(itemView)))
+                {
+                    return;
+                }
                 if (itemView.itemData.core.type == MergeConstants.TypeHeroes)
                 {
                     var id = itemView.itemData.core.id;

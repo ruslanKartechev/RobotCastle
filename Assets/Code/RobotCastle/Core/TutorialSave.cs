@@ -5,7 +5,7 @@
     {
         public bool enterPlay;
         public bool battle;
-        public bool merge;
+        public bool smelt;
         
         public bool win;
         public bool heroUpgrade;
@@ -18,7 +18,7 @@
         {
             enterPlay = other.enterPlay;
             battle = other.battle;
-            merge = other.merge;
+            smelt = other.smelt;
             win = other.win;
             heroUpgrade = other.heroUpgrade;
             heroSummon = other.heroSummon;

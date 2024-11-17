@@ -18,7 +18,7 @@ namespace RobotCastle.MainMenu
     
         public override void Begin(Action finishedCallback)
         {
-            CLog.LogGreen($"[TutorialBattle] Begin");
+            CLog.Log($"[TutorialBattle] Begin");
             _finishedCallback = finishedCallback;
             _textPrinter.Off();
             SetInput(false);
@@ -90,7 +90,7 @@ namespace RobotCastle.MainMenu
                 yield return null;
             _btnPurchase.RemoveMainCallback(OnPurchaseMade);
 
-            if (CanStartMergeTutor())
+            if (CheckMergePossible())
             {
                 yield return MergeTutoring(_it1, _it2);
                 yield return null;
@@ -98,7 +98,7 @@ namespace RobotCastle.MainMenu
 
             _hand.On();
             var startBtn = (MyButton)ui.BtnStart;
-            _hand.MoveToAndLoopClicking(startBtn.transform.position + _handPointOffsetPlay1);
+            _hand.MoveToAndLoopClicking(startBtn.transform.position + _handPointOffsetPlay1, .55f);
             startBtn.SetInteractable(true);
             startBtn.AddMainCallback(StopWaiting);
             
@@ -115,7 +115,6 @@ namespace RobotCastle.MainMenu
             var money = ServiceLocator.Get<GameMoney>();
             var bm = ServiceLocator.Get<BattleManager>();
             var merge = ServiceLocator.Get<MergeManager>();
-            
             
             var rounds = 0;
             while (rounds <= _roundsCount)
@@ -137,7 +136,7 @@ namespace RobotCastle.MainMenu
                         yield return null;
                         continue;
                     }
-                    if (CanStartMergeTutor())
+                    if (CheckMergePossible())
                     {
                         yield return MergeTutoring(_it1, _it2);
                         yield return null;
@@ -160,10 +159,9 @@ namespace RobotCastle.MainMenu
                 }
                 yield return null;
             }
+            _hand.Off();
+            _textPrinter.HideNow();
             
-            CLog.LogBlue($"========== COMPLETED");
-            yield return null;
-            Complete();
         }
         
         private IEnumerator TroopSizeTutoring()
@@ -213,13 +211,6 @@ namespace RobotCastle.MainMenu
                 if (!it1.Transform.gameObject.activeInHierarchy
                     || !it2.Transform.gameObject.activeInHierarchy)
                 {
-                    _it1 = it1;
-                    _it2 = it2;
-                    if (it2.itemData.pivotY >= 2)
-                    {
-                        _it1 = it2;
-                        _it2 = it1;
-                    }
                     _didMerge = true;
                 }
                 yield return null;
@@ -271,21 +262,27 @@ namespace RobotCastle.MainMenu
             _btnPurchase.AddMainCallback(OnPurchaseMade);
         }
 
-        private bool CanStartMergeTutor()
+        private bool CheckMergePossible()
         {
             var bm = ServiceLocator.Get<BattleManager>();
             var m = ServiceLocator.Get<MergeManager>();
             if (bm.battle.State != BattleState.Going)
             {
-                foreach (var h1 in m.Container.allItems)
+                foreach (var it1 in m.Container.allItems)
                 {
-                    foreach (var h2 in m.Container.allItems)
+                    foreach (var it2 in m.Container.allItems)
                     {
-                        if (h1 == h2) continue;
-                        if (h1.itemData.core == h2.itemData.core)
+                        if (it1 == it2) continue;
+                        if (it1.itemData.core == it2.itemData.core)
                         {
-                            _it1 = h1;
-                            _it2 = h2;
+                            _it1 = it1;
+                            _it2 = it2;
+                            if (it2.itemData.pivotY < 2 && !(it1.itemData.pivotY < 2))
+                            {
+                                _it1 = it2;
+                                _it2 = it1;
+                            }
+                            // CLog.LogBlue($"It_1 Y: {_it1.itemData.pivotY},   It_2 Y: {_it2.itemData.pivotY}");
                             return true;
                         }
                     }
@@ -311,12 +308,6 @@ namespace RobotCastle.MainMenu
             var p1 = cam.WorldToScreenPoint(_it1.Transform.position);
             var p2 = cam.WorldToScreenPoint(_it2.Transform.position);
             _hand.MoveBetween(p1, p2, _moveTo2, _moveTo1, _moveDelay);
-        }
-        
-        private void Complete()
-        {
-            SetInput(true);
-            ServiceLocator.Get<BattleCamera>().AllowPlayerInput(true);
         }
         
         private void StopWaiting() => _isWaiting = false;

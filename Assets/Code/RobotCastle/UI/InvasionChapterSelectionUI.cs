@@ -21,6 +21,8 @@ namespace RobotCastle.UI
         
         public Action ReturnCallback { get; set; }
         public MyButton PlayBtn => _playBtn;
+        public List<DifficultyTierUI> TierUis => _tierUis;
+        public InventoryController Inventory => _inventory;
         
         [SerializeField] private bool _isCorruption;
         [SerializeField] private Canvas _canvas;

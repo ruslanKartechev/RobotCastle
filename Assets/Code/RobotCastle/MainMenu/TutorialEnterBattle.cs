@@ -33,13 +33,13 @@ namespace RobotCastle.MainMenu
         }
 
         [SerializeField] private List<string> _messages1;
+        [SerializeField] private float _handMoveTime = .6f;
         [SerializeField] private Vector3 _handPointOffset;
         [SerializeField] private Vector3 _handPointOffset2;
         [SerializeField] private Vector3 _handPointOffset3;
         [SerializeField] private Image _background;
         private SubParent _subParent = new();
         private MyButton _btn;
-        private bool _isWaiting;
         
         private void Callback()
         {
@@ -68,36 +68,26 @@ namespace RobotCastle.MainMenu
             _textPrinter.Hide();
             yield return null;
             _btn.RemoveMainCallback(OnPlayBtn);
-            var ui = ServiceLocator.Get<IUIManager>().Show<GameModeSelectionUI>(UIConstants.UIGameModeSelection, () => { });
-            ui.Show();
-            ui.btnChapters2.SetInteractable(false);
-            ui.closeBtn.SetInteractable(false);
-            var btn = ui.btnChapters1;
+            var gameModeUI = ServiceLocator.Get<IUIManager>().Show<GameModeSelectionUI>(UIConstants.UIGameModeSelection, () => { });
+            gameModeUI.Show();
+            gameModeUI.btnChapters2.SetInteractable(false);
+            gameModeUI.closeBtn.SetInteractable(false);
+            var chaptersBtn = gameModeUI.btnChapters1;
             
             _hand.On();
-            var pos = btn.transform.position + _handPointOffset2;
-            _hand.MoveTo(pos);
-            _hand.LoopClicking(pos);
-            
-            btn.AddMainCallback(GameModeSelected);
-            _isWaiting = true;
-            while(_isWaiting)
-                yield return null;
+            var pos = chaptersBtn.transform.position + _handPointOffset2;
+            _hand.MoveToAndLoopClicking(pos, _handMoveTime);
+            yield return WaitForBtn(chaptersBtn);
             _hand.Off();
             yield return null;
-            btn.RemoveMainCallback(GameModeSelected);
 
-            var chapterUI = ui.ChapterSelectionUI;
+            var chapterUI = gameModeUI.ChapterSelectionUI;
             chapterUI.DisableInputButPlayButton();
             chapterUI.PlayBtn.SetInteractable(true);
             chapterUI.HideAdditionalReward();
             _hand.On();
-            _hand.LoopClicking(chapterUI.PlayBtn.transform.position + _handPointOffset3);
+            _hand.MoveToAndLoopClicking(chapterUI.PlayBtn.transform.position + _handPointOffset3, _handMoveTime);
         }
-
-        private void GameModeSelected()
-        {
-            _isWaiting = false;
-        }
+        
     }
 }

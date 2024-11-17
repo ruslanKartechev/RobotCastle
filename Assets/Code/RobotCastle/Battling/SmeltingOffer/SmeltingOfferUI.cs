@@ -62,16 +62,13 @@ namespace RobotCastle.Battling.SmeltingOffer
 
         private void TryTutorial()
         {
-            Debug.Log("======= TryTutorial");
             var save = DataHelpers.GetPlayerData().tutorials;
-            Debug.Log($"Save data: {save.merge}");
-            if (!save.merge)
+            if (!save.smelt)
             {
-                Debug.Log($"SHOWING TUTOR");
                 var prefab = Resources.Load<TutorialSmelting>("prefabs/tutorials/ui_tutor_smelting");
                 var instance = Instantiate(prefab, transform);
                 instance.SetSmeltingUI(this);
-                instance.Begin(() => { save.merge = true;});                
+                instance.Begin(() => { save.smelt = true;});                
             }
         }
 

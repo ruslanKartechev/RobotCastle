@@ -81,16 +81,22 @@ namespace SleepDev
 #endif
         }
         
-        public void MoveToAndLoopClicking(Vector3 position)
+        
+        public void MoveToAndLoopClicking(Vector3 position, float time)
         {
-            var time = (position - movable.position).magnitude / moveSpeed;
             StopAllActions();
 #if HAS_DOTWEEN
             _seqMoving?.Kill();
             _seqMoving = DOTween.Sequence();
-            _seqMoving.Append(movable.DOMove(position, time).SetEase(Ease.OutCubic));
+            _seqMoving.Append(movable.DOMove(position, time).SetEase(Ease.Linear));
             _seqMoving.OnComplete(BeginClickingLoop);
 #endif
+        }
+        
+        public void MoveToAndLoopClicking(Vector3 position)
+        {
+            var time = (position - movable.position).magnitude / moveSpeed;
+            MoveToAndLoopClicking(position, time);
         }
         
         public void MoveBetween(Vector3 pos1, Vector3 pos2, float time)
@@ -104,6 +110,18 @@ namespace SleepDev
             _seqMoving.Append(movable.DOMove(pos2, time).SetEase(Ease.OutCubic));
             _seqMoving.Append(movable.DOMove(pos1, time).SetEase(Ease.OutCubic));
             _seqMoving.SetLoops(-1);
+#endif
+        }
+        
+        public void MoveFromTo(Vector3 pos1, Vector3 pos2, float time)
+        {
+            // Debug.Log($"moving between {pos1} and {pos2}, time {time}");
+            WarpTo(pos1);
+            movable.localScale = Vector3.one;
+#if HAS_DOTWEEN
+            _seqMoving?.Kill();
+            _seqMoving = DOTween.Sequence();
+            _seqMoving.Append(movable.DOMove(pos2, time).SetEase(Ease.OutCubic));
 #endif
         }
         
@@ -140,13 +158,21 @@ namespace SleepDev
 
         private IEnumerator Tracking(Transform point, Vector3 offset, float moveTime)
         {
-            var p1 = movable.position;
-            var elapsed = 0f;
-            while (elapsed < moveTime)
+            if (moveTime > 0)
             {
-                movable.position = Vector3.Lerp(p1, point.position + offset, elapsed / moveTime);
-                elapsed += Time.deltaTime;
+                var p1 = movable.position;
+                var elapsed = 0f;
+                while (elapsed < moveTime)
+                {
+                    movable.position = Vector3.Lerp(p1, point.position + offset, elapsed / moveTime);
+                    elapsed += Time.deltaTime;
+                }
             }
+            else
+            {
+                movable.position = point.position + offset;
+            }
+        
 #if HAS_DOTWEEN
             BeginClickingLoop();
 #endif

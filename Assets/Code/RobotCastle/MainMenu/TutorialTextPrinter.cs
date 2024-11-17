@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using RobotCastle.UI;
-using SleepDev;
 using TMPro;
 using UnityEngine;
 
@@ -63,7 +62,6 @@ namespace RobotCastle.MainMenu
 
         private void OnBtnSkip()
         {
-            CLog.LogRed("=== Btn skip text");
             Next();            
         }
         
@@ -73,7 +71,6 @@ namespace RobotCastle.MainMenu
             _index++;
             if (_index >= _messages.Count)
             {
-                CLog.LogRed("END ++++++");
                 _textFiller.StopFilling();
                 _textFiller.SetText(_messages[^1]);
                 _isWorking = false;
