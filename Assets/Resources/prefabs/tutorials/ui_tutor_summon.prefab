@@ -127,7 +127,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2413351569277776062
 RectTransform:
   m_ObjectHideFlags: 0
@@ -307,11 +307,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7774940719192858679, guid: fa024c2f1b7914e4baafd8a4915ccc2c, type: 3}
       propertyPath: m_text
-      value: Upgrade Hero!
+      value: Summon Heroes
       objectReference: {fileID: 0}
     - target: {fileID: 8285420006715987888, guid: fa024c2f1b7914e4baafd8a4915ccc2c, type: 3}
       propertyPath: m_text
-      value: Head to the battle!
+      value: My Lord!<br>You have summon chests<br>Use them to obtain new items and
+        NEW Heroes!
       objectReference: {fileID: 0}
     - target: {fileID: 8285420006715987888, guid: fa024c2f1b7914e4baafd8a4915ccc2c, type: 3}
       propertyPath: m_VerticalAlignment
@@ -468,7 +469,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       propertyPath: m_Name
-      value: ui_tutor_barracks
+      value: ui_tutor_summon
       objectReference: {fileID: 0}
     - target: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       propertyPath: m_IsActive
@@ -583,8 +584,8 @@ PrefabInstance:
       addedObject: {fileID: 5892811399489675854}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6002014056661989877}
+      insertIndex: 1
+      addedObject: {fileID: -6865795279237192038}
     - targetCorrespondingSourceObject: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5941199974447109328}
@@ -597,7 +598,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 78130930740442133, guid: a56e60ed413cc36448e32752cedf1923, type: 3}
   m_PrefabInstance: {fileID: 3285582537769808425}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6002014056661989877
+--- !u!114 &-6865795279237192038
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -606,7 +607,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3210266381626885692}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df5a9a9ced054afb9704f935d35e12f8, type: 3}
+  m_Script: {fileID: 11500000, guid: a48d2f10dfd14e69a98adff91e12192e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _panelAnimator: {fileID: 2938154194623077840}
@@ -614,23 +615,14 @@ MonoBehaviour:
   _hand: {fileID: 7988123153749575882}
   _parent: {fileID: 340807549133898357}
   _messages1:
-  - My Lord!<br>We need to upgrade our army!<br>Head to the barracks!
+  - My Lord!<br>You have summon chests<br>Use them to obtain new items and NEW Heroes!
   _messages2:
-  - Time to upgrade!<br>Pick favourite hero from the top line
-  _messages3:
-  - You can upgrade more heroes!<br>Then let's head back to the battle!
-  _handMoveTime: 0.6
-  _handMoveBetweenTime: 1.6
-  _backGround: {fileID: 1357667324809526212}
+  - You can use the Summon Chests you have<br>Try your luck!
+  _btnSummonOffset: {x: 45, y: -40, z: 0}
   _clickOffsetBarracks: {x: 55, y: 150, z: 0}
-  _heroPosOffset: {x: 0.25, y: 0, z: -1}
-  _btnGrowthOffset: {x: 60, y: -30, z: 0}
-  _btnUpgradeOffset: {x: 80, y: -45, z: 0}
-  _btnReturnOffset: {x: 50, y: -30, z: 0}
-  _btnBattleOffset: {x: 50, y: -50, z: 0}
-  _btnOffsetChapters: {x: 100, y: -100, z: 0}
-  _btnOffsetDifficultyTier: {x: 50, y: -55, z: 0}
-  _btnOffsetPlay: {x: 90, y: -50, z: 0}
+  _hideDelaySec: 2
+  _background: {fileID: 1357667324809526212}
+  _handMoveTime: 0.6
 --- !u!225 &5941199974447109328
 CanvasGroup:
   m_ObjectHideFlags: 0

@@ -14,10 +14,9 @@ namespace RobotCastle.MainMenu
 {
     public class TutorialUpgradeHero : TutorialBase, IItemValidator
     {
-
         public override void Begin(Action finishedCallback)
         {
-            CLog.LogGreen($"[TutorialBattle] Begin");
+            CLog.Log($"[TutorialUpgradeHero] Begin");
             _finishedCallback = finishedCallback;
             StartCoroutine(Working());
         }
@@ -27,7 +26,6 @@ namespace RobotCastle.MainMenu
         [SerializeField] private List<string> _messages3;
         [SerializeField] private float _handMoveTime = .6f;
         [SerializeField] private float _handMoveBetweenTime = 1.6f;
-        
         [SerializeField] private Image _backGround;
         [Space(10)]
         [SerializeField] private Vector3 _clickOffsetBarracks;
@@ -35,7 +33,6 @@ namespace RobotCastle.MainMenu
         [SerializeField] private Vector3 _btnGrowthOffset;
         [SerializeField] private Vector3 _btnUpgradeOffset;
         [SerializeField] private Vector3 _btnReturnOffset;
-        
         [SerializeField] private Vector3 _btnBattleOffset;
         [SerializeField] private Vector3 _btnOffsetChapters;
         [SerializeField] private Vector3 _btnOffsetDifficultyTier;
@@ -82,7 +79,7 @@ namespace RobotCastle.MainMenu
             yield return WaitForBtn(barracksBtn);
             _backGround.enabled = false;
             _textPrinter.ShowMessages(_messages2);
-
+            
             InitBarracksTutor();
             
             var barracksHeroView = ServiceLocator.Get<BarracksHeroView>();
@@ -146,7 +143,6 @@ namespace RobotCastle.MainMenu
             }
             
             yield return EnterNextBattle();
-            CLog.LogBlue($"[{nameof(TutorialUpgradeHero)}] DONE");
             Complete();
         }
 
@@ -239,6 +235,13 @@ namespace RobotCastle.MainMenu
 
         private void InitBarracksTutor()
         {
+            var barracksUI = ServiceLocator.Get<IUIManager>().GetIfShown<BarracksTabUI>(UIConstants.UIBarracksTab);
+            if (barracksUI != null)
+            {
+                barracksUI.altarsBtn.SetInteractable(false);
+                barracksUI.summonBtn.SetInteractable(false);
+            }
+            
             var barracksManager = ServiceLocator.Get<BarracksManager>();
             barracksManager.BarracksInput.Validator = this;
 

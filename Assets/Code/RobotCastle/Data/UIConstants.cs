@@ -11,6 +11,8 @@
 
         public const string UIMainMenuTabs = "ui_main_menu_tabs";
         public const string UIGateTab = "ui_tab_gate";
+        public const string UIBarracksTab = "ui_barracks_tab";
+        
         public const string UIPlayerData = "ui_player_data";
         public const string UIBarracksHeroDescription = "ui_barracks_hero";
         public const string UIHeroGrowth = "ui_hero_growth";

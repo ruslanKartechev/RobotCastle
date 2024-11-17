@@ -13,6 +13,7 @@ namespace RobotCastle.MainMenu
         IGridSectionsController, ISwapAllowedCheck
     {
         public GridView GridView => _gridView;
+        
         public BarracksHeroViewInput BarracksInput =>  _barracksInput;
             
         [SerializeField] private bool _logActiveParty;
@@ -72,7 +73,6 @@ namespace RobotCastle.MainMenu
                 _nonActive.Add(hero);
                 if (heroData.isUnlocked == false)
                 {
-                    
                 }
                 xInd++;
                 if (xInd >= rowCount)
@@ -89,6 +89,9 @@ namespace RobotCastle.MainMenu
             }
         }
 
+        /// <summary>
+        /// Will only hide heroes that are NOT in active group
+        /// </summary>
         public void Hide()
         {
             _barracksInput.SetActive(false);
@@ -164,21 +167,12 @@ namespace RobotCastle.MainMenu
 
         public void BreakItemToReturn(IItemView item) {}
         
-        public EMergeResult TryMerge(ItemData item1, ItemData item2, out ItemData mergedItem, out bool oneIntoTwo)
-        {
-            oneIntoTwo = false;
-            mergedItem = null;
-            return EMergeResult.NoMerge;
-        }
-
-        public List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem)
-        {
-            return new List<Vector2Int>();
-        }
+        public List<Vector2Int> GetCellsForPotentialMerge(List<ItemData> allItems, ItemData srcItem) => new List<Vector2Int>();
 
         public List<IItemView> MergeAllItemsPossible(List<IItemView> allItems, IGridView gridView) => null;
 
         public List<IItemView> SortAllItemsPossible(List<IItemView> allItems, IGridView gridView) => null;
+     
         public void MergeAllItemsByPriority(List<IItemView> firstPriority, List<IItemView> secondPriority, IGridView gridView){}
 
         public void AddModifier(IMergeModifier mod) => throw new NotImplementedException();
@@ -198,9 +192,8 @@ namespace RobotCastle.MainMenu
             return false;
         }
 
-        public int GetFreeCellsCount() => 0;
-
         public List<ItemData> GetAllItems() => null;
+
         public List<IItemView> GetAllItemsViews() => null;
 
         public List<ItemData> GetAllItemsInMergeArea() => null;
@@ -211,12 +204,9 @@ namespace RobotCastle.MainMenu
 
         public bool CanPutMoreIntoActiveZone() => true;
 
-        public Vector2Int GetCoordinateForClosestCellInActiveZone(Vector2Int originalCell)
-        {
-            return default;
-        }
+        public Vector2Int GetCoordinateForClosestCellInActiveZone(Vector2Int originalCell) => default;
 
-         private void OnMergeInputEnd(MergePutResult res)
+        private void OnMergeInputEnd(MergePutResult res)
          {
              if (res == MergePutResult.PutToSameCell || res == MergePutResult.MissedCell)
                  return;

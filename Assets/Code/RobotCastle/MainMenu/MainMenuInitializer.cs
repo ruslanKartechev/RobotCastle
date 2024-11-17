@@ -87,7 +87,7 @@ namespace RobotCastle.MainMenu
                 instance.Begin(() =>
                 {
                     save.heroSummon = true;
-                    CLog.Log($"Barracks tutorial completed");
+                    CLog.Log($"Summon tutorial completed");
                 });
             }
         }

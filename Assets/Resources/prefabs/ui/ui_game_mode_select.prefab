@@ -674,6 +674,7 @@ GameObject:
   - component: {fileID: 8432489113697685000}
   - component: {fileID: 8969308377792973545}
   - component: {fileID: 9172348976058353636}
+  - component: {fileID: 3213363480606427131}
   m_Layer: 5
   m_Name: canvas_invasion
   m_TagString: Untagged
@@ -743,14 +744,6 @@ MonoBehaviour:
   _difficultyTierUI: {fileID: 1517681470293473739}
   _rewardsUI: {fileID: 3497504534276690503}
   _selectedChapterSound: {fileID: 11400000, guid: fc9bd776074b904458779b0c1d3619d3, type: 2}
-  _data:
-    multiplierTier: 1
-    tierRewardMultiplier: 1
-    totalEnergyCost: 5
-    chapterIndex: 0
-    tierIndex: 0
-    corruption: 0
-    goldReward: 0
 --- !u!223 &8432489113697685000
 Canvas:
   m_ObjectHideFlags: 0
@@ -814,6 +807,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3213363480606427131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 896919906951177035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e79aa45ad2f4f2bb9e315f9a3c1e8c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rect: {fileID: 1923803985444525414}
 --- !u!1 &1051871491961663429
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,6 +967,7 @@ GameObject:
   - component: {fileID: 8261699483680819116}
   - component: {fileID: 186249827691850714}
   - component: {fileID: 792044610279026996}
+  - component: {fileID: 5588008349840597774}
   m_Layer: 5
   m_Name: canvas_player_party
   m_TagString: Untagged
@@ -1072,6 +1079,19 @@ MonoBehaviour:
   - {fileID: 7305540580752364149}
   - {fileID: 2579568921239275688}
   _textPlayerPower: {fileID: 2639697493722689088}
+--- !u!114 &5588008349840597774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302141987420282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e79aa45ad2f4f2bb9e315f9a3c1e8c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rect: {fileID: 1034320986485299272}
 --- !u!1 &1291390915418846097
 GameObject:
   m_ObjectHideFlags: 0
@@ -1084,6 +1104,7 @@ GameObject:
   - component: {fileID: 7800111275097969037}
   - component: {fileID: 5351617690445188694}
   - component: {fileID: 7241312855211367703}
+  - component: {fileID: 380105397412419715}
   m_Layer: 5
   m_Name: canvas_selection
   m_TagString: Untagged
@@ -1174,6 +1195,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &380105397412419715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291390915418846097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e79aa45ad2f4f2bb9e315f9a3c1e8c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rect: {fileID: 5154844256314296561}
 --- !u!1 &1438708647910014218
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,9 +24,14 @@ namespace RobotCastle.UI
             _gateBtn.AddMainCallback(Gate);
             _barracksBtn.AddMainCallback(Battle);
             _shopBtn.AddMainCallback(Shop);
-            _gateBtn.SetInteractable(true);
-            _barracksBtn.SetInteractable(true);
-            _shopBtn.SetInteractable(true);
+            SetAllInteractable(true);
+        }
+        
+        public void SetAllInteractable(bool interactable)
+        {
+            _gateBtn.SetInteractable(interactable);
+            _barracksBtn.SetInteractable(interactable);
+            _shopBtn.SetInteractable(interactable);
         }
 
         private void Shop()

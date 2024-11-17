@@ -22,12 +22,11 @@ namespace RobotCastle.MainMenu
         public void SetNoneTab()
         {
             var ui = ServiceLocator.Get<IUIManager>();
-            ui.Show<GateTabUI>(UIConstants.UIGateTab, () => {}).Close();
-            ui.Show<PlayerDataPanelUI>(UIConstants.UIPlayerData, () => {}).Close();
-            ui.Show<MainMenuTabsUI>(UIConstants.UIMainMenuTabs, () => {}).Close();
+            ui.GetIfShown<GateTabUI>(UIConstants.UIGateTab)?.Close();
+            ui.GetIfShown<PlayerDataPanelUI>(UIConstants.UIPlayerData)?.Close();
+            ui.GetIfShown<MainMenuTabsUI>(UIConstants.UIMainMenuTabs)?.Close();
             CloseCurrent();
             _tabType = MenuTabType.None;
-
         }
         
         public void CloseCurrent()
@@ -85,6 +84,7 @@ namespace RobotCastle.MainMenu
             ui.Show<PlayerDataPanelUI>(UIConstants.UIPlayerData, () => {}).Show();
             ui.Show<MainMenuTabsUI>(UIConstants.UIMainMenuTabs, () => {}).Show();
             ui.Show<GateTabUI>(UIConstants.UIGateTab, () => {}).Close();
+            ui.Show<BarracksTabUI>(UIConstants.UIBarracksTab, () => {}).Show();
             ServiceLocator.Get<MainMenuCamera>().SetPoint(_camPointBarracks);
             ServiceLocator.Get<TabsHighlighterUI>().HighlightTab(MenuTabType.Barracks);
             var bm = ServiceLocator.Get<BarracksManager>();
@@ -129,6 +129,9 @@ namespace RobotCastle.MainMenu
             _worldBarracks.SetActive(false);
             var bm = ServiceLocator.Get<BarracksManager>();
             bm.Hide();
+            var screen = ServiceLocator.Get<IUIManager>().GetIfShown<BarracksTabUI>(UIConstants.UIBarracksTab);
+            if (screen)
+                screen.Close();
         }
 
         private void CloseGate()
