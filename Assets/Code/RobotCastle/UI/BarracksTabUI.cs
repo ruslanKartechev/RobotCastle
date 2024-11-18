@@ -40,7 +40,7 @@ namespace RobotCastle.UI
             {
                 ServiceLocator.Get<IUIManager>().Show<AltarsOverviewUI>(UIConstants.UIAltars, () =>
                 {
-                    ServiceLocator.Get<TabsSwitcher>().SetGateTab();
+                    ServiceLocator.Get<TabsSwitcher>().SetBarracksTab();
                 }).Show();
             }, null);        
         }
