@@ -25,6 +25,8 @@ namespace RobotCastle.Merging
         private DraggedItem _draggedItem;
         private MergePutResult _lastPutResult;
         private bool _isProcessingPut;
+
+        public IItemView DraggedItemView => _draggedItem.itemView;
         
         public MergeController(IMergeProcessor processor, 
             IGridSectionsController sectionsController,

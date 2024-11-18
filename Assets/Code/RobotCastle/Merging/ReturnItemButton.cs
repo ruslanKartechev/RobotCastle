@@ -1,6 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace RobotCastle.Merging
 {

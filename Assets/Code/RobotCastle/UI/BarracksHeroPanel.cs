@@ -1,4 +1,5 @@
-﻿using RobotCastle.Battling;
+﻿using System.Collections.Generic;
+using RobotCastle.Battling;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.MainMenu;
@@ -10,7 +11,27 @@ using UnityEngine.UI;
 namespace RobotCastle.UI
 {
     public class BarracksHeroPanel : MonoBehaviour, IScreenUI
-    {
+    { 
+        // TEMPORARY:
+        public static Dictionary<string, string> FullNamesMap = new()
+        {
+            {"evan", "Sword of Valor"},
+            {"shelda", "Shield Master"},
+            {"joi", "Noble Guard"},
+            {"aramis", "Sharp Shooter"},
+            {"daniel", "Hammer Wielder"},
+            {"maiu", "Earth Power"},
+            {"priya", "Frozen Wizard"},
+            {"asiaq", "Strong Magician"},
+            {"alberon", "Master of Vitality"},
+            {"hansi", "Fast Bow Shooter"},
+            {"bombie", "Dangerous Boy"},
+            {"rie", "Master of Illusion"},
+            {"zupitere", "Lightning God"},
+            {"behemus", "Armored Tank"},
+            {"leonhard", "Fierce Protector"},
+        };
+
         public MyButton btnGrowth => _btnGrowth;
 
         public MyButton btnBack => _btnBack;
@@ -25,6 +46,7 @@ namespace RobotCastle.UI
         [SerializeField] private TextMeshProUGUI _txtHeroLevel;
         [SerializeField] private TextMeshProUGUI _txtHeroXp;
         [SerializeField] private TextMeshProUGUI _txtHeroName;
+        [SerializeField] private TextMeshProUGUI _txtHeroNameFull;
         [SerializeField] private Image _xpFill;
         [SerializeField] private Image _heroIcon;
         [Space(10)]
@@ -43,6 +65,18 @@ namespace RobotCastle.UI
             _btnBack.AddMainCallback(Back);
             _btnGrowth.SetInteractable(true);
             _btnBack.SetInteractable(true);
+            ShowFullName(id);
+        }
+
+        private void ShowFullName(string id)
+        {
+            if (FullNamesMap.TryGetValue(id, out var name))
+            {
+                _txtHeroNameFull.enabled = true;
+                _txtHeroNameFull.text = name;
+            }
+            else
+                _txtHeroNameFull.enabled = false;
         }
 
         private void UpdateStats()

@@ -16,17 +16,14 @@ namespace RobotCastle.Merging
         private Coroutine _positionChecking;
         private BattleMergeUI _battleUI;
         private bool _refundMode;
-
+        private int _refundedMoney;
 
         public void Init(MergeController mergeController)
         {
             _mergeController = mergeController;
         }
 
-        private void OnDisable()
-        {
-            SetActive(false);
-        }
+   
 
         public void SetActive(bool active)
         {
@@ -39,6 +36,7 @@ namespace RobotCastle.Merging
             var ui = ServiceLocator.Get<GameInput>();
             if (active)
             {
+                _mergeController.OnItemPicked += OnDraggingBegan;
                 ui.OnDownLongClick += OnDown;
                 ui.OnUpMain += OnUp;
                 ui.OnDoubleClick += OnDoubleClick;
@@ -48,6 +46,7 @@ namespace RobotCastle.Merging
             }
             else
             {
+                _mergeController.OnItemPicked -= OnDraggingBegan;
                 ui.OnDownLongClick -= OnDown;
                 ui.OnUpMain -= OnUp;
                 ui.OnDoubleClick -= OnDoubleClick;
@@ -58,6 +57,17 @@ namespace RobotCastle.Merging
                     _battleUI.ReturnItemButton.Hide();
                 }
             }
+        }
+        
+        private void OnDisable() => SetActive(false);
+
+        private void OnDraggingBegan(ItemData itemData)
+        {
+            if (!_isActive)
+                return;
+            var lvl = itemData.core.level;
+            _refundedMoney = (lvl + 1) * HeroesConstants.HeroRefundMoney;
+            _battleUI.ReturnItemButton.SetMoney(_refundedMoney);
         }
 
         private void OnDoubleClick(Vector3 obj)
@@ -70,8 +80,8 @@ namespace RobotCastle.Merging
             if (_refundMode)
             {
                 var lvl = _mergeController.DropToReturnItem();
-                var money = (lvl + 1) * HeroesConstants.HeroRefundMoney;
-                ServiceLocator.Get<GameMoney>().levelMoney.AddValue(money);
+                _refundedMoney = (lvl + 1) * HeroesConstants.HeroRefundMoney;
+                ServiceLocator.Get<GameMoney>().levelMoney.AddValue(_refundedMoney);
                 _battleUI.ReturnItemButton.Hide();
                 _refundMode = false;
             }
@@ -92,6 +102,7 @@ namespace RobotCastle.Merging
                 cam.SlideBlockers++;
             if (_refundAllowed)
             {
+              
                 _positionChecking = StartCoroutine(PositionAndRefundCheck());
             }
             else
@@ -100,7 +111,6 @@ namespace RobotCastle.Merging
             }
             _mergeController.OnDown(pos);
         }
-
 
         private IEnumerator PositionChecking()
         {
