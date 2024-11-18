@@ -55,13 +55,7 @@ namespace RobotCastle.MainMenu
                 CLog.LogRed("Error! Cannot get MainMenuTabsUI!");
             }
             _hand.Off();
-            _subParent.Parent(tabs.ButtonsParent, _parent);
-            
-            
-            tabs.gateBtn.SetInteractable(false);
-            tabs.shopBtn.SetInteractable(false);
-            var barracksBtn = tabs.barracksBtn;
-            barracksBtn.SetInteractable(false);
+            tabs.SetAllInteractable(false);
             _textPrinter.Callback = StopWaiting;
             _textPrinter.Show();
             _textPrinter.ShowMessages(_messages1);
@@ -70,13 +64,14 @@ namespace RobotCastle.MainMenu
             while (_isWaiting)
                 yield return null;
             _textPrinter.Callback = BlankCallback;
-            _subParent.Return();
-            
+            _subParent.Parent(tabs.ButtonsParent, _parent);
+            var barracksBtn = tabs.barracksBtn;
             barracksBtn.SetInteractable(true);
             _hand.On();
             _hand.LoopClickingTracking(barracksBtn.transform, _clickOffsetBarracks, 0f);
             
             yield return WaitForBtn(barracksBtn);
+            _subParent.Return();
             _backGround.enabled = false;
             _textPrinter.ShowMessages(_messages2);
             

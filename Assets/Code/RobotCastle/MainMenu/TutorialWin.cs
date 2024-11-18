@@ -15,7 +15,7 @@ namespace RobotCastle.MainMenu
     
         public override void Begin(Action finishedCallback)
         {
-            CLog.LogGreen($"[TutorialBattle] Begin");
+            CLog.Log($"[TutorialWin] Begin");
             _finishedCallback = finishedCallback;
             _hand.On();
             var replayBtn = _ui.BtnPlayAgain;

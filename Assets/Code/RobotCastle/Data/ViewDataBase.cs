@@ -79,25 +79,18 @@ namespace RobotCastle.Data
 
         public Sprite GetWeaponSpriteAtLevel(string id, int levelIndex)
         {
-            if (ItemInfo.ContainsKey(id))
-            {
-                var path = $"{ItemInfo[id].Icon}_lvl_{levelIndex + 1}";
-                return Resources.Load<Sprite>(path);
-            }
-            CLog.LogError($"[ViewDb] does not contain fullId {id}");
-            return null;
+            var path = $"{ItemInfo[id].Icon}_{levelIndex + 1}";
+            return Resources.Load<Sprite>(path);
         }
 
         public Sprite GetItemSpriteByTypeAndLevel(CoreItemData itemData)
         {
-            string path;
             switch (itemData.type)
             {
-                case MergeConstants.TypeWeapons:
-                    path = $"{ItemInfo[itemData.id].Icon}_lvl_{itemData.level + 1}";
-                    return Resources.Load<Sprite>(path);
-                case MergeConstants.TypeBonus:
-                    path = GeneralIcons[$"{itemData.id}_{itemData.level}"];
+                case ItemsIds.TypeItem:
+                    return GetWeaponSpriteAtLevel(itemData.id, itemData.level);
+                case ItemsIds.TypeBonus:
+                    var path = GeneralIcons[$"{itemData.id}_{itemData.level}"];
                     return Resources.Load<Sprite>(path);
                 default:
                     return Resources.Load<Sprite>(GeneralIcons[itemData.id]);

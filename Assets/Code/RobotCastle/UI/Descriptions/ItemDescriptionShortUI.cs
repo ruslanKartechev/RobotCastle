@@ -57,7 +57,7 @@ namespace RobotCastle.UI
             _heroIcon.sprite = DataHelpers.GetItemIcon(itemData);
         }
 
-        public void ShowStats(List<string> modifierIds, GameObject source = null)
+        public bool ShowStats(List<string> modifierIds, GameObject source = null)
         {
             var didFindStat = false;
             var didFindBonus = false;
@@ -87,6 +87,7 @@ namespace RobotCastle.UI
             }
             if(!didFindBonus)
                 _additionalBonusBlock.SetActive(false);
+            return didFindStat || didFindBonus;
         }
 
         public override void Hide()

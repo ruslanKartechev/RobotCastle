@@ -9,6 +9,8 @@ namespace SleepDev
 {
     public class AdsPlayer : MonoBehaviour
     {
+        public const string Placement_Merchant = "merchant_offer";
+        
         
         private static AdsPlayer _instance;
         public static AdsPlayer Instance => _instance;

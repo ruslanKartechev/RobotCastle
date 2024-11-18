@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
@@ -47,7 +48,7 @@ namespace RobotCastle.Battling.Altars
         
         public void OnNewItemSpawned(IItemView view)
         {
-            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            if (view.itemData.core.type == ItemsIds.TypeHeroes)
             {
                 var components = view.Transform.GetComponent<HeroComponents>();
                 components.stats.PhysicalResist.AddPermanentDecorator(this);
@@ -86,7 +87,7 @@ namespace RobotCastle.Battling.Altars
         
         public void OnNewItemSpawned(IItemView view)
         {
-           if (view.itemData.core.type == MergeConstants.TypeHeroes)
+           if (view.itemData.core.type == ItemsIds.TypeHeroes)
            {
                var components = view.Transform.GetComponent<HeroComponents>();
                components.stats.HealthMax.AddPermanentDecorator(this);
@@ -128,7 +129,7 @@ namespace RobotCastle.Battling.Altars
         
         public void OnNewItemSpawned(IItemView view)
         {
-            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            if (view.itemData.core.type == ItemsIds.TypeHeroes)
             {
                 var components = view.Transform.GetComponent<HeroComponents>();
                 components.preBattleRecurringMods.Add(new DamageTakeModReflect(components, _val));

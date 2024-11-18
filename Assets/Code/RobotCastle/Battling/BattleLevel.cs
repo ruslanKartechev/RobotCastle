@@ -171,7 +171,7 @@ namespace RobotCastle.Battling
         private void InitOffers()
         {
             CLog.Log($"[{nameof(BattleLevel)}] Init Offers");
-            _smeltingOffer = new SmeltingOfferManager(_smeltingConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager.battle);
+            _smeltingOffer = new SmeltingOfferManager(_smeltingConfigContainer.config, _troopSizeManager);
             _devilsOffer = new DevilsOfferManager(_devilsOfferConfigContainer.config, _battleManager, _playerHealthView);
             _merchantOffer = new MerchantOfferManager(_merchantOfferConfigContainer.config, _mergeManager.GridView, _mergeManager.SectionsController, _troopSizeManager, _battleManager, _playerHealthView);
             ServiceLocator.Bind<SmeltingOfferManager>(_smeltingOffer);

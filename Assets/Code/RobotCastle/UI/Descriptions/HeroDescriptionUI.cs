@@ -97,7 +97,7 @@ namespace RobotCastle.UI
    
             atkTxt = Mathf.RoundToInt(atk).ToString();
             spTxt = Mathf.RoundToInt(sp).ToString();
-            atkSpeedTxt = $"{Mathf.RoundToInt(atkSpeed * 100)}%";
+            atkSpeedTxt = $"{atkSpeed:N2}";
             
             _attackText.text = atkTxt;
             _spellPowerText.text = spTxt;

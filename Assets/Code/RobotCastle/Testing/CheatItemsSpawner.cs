@@ -59,13 +59,13 @@ namespace RobotCastle.Testing
         [ContextMenu("Spawn Chosen Hero")]
         public void SpawnChosenHero()
         {
-            var coreItem = new CoreItemData(HeroLvl, HeroID, MergeConstants.TypeHeroes);
+            var coreItem = new CoreItemData(HeroLvl, HeroID, ItemsIds.TypeHeroes);
             SpawnMergeItem(coreItem, null);
         }
 
         public void SpawnChosenHero(Vector2Int cell)
         {
-            var coreItem = new CoreItemData(HeroLvl, HeroID, MergeConstants.TypeHeroes);
+            var coreItem = new CoreItemData(HeroLvl, HeroID, ItemsIds.TypeHeroes);
             var view = SpawnMergeItem(coreItem, null);
             var mergeManager = ServiceLocator.Get<MergeManager>();
             
@@ -139,30 +139,30 @@ namespace RobotCastle.Testing
 #endif
         }
 
-        public void SpawnArmor1() => SpawnMergeItem(new CoreItemData(0, "armor", MergeConstants.TypeWeapons));
-        public void SpawnArmor2() => SpawnMergeItem(new CoreItemData(1, "armor", MergeConstants.TypeWeapons));
-        public void SpawnArmor3() => SpawnMergeItem(new CoreItemData(2, "armor", MergeConstants.TypeWeapons));
-        public void SpawnArmor4() => SpawnMergeItem(new CoreItemData(3, "armor", MergeConstants.TypeWeapons));
+        public void SpawnArmor1() => SpawnMergeItem(new CoreItemData(0, "armor", ItemsIds.TypeItem));
+        public void SpawnArmor2() => SpawnMergeItem(new CoreItemData(1, "armor", ItemsIds.TypeItem));
+        public void SpawnArmor3() => SpawnMergeItem(new CoreItemData(2, "armor", ItemsIds.TypeItem));
+        public void SpawnArmor4() => SpawnMergeItem(new CoreItemData(3, "armor", ItemsIds.TypeItem));
 
         
-        public void SpawnSword1() => SpawnMergeItem(new CoreItemData(0, "sword", MergeConstants.TypeWeapons));
-        public void SpawnSword2() => SpawnMergeItem(new CoreItemData(1, "sword", MergeConstants.TypeWeapons));
-        public void SpawnSword3() => SpawnMergeItem(new CoreItemData(2, "sword", MergeConstants.TypeWeapons));
-        public void SpawnSword4() => SpawnMergeItem(new CoreItemData(3, "sword", MergeConstants.TypeWeapons));
+        public void SpawnSword1() => SpawnMergeItem(new CoreItemData(0, "sword", ItemsIds.TypeItem));
+        public void SpawnSword2() => SpawnMergeItem(new CoreItemData(1, "sword", ItemsIds.TypeItem));
+        public void SpawnSword3() => SpawnMergeItem(new CoreItemData(2, "sword", ItemsIds.TypeItem));
+        public void SpawnSword4() => SpawnMergeItem(new CoreItemData(3, "sword", ItemsIds.TypeItem));
 
-        public void SpawnStaff1() => SpawnMergeItem(new CoreItemData(0, "staff", MergeConstants.TypeWeapons));
-        public void SpawnStaff2() => SpawnMergeItem(new CoreItemData(1, "staff", MergeConstants.TypeWeapons));
-        public void SpawnStaff3() => SpawnMergeItem(new CoreItemData(2, "staff", MergeConstants.TypeWeapons));
-        public void SpawnStaff4() => SpawnMergeItem(new CoreItemData(3, "staff", MergeConstants.TypeWeapons));
+        public void SpawnStaff1() => SpawnMergeItem(new CoreItemData(0, "staff", ItemsIds.TypeItem));
+        public void SpawnStaff2() => SpawnMergeItem(new CoreItemData(1, "staff", ItemsIds.TypeItem));
+        public void SpawnStaff3() => SpawnMergeItem(new CoreItemData(2, "staff", ItemsIds.TypeItem));
+        public void SpawnStaff4() => SpawnMergeItem(new CoreItemData(3, "staff", ItemsIds.TypeItem));
 
-        public void SpawnBow1() => SpawnMergeItem(new CoreItemData(0, "bow", MergeConstants.TypeWeapons));
-        public void SpawnBow2() => SpawnMergeItem(new CoreItemData(1, "bow", MergeConstants.TypeWeapons));
-        public void SpawnBow3() => SpawnMergeItem(new CoreItemData(2, "bow", MergeConstants.TypeWeapons));
-        public void SpawnBow4() => SpawnMergeItem(new CoreItemData(3, "bow", MergeConstants.TypeWeapons));
+        public void SpawnBow1() => SpawnMergeItem(new CoreItemData(0, "bow", ItemsIds.TypeItem));
+        public void SpawnBow2() => SpawnMergeItem(new CoreItemData(1, "bow", ItemsIds.TypeItem));
+        public void SpawnBow3() => SpawnMergeItem(new CoreItemData(2, "bow", ItemsIds.TypeItem));
+        public void SpawnBow4() => SpawnMergeItem(new CoreItemData(3, "bow", ItemsIds.TypeItem));
 
-        public void SpawnXPBook1() => SpawnMergeItem(new CoreItemData(0, MergeConstants.UpgradeBookId, MergeConstants.TypeWeapons));
-        public void SpawnXPBook2() => SpawnMergeItem(new CoreItemData(1, MergeConstants.UpgradeBookId, MergeConstants.TypeWeapons));
-        public void SpawnXPBook3() => SpawnMergeItem(new CoreItemData(2, MergeConstants.UpgradeBookId, MergeConstants.TypeWeapons));
+        public void SpawnXPBook1() => SpawnMergeItem(new CoreItemData(0, ItemsIds.ItemUpgradeBookId, ItemsIds.TypeItem));
+        public void SpawnXPBook2() => SpawnMergeItem(new CoreItemData(1, ItemsIds.ItemUpgradeBookId, ItemsIds.TypeItem));
+        public void SpawnXPBook3() => SpawnMergeItem(new CoreItemData(2, ItemsIds.ItemUpgradeBookId, ItemsIds.TypeItem));
         
         public void SpawnPreset(List<CoreItemData> list)
         {

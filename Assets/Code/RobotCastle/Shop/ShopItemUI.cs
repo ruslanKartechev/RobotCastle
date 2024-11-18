@@ -36,7 +36,7 @@ namespace RobotCastle.Shop
             
             switch (itemData.itemData.type)
             {
-                case MergeConstants.TypeHeroes:
+                case ItemsIds.TypeHeroes:
                     var heroesDb = ServiceLocator.Get<HeroesDatabase>();
                     var viewinfo = heroesDb.GetHeroViewInfo(itemData.itemData.id);
                     _nameText.text = viewinfo.name;
@@ -51,7 +51,7 @@ namespace RobotCastle.Shop
 
             switch (itemData.currency)
             {
-                case EShopCurrency.REAL_Money:
+                case EShopCurrency.RealWorldMoney:
                     CLog.Log($"In app Case!");
                     break;
                 default:

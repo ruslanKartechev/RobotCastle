@@ -11,10 +11,6 @@ namespace RobotCastle.Summoning
         public const string Id_OwnedHero = "owned_hero";
         public const string Id_NewHero = "new_hero";
         public const string Id_Gold = "gold";
-        public const string Id_Book = "book";
-        public const string Id_KingMedal = "king_medal";
-        public const string Id_HeroMedal = "hero_medal";
-        public const string Id_UpgradeCube = "upgrade_cube";
         public const string Id_AnyInventoryItem = "inventory_item";
 
         public int outputItemsCount;

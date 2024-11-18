@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
@@ -36,7 +37,7 @@ namespace RobotCastle.Relics
 
         public void OnNewItemSpawned(IItemView view)
         {
-            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            if (view.itemData.core.type == ItemsIds.TypeHeroes)
             {
                 var components = view.Transform.GetComponent<HeroComponents>();
                 components.stats.Attack.AddPermanentDecorator(_atkDecor);

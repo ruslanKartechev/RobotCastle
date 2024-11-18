@@ -48,7 +48,7 @@ namespace RobotCastle.Battling.Altars
         
         public CoreItemData ModifySmeltItemBeforeApplied(CoreItemData itemData)
         {
-            if (itemData.type != MergeConstants.TypeWeapons)
+            if (itemData.type != ItemsIds.TypeItem)
                 return itemData;
             var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
             var chance = _chances[tier];

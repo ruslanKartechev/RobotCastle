@@ -13,10 +13,13 @@ namespace RobotCastle.Battling
     public class PlayerFactory : MonoBehaviour, IPlayerFactory
     {
         public event Action<PurchaseHeroResult> OnPurchase;
-
+           
         public bool PurchaseAllowed { get; set; } = true; 
+        
         public ReactiveInt NextCost => _costReact;
-   
+        
+        
+        
         public PurchaseHeroResult TryPurchaseItem(bool promptUser = true)
         {
             if (!PurchaseAllowed)
@@ -87,20 +90,15 @@ namespace RobotCastle.Battling
         
         public void AddModifier(IPlayerItemSpawnModifier mod)
         {
-            _modifiers.Add(mod);   
+            if(_modifiers.Contains(mod) == false)
+                _modifiers.Add(mod);   
         }
 
-        public void RemoveModifier(IPlayerItemSpawnModifier mod)
-        {
-            _modifiers.Remove(mod);   
-        }
+        public void RemoveModifier(IPlayerItemSpawnModifier mod) => _modifiers.Remove(mod);
 
-        public void ClearAllModifiers()
-        {
-            _modifiers.Clear();
-        }
-     
-          
+        public void ClearAllModifiers() => _modifiers.Clear();
+
+
         [SerializeField] private int _cost = 3;
         [SerializeField] private SoundID _sound;
         private IPlayerSummonItemPicker _itemsPicker;

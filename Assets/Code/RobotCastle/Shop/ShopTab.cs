@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RobotCastle.Data;
+using UnityEngine;
 
 namespace RobotCastle.Shop
 {
@@ -7,4 +8,6 @@ namespace RobotCastle.Shop
         public abstract void Show();
         public abstract void Hide();
     }
+
+
 }

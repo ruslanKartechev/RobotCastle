@@ -1,7 +1,6 @@
 ﻿using System;
 using RobotCastle.Core;
 using RobotCastle.Data;
-using RobotCastle.Merging;
 using RobotCastle.UI;
 using TMPro;
 using UnityEngine;
@@ -47,11 +46,11 @@ namespace RobotCastle.Battling.DevilsOffer
             var rewardItem = offerData.reward;
             switch (rewardItem.type)
             {
-                case MergeConstants.TypeWeapons:
+                case ItemsIds.TypeItem:
                     var heroItemdata = ServiceLocator.Get<ModifiersDataBase>().GetWeaponsWithModifiers(rewardItem);
                     _itemDescription.ShowItem(heroItemdata);
                     break;
-                case MergeConstants.TypeBonus:
+                case ItemsIds.TypeBonus:
                     _itemDescription.ShowBonus(rewardItem);
                     break;
             }

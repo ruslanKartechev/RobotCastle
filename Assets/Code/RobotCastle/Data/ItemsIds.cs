@@ -11,5 +11,17 @@
         public const string Scroll2 = "scroll_tier_2";
         public const string Scroll3 = "scroll_tier_3";
         public const string Scroll4 = "scroll_tier_4";
+        
+        
+        public const string TypeBonus = "bonus";
+        public const string TypeItem = "item";
+        public const string TypeHeroes = "unit";
+        public const string ItemUpgradeBookId = "book_xp";
+
+        public const string IdBonusMoney = "bonus_money";
+        public const string IdBonusTroops = "bonus_troops";
+        public const string IdRestoreHealth = "restore_health";
+        public const string IdHeroLevelUp = "hero_level_up";
+
     }
 }

@@ -31,18 +31,18 @@ namespace RobotCastle.Battling
             var troops = ServiceLocator.Get<ITroopSizeManager>();
             switch (data.type)
             {
-                case MergeConstants.TypeWeapons:
+                case ItemsIds.TypeItem:
                     var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
                     factory.SpawnHeroOrItem(new SpawnArgs(data), merge.GridView, merge.SectionsController, out var item);
                     break;
-                case MergeConstants.TypeBonus:
+                case ItemsIds.TypeBonus:
                     switch (data.id)
                     {
-                        case "bonus_troops":
+                        case ItemsIds.IdBonusTroops:
                             CLog.Log($"[bonus={data.id}] Adding troops size by 1");
                             troops.ExtendBy(data.level);
                             break;
-                        case "restore_health":
+                        case ItemsIds.IdRestoreHealth:
                             CLog.Log($"[bonus={data.id}] Adding health");
                             var battleManager = ServiceLocator.Get<BattleManager>();
                             var health = battleManager.battle.playerHealthPoints;
@@ -50,15 +50,15 @@ namespace RobotCastle.Battling
                             battleManager.battle.playerHealthPoints = health;
                             ServiceLocator.Get<CastleHealthView>().AddHealth(health);
                             break;
-                        case "bonus_money":
+                        case ItemsIds.IdBonusMoney:
                             CLog.Log($"[bonus={data.id}] Adding money +{data.level}");
                             var gm = ServiceLocator.Get<GameMoney>();
                             gm.AddMoney(data.level);
                             break;
-                        case "hero_level_up":
+                        case ItemsIds.IdHeroLevelUp:
                             CLog.Log($"[bonus={data.id}] Random hero level up");
                             var heroes = merge.SectionsController.GetAllItemsViews()
-                                .FindAll(t => t.itemData.core.type == MergeConstants.TypeHeroes 
+                                .FindAll(t => t.itemData.core.type == ItemsIds.TypeHeroes 
                                               && (t.itemData.core.level + 1) < MergeConstants.HeroMaxMergeLvl);
                             if (heroes.Count == 0)
                             {

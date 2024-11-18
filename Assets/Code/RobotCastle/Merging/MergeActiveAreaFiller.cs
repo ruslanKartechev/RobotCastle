@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RobotCastle.Data;
 using SleepDev;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ namespace RobotCastle.Merging
             var heroes = new List<IItemView>(items.Count);
             foreach (var vv in items)
             {
-                if(vv.itemData.core.type == MergeConstants.TypeHeroes)
+                if(vv.itemData.core.type == ItemsIds.TypeHeroes)
                     heroes.Add(vv);
             }
             if (heroes.Count == 0)

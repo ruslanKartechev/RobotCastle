@@ -89,7 +89,7 @@ namespace RobotCastle.Battling.Altars
         {
             CLog.LogRed("!! On merged received");
             var view = itemMergedInto;
-            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            if (view.itemData.core.type == ItemsIds.TypeHeroes)
             {
                 var tier = _tier >= _chances.Count ? _chances.Count - 1 : _tier;
                 var chance = _chances[tier];
@@ -125,7 +125,7 @@ namespace RobotCastle.Battling.Altars
             var tier = _tier >= _levels.Count ? _levels.Count - 1 : _tier;
             var bookLvl = _levels[tier];
             CLog.Log($"[AltarMp_BookOfPower] [Apply] Adding book of power lvl {bookLvl+1}");
-            ServiceLocator.Get<IBattleStartData>().AddStartItem(new CoreItemData(bookLvl, MergeConstants.UpgradeBookId, MergeConstants.TypeWeapons));
+            ServiceLocator.Get<IBattleStartData>().AddStartItem(new CoreItemData(bookLvl, ItemsIds.ItemUpgradeBookId, ItemsIds.TypeItem));
         }
 
         public override string GetShortDescription()

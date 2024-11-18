@@ -26,7 +26,7 @@ namespace RobotCastle.Data
             string key;
             switch (itemData.type)
             {
-                case MergeConstants.TypeWeapons:
+                case ItemsIds.TypeItem:
                     key = $"{itemData.id}_lvl_{itemData.level}";
                     if (descriptions.ContainsKey(key) == false)
                     {
@@ -34,7 +34,7 @@ namespace RobotCastle.Data
                         return null;
                     } 
                     return descriptions[key];
-                case MergeConstants.TypeBonus:
+                case ItemsIds.TypeBonus:
                     key = $"{itemData.id}_{itemData.level}";
                     if (descriptions.ContainsKey(key) == false)
                     {

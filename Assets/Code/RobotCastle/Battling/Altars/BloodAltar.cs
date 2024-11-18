@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
@@ -67,7 +68,7 @@ namespace RobotCastle.Battling.Altars
         
         public void OnNewItemSpawned(IItemView view)
         {
-            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            if (view.itemData.core.type == ItemsIds.TypeHeroes)
             {
                 var components = view.Transform.GetComponent<HeroComponents>();
                 components.stats.Vampirism.AddPermanentDecorator(this);
@@ -106,7 +107,7 @@ namespace RobotCastle.Battling.Altars
         
         public void OnNewItemSpawned(IItemView view)
         {
-            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            if (view.itemData.core.type == ItemsIds.TypeHeroes)
             {
                 var components = view.Transform.GetComponent<HeroComponents>();
                 components.stats.Attack.AddPermanentDecorator(this);
@@ -148,7 +149,7 @@ namespace RobotCastle.Battling.Altars
         
         public void OnNewItemSpawned(IItemView view)
         {
-            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            if (view.itemData.core.type == ItemsIds.TypeHeroes)
             {
                 var tier = _tier >= _blocksCount.Count ? _blocksCount.Count - 1 : _tier;
                 var count = _blocksCount[tier];

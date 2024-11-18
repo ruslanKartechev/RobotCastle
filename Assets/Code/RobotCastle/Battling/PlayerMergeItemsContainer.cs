@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 
 namespace RobotCastle.Battling
@@ -16,7 +17,7 @@ namespace RobotCastle.Battling
         {
             // CLog.Log($"Added item: {view.itemData.core.id}");
             _allItems.Add(view);
-            if (view.itemData.core.type == MergeConstants.TypeHeroes)
+            if (view.itemData.core.type == ItemsIds.TypeHeroes)
             {
                 var h = view.Transform.gameObject.GetComponent<IHeroController>();
                 _heroes.Add(h);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.MainMenu;
@@ -19,9 +18,6 @@ namespace RobotCastle.Battling.SmeltingOffer
         public MyButton ConfirmButton => _confirmButton;
         public InventoryController Inventory => _inventory;
 
-        [SerializeField] private TextMeshProUGUI _txtDescription;
-        [SerializeField] private TextMeshProUGUI _txtItemName;
-        [SerializeField] private TextMeshProUGUI _txtItemLevel;
         [SerializeField] private Image _pickedItemIcon;
         [SerializeField] private List<SmeltingItemUI> _itemsUI;
         [SerializeField] private InventoryController _inventory;
@@ -29,6 +25,7 @@ namespace RobotCastle.Battling.SmeltingOffer
         [SerializeField] private TextMeshProUGUI _rerollsText;
         [SerializeField] private MyButton _rerollsBtn;
         [SerializeField] private BlackoutFadeScreen _fadeScreen;
+        [SerializeField] private OfferedItemDescriptionUI _offeredItem;
         private List<CoreItemData> _options;
         private SmeltingOfferManager _manager;
         private TutorialSmelting _smelting;
@@ -50,15 +47,15 @@ namespace RobotCastle.Battling.SmeltingOffer
             SetClear();
             _confirmButton.SetInteractable(false);
             _confirmButton.AddMainCallback(OnConfirmBtn);
-            _txtDescription.text = "";
             _inventory.Reset();
             _inventory.OnNewPicked -= OnItemPicked;
             _inventory.OnNothingPicked -= OnNothingPicked;
             _inventory.OnNewPicked += OnItemPicked;
             _inventory.OnNothingPicked += OnNothingPicked;
-
+            _offeredItem.StatsDescription(false);
             TryTutorial();
         }
+
 
         private void TryTutorial()
         {
@@ -129,20 +126,15 @@ namespace RobotCastle.Battling.SmeltingOffer
         private void SetClear()
         {
             _pickedItemIcon.enabled = false;
-            _txtDescription.text = "";
-            _txtItemLevel.text = "";
-            _txtItemName.text = "Pick One Item";
+            _offeredItem.Clear();
+            _offeredItem.SetName("Pick One Item");
         }
 
         private void OnItemPicked(SleepDev.Inventory.Item item)
         {
             // CLog.Log($"[OnItemPicked] {item.NumberId}");
             var option = _options[item.NumberId];
-            var descrDb = ServiceLocator.Get<DescriptionsDataBase>();
-            var dd = descrDb.GetDescriptionByTypeAndLevel(option);
-            _txtItemName.text = dd.parts[0];
-            _txtItemLevel.text = dd.parts[1];
-            _txtDescription.text = dd.parts[2];
+            _offeredItem.ShowDescription(option);
             _pickedItemIcon.sprite = _itemsUI[item.NumberId].icon.sprite;
             _pickedItemIcon.enabled = true;
             _confirmButton.SetInteractable(true);
@@ -150,7 +142,6 @@ namespace RobotCastle.Battling.SmeltingOffer
 
         private void OnConfirmBtn()
         {
-            CLog.Log($"[OnConfirmBtn]");
             if (_inventory.PickedItem == null)
             {
                 CLog.LogError($"NO item picked");

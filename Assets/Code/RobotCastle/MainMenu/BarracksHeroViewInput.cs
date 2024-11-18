@@ -1,4 +1,5 @@
 ﻿using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.Merging;
 using SleepDev;
 using UnityEngine;
@@ -48,7 +49,7 @@ namespace RobotCastle.MainMenu
                 {
                     return;
                 }
-                if (itemView.itemData.core.type == MergeConstants.TypeHeroes)
+                if (itemView.itemData.core.type == ItemsIds.TypeHeroes)
                 {
                     var id = itemView.itemData.core.id;
                     ServiceLocator.Get<TabsSwitcher>().SetHeroView();

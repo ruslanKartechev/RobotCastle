@@ -1,4 +1,6 @@
-﻿namespace RobotCastle.Merging
+﻿using RobotCastle.Data;
+
+namespace RobotCastle.Merging
 {
     public partial class MergeController
     {
@@ -16,7 +18,7 @@
                 originalCellView = cell;
                 itemView = item;
                 underCell = null;
-                if(highlightUnder && item.itemData.core.type == MergeConstants.TypeHeroes)
+                if(highlightUnder && item.itemData.core.type == ItemsIds.TypeHeroes)
                     rangeHighlighter = new MergeUnitRangeHighlighter(item.Transform.gameObject, grid);
             }
 

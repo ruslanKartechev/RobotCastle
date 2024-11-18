@@ -40,17 +40,11 @@ namespace RobotCastle.Battling.DevilsOffer
             var options = new List<DevilsOfferData>(config.optionsPerTier[tier].options);
             var health = battleManager.battle.playerHealthPoints;
             if (health >= HeroesConstants.PlayerHealthStart)
-            {
-                options.RemoveAll(t => t.reward.id == "restore_health");
-            }
+                options.RemoveAll(t => t.reward.id == ItemsIds.IdRestoreHealth);
             else if (health <= 1)
-            {
                 options.RemoveAll(t => t.penaltyType == EDevilsPenaltyType.CastleDurability);
-            }
             if (options.Count == 0)
-            {
                 CLog.LogError($"[{nameof(DevilsOfferManager)}] Options count == 0 after filtering");
-            }
             _currentOption = new (options.Random());
             var ui = ServiceLocator.Get<IUIManager>().Show<DevilsOfferUI>(UIConstants.UIDevilsOffer, () => {});
             ui.Show(_currentOption, tier, ResultCallback);
@@ -60,13 +54,9 @@ namespace RobotCastle.Battling.DevilsOffer
         {
             CLog.Log($"[{nameof(DevilsOfferManager)}] Player response: {playerChoice}");
             if (playerChoice)
-            {
                 ShowPenaltyAndRewards(_token.Token);
-            }
             else
-            {
                 _callback?.Invoke();
-            }
         }
 
         private async void ShowPenaltyAndRewards(CancellationToken token)
@@ -104,8 +94,6 @@ namespace RobotCastle.Battling.DevilsOffer
             _callback?.Invoke();
         }
         
-        
-
         private void AddPenalty(EDevilsPenaltyType type, float val)
         {
             switch (type)

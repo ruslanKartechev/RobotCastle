@@ -54,7 +54,7 @@ namespace RobotCastle.Battling
             spawnedItem = spawner.SpawnItemOnCell(cellView, args.ItemData);
             switch (args.coreData.type)
             {
-                case MergeConstants.TypeHeroes:
+                case ItemsIds.TypeHeroes:
                     var heroGo = spawnedItem.Transform.gameObject;
                     var hero = heroGo.GetComponent<IHeroController>();
                     var ui = ServiceLocator.Get<IUIManager>().Show<UnitsUIPanel>(UIConstants.UIHeroesBars, () => { });
@@ -75,7 +75,7 @@ namespace RobotCastle.Battling
                     hero.SetBehaviour(new HeroIdleBehaviour());
                     hero.Components.heroUI.UpdateStatsView(hero.Components);
                     break;
-                case MergeConstants.TypeWeapons:
+                case ItemsIds.TypeItem:
                     var mods = ServiceLocator.Get<ModifiersDataBase>().GetWeaponsWithModifiers(args.coreData);
                     var modsContainer = spawnedItem.Transform.gameObject.GetComponent<ModifiersContainer>();
                     if(modsContainer == null)

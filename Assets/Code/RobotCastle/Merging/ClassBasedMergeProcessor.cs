@@ -47,7 +47,7 @@ namespace RobotCastle.Merging
             var data = item.itemData;
             var go = item.Transform.gameObject;
             item.Hide();
-            if (data.core.type == MergeConstants.TypeHeroes)
+            if (data.core.type == ItemsIds.TypeHeroes)
             {
                 var weapons = go.GetComponent<IHeroWeaponsContainer>();
                 if (weapons.Items.Count > 0)
@@ -94,13 +94,13 @@ namespace RobotCastle.Merging
 
         public void TryMerge(IItemView itemViewTaken, IItemView itemViewInto, IGridView gridView, Action<EMergeResult, bool> callback)
         {
-            if (itemViewTaken.itemData.core.id == MergeConstants.UpgradeBookId)
+            if (itemViewTaken.itemData.core.id == ItemsIds.ItemUpgradeBookId)
             {
                 var upgradeOperation = new UpgradeWithBookOperation(itemViewTaken, itemViewInto, true, gridView, _container, _maxLevelCheck, callback);
                 upgradeOperation.Process();
                 return;
             }
-            if (itemViewInto.itemData.core.id == MergeConstants.UpgradeBookId)
+            if (itemViewInto.itemData.core.id == ItemsIds.ItemUpgradeBookId)
             {
                 var upgradeOperation = new UpgradeWithBookOperation(itemViewInto, itemViewTaken, false, gridView, _container, _maxLevelCheck, callback);
                 upgradeOperation.Process();
@@ -138,11 +138,11 @@ namespace RobotCastle.Merging
             }
             switch (itemInto.core.type)
             {
-                case MergeConstants.TypeWeapons:
+                case ItemsIds.TypeItem:
                     var operation1 = new MergeWeaponsOperation(itemViewTaken, itemViewInto, gridView, _container, _maxLevelCheck, _callback, _modifiers);
                     operation1.Process();
                     return;
-                case MergeConstants.TypeHeroes:
+                case ItemsIds.TypeHeroes:
                     var operation2 = new MergeUnitsOperation(itemViewTaken, itemViewInto, _gridView, _container, _maxLevelCheck, _callback, _modifiers);
                     operation2.Process();
                     return;
@@ -204,7 +204,7 @@ namespace RobotCastle.Merging
                         {
                             switch (data1.type)
                             {
-                                case MergeConstants.TypeHeroes:
+                                case ItemsIds.TypeHeroes:
                                     var itemsCont1 = allItems[indOne].Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
                                     var itemsCont2 = allItems[indTwo].Transform.gameObject.GetComponent<IHeroWeaponsContainer>();
                                     if (itemsCont1.ItemsCount + itemsCont2.ItemsCount > 0)
@@ -225,7 +225,7 @@ namespace RobotCastle.Merging
                                     allItems[indOne].UpdateViewToData();
                                     allItems[indOne].OnMerged();
                                     return true;
-                                case MergeConstants.TypeWeapons:
+                                case ItemsIds.TypeItem:
                                     _container.RemoveItem(allItems[indOne]);
                                     _container.RemoveItem(allItems[indTwo]);
                                     MergeFunctions.ClearCellAndHideItem(gridView, allItems[indOne]);
@@ -261,7 +261,7 @@ namespace RobotCastle.Merging
                     else
                         return String.Compare(core2.id, core1.id, StringComparison.Ordinal);
                 }
-                if (core1.type == MergeConstants.TypeHeroes || core2.type == MergeConstants.TypeWeapons)
+                if (core1.type == ItemsIds.TypeHeroes || core2.type == ItemsIds.TypeItem)
                     return -1;
                 else
                     return 1;

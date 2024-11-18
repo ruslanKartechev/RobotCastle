@@ -11,7 +11,7 @@ namespace RobotCastle.Battling.MerchantOffer
 {
     public class MerchantOfferUI : MonoBehaviour, IScreenUI
     {
-        [SerializeField] private List<ItemDescriptionLongUI> _itemDescriptions;
+        [SerializeField] private List<OfferedItemDescriptionUI> _itemDescriptions;
         [SerializeField] private List<MerchantOfferButton> _buttons;
         [SerializeField] private MyButton _completedBtn;
         [SerializeField] private BlackoutFadeScreen _fadeScreen;
@@ -20,7 +20,8 @@ namespace RobotCastle.Battling.MerchantOffer
         private Action _endCallback;
         private MerchantOfferConfig.GoodsPreset _preset;
         
-        public void Show(MerchantOfferConfig.GoodsPreset preset, List<int> prices, Predicate<MerchantOfferConfig.Goods> purchaseCallback, Action completedCallback)
+        public void Show(MerchantOfferConfig.GoodsPreset preset, List<int> prices, 
+            Predicate<MerchantOfferConfig.Goods> purchaseCallback, Action completedCallback)
         {
             _preset = preset;
             _endCallback = completedCallback;
@@ -43,16 +44,8 @@ namespace RobotCastle.Battling.MerchantOffer
                     btn.SetCost(prices[i]);
                 }
                 btn.activeBtn.SetInteractable(true);
-                switch (good.ItemData.type)
-                {
-                    case MergeConstants.TypeWeapons:
-                        var weaponsData = ServiceLocator.Get<ModifiersDataBase>().GetWeaponsWithModifiers(good.ItemData);
-                        _itemDescriptions[i].ShowItem(weaponsData);
-                        break;
-                    case MergeConstants.TypeBonus:
-                        _itemDescriptions[i].ShowBonus(good.ItemData);
-                        break;
-                }
+                _itemDescriptions[i].ShowDescription(good.ItemData);
+                _itemDescriptions[i].SetIcon(good.ItemData);
             }
             gameObject.SetActive(true);
             _buttons[0].activeBtn.OverrideMainCallback(OnBtn1);
@@ -68,26 +61,14 @@ namespace RobotCastle.Battling.MerchantOffer
             if (didPurchase)
             {
                 _buttons[index].activeBtn.SetInteractable(false);
-                if (_preset.goods[index].forAds == false)
-                {
-                }
             }
         }
         
-        private void OnBtn1()
-        {
-            TryPurchaseAtIndex(0);
-        }
+        private void OnBtn1() => TryPurchaseAtIndex(0);
 
-        private void OnBtn2()
-        {
-            TryPurchaseAtIndex(1);
-        }
+        private void OnBtn2() => TryPurchaseAtIndex(1);
 
-        private void OnBtn3()
-        {
-            TryPurchaseAtIndex(2);
-        }
+        private void OnBtn3() => TryPurchaseAtIndex(2);
 
         private void Complete()
         {

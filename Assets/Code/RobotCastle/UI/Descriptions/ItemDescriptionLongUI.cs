@@ -50,8 +50,12 @@ namespace RobotCastle.UI
         {
             var db = ServiceLocator.Get<ViewDataBase>();
             var sprite = db.GetItemSpriteByTypeAndLevel(itemData);
-            var info = ServiceLocator.Get<DescriptionsDataBase>().GetDescriptionByTypeAndLevel(itemData);
-            ShowCore(info, sprite);
+            var info = ServiceLocator.Get<DescriptionsDataBase>().GetDescription(itemData.id);
+            _heroIcon.sprite = sprite;
+            _nameText.text = info.parts[0];
+            var str = itemData.level.ToString();
+            _lvlText.text = "";
+            _descriptionText.text = info.parts[1].Replace("<amount>", str);
         }
         
         public void ShowCore(DescriptionInfo info, Sprite icon)

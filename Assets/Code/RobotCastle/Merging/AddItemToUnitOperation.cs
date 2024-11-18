@@ -25,7 +25,7 @@ namespace RobotCastle.Merging
             _gridView = gridView;
             _container = container;
             _modifiers = modifiers;
-            if (item1.itemData.core.type == MergeConstants.TypeHeroes)
+            if (item1.itemData.core.type == ItemsIds.TypeHeroes)
             {
                 _hero = item1;
                 _weapon = item2;

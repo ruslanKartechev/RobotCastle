@@ -78,14 +78,14 @@ namespace RobotCastle.Battling.MerchantOffer
                 {
                     cost = 10,
                     forAds = false,
-                    ItemData = new CoreItemData(tier, id, MergeConstants.TypeWeapons)
+                    ItemData = new CoreItemData(tier, id, ItemsIds.TypeItem)
                 });
             }
             preset.goods.Add(new MerchantOfferConfig.Goods()
             {
                 cost = 10,
                 forAds = false,
-                ItemData = new CoreItemData(1, bonuses.RemoveRandom(), MergeConstants.TypeBonus)
+                ItemData = new CoreItemData(1, bonuses.RemoveRandom(), ItemsIds.TypeBonus)
             });
             var randomIndex = UnityEngine.Random.Range(0, preset.goods.Count);
             preset.goods[randomIndex].forAds = true;
@@ -107,26 +107,22 @@ namespace RobotCastle.Battling.MerchantOffer
             CLog.Log($"[{nameof(MerchantOfferManager)}] Trying to purchase: {goods.cost}. ads? {goods.forAds}. {goods.ItemData.AsStr()}");
             if (goods.forAds)
             {
-                CLog.Log($"Trying to show reward ads to get an item");
-                var (res, msg) = AdsPlayer.Instance.PlayReward((res) =>
+                var (res, msg) = AdsPlayer.Instance.PlayReward((r) =>
                 {
-                    if(res)
-                        HeroesManager.AddRewardOrBonus(goods.ItemData);
-                },"merchant_offer");
+                    if(r) HeroesManager.AddRewardOrBonus(goods.ItemData);
+                }, AdsPlayer.Placement_Merchant);
                 return res;
             }
-            else
-            {
-                var gm = ServiceLocator.Get<GameMoney>();
-                var money = gm.levelMoney.Val;
-                var cost = Mathf.RoundToInt(goods.cost * (1 - _sale));
-                if (money < cost)
-                    return false;
-                money -= cost;
-                gm.levelMoney.UpdateWithContext(money, (int)EMoneyChangeContext.AfterPurchase);
-                HeroesManager.AddRewardOrBonus(goods.ItemData);
-                return true;
-            }
+
+            var gm = ServiceLocator.Get<GameMoney>();
+            var money = gm.levelMoney.Val;
+            var cost = Mathf.RoundToInt(goods.cost * (1 - _sale));
+            if (money < cost)
+                return false;
+            money -= cost;
+            gm.levelMoney.UpdateWithContext(money, (int)EMoneyChangeContext.AfterPurchase);
+            HeroesManager.AddRewardOrBonus(goods.ItemData);
+            return true;
         }
 
 

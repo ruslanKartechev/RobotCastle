@@ -42,7 +42,7 @@ namespace RobotCastle.Shop
     }
 
 
-    public enum EShopCurrency { Money, HardMoney, REAL_Money, ForAds }
+    public enum EShopCurrency { Money, HardMoney, RealWorldMoney, AdsReward }
 
     [System.Serializable]
     public class ShopItemData

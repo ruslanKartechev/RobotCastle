@@ -190,7 +190,7 @@ namespace RobotCastle.Battling
             var components = parent.Components;
             var map = components.movement.Map;
             var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
-            var data = new CoreItemData(components.stats.MergeTier, id, MergeConstants.TypeHeroes);
+            var data = new CoreItemData(components.stats.MergeTier, id, ItemsIds.TypeHeroes);
             var args = new SpawnArgs(data);
             var rot = components.transform.rotation;
             for (var i = 0; i < count; i++)

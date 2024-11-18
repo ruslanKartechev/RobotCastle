@@ -1,6 +1,7 @@
 ﻿using System;
 using RobotCastle.Battling;
 using RobotCastle.Core;
+using RobotCastle.Data;
 
 namespace RobotCastle.Merging
 {
@@ -51,10 +52,10 @@ namespace RobotCastle.Merging
             
             switch (anotherData.type)
             {
-                case MergeConstants.TypeWeapons:
+                case ItemsIds.TypeItem:
                     UpgradeAsItem();             
                     break;
-                case MergeConstants.TypeHeroes:
+                case ItemsIds.TypeHeroes:
                     UpgradeAsUnit();
                     break;
                 default:

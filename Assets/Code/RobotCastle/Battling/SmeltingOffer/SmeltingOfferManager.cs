@@ -1,25 +1,18 @@
-﻿using System.Collections.Generic;
+﻿#define TEST_
+using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
-using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
 
 namespace RobotCastle.Battling.SmeltingOffer
 {
-    
     public class SmeltingOfferManager : IModifiable<ISmeltModifier>
     {
         public SmeltingOfferManager(SmeltingConfig config,
-            IGridView gridView,
-            IGridSectionsController sectionsController,
-            ITroopSizeManager troopSizeManager,
-            Battle battle)
+            ITroopSizeManager troopSizeManager)
         {
-            this.battle = battle;
             this.config = config;
-            this.gridView = gridView;
-            this.sectionsController = sectionsController;
             this.troopSizeManager = troopSizeManager;
         }
 
@@ -35,36 +28,51 @@ namespace RobotCastle.Battling.SmeltingOffer
             }
         }
 
-        public Battle battle;
         public SmeltingConfig config;
-        public IGridView gridView;
         public ITroopSizeManager troopSizeManager;
-        public IGridSectionsController sectionsController;
         private List<ISmeltModifier> _smeltModifiers = new (10);
         private SmeltingData _currentData;
         private System.Action _callback;
         private int _offerIndex;
         private int _rerolls;
 
-        
-        public static List<CoreItemData> PickThreeItems(List<CoreItemData> itemsOptions)
+
+        private List<CoreItemData> PickThreeItems(List<CoreItemData> itemsOptions)
         {
             const int count = 3;
             var res = new List<CoreItemData>(count);
-
+#if !TEST
             var options = new List<int>(itemsOptions.Count);
             for (var i = 0; i < itemsOptions.Count; i++)
                 options.Add(i);
+            // PRODUCTION
             for (var i = 0; i < count; i++)
             {
                 var index = options.Random();
                 options.Remove(index);
                 res.Add(itemsOptions[index]);
             }
-
+#endif
+#if TEST
+            // TESTING
+            var offerCallIndex = 1;
+            itemsOptions = config.smeltingTiers[offerCallIndex].itemsOptions;
+            var startInd = 4;
+            for (var countInd = 0; countInd < count; countInd++)
+            {
+                if (itemsOptions.Count <= startInd)
+                {
+                    startInd = itemsOptions.Count -1; 
+                    CLog.LogError($"Error, index overflow");
+                }
+                res.Add(itemsOptions[startInd]);
+                startInd++;
+            }
+#endif
             return res;
         }
-
+        
+        
         public void MakeNextOffer(System.Action callback)
         {
             if (_offerIndex >= config.smeltingTiers.Count)
@@ -115,31 +123,31 @@ namespace RobotCastle.Battling.SmeltingOffer
             var originalLevel = data.level;
             foreach (var mod in _smeltModifiers)
                 data = mod.ModifySmeltItemBeforeApplied(data);
-            switch (data.type)
-            {
-                case MergeConstants.TypeWeapons:
-                    var factory = ServiceLocator.Get<IPlayerFactory>();
-                    var view = factory.SpawnHeroOrItem(new SpawnArgs(data));
-                    if(data.level > originalLevel)
-                        MergeFunctions.PlayMergeFX(view);
-                    break;
-                case MergeConstants.TypeBonus:
-                    switch (data.id)
-                    {
-                        case "bonus_troops":
-                            CLog.Log($"Adding troops size by 1");
-                            troopSizeManager.ExtendBy(1);
-                            break;
-                        case "bonus_money":
-                            CLog.Log($"Adding money +{data.level}");
-                            var gm = ServiceLocator.Get<GameMoney>();
-                            gm.AddMoney(data.level);
-                            break;
-                    }
-
-                    break;
-            }
-
+            HeroesManager.AddRewardOrBonus(data);
+            // switch (data.type)
+            // {
+            //     case ItemsIds.TypeItem:
+            //         var factory = ServiceLocator.Get<IPlayerFactory>();
+            //         var view = factory.SpawnHeroOrItem(new SpawnArgs(data));
+            //         if(data.level > originalLevel)
+            //             MergeFunctions.PlayMergeFX(view);
+            //         break;
+            //     case ItemsIds.TypeBonus:
+            //         switch (data.id)
+            //         {
+            //             case "bonus_troops":
+            //                 CLog.Log($"Adding troops size by 1");
+            //                 troopSizeManager.ExtendBy(1);
+            //                 break;
+            //             case "bonus_money":
+            //                 CLog.Log($"Adding money +{data.level}");
+            //                 var gm = ServiceLocator.Get<GameMoney>();
+            //                 gm.AddMoney(data.level);
+            //                 break;
+            //         }
+            //
+            //         break;
+            // }
             _callback?.Invoke();
         }
         
