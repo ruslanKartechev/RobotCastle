@@ -13,5 +13,9 @@ namespace RobotCastle.Battling
         ReactiveInt NextCost { get; }
         PurchaseHeroResult TryPurchaseItem(bool promptUser = true);
         RobotCastle.Merging.IItemView SpawnHeroOrItem(SpawnArgs args);
+        
+        int SummonHeroLevel { get; set; }
+        
+        ReactiveInt AdvancedScrollsCount { get; }
     }
 }

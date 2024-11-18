@@ -22,6 +22,8 @@
         public const string IdBonusTroops = "bonus_troops";
         public const string IdRestoreHealth = "restore_health";
         public const string IdHeroLevelUp = "hero_level_up";
+        public const string IdAdvancedSummon = "advanced_summon_1";
+        
 
     }
 }

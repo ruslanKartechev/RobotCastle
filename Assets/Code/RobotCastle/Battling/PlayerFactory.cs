@@ -13,13 +13,15 @@ namespace RobotCastle.Battling
     public class PlayerFactory : MonoBehaviour, IPlayerFactory
     {
         public event Action<PurchaseHeroResult> OnPurchase;
-           
+        
         public bool PurchaseAllowed { get; set; } = true; 
         
         public ReactiveInt NextCost => _costReact;
+
+        public int SummonHeroLevel { get; set; } = 0;
         
-        
-        
+        public ReactiveInt AdvancedScrollsCount { get; } = new();
+
         public PurchaseHeroResult TryPurchaseItem(bool promptUser = true)
         {
             if (!PurchaseAllowed)
@@ -44,6 +46,7 @@ namespace RobotCastle.Battling
             var item = _itemsPicker.GetNext();
             var merge = ServiceLocator.Get<MergeManager>();
             var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
+            item.level = SummonHeroLevel;
             var args = new SpawnArgs(item);
             factory.SpawnHeroOrItem(args, merge.GridView, merge.SectionsController, out var newItem);
             if (newItem != null)
@@ -97,13 +100,32 @@ namespace RobotCastle.Battling
         public void RemoveModifier(IPlayerItemSpawnModifier mod) => _modifiers.Remove(mod);
 
         public void ClearAllModifiers() => _modifiers.Clear();
-
-
+        
+        
+        
         [SerializeField] private int _cost = 3;
         [SerializeField] private SoundID _sound;
         private IPlayerSummonItemPicker _itemsPicker;
         private List<IPlayerItemSpawnModifier> _modifiers = new(10);
         private ReactiveInt _costReact;
+        
+        private void Start()
+        {
+            AdvancedScrollsCount.OnSet += OnScrollsCountSet;
+        }
+
+        private void OnDestroy()
+        {
+            AdvancedScrollsCount.OnSet -= OnScrollsCountSet;
+        }
+
+        private void OnScrollsCountSet(int newval, int prevval)
+        {
+            if (newval <= 0)
+            {
+                SummonHeroLevel = 0;
+            }
+        }
 
         private void Awake()
         {

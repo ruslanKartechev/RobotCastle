@@ -1,4 +1,4 @@
-﻿#define TEST_
+﻿#define TEST
 using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
@@ -55,9 +55,9 @@ namespace RobotCastle.Battling.SmeltingOffer
 #endif
 #if TEST
             // TESTING
-            var offerCallIndex = 1;
+            var offerCallIndex = 0;
             itemsOptions = config.smeltingTiers[offerCallIndex].itemsOptions;
-            var startInd = 4;
+            var startInd = 0;
             for (var countInd = 0; countInd < count; countInd++)
             {
                 if (itemsOptions.Count <= startInd)

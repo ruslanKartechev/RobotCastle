@@ -20,61 +20,78 @@ namespace RobotCastle.Battling
             components.stats.ClearDecorators();
             hero.GetComponent<IHeroWeaponsContainer>().AddAllModifiersToHero(components);
         }
-        
+
         public static string Red(int val) => $"<color=#BB0000>{val}</color>";
 
         public static string Red(string msg) => $"<color=#BB0000>{msg}</color>";
 
         public static void AddRewardOrBonus(CoreItemData data)
         {
-            var merge = ServiceLocator.Get<MergeManager>();
-            var troops = ServiceLocator.Get<ITroopSizeManager>();
             switch (data.type)
             {
                 case ItemsIds.TypeItem:
-                    var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
-                    factory.SpawnHeroOrItem(new SpawnArgs(data), merge.GridView, merge.SectionsController, out var item);
+                    AddItem(data);
                     break;
                 case ItemsIds.TypeBonus:
-                    switch (data.id)
-                    {
-                        case ItemsIds.IdBonusTroops:
-                            CLog.Log($"[bonus={data.id}] Adding troops size by 1");
-                            troops.ExtendBy(data.level);
-                            break;
-                        case ItemsIds.IdRestoreHealth:
-                            CLog.Log($"[bonus={data.id}] Adding health");
-                            var battleManager = ServiceLocator.Get<BattleManager>();
-                            var health = battleManager.battle.playerHealthPoints;
-                            health += data.level;
-                            battleManager.battle.playerHealthPoints = health;
-                            ServiceLocator.Get<CastleHealthView>().AddHealth(health);
-                            break;
-                        case ItemsIds.IdBonusMoney:
-                            CLog.Log($"[bonus={data.id}] Adding money +{data.level}");
-                            var gm = ServiceLocator.Get<GameMoney>();
-                            gm.AddMoney(data.level);
-                            break;
-                        case ItemsIds.IdHeroLevelUp:
-                            CLog.Log($"[bonus={data.id}] Random hero level up");
-                            var heroes = merge.SectionsController.GetAllItemsViews()
-                                .FindAll(t => t.itemData.core.type == ItemsIds.TypeHeroes 
-                                              && (t.itemData.core.level + 1) < MergeConstants.HeroMaxMergeLvl);
-                            if (heroes.Count == 0)
-                            {
-                                CLog.Log($"Heroes count is 0. Cannot level up");
-                                return;
-                            }
-                            var chosenHero = heroes.Random();
-                            chosenHero.itemData.core.level++;
-                            var animation = ServiceLocator.Get<MergeAnimation>();
-                            animation.PlayUpgradeOnly(chosenHero);
-                            break;
-                    }
+                    AddBonus(data);
                     break;
             }
         }
-        
+
+        public static void AddItem(CoreItemData data)
+        {
+            var merge = ServiceLocator.Get<MergeManager>();
+            var factory = ServiceLocator.Get<IHeroesAndItemsFactory>();
+            factory.SpawnHeroOrItem(new SpawnArgs(data), merge.GridView, merge.SectionsController, out var item);
+        }
+
+        public static void AddBonus(CoreItemData data)
+        {
+            switch (data.id)
+            {
+                case ItemsIds.IdBonusTroops:
+                    CLog.Log($"[bonus={data.id}] Adding troops size by 1");
+                    var troops = ServiceLocator.Get<ITroopSizeManager>();
+                    troops.ExtendBy(data.level);
+                    break;
+                case ItemsIds.IdRestoreHealth:
+                    CLog.Log($"[bonus={data.id}] Adding health");
+                    var battleManager = ServiceLocator.Get<BattleManager>();
+                    var health = battleManager.battle.playerHealthPoints;
+                    health += data.level;
+                    battleManager.battle.playerHealthPoints = health;
+                    ServiceLocator.Get<CastleHealthView>().AddHealth(health);
+                    break;
+                case ItemsIds.IdBonusMoney:
+                    CLog.Log($"[bonus={data.id}] Adding money +{data.level}");
+                    var gm = ServiceLocator.Get<GameMoney>();
+                    gm.AddMoney(data.level);
+                    break;
+                case ItemsIds.IdHeroLevelUp:
+                    CLog.Log($"[bonus={data.id}] Random hero level up");
+                    var merge = ServiceLocator.Get<MergeManager>();
+                    var heroes = merge.SectionsController.GetAllItemsViews()
+                        .FindAll(t => t.itemData.core.type == ItemsIds.TypeHeroes && (t.itemData.core.level + 1) < MergeConstants.HeroMaxMergeLvl);
+                    if (heroes.Count == 0)
+                    {
+                        CLog.Log($"Heroes count is 0. Cannot level up");
+                        return;
+                    }
+
+                    var chosenHero = heroes.Random();
+                    chosenHero.itemData.core.level++;
+                    var animation = ServiceLocator.Get<MergeAnimation>();
+                    animation.PlayUpgradeOnly(chosenHero);
+                    break;
+                
+                case ItemsIds.IdAdvancedSummon:
+                    var factory = ServiceLocator.Get<IPlayerFactory>();
+                    factory.AdvancedScrollsCount.AddValue(data.level);
+                    factory.SummonHeroLevel = 1;
+                    break;
+            }
+        }
+
 
         public static async Task WaitGameTime(float seconds, CancellationToken token)
         {

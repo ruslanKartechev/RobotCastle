@@ -23,6 +23,7 @@ namespace RobotCastle.UI
         [SerializeField] private LevelMoneyUI _money;
         [SerializeField] private TroopsCountUI _troopsCount;
         [SerializeField] private MyButton _btnStart;
+        [SerializeField] private PurchaseNewHeroButton _btnPurchaseHeroAdvanced;
         [SerializeField] private PurchaseNewHeroButton _btnPurchaseHero;
         [SerializeField] private TroopSizePurchaseUI _troopSizePurchaseUI;
         [SerializeField] private BattleDamageStatsUI _damageStats;
@@ -38,12 +39,18 @@ namespace RobotCastle.UI
         [SerializeField] private MyButton _btnExit;
         [SerializeField] private ExitBattleUI _exitBattleUI;
         [SerializeField] private SlideAnimator _slideAnimator;
-
         private Battle _battle;
         private LevelData _levelData;
+        private bool _didInit;
         
         public void Init(Battle battle, Chapter chapter)
         {
+            if (_didInit)
+            {
+                CLog.LogRed($"[{nameof(BattleMergeUI)}] Already did Init");
+                return;
+            }
+            _didInit = true;
             _battle = battle;
             _levelData = chapter.levelData;
             _levelUI.LevelName = chapter.viewName;
@@ -52,12 +59,16 @@ namespace RobotCastle.UI
             _money.Init(ServiceLocator.Get<GameMoney>().levelMoney);
             _money.DoReact(true);
             _btnExit.AddMainCallback(Exit);
+            _btnPurchaseHero.gameObject.SetActive(true);
+            _btnPurchaseHeroAdvanced.gameObject.SetActive(false);
+            
+            var f = ServiceLocator.Get<IPlayerFactory>();
+            f.AdvancedScrollsCount.OnSet -= OnAdvancedScrollsCountChange;
+            f.AdvancedScrollsCount.OnSet += OnAdvancedScrollsCountChange;
         }
 
-        public void AnimateShowUp()
-        {
-            _slideAnimator.SlideIn(() => {});   
-        }
+
+        public void AnimateShowUp() => _slideAnimator.SlideIn(() => {});
 
         public void AllowButtonsInput(bool allow)
         {
@@ -79,16 +90,10 @@ namespace RobotCastle.UI
             SetMainAreaLowerPos();
         }
 
-        public void Win()
-        {
-            _winAnimator.Animate();
-        }
+        public void Win() => _winAnimator.Animate();
 
-        public void Lost()
-        {
-            _lostAnimator.Animate();
-        }
-        
+        public void Lost() => _lostAnimator.Animate();
+
         public void SetMainAreaLowerPos()
         {
             _mainRect.DOKill();
@@ -106,7 +111,20 @@ namespace RobotCastle.UI
             _startTopBtnAnimator.FadeOut();
         }
         
-
+        private void OnAdvancedScrollsCountChange(int newval, int prevval)
+        {
+            if (prevval > 0 && newval <= 0)
+            {
+                _btnPurchaseHero.gameObject.SetActive(false);
+                _btnPurchaseHeroAdvanced.gameObject.SetActive(true);
+            }
+            else if (prevval <= 0 && newval > 0)
+            {
+                _btnPurchaseHero.gameObject.SetActive(true);
+                _btnPurchaseHeroAdvanced.gameObject.SetActive(false);
+            }
+        }
+        
         private void OnEnable()
         {
             var pos = _mainRect.anchoredPosition;

@@ -30,8 +30,11 @@ namespace RobotCastle.UI
         {
             var db = ServiceLocator.Get<ViewDataBase>();
             _icon.sprite = db.GetItemSpriteByTypeAndLevel(option);
+            _icon.enabled = true;
         }
-        
+
+        public void HideIcon() => _icon.enabled = false;
+
         public void ShowDescription(CoreItemData option)
         {
             switch (option.type)
@@ -67,18 +70,20 @@ namespace RobotCastle.UI
         {
             StatsDescription(false);
             var descrDb = ServiceLocator.Get<DescriptionsDataBase>();
-            var dd = descrDb.GetDescription(option.id);
             var tierStr = option.level.ToString();
+            DescriptionInfo descr;
             switch (option.id)
             {
-                case ItemsIds.IdBonusMoney:
-                    _txtItemName.text = dd.parts[0];
-                    _txtDescription.text = dd.parts[1].Replace("<amount>", tierStr);
+                case ItemsIds.IdBonusMoney or ItemsIds.IdAdvancedSummon: 
+                    descr = descrDb.GetDescription(option.id);
+                    _txtItemName.text = descr.parts[0];
+                    _txtDescription.text = descr.parts[1].Replace("<amount>", tierStr);
                     _txtItemLevel.text = "+" + tierStr;
                     break;
                 default:
-                    _txtItemName.text = dd.parts[0];
-                    _txtDescription.text = dd.parts[1];
+                    descr = descrDb.GetDescription(option.id);
+                    _txtItemName.text = descr.parts[0];
+                    _txtDescription.text = descr.parts[1];
                     _txtItemLevel.text = "+" + tierStr;
                     break;
             }

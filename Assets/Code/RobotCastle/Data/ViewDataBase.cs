@@ -85,13 +85,14 @@ namespace RobotCastle.Data
 
         public Sprite GetItemSpriteByTypeAndLevel(CoreItemData itemData)
         {
+            if(itemData.id.Contains(ItemsIds.IdAdvancedSummon))
+                return Resources.Load<Sprite>(GeneralIcons[itemData.id]);
             switch (itemData.type)
             {
                 case ItemsIds.TypeItem:
                     return GetWeaponSpriteAtLevel(itemData.id, itemData.level);
                 case ItemsIds.TypeBonus:
-                    var path = GeneralIcons[$"{itemData.id}_{itemData.level}"];
-                    return Resources.Load<Sprite>(path);
+                    return Resources.Load<Sprite>(GeneralIcons[$"{itemData.id}_{itemData.level}"]);
                 default:
                     return Resources.Load<Sprite>(GeneralIcons[itemData.id]);
             }

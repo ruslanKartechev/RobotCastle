@@ -7,7 +7,6 @@ using SleepDev;
 using SleepDev.Inventory;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace RobotCastle.Battling.SmeltingOffer
 {
@@ -18,7 +17,6 @@ namespace RobotCastle.Battling.SmeltingOffer
         public MyButton ConfirmButton => _confirmButton;
         public InventoryController Inventory => _inventory;
 
-        [SerializeField] private Image _pickedItemIcon;
         [SerializeField] private List<SmeltingItemUI> _itemsUI;
         [SerializeField] private InventoryController _inventory;
         [SerializeField] private MyButton _confirmButton;
@@ -55,8 +53,7 @@ namespace RobotCastle.Battling.SmeltingOffer
             _offeredItem.StatsDescription(false);
             TryTutorial();
         }
-
-
+        
         private void TryTutorial()
         {
             var save = DataHelpers.GetPlayerData().tutorials;
@@ -86,7 +83,6 @@ namespace RobotCastle.Battling.SmeltingOffer
                 _itemsUI[i].icon.sprite = viewDb.GetItemSpriteByTypeAndLevel(option);
                 _itemsUI[i].NumberId = i;
                 _itemsUI[i].AnimateShow();
-                
             }
         }
 
@@ -125,18 +121,16 @@ namespace RobotCastle.Battling.SmeltingOffer
 
         private void SetClear()
         {
-            _pickedItemIcon.enabled = false;
+            _offeredItem.HideIcon();
             _offeredItem.Clear();
             _offeredItem.SetName("Pick One Item");
         }
 
-        private void OnItemPicked(SleepDev.Inventory.Item item)
+        private void OnItemPicked(Item item)
         {
-            // CLog.Log($"[OnItemPicked] {item.NumberId}");
             var option = _options[item.NumberId];
             _offeredItem.ShowDescription(option);
-            _pickedItemIcon.sprite = _itemsUI[item.NumberId].icon.sprite;
-            _pickedItemIcon.enabled = true;
+            _offeredItem.SetIcon(option);
             _confirmButton.SetInteractable(true);
         }
 
