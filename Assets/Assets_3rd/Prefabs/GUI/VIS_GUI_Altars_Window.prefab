@@ -140,6 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _btn: {fileID: 7410705830871586181}
   _doRespond: 1
+  _sound: {fileID: 0}
 --- !u!114 &132006402732860003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -823,6 +824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _btn: {fileID: 862493592100360709}
   _doRespond: 1
+  _sound: {fileID: 0}
 --- !u!114 &2716398464118182893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1006,7 +1008,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &4921334146462956491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,7 +1052,6 @@ MonoBehaviour:
   _btnPurchasePoint: {fileID: 1570635296389682982}
   _btnRetrievePoints: {fileID: 1432873683888356996}
   _BtnClose: {fileID: 1385213068307213742}
-  _fadeScreen: {fileID: 723990676166819916}
 --- !u!1 &6315118142312363883
 GameObject:
   m_ObjectHideFlags: 0
@@ -1404,6 +1405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _btn: {fileID: 7002096114911225773}
   _doRespond: 1
+  _sound: {fileID: 0}
 --- !u!1 &7376223315118105882
 GameObject:
   m_ObjectHideFlags: 0
@@ -2776,17 +2778,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2112203a626437c439f6c013f501a95b, type: 3}
---- !u!114 &723990676166819916 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9046140889529979914, guid: 2112203a626437c439f6c013f501a95b, type: 3}
-  m_PrefabInstance: {fileID: 8612703943518868550}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62136cf36fb24c07a97768751c084404, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &7810877973776618478 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2009635370855860136, guid: 2112203a626437c439f6c013f501a95b, type: 3}
