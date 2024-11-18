@@ -18,7 +18,7 @@ namespace RobotCastle.DevCheat
             {
                 var ui = _heroUI[i];
                 var save = saves.heroSaves[i];
-                var icon = ViewDataBase.GetHeroSprite(db.info[save.id].viewInfo.iconId);
+                var icon = ViewDataBase.GetSprite(db.info[save.id].viewInfo.iconId);
                 var name = db.GetHeroViewInfo(save.id).name;
                 ui.Init(save, name, icon);                
             }

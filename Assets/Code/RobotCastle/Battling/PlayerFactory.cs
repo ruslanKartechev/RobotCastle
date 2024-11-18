@@ -62,6 +62,8 @@ namespace RobotCastle.Battling
                 foreach (var mod in _modifiers)
                     mod.OnNewItemSpawned(newItem);
                 
+                if(AdvancedScrollsCount.Val > 0)
+                    AdvancedScrollsCount.AddValue(-1);
                 SoundManager.Inst.Play(_sound);
                 OnPurchase?.Invoke(PurchaseHeroResult.Success);
                 return PurchaseHeroResult.Success;

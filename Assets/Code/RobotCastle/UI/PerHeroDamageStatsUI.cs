@@ -24,7 +24,7 @@ namespace RobotCastle.UI
             var db = ServiceLocator.Get<HeroesDatabase>();
             var info = db.GetHeroViewInfo(data.heroId);
             _nameText.text = info.name;
-            _icon.sprite = ViewDataBase.GetHeroSprite(info.iconId);
+            _icon.sprite = ViewDataBase.GetSprite(info.iconId);
         }
         
             

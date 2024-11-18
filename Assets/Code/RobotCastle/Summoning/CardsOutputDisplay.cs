@@ -174,13 +174,13 @@ namespace RobotCastle.Summoning
             {
                 case SummonConfig.Id_NewHero: {
                     var info = heroesDb.GetHeroViewInfo(output.data.id);
-                    ui.SetIcon(ViewDataBase.GetHeroSprite(info.iconId));  
+                    ui.SetIcon(ViewDataBase.GetSprite(info.iconId));  
                     ui.SetTitleAndCount("+EXP", $"+{output.data.level}");
                 }
                     break;
                 case SummonConfig.Id_OwnedHero: {
                     var info = heroesDb.GetHeroViewInfo(output.data.id);
-                    ui.SetIcon(ViewDataBase.GetHeroSprite(info.iconId));        
+                    ui.SetIcon(ViewDataBase.GetSprite(info.iconId));        
                     ui.SetTitleAndCount(info.name, $"+{output.data.level}");
                 }
                     break;

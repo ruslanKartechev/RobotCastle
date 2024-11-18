@@ -1,5 +1,4 @@
-﻿using RobotCastle.Data;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RobotCastle.Shop
 {

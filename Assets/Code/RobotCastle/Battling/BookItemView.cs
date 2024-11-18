@@ -65,7 +65,7 @@ namespace RobotCastle.Battling
 
         public Sprite GetItemIcon()
         {
-            return ServiceLocator.Get<ViewDataBase>().GetWeaponSpriteAtLevel(itemData.core.id, itemData.core.level);
+            return ServiceLocator.Get<ViewDataBase>().GetWeaponSprite(itemData.core.id, itemData.core.level);
         }
 
         public EItemDescriptionMode Mode => EItemDescriptionMode.DescriptionOnly;

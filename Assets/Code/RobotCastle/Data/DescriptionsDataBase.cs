@@ -17,25 +17,18 @@ namespace RobotCastle.Data
         public DescriptionInfo GetDescriptionByLevel(CoreItemData itemData)
         {
             var id = itemData.id;
-            var fullId = $"{id}_lvl_{itemData.level}";
+            var fullId = $"{id}_{itemData.level}";
             return descriptions[fullId];
         }
         
         public DescriptionInfo GetDescriptionByTypeAndLevel(CoreItemData itemData)
         {
-            string key;
             switch (itemData.type)
             {
                 case ItemsIds.TypeItem:
-                    key = $"{itemData.id}_lvl_{itemData.level}";
-                    if (descriptions.ContainsKey(key) == false)
-                    {
-                        CLog.LogError($"[DescriptionsDb] does not contain: {key}");
-                        return null;
-                    } 
-                    return descriptions[key];
+                    return GetDescriptionByLevel(itemData);
                 case ItemsIds.TypeBonus:
-                    key = $"{itemData.id}_{itemData.level}";
+                    var key = $"{itemData.id}_{itemData.level}";
                     if (descriptions.ContainsKey(key) == false)
                     {
                         CLog.LogError($"[DescriptionsDb] does not contain: {key}");

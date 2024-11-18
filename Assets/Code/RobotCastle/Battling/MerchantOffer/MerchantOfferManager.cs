@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
-using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
 using SleepDev.Data;
@@ -11,16 +10,10 @@ namespace RobotCastle.Battling.MerchantOffer
 {
     public class MerchantOfferManager
     {
-        public MerchantOfferManager(MerchantOfferConfig config, IGridView playerGrid,
-            IGridSectionsController sectionsController, ITroopSizeManager troops, 
-            BattleManager battleManager, CastleHealthView healthView)
+        public MerchantOfferManager(MerchantOfferConfig config, BattleManager battleManager)
         {
             this.config = config;
-            this.sectionsController = sectionsController;
-            this.troops = troops;
             this.battleManager = battleManager;
-            this.healthView = healthView;
-            this.playerGrid = playerGrid;
         }
 
         public float Sale
@@ -35,13 +28,7 @@ namespace RobotCastle.Battling.MerchantOffer
             }
         }
         
-        
-        
         public MerchantOfferConfig config;
-        public IGridView playerGrid;
-        public IGridSectionsController sectionsController;
-        public ITroopSizeManager troops;
-        public CastleHealthView healthView;
         public BattleManager battleManager;
         private MerchantOfferConfig.GoodsPreset _currentPreset;
         private System.Action _callback;
@@ -50,11 +37,6 @@ namespace RobotCastle.Battling.MerchantOffer
         
         public void MakeNextOffer(System.Action callback)
         {
-            // if (_offerTier >= config.optionsPerTier.Count)
-            // {
-            //     CLog.LogError($"[{nameof(MerchantOfferManager)}] _index >= config.optionsPerTier.Count");
-            //     return;
-            // }
             _callback = callback;
             var tier = _offerTier;
             _offerTier++;

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6026686893090189176}
-  - component: {fileID: 1703353062089494160}
   m_Layer: 0
   m_Name: VIS_GUI_Shop_Frame_Gem
   m_TagString: Untagged
@@ -43,23 +42,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 322, y: 420}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1703353062089494160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2300169528790004499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f9bcc97724d44b6ab50651abbe61738, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _nameText: {fileID: 8323066326298944812}
-  _costText: {fileID: 2153147125041515475}
-  _amountGivenText: {fileID: 8223840120010258615}
-  _itemIcon: {fileID: 5773090969441170903}
-  _btn: {fileID: 857996786336217067}
 --- !u!1 &3040450695416175538
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _btn: {fileID: 3884285701448306221}
   _doRespond: 1
+  _sound: {fileID: 0}
 --- !u!1 &3047758355276295012
 GameObject:
   m_ObjectHideFlags: 0

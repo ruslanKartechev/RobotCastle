@@ -144,6 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4178085321695961452}
   - component: {fileID: 8801893470601266908}
+  - component: {fileID: 5020186441039213166}
   m_Layer: 0
   m_Name: VIS_GUI_Shop_Frame_Card
   m_TagString: Untagged
@@ -191,10 +192,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nameText: {fileID: 2864224367302901963}
-  _costText: {fileID: 3299416815215696356}
   _amountGivenText: {fileID: 890393969973577632}
   _itemIcon: {fileID: 4709434419337409541}
   _btn: {fileID: 9210164110985448474}
+  _blockingObjects: []
+--- !u!114 &5020186441039213166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2847888101601465633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7a86b94722e4d338c13da7ae58da412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hardMoney: 0
+  _cost: 50
 --- !u!1 &4224597393673236442
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _btn: {fileID: 5829199301398718215}
   _doRespond: 1
+  _sound: {fileID: 0}
 --- !u!114 &5829199301398718215
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -41,7 +41,7 @@ namespace RobotCastle.UI
         public void ShowItem(HeroWeaponData itemData)
         {
             var db = ServiceLocator.Get<ViewDataBase>();
-            var icon = db.GetWeaponSpriteAtLevel(itemData.id, itemData.level);
+            var icon = db.GetWeaponSprite(itemData.id, itemData.level);
             var descr = ServiceLocator.Get<DescriptionsDataBase>().GetDescriptionByLevel(itemData.core);
             ShowCoreAndModifiers(descr, icon, itemData.modifierIds, null);
         }

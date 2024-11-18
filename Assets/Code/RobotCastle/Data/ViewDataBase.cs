@@ -17,10 +17,8 @@ namespace RobotCastle.Data
         public List<string> LocationIcons = new(5);
         public List<string> LocationIconsCorruption = new(5);
 
-        public static Sprite GetHeroSprite(string spriteId)
-        {
-            return Resources.Load<Sprite>($"sprites/{spriteId}");
-        }
+        public static Sprite GetSprite(string spriteId) 
+            => Resources.Load<Sprite>($"sprites/{spriteId}");
 
         public static string GetStatId(EStatType statType)
         {
@@ -77,7 +75,7 @@ namespace RobotCastle.Data
             return null;
         }
 
-        public Sprite GetWeaponSpriteAtLevel(string id, int levelIndex)
+        public Sprite GetWeaponSprite(string id, int levelIndex)
         {
             var path = $"{ItemInfo[id].Icon}_{levelIndex + 1}";
             return Resources.Load<Sprite>(path);
@@ -90,20 +88,12 @@ namespace RobotCastle.Data
             switch (itemData.type)
             {
                 case ItemsIds.TypeItem:
-                    return GetWeaponSpriteAtLevel(itemData.id, itemData.level);
+                    return GetWeaponSprite(itemData.id, itemData.level);
                 case ItemsIds.TypeBonus:
                     return Resources.Load<Sprite>(GeneralIcons[$"{itemData.id}_{itemData.level}"]);
                 default:
                     return Resources.Load<Sprite>(GeneralIcons[itemData.id]);
             }
-        }
-        
-        public Sprite GetUnitItemSprite(string id)
-        {
-            if (ItemInfo.ContainsKey(id))
-                return Resources.Load<Sprite>(ItemInfo[id].Icon);
-            CLog.LogError($"[ViewDB] does not contain id {id}");
-            return null;
         }
         
         /// <summary>

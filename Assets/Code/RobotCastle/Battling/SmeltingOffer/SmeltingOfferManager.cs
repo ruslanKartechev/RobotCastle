@@ -1,4 +1,4 @@
-﻿#define TEST
+﻿#define TEST_
 using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
@@ -9,11 +9,9 @@ namespace RobotCastle.Battling.SmeltingOffer
 {
     public class SmeltingOfferManager : IModifiable<ISmeltModifier>
     {
-        public SmeltingOfferManager(SmeltingConfig config,
-            ITroopSizeManager troopSizeManager)
+        public SmeltingOfferManager(SmeltingConfig config)
         {
             this.config = config;
-            this.troopSizeManager = troopSizeManager;
         }
 
         public int Rerolls
@@ -29,7 +27,6 @@ namespace RobotCastle.Battling.SmeltingOffer
         }
 
         public SmeltingConfig config;
-        public ITroopSizeManager troopSizeManager;
         private List<ISmeltModifier> _smeltModifiers = new (10);
         private SmeltingData _currentData;
         private System.Action _callback;
@@ -119,35 +116,9 @@ namespace RobotCastle.Battling.SmeltingOffer
         
         public void OnChoiceConfirmed(CoreItemData data)
         {
-            // CLog.Log($"Choice confirmed: {data.AsStr()}");
-            var originalLevel = data.level;
             foreach (var mod in _smeltModifiers)
                 data = mod.ModifySmeltItemBeforeApplied(data);
             HeroesManager.AddRewardOrBonus(data);
-            // switch (data.type)
-            // {
-            //     case ItemsIds.TypeItem:
-            //         var factory = ServiceLocator.Get<IPlayerFactory>();
-            //         var view = factory.SpawnHeroOrItem(new SpawnArgs(data));
-            //         if(data.level > originalLevel)
-            //             MergeFunctions.PlayMergeFX(view);
-            //         break;
-            //     case ItemsIds.TypeBonus:
-            //         switch (data.id)
-            //         {
-            //             case "bonus_troops":
-            //                 CLog.Log($"Adding troops size by 1");
-            //                 troopSizeManager.ExtendBy(1);
-            //                 break;
-            //             case "bonus_money":
-            //                 CLog.Log($"Adding money +{data.level}");
-            //                 var gm = ServiceLocator.Get<GameMoney>();
-            //                 gm.AddMoney(data.level);
-            //                 break;
-            //         }
-            //
-            //         break;
-            // }
             _callback?.Invoke();
         }
         

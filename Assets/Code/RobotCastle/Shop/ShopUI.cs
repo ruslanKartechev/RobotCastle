@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 namespace RobotCastle.Shop
 {
-    
     public class ShopUI : MonoBehaviour, IScreenUI
     {
         [SerializeField] private BlackoutFadeScreen _fadeScreen;
@@ -42,24 +41,24 @@ namespace RobotCastle.Shop
     }
 
 
-    public enum EShopCurrency { Money, HardMoney, RealWorldMoney, AdsReward }
-
-    [System.Serializable]
-    public class ShopItemData
-    {
-        public int cost;
-        public EShopCurrency currency; 
-        public CoreItemData itemData;
-        [Space(10)]
-        public bool isAvailable;
-        public bool isTimed;
-    }
-
-    
     [System.Serializable]
     public class ShopSaveData
     {
         public DateTimeData dailyOfferStartTime;
+        public List<ShopItemSave> dailyItems;
+        
+        public ShopSaveData(){}
+
+        public ShopSaveData(ShopSaveData other)
+        {
+            dailyOfferStartTime = new DateTimeData(other.dailyOfferStartTime);
+            var count = other.dailyItems.Count;
+            dailyItems = new(count);
+            for (var i = 0; i < count; i++)
+            {
+                dailyItems.Add(new ShopItemSave(other.dailyItems[i]));
+            }
+        }
     }
 
     

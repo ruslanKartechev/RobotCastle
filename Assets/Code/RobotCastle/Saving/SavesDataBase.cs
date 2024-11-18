@@ -1,5 +1,6 @@
 ﻿using RobotCastle.Core;
 using RobotCastle.Merging;
+using RobotCastle.Shop;
 using UnityEngine;
 
 namespace RobotCastle.Saving
@@ -12,8 +13,7 @@ namespace RobotCastle.Saving
         [Space(10)]
         public SavePlayerHeroes PlayerHeroes;
         [Space(10)]
-        public MergeGrid mergeGrid;
-
+        public ShopSaveData shopSave;
 
 
         #if UNITY_EDITOR
@@ -78,6 +78,8 @@ namespace RobotCastle.Saving
             {
                 save.points = 0;
             }
+
+            shopSave = new ShopSaveData();
             UnityEditor.EditorUtility.SetDirty(this);
         }
         

@@ -28,7 +28,7 @@ namespace RobotCastle.Battling
             for (var ind = 0; ind < itemsCount; ind++)
             {
                 _icons[ind].gameObject.SetActive(true);
-                _icons[ind].sprite = db.GetWeaponSpriteAtLevel(items[ind].core.id, items[ind].core.level);
+                _icons[ind].sprite = db.GetWeaponSprite(items[ind].core.id, items[ind].core.level);
             }
             for (var i = itemsCount; i < _icons.Count; i++)
                 _icons[i].gameObject.SetActive(false);
@@ -38,7 +38,7 @@ namespace RobotCastle.Battling
         {
             On();
             var db = ServiceLocator.Get<ViewDataBase>();
-            _icons[index].sprite = db.GetWeaponSpriteAtLevel(items[index].core.id, items[index].core.level);
+            _icons[index].sprite = db.GetWeaponSprite(items[index].core.id, items[index].core.level);
             
             ShowOnlyUsedGameobjects(items);
         }
@@ -48,7 +48,7 @@ namespace RobotCastle.Battling
             On();
             var db = ServiceLocator.Get<ViewDataBase>();
             var lastInd = items.Count - 1;
-            _icons[lastInd].sprite = db.GetWeaponSpriteAtLevel(items[lastInd].core.id, items[lastInd].core.level);
+            _icons[lastInd].sprite = db.GetWeaponSprite(items[lastInd].core.id, items[lastInd].core.level);
 
             ShowOnlyUsedGameobjects(items);
         }

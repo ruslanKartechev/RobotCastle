@@ -742,6 +742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _btn: {fileID: 7383499964855088558}
   _doRespond: 1
+  _sound: {fileID: 0}
 --- !u!1 &6571564845425478852
 GameObject:
   m_ObjectHideFlags: 0
@@ -1036,6 +1037,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5837665397348211881}
   - component: {fileID: 5045327233794561579}
+  - component: {fileID: 1847438720102720743}
   m_Layer: 0
   m_Name: VIS_GUI_Shop_Frame_AdBook
   m_TagString: Untagged
@@ -1083,10 +1085,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nameText: {fileID: 2504004400305695183}
-  _costText: {fileID: 5182109368253324238}
   _amountGivenText: {fileID: 1336598475714945354}
   _itemIcon: {fileID: 5650547136459890655}
   _btn: {fileID: 6845092954533887676}
+  _blockingObjects: []
+--- !u!114 &1847438720102720743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7213286754788232375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ecd1ef38c724554b1d86cd8b2f688d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7297411354815166790
 GameObject:
   m_ObjectHideFlags: 0

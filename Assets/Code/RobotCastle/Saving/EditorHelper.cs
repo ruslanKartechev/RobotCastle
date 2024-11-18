@@ -88,7 +88,6 @@ namespace RobotCastle.Saving
                     grid.rows[y].cells[gridSize.x - 1 - x].isOccupied = false;
                 }
             }
-            _savesDataBase.mergeGrid = grid;
             UnityEditor.EditorUtility.SetDirty(_savesDataBase);
         }
 #endif

@@ -32,7 +32,7 @@ namespace RobotCastle.UI
             for (var i = 0; i < count; i++)
             {
                 var id = party.heroesIds[i];
-                _heroIcons[i].sprite = ViewDataBase.GetHeroSprite(db.GetHeroViewInfo(id).iconId);
+                _heroIcons[i].sprite = ViewDataBase.GetSprite(db.GetHeroViewInfo(id).iconId);
             }
             var power = HeroesPowerCalculator.CalculateTotalPlayerPower(party.heroesIds);
             _textPlayerPower.text = power.ToString();

@@ -106,7 +106,7 @@ namespace RobotCastle.UI
             _lvlText.text = (stats.MergeTier + 1).ToString();
 
             _nameText.text = viewInfo.name;
-            _heroIcon.sprite = ViewDataBase.GetHeroSprite(viewInfo.iconId);
+            _heroIcon.sprite = ViewDataBase.GetSprite(viewInfo.iconId);
             if (spellProvider != null)
             {
                 _descriptionLayout.SetLong();

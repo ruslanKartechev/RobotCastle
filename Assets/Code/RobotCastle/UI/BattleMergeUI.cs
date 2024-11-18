@@ -4,6 +4,7 @@ using RobotCastle.Core;
 using RobotCastle.InvasionMode;
 using RobotCastle.Merging;
 using SleepDev;
+using TMPro;
 using UnityEngine;
 
 namespace RobotCastle.UI
@@ -16,15 +17,13 @@ namespace RobotCastle.UI
         public TroopSizePurchaseUI TroopSizePurchaseUI => _troopSizePurchaseUI;
         public IButtonInput BtnStart => _btnStart;
         public IButtonInput BtnStart2 => _btnStartTop;
-        public PurchaseNewHeroButton BtnPurchaseHero => _btnPurchaseHero;
+        public PurchaseNewHeroButton BtnPurchaseHero { get; private set; }
         public ReturnItemButton ReturnItemButton => _returnItemButton;
         public BattleDamageStatsUI StatsCollector => _damageStats;
         
         [SerializeField] private LevelMoneyUI _money;
         [SerializeField] private TroopsCountUI _troopsCount;
         [SerializeField] private MyButton _btnStart;
-        [SerializeField] private PurchaseNewHeroButton _btnPurchaseHeroAdvanced;
-        [SerializeField] private PurchaseNewHeroButton _btnPurchaseHero;
         [SerializeField] private TroopSizePurchaseUI _troopSizePurchaseUI;
         [SerializeField] private BattleDamageStatsUI _damageStats;
         [SerializeField] private InvasionLevelsUI _levelUI;
@@ -39,6 +38,10 @@ namespace RobotCastle.UI
         [SerializeField] private MyButton _btnExit;
         [SerializeField] private ExitBattleUI _exitBattleUI;
         [SerializeField] private SlideAnimator _slideAnimator;
+        [Space(10)]
+        [SerializeField] private PurchaseNewHeroButton _btnPurchaseHeroAdvanced;
+        [SerializeField] private PurchaseNewHeroButton _btnPurchaseHero;
+        [SerializeField] private TextMeshProUGUI _advancedScrollCountText;
         private Battle _battle;
         private LevelData _levelData;
         private bool _didInit;
@@ -59,12 +62,20 @@ namespace RobotCastle.UI
             _money.Init(ServiceLocator.Get<GameMoney>().levelMoney);
             _money.DoReact(true);
             _btnExit.AddMainCallback(Exit);
-            _btnPurchaseHero.gameObject.SetActive(true);
-            _btnPurchaseHeroAdvanced.gameObject.SetActive(false);
-            
+            SetSummonButton(false);
             var f = ServiceLocator.Get<IPlayerFactory>();
             f.AdvancedScrollsCount.OnSet -= OnAdvancedScrollsCountChange;
             f.AdvancedScrollsCount.OnSet += OnAdvancedScrollsCountChange;
+        }
+
+        private void SetSummonButton(bool advanced)
+        {
+            _btnPurchaseHero.gameObject.SetActive(!advanced);
+            _btnPurchaseHeroAdvanced.gameObject.SetActive(advanced);
+            if (advanced)
+                BtnPurchaseHero = _btnPurchaseHeroAdvanced;
+            else
+                BtnPurchaseHero = _btnPurchaseHero;
         }
 
 
@@ -113,15 +124,19 @@ namespace RobotCastle.UI
         
         private void OnAdvancedScrollsCountChange(int newval, int prevval)
         {
+            if (newval > 0)
+            {
+                _advancedScrollCountText.text = $"Left: {newval}";
+            }
             if (prevval > 0 && newval <= 0)
             {
-                _btnPurchaseHero.gameObject.SetActive(false);
-                _btnPurchaseHeroAdvanced.gameObject.SetActive(true);
+                SetSummonButton(false);
+                _btnPurchaseHero.gameObject.SetActive(true);
+                _btnPurchaseHeroAdvanced.gameObject.SetActive(false);
             }
             else if (prevval <= 0 && newval > 0)
             {
-                _btnPurchaseHero.gameObject.SetActive(true);
-                _btnPurchaseHeroAdvanced.gameObject.SetActive(false);
+                SetSummonButton(true);
             }
         }
         

@@ -53,7 +53,7 @@ namespace RobotCastle.UI
             var heroInfo = heroesDb.GetHeroInfo(_heroId);
             var stats = heroInfo.stats;
             var lvl = save.level;
-            _heroIcon.sprite = ViewDataBase.GetHeroSprite(heroInfo.viewInfo.iconId);
+            _heroIcon.sprite = ViewDataBase.GetSprite(heroInfo.viewInfo.iconId);
             _txtHeroName.text = heroInfo.viewInfo.name;
             _txtHeroLevel.text = (lvl + 1).ToString();
             _txtHeroXp.text = $"{save.xp}/{save.xpForNext}";
