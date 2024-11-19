@@ -3,13 +3,30 @@ using RobotCastle.Battling.Altars;
 using RobotCastle.Core;
 using RobotCastle.InvasionMode;
 using RobotCastle.Saving;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Data
 {
+
     public static class DataHelpers
     {
-
+    
+        /// <summary>
+        /// Will call PrepareForSave() On money and inventory save data before calling IDataSaver.Save()
+        /// </summary>
+        public static void SaveData()
+        {
+            var playerData = GetPlayerData();
+            playerData.PrepareForSave();
+            if (ServiceLocator.GetIfContains<GameMoney>(out var gameMoney))
+            {
+                gameMoney.PrepareForSave();
+            }
+            ServiceLocator.Get<IDataSaver>().SaveAll();
+            CLog.LogGreen("[DataHelpers] === Data Saved !!");
+        }
+        
         public static void SeparateOwnedAndNotOwnedHeroes(SavePlayerHeroes heroes, 
             out List<HeroSave> ownedHeroes, out List<HeroSave> notOwnedHeroes)
         {

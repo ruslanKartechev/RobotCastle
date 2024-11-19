@@ -50,5 +50,15 @@ namespace RobotCastle.Core
             relics = new RelicsInventorySave(other.relics);
             tutorials = new TutorialSave(other.tutorials);
         }
+
+        public void InitAfterLoad()
+        {
+            inventory.InitAfterLoad();
+        }
+        
+        public void PrepareForSave()
+        {
+            inventory.PrepareForSave();
+        }
     }
 }

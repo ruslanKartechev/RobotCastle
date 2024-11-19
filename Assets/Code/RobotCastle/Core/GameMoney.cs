@@ -37,7 +37,7 @@ namespace RobotCastle.Core
         
         public ReactiveInt globalHardMoney;
 
-        public void SyncSaves()
+        public void PrepareForSave()
         {
             _playerData.levelMoney = levelMoney.Val;
             _playerData.globalMoney = globalMoney.Val;

@@ -67,7 +67,8 @@ namespace RobotCastle.Merging
                 return;
             var lvl = itemData.core.level;
             _refundedMoney = (lvl + 1) * HeroesConstants.HeroRefundMoney;
-            _battleUI.ReturnItemButton.SetMoney(_refundedMoney);
+            if(_refundMode)
+                _battleUI.ReturnItemButton.SetMoney(_refundedMoney);
         }
 
         private void OnDoubleClick(Vector3 obj)

@@ -10,8 +10,9 @@ namespace RobotCastle.UI
         [SerializeField] private CostViewUI _costView;
         private IPlayerFactory _factory;
 
-        private void Start()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             var gm = ServiceLocator.Get<GameMoney>();
             _factory = ServiceLocator.Get<IPlayerFactory>();
             _costView.InitWithCost(gm.levelMoney, _factory.NextCost);

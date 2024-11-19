@@ -39,10 +39,7 @@ namespace RobotCastle.MainMenu
         [SerializeField] private float _moveDelay = .5f;
         [SerializeField] private float _playTutordelay = 1f;
         [SerializeField] private int _roundsCount = 5;
-
-        private SubParent _subParent = new();
         private MyButton _btnPurchase;
-        private bool _isWaiting;
         private int _purchasesCount = 0;
         
         private bool _didMerge;
@@ -210,7 +207,8 @@ namespace RobotCastle.MainMenu
             while (!_didMerge)
             {
                 if (!it1.Transform.gameObject.activeInHierarchy
-                    || !it2.Transform.gameObject.activeInHierarchy)
+                    || !it2.Transform.gameObject.activeInHierarchy
+                    || (it1.itemData.core.level != it2.itemData.core.level))
                 {
                     _didMerge = true;
                 }

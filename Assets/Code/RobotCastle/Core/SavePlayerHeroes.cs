@@ -21,7 +21,7 @@ namespace RobotCastle.Core
         public List<HeroSave> heroSaves = new(100);
         private Dictionary<string, int> _idIndexMap = new(100);
 
-        public void Init()
+        public void InitAfterLoad()
         {
             CLog.Log($"[HeroSaves] Init with {heroSaves.Count} hero saves");
             _idIndexMap.Clear();

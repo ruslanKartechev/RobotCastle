@@ -15,7 +15,6 @@ using RobotCastle.Relics;
 using RobotCastle.Saving;
 using RobotCastle.UI;
 using SleepDev;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -514,7 +513,6 @@ namespace RobotCastle.Battling
             ProgressionManager.CompleteTier(_selectionData.chapterIndex, _selectionData.tierIndex, out var completedFirstTime);
 
             var rewardMultiplier = _selectionData.multiplierTier * _selectionData.tierRewardMultiplier;
-            CLog.Log($"Total reward multiplier: {rewardMultiplier}");
             var goldReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.moneyGoldReward);
             var xpReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.playerXpReward);
 
@@ -527,45 +525,28 @@ namespace RobotCastle.Battling
             gm.globalMoney.AddValue(goldReward);
             
             var newPlayerXp = ServiceLocator.Get<CastleXpManager>().AddXp(xpReward);
-            var rewardsList = new List<CoreItemData>(5);
+            var outputRewards = new List<CoreItemData>(5);
             
+            outputRewards.Add(new CoreItemData(goldReward, "gold", "bonus"));
+            outputRewards.Add(new CoreItemData(goldReward, "player_xp", "bonus"));
             if (completedFirstTime)
             {
-                rewardsList.Add(new CoreItemData(goldReward, "gold", "bonus"));
-                rewardsList.Add(new CoreItemData(goldReward, "player_xp", "bonus"));
-                
-                var inventory = playerData.inventory;
-                foreach (var reward in chapterConfig.chapterCompletedRewards)
+                AddRew(outputRewards, chapterConfig.tiers[_selectionData.tierIndex].additionalRewards);
+                if (_selectionData.tierIndex == chapterConfig.tiers.Count - 1)
                 {
-                    var upgReward = new CoreItemData(reward);
-                    upgReward.level = Mathf.RoundToInt(upgReward.level * rewardMultiplier);
-                    rewardsList.Add(upgReward);
-                    switch (reward.type)
-                    {
-                        case "item":
-                            inventory.AddItem(reward.id, reward.level);
-                            break;
-                        case "relic":
-                            RelicsManager.AddRelic(playerData.relics, reward.id);
-                            break;
-                        default:
-                            CLog.LogRed($"reward type: \"{reward.type}\" unknown will not add to inventory!");
-                            break;
-                    }
+                    AddRew(outputRewards, chapterConfig.chapterCompletedRewards);
                 }
-
-                if (_logRewardItems)
-                {
-                    var msg = "Added rewards after level win!";
-                    foreach (var it in rewardsList)
-                        msg += $"\n{it.id}  {it.level}";
-                    CLog.Log(msg);          
-                }
-                
-                
             }
-           
-            var addedXps = new List<float>(6) { addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp};
+            if (_logRewardItems)
+            {
+                var msg = "Added rewards after level win!";
+                foreach (var it in outputRewards)
+                    msg += $"\n{it.id}  {it.level}";
+                CLog.Log(msg);          
+            }
+
+            var heroesCount = playerData.party.maxCount;
+            var addedXps = new List<float>(heroesCount) { addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp};
             var ui = ServiceLocator.Get<IUIManager>().Show<InvasionLevelWinUI>(UIConstants.UILevelWin, () => {});
             ui.Show(new InvasionWinArgs()
             {
@@ -573,10 +554,33 @@ namespace RobotCastle.Battling
                 playerXpAdded = xpReward,
                 heroesXp = addedXps,
                 selectionData = _selectionData,
-                rewards = rewardsList,
+                rewards = outputRewards,
                 replayCallback = Replay,
                 returnCallback = ReturnToMenu
             });
+        }
+
+        private void AddRew(List<CoreItemData> outputRewards,  List<CoreItemData> configRewards)
+        {
+            var playerData = DataHelpers.GetPlayerData();
+            foreach (var reward in configRewards)
+            {
+                var upgReward = new CoreItemData(reward);
+                upgReward.level = Mathf.RoundToInt(upgReward.level);
+                outputRewards.Add(upgReward);
+                switch (reward.type)
+                {
+                    case ItemsIds.TypeItem:
+                        playerData.inventory.AddItem(reward.id, reward.level);
+                        break;
+                    case ItemsIds.TypeRelic:
+                        RelicsManager.AddRelic(playerData.relics, reward.id);
+                        break;
+                    default:
+                        CLog.LogRed($"reward type: \"{reward.type}\" unknown will not add to inventory!");
+                        break;
+                }
+            }
         }
 
         private void ReturnToMenu()

@@ -58,6 +58,11 @@ namespace RobotCastle.Battling
             }
         }
 
+        private void OnDisable()
+        {
+            Stop();
+        }
+
         private IHeroController _hero;
         private SpellConfigCrescentSlash _config;
         private CrescentSlashView _fxView;

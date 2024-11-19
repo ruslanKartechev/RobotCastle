@@ -64,6 +64,7 @@ namespace RobotCastle.Battling
 
         public void InitAgent(IMap map)
         {
+            enabled = true;
             _rotSpeed  = HeroesConstants.RotationSpeed;
             _speedGetter = _unitView.stats.MoveSpeed;
             if (_map != map || !_didSetup)
@@ -349,7 +350,7 @@ namespace RobotCastle.Battling
                 if (agent.CurrentCell == CurrentCell)
                 {
                     CLog.LogRed($"{_unitView.gameObject.name} ERROR !! Another: {((HeroMovementManager)agent).gameObject.name}");
-                    Debug.Break();
+                    // Debug.Break();
                     return;
                 }
             }

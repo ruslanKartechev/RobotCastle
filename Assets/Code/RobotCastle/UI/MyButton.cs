@@ -20,13 +20,13 @@ namespace RobotCastle.UI
                 _sound = Resources.Load<SoundID>("sounds/s_click");
         }
 
-        private  void OnEnable()
+        protected virtual void OnEnable()
         {
             _btn.onClick.AddListener(MainCallback);
             _btn.onClick.AddListener(FXCallback);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             _btn.onClick.RemoveListener(MainCallback);
             _btn.onClick.RemoveListener(FXCallback);

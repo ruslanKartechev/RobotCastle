@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using MadPixel.InApps;
 using MAXHelper;
+using RobotCastle.Data;
 using RobotCastle.MainMenu;
 using RobotCastle.Saving;
 using RobotCastle.Shop;
@@ -45,6 +45,8 @@ namespace RobotCastle.Core
         {
             if(!DidInit && _autoStart)
                 Init();
+            else if(DidInit)
+                Destroy(gameObject);
         }
 
         public void Init()
@@ -64,11 +66,10 @@ namespace RobotCastle.Core
             ServiceLocator.Bind<SceneLoader>(SceneLoader.Create());
             ServiceLocator.Bind<GameInput>(_gameInput);
             _gameInput.Init();
-            CLog.Log($"Loading saves");
             _dataInitializer.LoadAll();
+            
             AdsPlayer.Create(_intersReloadtime, _adPlayMode);
             
-            CLog.Log($"Calling other loaders");
             var loaders = GetComponentsInChildren<IGameLoader>();
             foreach (var ll in loaders)
                 ll.Load();
@@ -85,14 +86,14 @@ namespace RobotCastle.Core
 
         private void OnApplicationQuit()
         {
-            ServiceLocator.Get<IDataSaver>().SaveAll();
+            DataHelpers.SaveData();
         }
 
         private void OnApplicationPause(bool pauseStatus)
         {
             if (pauseStatus)
             {
-                ServiceLocator.Get<IDataSaver>().SaveAll();
+                DataHelpers.SaveData();
             }
         }
 

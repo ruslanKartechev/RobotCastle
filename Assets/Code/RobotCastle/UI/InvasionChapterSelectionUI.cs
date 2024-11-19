@@ -236,7 +236,10 @@ namespace RobotCastle.UI
             var goldReward = Mathf.RoundToInt(chapter.moneyGoldReward * multiplier);
             var tierSave = GetChapterSave().tierData[tierInd];
             _playBtn.SetInteractable(tierSave.unlocked);
-            _rewardsUI.SetRewards(goldReward, chapter.tiers[tierInd].additionalRewards);
+            if(tierSave.completed)
+                _rewardsUI.SetRewards(goldReward, chapter.tiers[tierInd].additionalRewards);
+            else
+                _rewardsUI.SetRewards(goldReward, new List<CoreItemData>());
             _enemiesTotalPower.text = chapter.tiers[tierInd].totalPower.ToString();
         }
 

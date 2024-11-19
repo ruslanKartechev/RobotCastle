@@ -69,6 +69,7 @@ namespace RobotCastle.MainMenu
             _background.enabled = false;
             _textPrinter.Hide();
             
+
             var barracks = ui.GetIfShown<BarracksTabUI>(UIConstants.UIBarracksTab);
             barracks.altarsBtn.SetInteractable(true);
             barracks.summonBtn.SetInteractable(false);
@@ -79,6 +80,7 @@ namespace RobotCastle.MainMenu
        
             yield return WaitForBtn(barracks.altarsBtn);
             _hand.Off();
+            barracks.summonBtn.SetInteractable(true);
             yield return null;
             _background.enabled = true;
             _textPrinter.Show();

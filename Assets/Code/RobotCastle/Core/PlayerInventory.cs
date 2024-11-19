@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Core
@@ -10,12 +12,12 @@ namespace RobotCastle.Core
         /// Don't use this to read items. Use the "itemsMap" Dictionary!
         /// </summary>
         public List<InventoryItemData> items;
-        [Space(5)]
         public List<ScrollSave> scrolls;
-        public Dictionary<string, InventoryItemData> itemsMap = new (10);
         
-        private Dictionary<string, ScrollSave> scrollsMap = new(10);
+        [NonSerialized] public Dictionary<string, InventoryItemData> itemsMap = new (10);
+        [NonSerialized] private Dictionary<string, ScrollSave> scrollsMap = new(10);
 
+        
         public PlayerInventory(){}
 
         public PlayerInventory(PlayerInventory other)
@@ -27,7 +29,6 @@ namespace RobotCastle.Core
             {
                 var it = new InventoryItemData(other.items[i]);
                 items.Add(it);
-                itemsMap.Add(it.id, it);
             }
             count = other.scrolls.Count;
             scrolls = new (count);
@@ -36,8 +37,44 @@ namespace RobotCastle.Core
             {
                 var it = new ScrollSave(other.scrolls[i]);
                 scrolls.Add(it);
-                scrollsMap.Add(it.id, it);
             }
+        }
+
+        public void Log()
+        {
+            CLog.LogYellow($"==============");
+            CLog.LogYellow($"Inventory items count: {items.Count}, Scrolls count: {scrolls.Count}");
+            foreach (var it in items)
+                CLog.Log($"Item: {it.id}, {it.amount}");
+            foreach (var it in scrolls)
+                CLog.Log($"Item: {it.id}, {it.ownedAmount}");
+            CLog.LogYellow($"==============");
+        }
+
+        public void InitAfterLoad()
+        {
+            foreach (var it in items)
+                itemsMap.Add(it.id, it);
+
+            foreach (var it in scrolls)
+                scrollsMap.Add(it.id, it);
+        }
+        
+        public void PrepareForSave()
+        {
+            items.Clear();
+            items.Capacity = itemsMap.Count;
+            foreach (var (id, ss) in itemsMap)
+                items.Add(ss);
+            
+            scrolls.Clear();
+            scrolls.Capacity = scrollsMap.Count;
+            foreach (var (id, ss) in scrollsMap)
+                scrolls.Add(ss);
+            
+            // CLog.LogYellow($"When saving, map count: {scrollsMap.Count}, list count: {scrolls.Count}.  Inventory: {items.Count}, InventoryMap: {itemsMap.Count}");
+            // foreach (var it in scrolls)
+                // CLog.LogYellow($"SAVING Scroll: {it.id}, amount: {it.ownedAmount}");
         }
 
         /// <summary>
@@ -67,6 +104,13 @@ namespace RobotCastle.Core
 
         public void AddItem(string id, int count)
         {
+            CLog.Log($"Adding item: {id}, count: {count}");
+            if (id.Contains("scroll_tier"))
+            {
+                CLog.Log($"Adding a scroll to inventory");
+                AddScrollsCount(id, count);
+                return;
+            }
             if (itemsMap.ContainsKey(id) == false)
             {
                 itemsMap.Add(id, new InventoryItemData(id, count));
@@ -90,6 +134,17 @@ namespace RobotCastle.Core
             return save;
         }
 
+        public int AddScrollsCount(string id, int amount)
+        {
+            if (scrollsMap.ContainsKey(id))
+            {
+                scrollsMap[id].ownedAmount += amount;
+                return amount;
+            }
+            scrollsMap.Add(id, new ScrollSave(id, amount));
+            return amount;
+        }
+        
         public int SetScrollsCount(string id, int amount)
         {
             if (scrollsMap.ContainsKey(id))
@@ -101,6 +156,10 @@ namespace RobotCastle.Core
             return amount;
         }
 
+        
+        /// <summary>
+        /// USE IN EDITOR ONLY
+        /// </summary>
         public void Reset()
         {
             itemsMap.Clear();

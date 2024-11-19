@@ -23,13 +23,10 @@ namespace RobotCastle.MainMenu
         [SerializeField] private BarracksManager _barracksManager;
         [SerializeField] private BarracksHeroView _barrackHeroView;
 
-
         private void Awake()
         {
             ServiceLocator.Get<IUIManager>().Refresh();
             GameState.Mode = GameState.EGameMode.MainMenu;
-            // if(!SleepDev.AdsPlayer.Instance.BannerCalled)
-            // SleepDev.AdsPlayer.Instance.ShowBanner();
         }
 
         private void Start()
@@ -51,6 +48,7 @@ namespace RobotCastle.MainMenu
             _heroesPool.SpawnAll();
             _tabsSwitcher.SetGateTab();
             
+            DataHelpers.SaveData();
             TryStartTutorial();
         }
 

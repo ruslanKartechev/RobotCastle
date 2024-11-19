@@ -81,6 +81,7 @@ namespace RobotCastle.Battling
             
             components.weaponsContainer.AddAllModifiersToHero(components);
             components.summonedContainer.DestroyAll();
+            components.movement.enabled = false;
             
             foreach (var mod in components.preBattleRecurringMods)
                 mod.Deactivate();

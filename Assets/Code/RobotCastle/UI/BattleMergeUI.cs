@@ -17,6 +17,7 @@ namespace RobotCastle.UI
         public TroopSizePurchaseUI TroopSizePurchaseUI => _troopSizePurchaseUI;
         public IButtonInput BtnStart => _btnStart;
         public IButtonInput BtnStart2 => _btnStartTop;
+        
         public PurchaseNewHeroButton BtnPurchaseHero { get; private set; }
         public ReturnItemButton ReturnItemButton => _returnItemButton;
         public BattleDamageStatsUI StatsCollector => _damageStats;

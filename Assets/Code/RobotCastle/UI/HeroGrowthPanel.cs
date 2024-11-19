@@ -94,23 +94,13 @@ namespace RobotCastle.UI
         
         private void SetupInventory()
         {
-            var notInInventory = new List<string>(5);
             foreach (var ui in _inventoryUI.AllItems)
             {
-                var item = _inventory.items.Find(t => t.id == ui.Id);
-                if (item != null)
-                {
-                    ui.SetCount(item.amount);
-                    ui.IsAllowedToPick = item.amount > 0;
-                }
-                else
-                {
-                    notInInventory.Add(ui.Id);
-                    ui.SetCount(0);
-                }
+                var count = _inventory.GetCount(ui.Id);
+                // CLog.LogGreen($"Get Count Id: {ui.Id}, count: {count}");
+                ui.SetCount(count);
+                ui.IsAllowedToPick = count > 0;
             }
-            foreach (var id in notInInventory)
-                _inventory.items.Add(new InventoryItemData(id, 0));
         }
 
         private void ShowPossibleXpGain()

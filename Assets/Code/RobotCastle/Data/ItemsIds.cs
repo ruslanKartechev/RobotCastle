@@ -16,6 +16,7 @@
         public const string TypeBonus = "bonus";
         public const string TypeItem = "item";
         public const string TypeHeroes = "unit";
+        public const string TypeRelic = "relic";
         public const string ItemUpgradeBookId = "book_xp";
 
         public const string IdBonusMoney = "bonus_money";

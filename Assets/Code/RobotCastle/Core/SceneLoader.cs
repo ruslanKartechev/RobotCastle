@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using RobotCastle.Data;
 using RobotCastle.Saving;
 using RobotCastle.UI;
 using UnityEngine;
@@ -66,7 +67,7 @@ namespace RobotCastle.Core
         private void RefreshAndSave()
         {
             ServiceLocator.Get<IUIManager>().Refresh();
-            ServiceLocator.Get<IDataSaver>().SaveAll();
+            DataHelpers.SaveData();
         }
 
     }

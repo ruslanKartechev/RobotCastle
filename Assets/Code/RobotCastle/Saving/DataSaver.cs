@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using RobotCastle.Core;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Saving
@@ -30,10 +30,6 @@ namespace RobotCastle.Saving
 	    
         public void SaveAll()
         {
-            if (ServiceLocator.GetIfContains<GameMoney>(out var gm))
-            {
-                gm.SyncSaves();
-            }
             foreach (var (type, obj) in _loadedData)
             {
                 var typeName = type.ToString() + ".json";
@@ -53,6 +49,7 @@ namespace RobotCastle.Saving
             var path = Path.Join(_persistentPath, $"{typeof(T).ToString()}.json");
             if (File.Exists(path) == false)
             {
+                CLog.Log($"[IDataSaver] Path Does not exist: {typeof(T).ToString()}");
                 _loadedData.Add(typeof(T), defaultObject);
                 return defaultObject;
             }
@@ -62,11 +59,13 @@ namespace RobotCastle.Saving
                 var loadedData = JsonUtility.FromJson<T>(str);
                 if (loadedData != null)
                 {
+                    CLog.Log($"[IDataSaver] Successfully Loaded: {typeof(T).ToString()}");
                     _loadedData.Add(typeof(T), loadedData);
                     return loadedData;
                 }
             }
             _loadedData.Add(typeof(T), defaultObject);
+            CLog.Log($"[IDataSaver] FAILED to load: {typeof(T).ToString()}");
             return defaultObject;
         }
 	    

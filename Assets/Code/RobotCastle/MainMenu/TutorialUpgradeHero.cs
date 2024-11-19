@@ -21,6 +21,7 @@ namespace RobotCastle.MainMenu
             StartCoroutine(Working());
         }
         
+        [SerializeField] private int _minMoney = 120;
         [SerializeField] private List<string> _messages1;
         [SerializeField] private List<string> _messages2;
         [SerializeField] private List<string> _messages3;
@@ -45,6 +46,7 @@ namespace RobotCastle.MainMenu
         {
             _backGround.enabled = true;
             AddHeroesXpIfNecessary();
+            AddMoneyIfNecessary();
             var uiManager = ServiceLocator.Get<IUIManager>();
             var gate = uiManager.GetIfShown<GateTabUI>(UIConstants.UIGateTab);
             gate.battleBtn.SetInteractable(false);
@@ -250,6 +252,15 @@ namespace RobotCastle.MainMenu
         
 
         private void BlankCallback() {}
+
+        private void AddMoneyIfNecessary()
+        {
+            var gm = ServiceLocator.Get<GameMoney>();
+            if (gm.globalMoney.Val < _minMoney)
+            {
+                gm.globalMoney.SetValue(_minMoney);
+            }
+        }
 
         private void AddHeroesXpIfNecessary()
         {
