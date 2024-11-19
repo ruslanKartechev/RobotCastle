@@ -12,14 +12,14 @@
         }
         
         
-        private HeroComponents _heroView;
+        private HeroComponents _components;
         private HeroStatsManager _stats;
         private bool _canAdd = true;
 
-        public ConditionedManaAdder(HeroComponents heroView)
+        public ConditionedManaAdder(HeroComponents components)
         {
-            _heroView = heroView;
-            _stats = _heroView.stats;
+            _components = components;
+            _stats = _components.stats;
         }
 
         public void AddMana(float val)
@@ -30,9 +30,9 @@
             v += val;
             _stats.ManaCurrent.SetBaseAndCurrent(v);
             if (_stats.ManaMax.Val <= v)
-            {
-                _stats.FullManaListener.OnFullMana(_heroView.gameObject);
-            }
+                _stats.FullManaListener.OnFullMana(_components.gameObject);
         }
+        
+        public void AddDefault() => AddMana(_stats.ManaGainPerAttack);
     }
 }

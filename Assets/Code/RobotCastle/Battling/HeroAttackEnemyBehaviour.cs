@@ -67,7 +67,7 @@ namespace RobotCastle.Battling
 
         private async void SearchAndAttack(CancellationToken token)
         {
-            if (!_isActivated)
+            if (!_isActivated || token.IsCancellationRequested)
                 return;
             _enemiesInRange.Clear();
             myState.attackData.IsMovingForDuel = false;

@@ -59,6 +59,8 @@ namespace RobotCastle.UI
             _callbacks.Add(callback);
         }
 
+        public bool IsInteractable() => _btn.interactable;
+
         public void SetInteractable(bool interactable, bool visually = true)
         {
             if (interactable)

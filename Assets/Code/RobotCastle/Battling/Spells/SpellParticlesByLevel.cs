@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -29,14 +30,22 @@ namespace RobotCastle.Battling
             _particles[level].Play();
         }
 
+        public void PlayAtPoint(Transform point, int level)
+        {
+            gameObject.SetActive(true);
+            transform.CopyPosRot(point);
+            _particles[level].gameObject.SetActive(true);
+            _particles[level].Play();
+        }
+
         public void Hide()
         {
             gameObject.SetActive(false);
         }
         
-        public async void Show(int level)
+        public void Show(int level)
         {
-            gameObject.SetActive(true);
+            StartCoroutine(DelayedHide(_duration));
             for (var i = 0; i < _particles.Count; i++)
             {
                 var p = _particles[i];
@@ -51,9 +60,13 @@ namespace RobotCastle.Battling
                     p.gameObject.SetActive(false);
                 }
             }
-            await Task.Delay((int)(1000 * _duration));
-            if (Application.isPlaying == false)
-                return;
+
+        }
+
+        private IEnumerator DelayedHide(float time)
+        {
+            gameObject.SetActive(true);
+            yield return new WaitForSeconds(time);
             gameObject.SetActive(false);
         }
         

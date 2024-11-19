@@ -5,5 +5,6 @@
     {
         public float manaMax = 100;
         public float manaStart = 0;
+        public float manaGain = 10;
     }
 }

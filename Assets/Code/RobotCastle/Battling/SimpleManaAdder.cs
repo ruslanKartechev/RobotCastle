@@ -2,13 +2,13 @@
 {
     public class SimpleManaAdder : IManaAdder
     {
-        private HeroComponents _heroView;
+        private HeroComponents _components;
         private HeroStatsManager _stats;
 
-        public SimpleManaAdder(HeroComponents heroView)
+        public SimpleManaAdder(HeroComponents components)
         {
-            _heroView = heroView;
-            _stats = _heroView.stats;
+            this._components = components;
+            _stats = this._components.stats;
         }
         
         public void AddMana(float val)
@@ -18,8 +18,10 @@
             _stats.ManaCurrent.SetBaseAndCurrent(v);
             if (_stats.ManaMax.Val <= v)
             {
-                _stats.FullManaListener.OnFullMana(_heroView.gameObject);
+                _stats.FullManaListener.OnFullMana(_components.gameObject);
             }
         }
+
+        public void AddDefault() => AddMana(_stats.ManaGainPerAttack);
     }
 }

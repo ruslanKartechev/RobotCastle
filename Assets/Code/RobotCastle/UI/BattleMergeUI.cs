@@ -71,12 +71,16 @@ namespace RobotCastle.UI
 
         private void SetSummonButton(bool advanced)
         {
+            var interactable = false;
+            if (BtnPurchaseHero != null)
+                interactable = BtnPurchaseHero.IsInteractable();
             _btnPurchaseHero.gameObject.SetActive(!advanced);
             _btnPurchaseHeroAdvanced.gameObject.SetActive(advanced);
             if (advanced)
                 BtnPurchaseHero = _btnPurchaseHeroAdvanced;
             else
                 BtnPurchaseHero = _btnPurchaseHero;
+            BtnPurchaseHero.SetInteractable(interactable);
         }
 
 
@@ -84,6 +88,8 @@ namespace RobotCastle.UI
 
         public void AllowButtonsInput(bool allow)
         {
+            if(BtnPurchaseHero == null)
+                SetSummonButton(false);
             BtnPurchaseHero.SetInteractable(allow);
             BtnStart.SetInteractable(allow);
             BtnStart2.SetInteractable(allow);

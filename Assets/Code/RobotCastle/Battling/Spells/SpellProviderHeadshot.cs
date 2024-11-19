@@ -30,13 +30,13 @@ namespace RobotCastle.Battling
             {
                 var stats = target.GetComponent<HeroStatsManager>();
                 lvl = stats.MergeTier;
-                str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
-                str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{stats.SpellPower.Get()}</color>");
+                str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{(int)_config.physDamage[lvl]}</color>");
+                str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{(int)stats.SpellPower.Get()}</color>");
             }
             else
             {
-                str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{_config.physDamage[lvl]}</color>");
-                str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{_config.spellDamage[lvl]}</color>");
+                str = str.Replace("<phys>", $"<color={HeroesConstants.ColorPhysDamage}>{(int)_config.physDamage[lvl]}</color>");
+                str = str.Replace("<mag>", $"<color={HeroesConstants.ColorMagDamage}>{(int)_config.spellDamage[lvl]}</color>");
             }
             return str;
         }

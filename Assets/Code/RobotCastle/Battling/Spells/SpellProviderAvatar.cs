@@ -29,7 +29,7 @@ namespace RobotCastle.Battling
             var str = base.GetDescription(target);
             var lvl = (int)HeroesManager.GetSpellTier(components.stats.MergeTier);
             str = str.Replace("<def>", _config.defByTier[lvl].ToString());
-            str = str.Replace("<mag>", _config.spellDamage.ToString());
+            str = str.Replace("<mag>", ((int)_config.spellDamage).ToString());
             return str;
         }
 

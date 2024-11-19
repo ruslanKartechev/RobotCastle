@@ -73,6 +73,8 @@ namespace RobotCastle.Battling
 
         public Stat PhysicalCritChance { get; set; } = new Stat();
         public Stat MagicalCritChance { get; set; } = new Stat();
+
+        public float ManaGainPerAttack { get; set; } = 10;
         
         public string HeroId { get; private set; }
         public int MergeTier { get; private set; }

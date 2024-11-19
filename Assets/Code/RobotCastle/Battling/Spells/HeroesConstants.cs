@@ -30,8 +30,8 @@ namespace RobotCastle.Battling
         public static readonly List<int> SpellTiersByMergeLevel = new() {0, 2, 4, 6};
 
         public const string ColorAddedStats = "#FFFF11";
-        public const string ColorPhysDamage = "#FFFF11";
-        public const string ColorMagDamage = "#1111FF";
+        public const string ColorPhysDamage = "#ff2929";
+        public const string ColorMagDamage = "#19e4ff";
 
         public const string SpellFXPrefab_Blizzard = "prefabs/spells/blizzard";
         public const string SpellFXPrefab_JudgementOfLight = "prefabs/spells/judgement_of_light";
@@ -50,6 +50,7 @@ namespace RobotCastle.Battling
         public const string SpellFXPrefab_Earthquake = "prefabs/spells/earthquake";
         public const string SpellFXPrefab_Bombard = "prefabs/spells/bombard";
         public const string SpellFXPrefab_Cheapshot = "prefabs/spells/cheapshot";
+        public const string SpellFXPrefab_Terrorize = "prefabs/spells/terrorize";
 
 
     }

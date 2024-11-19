@@ -103,6 +103,60 @@ namespace RobotCastle.Battling
             // CLog.LogRed($"{gameObject.name} On Stopped");
             _unitView.animator.SetBool(HeroesConstants.Anim_Move, false);
         }
+        
+        
+        public void MoveToCell(Vector2Int cell)
+        {
+            _tokenSource?.Cancel();
+            _tokenSource = new CancellationTokenSource();
+            if(!_isMoving)
+                OnMovementBegan();
+            MovingToCell(cell, _tokenSource.Token);
+        }
+
+        public async Task MovingToCell(Vector2Int targetCell, CancellationToken token)
+        {
+            await RotateIfNecessary(targetCell, token);
+            if (token.IsCancellationRequested) return;
+            TargetCell = targetCell;
+
+            var busy = true;
+            while (!token.IsCancellationRequested && busy)
+            {
+                busy = false;
+                foreach (var aa in _map.ActiveAgents)
+                {
+                    if (aa == this) continue;
+                    if (aa.CurrentCell == targetCell || aa.TargetCell == targetCell)
+                    {
+                        busy = true;
+                        break;
+                    }
+                }
+                await Task.Yield();
+            }
+            if (token.IsCancellationRequested) return;
+            
+            var targetWorldPos = _map.GetWorldFromCell(targetCell);
+            var movable = transform;
+            var totalDistance = (targetWorldPos - movable.position).magnitude;
+            var travelled = 0f;
+            while (!token.IsCancellationRequested && travelled < totalDistance)
+            {
+                var vec = targetWorldPos - movable.position;
+                var vecL = vec.magnitude;
+                var amount = _speedGetter.Get() * Time.deltaTime;
+                vec *= amount / vecL;
+                travelled += amount;
+                movable.position += vec;
+                await Task.Yield();
+            }
+            if (token.IsCancellationRequested) return;
+            movable.position = targetWorldPos;
+            CurrentCell = targetCell;
+        }
+
+        
 
         public void MoveToEnemy(IHeroController enemy, 
             Action stepCallback, Action endCallback)
@@ -111,7 +165,8 @@ namespace RobotCastle.Battling
             _tokenSource = new CancellationTokenSource();
             MovingToEnemy(enemy, _tokenSource.Token, stepCallback, endCallback);
         }
-        
+
+
         public async Task<EPathMovementResult> MovingToEnemy(IHeroController enemy, 
             CancellationToken token, Action stepCallback, Action endCallback)
         {
@@ -252,7 +307,7 @@ namespace RobotCastle.Battling
             return EPathMovementResult.ReachedEnd;
         }
 
-        public async void RotateIfNecessary(Vector2Int cellPos, CancellationToken token, Action callback = null)
+        public async Task RotateIfNecessary(Vector2Int cellPos, CancellationToken token, Action callback = null)
         {
             _unitView.state.isMoving = true;
             var worldPos = _map.GetWorldFromCell(cellPos);

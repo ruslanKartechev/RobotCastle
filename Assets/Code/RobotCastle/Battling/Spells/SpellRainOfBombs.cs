@@ -12,10 +12,7 @@ namespace RobotCastle.Battling
             _config = config;
             _components = components;
             _components.processes.Add(this);
-            _components.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            _components.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart); 
-            _components.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(_components);
-            _components.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
+            Setup(config, out _manaAdder);
         }
 
         public void Stop()

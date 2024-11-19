@@ -15,9 +15,7 @@ namespace RobotCastle.Battling
             _components = components;
             _damageMod = new DamageModAddAmount(0, 0);
             _manaAdder = new ConditionedManaAdder(_components);
-            _components.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            _components.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
-            _components.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
+            Setup(config, out _manaAdder);
             // _components.stats.SpellPower.AddPermanentDecorator(this);
         }
         

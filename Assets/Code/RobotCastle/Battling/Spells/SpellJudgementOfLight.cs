@@ -11,18 +11,14 @@ namespace RobotCastle.Battling
         {
             _config = config;
             _components = components;
-            components.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            components.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart);
-            _components.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
-            _components.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(components);
+            Setup(config, out _manaAdder);
             _components.stats.SpellPower.AddPermanentDecorator(this);
         }
-        
-        public float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_components.stats.MergeTier)];
+
         public string name => "spell";
         public int order => 10;
-        
         public float Decorate(float val) => val + BaseSpellPower;
+        private float BaseSpellPower => _config.spellDamage[(int)HeroesManager.GetSpellTier(_components.stats.MergeTier)];
 
         public void OnFullMana(GameObject heroGo)
         {

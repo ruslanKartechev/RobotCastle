@@ -24,7 +24,6 @@ namespace RobotCastle.Data
                 gameMoney.PrepareForSave();
             }
             ServiceLocator.Get<IDataSaver>().SaveAll();
-            CLog.LogGreen("[DataHelpers] === Data Saved !!");
         }
         
         public static void SeparateOwnedAndNotOwnedHeroes(SavePlayerHeroes heroes, 

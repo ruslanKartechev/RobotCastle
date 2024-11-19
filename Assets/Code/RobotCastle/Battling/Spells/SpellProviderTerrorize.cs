@@ -2,10 +2,10 @@
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/throw_rock", fileName = "throw_rock", order = 209)]
-    public class SpellProviderThrowRock : SpellProvider, IBehaviourProvider
+    [CreateAssetMenu(menuName = "SO/Spells/terrorize", fileName = "terrorize", order = 210)]
+    public class SpellProviderTerrorize : SpellProvider
     {
-        [SerializeField] private SpellConfigThrowRock _config;
+        [SerializeField] private SpellConfigTerrorize _config;
  
         public override void AddTo(GameObject target)
         {
@@ -16,15 +16,13 @@ namespace RobotCastle.Battling
         
         public override void AddToHero(HeroComponents components)
         {
-            var hero = components.GetComponent<IHeroController>();
-            if (hero == null) return;
-            hero.DefaultBehaviourProvider = this;
+            components.stats.FullManaListener = new SpellTerrorize(_config, components);
         }
         
         public override string GetDescription(GameObject target)
         {
             var str = base.GetDescription(target);
-            str = str.Replace("<time>", _config.stunTime.ToString());
+             str = str.Replace("<time>", _config.fleeTime.ToString());
             return str;
         }
 
@@ -32,9 +30,6 @@ namespace RobotCastle.Battling
         
         public override float manaStart => _config.manaStart;
 
-        public IHeroBehaviour GetBehaviour(IHeroController hero)
-        {
-            return new ThrowRockBehaviour(_config.squareRange, _config.stunTime);
-        }
+     
     }
 }

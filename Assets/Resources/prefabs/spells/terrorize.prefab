@@ -4927,8 +4927,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5419131371383726250}
+  - component: {fileID: 1099410064155138582}
   m_Layer: 0
-  m_Name: _terrorize
+  m_Name: terrorize
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4943,13 +4944,28 @@ Transform:
   m_GameObject: {fileID: 3808014681559242828}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.832}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8219206173423815179}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1099410064155138582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3808014681559242828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6ad39ff9e354509a20447e11a01c01d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particles:
+  - {fileID: 8219206173442163479}
+  _duration: 1.5
 --- !u!1 &6817983484384091779
 GameObject:
   m_ObjectHideFlags: 0
@@ -9804,9 +9820,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8219206173423391165}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 0.406558, y: 0.406558, z: 0.406558}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2788276648630544104}
@@ -9815,7 +9831,7 @@ Transform:
   - {fileID: 8219206173423737401}
   - {fileID: 8219206173423706109}
   m_Father: {fileID: 5419131371383726250}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!198 &8219206173442163479
 ParticleSystem:
   m_ObjectHideFlags: 0

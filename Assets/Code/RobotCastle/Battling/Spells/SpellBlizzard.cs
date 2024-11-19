@@ -22,10 +22,7 @@ namespace RobotCastle.Battling
         {
             _components = view;
             _config = config;
-            _components.stats.ManaMax.SetBaseAndCurrent(_config.manaMax);
-            _components.stats.ManaCurrent.SetBaseAndCurrent(_config.manaStart); 
-            _components.stats.ManaResetAfterBattle = new ManaResetSpecificVal(_config.manaMax, _config.manaStart);
-            _components.stats.ManaAdder = _manaAdder = new ConditionedManaAdder(_components);
+            Setup(config, out _manaAdder);
             _components.stats.SpellPower.AddPermanentDecorator(this);
         }
         

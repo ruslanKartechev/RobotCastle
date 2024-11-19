@@ -9,17 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d37fa6b6204547ada5bb32c6566bf4dc, type: 3}
-  m_Name: rapid_arrows
+  m_Script: {fileID: 11500000, guid: 6fe87a28d2c74544a6d8c31884c41538, type: 3}
+  m_Name: terrorize
   m_EditorClassIdentifier: 
-  _id: rapid_arrows
+  _id: terrorize
   _config:
-    manaMax: 75
-    manaStart: 0
-    manaGain: 12
-    duration: 6
-    atkSpeedMultiplier:
-    - 2
-    - 3
-    - 4
-    - 5
+    manaMax: 120
+    manaStart: 120
+    manaGain: 20
+    fleeTime: 2
+    resumeDelay: 1
+    maxRange: 6

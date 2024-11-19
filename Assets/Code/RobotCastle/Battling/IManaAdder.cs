@@ -3,5 +3,7 @@
     public interface IManaAdder
     {
         void AddMana(float val);
+        void AddDefault();
+        
     }
 }
