@@ -118,7 +118,6 @@ namespace RobotCastle.Core
             var analytics = go.transform.GetChild(1).GetComponent<MadPixelAnalytics.AnalyticsManager>();
             analytics.Init();
             analytics.SubscribeToAdsManager();
-            
             var purchaser = go.transform.GetComponentInChildren<MobileInAppPurchaser>();
             if (purchaser == null)
             {

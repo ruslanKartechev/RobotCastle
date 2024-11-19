@@ -7,11 +7,20 @@ namespace RobotCastle.UI
 {
     public class PlayerDataPanelUI : MonoBehaviour, IScreenUI
     {
+        public RectTransform moneyPoint => _moneyPoint;
+
+        public RectTransform hardMoneyPoint => _hardMoneyPoint;
+
+        public RectTransform energyPoint => _energyPoint;
+
+        [SerializeField] private RectTransform _moneyPoint;
+        [SerializeField] private RectTransform _hardMoneyPoint;
+        [SerializeField] private RectTransform _energyPoint;
+        
         [SerializeField] private MoneyUI _globalMoney;
         [SerializeField] private MoneyUI _hardMoney;
         [SerializeField] private PlayerExperienceUI _experience;
         [SerializeField] private ValueCurrentAndMaxUI _energy;
-        
 
         private void OnEnable()
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.UI;
@@ -17,6 +16,8 @@ namespace RobotCastle.Shop
 
         public void Show(int firstTab = 1)
         {
+            ServiceLocator.Bind<IShopManager>(_shopManager);
+            ServiceLocator.Bind<ShopManager>(_shopManager);
             gameObject.SetActive(true);
             _fadeScreen.FadeInWithId(UIConstants.UIShop);
             _raycaster.enabled = true;
@@ -31,43 +32,12 @@ namespace RobotCastle.Shop
         
         private void OnEnable()
         {
-            ServiceLocator.Bind<ShopManager>(_shopManager);
         }
 
         private void OnDisable()
         {
+            ServiceLocator.Unbind<IShopManager>();            
             ServiceLocator.Unbind<ShopManager>();
         }
-    }
-
-
-    [System.Serializable]
-    public class ShopSaveData
-    {
-        public DateTimeData dailyOfferStartTime;
-        public List<ShopItemSave> dailyItems;
-        
-        public ShopSaveData(){}
-
-        public ShopSaveData(ShopSaveData other)
-        {
-            dailyOfferStartTime = new DateTimeData(other.dailyOfferStartTime);
-            var count = other.dailyItems.Count;
-            dailyItems = new(count);
-            for (var i = 0; i < count; i++)
-            {
-                dailyItems.Add(new ShopItemSave(other.dailyItems[i]));
-            }
-        }
-    }
-
-    
-    [System.Serializable]
-    public class ShopDataBase
-    {
-        public List<ShopItemData> dailyOffers;
-        public List<ShopItemData> resources;
-        public List<ShopItemData> otherOffers;
-        
     }
 }

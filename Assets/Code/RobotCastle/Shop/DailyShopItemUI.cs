@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
-using RobotCastle.UI;
 using SleepDev;
+using SleepDev.FlyingUI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RobotCastle.Shop
 {
-    public class DailyShopItemUI : MonoBehaviour
+    public class DailyShopItemUI : ShopItemUI
     {
         public CoreItemData itemData { get; private set; }
         
@@ -22,10 +22,9 @@ namespace RobotCastle.Shop
                 SetAvailable(_save.isAvailable);
             } }
         
-        public IShopManager shopManager { get; set; }
-
         public void SetData(CoreItemData core)
         {
+            itemData = core;
             var db = ServiceLocator.Get<ViewDataBase>();
             string title = "";
             switch (core.type)
@@ -54,7 +53,6 @@ namespace RobotCastle.Shop
         [SerializeField] private TextMeshProUGUI _nameText;
         [SerializeField] private TextMeshProUGUI _amountGivenText;
         [SerializeField] private Image _itemIcon;
-        [SerializeField] private MyButton _btn;
         [SerializeField] private List<GameObject> _blockingObjects;
         private IShopPurchaseMaker _purchaseMaker;
         private ShopItemSave _save;
@@ -80,11 +78,16 @@ namespace RobotCastle.Shop
                 CLog.Log($"Purchase result: {result.ToString()}");
                 if (result == EPurchaseResult.Success)
                 {
-                    shopManager.GrandItem(itemData);
                     itemSave.isAvailable = false;
+                    ServiceLocator.Get<IShopManager>().GrandItem(itemData);
+                    SetAvailable(false);
+                    var flyPos = new Vector3(Screen.width / 2f, Screen.height, 0);
+                    var flyingUI = ServiceLocator.Get<FlyingUIScreen>();
+                    flyingUI.FlyFromTo(_itemIcon.sprite, transform.position, flyPos, 3);
+                    
                 }    
             });
         }
-
     }
+
 }

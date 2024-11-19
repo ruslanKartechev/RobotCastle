@@ -19,7 +19,6 @@ namespace RobotCastle.Shop
                     SetOn(_tabData[ind].tabBtn.Id);
                 });
             }
-
             if (firstTab < 0 || firstTab >= _tabData.Count)
                 firstTab = 0;
             SetOn(firstTab);
@@ -34,7 +33,7 @@ namespace RobotCastle.Shop
             }
             _current = _tabData[index];
             _current.tab.Show();
-            _current.tabBtn.SetNotPicked();
+            _current.tabBtn.SetPicked();
         }
         
 

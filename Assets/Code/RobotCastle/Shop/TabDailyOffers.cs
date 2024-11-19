@@ -54,7 +54,6 @@ namespace RobotCastle.Shop
                 for (var i = 0; i < count; i++)
                 {
                     var ui = _itemsUI[i];
-                    ui.shopManager = shopManager;
                     ui.itemSave = save.dailyItems[i];
                     ui.SetData(save.dailyItems[i].itemData);
                 }
@@ -85,7 +84,6 @@ namespace RobotCastle.Shop
                 savesList.Add(save);
                 var ui = _itemsUI[uiInd];
                 ui.itemSave = save;
-                ui.shopManager = shopManager;
                 ui.SetData(item);
             }
 
@@ -115,7 +113,6 @@ namespace RobotCastle.Shop
                 savesList.Add(save);
                 var ui = _itemsUI[uiInd];
                 ui.itemSave = save;
-                ui.shopManager = shopManager;
                 ui.SetData(item);
                 uiInd++;
             }

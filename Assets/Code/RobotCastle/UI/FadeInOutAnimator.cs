@@ -23,7 +23,13 @@ namespace RobotCastle.UI
         {
             _canvasGroup.DOKill();
             _canvasGroup.alpha = 1f;
-            _canvasGroup.DOFade(0f, _inTime).OnComplete(Off);
+            _canvasGroup.DOFade(0f, _outTime).OnComplete(Off);
+        }
+        
+        public void OnAndFadeOut()
+        {
+            On();
+            FadeOut();
         }
 
         public void Off() => gameObject.SetActive(false);

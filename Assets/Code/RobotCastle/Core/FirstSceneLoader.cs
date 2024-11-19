@@ -11,6 +11,7 @@ namespace RobotCastle.Core
     {
         [SerializeField] private string _firstScene;
         [SerializeField] private SceneLoaderUI _loadingUI;
+        [SerializeField] private float _loadingConstTime = 1f;
         
         private void Start()
         {
@@ -21,11 +22,11 @@ namespace RobotCastle.Core
         {
             yield return null;
             yield return null;
-            while(AdsManager.Exist == false || AdsManager.Instance.bReady == false)
+            while(!AdsManager.Exist || !AdsManager.Ready())
                 yield return null;
             _loadingUI.Begin();
-            yield return null;
-            yield return SceneManager.LoadSceneAsync(_firstScene);
+            yield return new WaitForSeconds(_loadingConstTime);
+            SceneManager.LoadScene(_firstScene);
         }
     }
 }

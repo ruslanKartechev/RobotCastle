@@ -4,6 +4,7 @@ using RobotCastle.Data;
 using RobotCastle.Merging;
 using RobotCastle.UI;
 using SleepDev;
+using SleepDev.FlyingUI;
 using UnityEngine;
 
 namespace RobotCastle.MainMenu
@@ -22,6 +23,7 @@ namespace RobotCastle.MainMenu
         [SerializeField] private MergeItemsFactory _mergeItems;
         [SerializeField] private BarracksManager _barracksManager;
         [SerializeField] private BarracksHeroView _barrackHeroView;
+        [SerializeField] private FlyingUIScreen _flyingUIScreen;
 
         private void Awake()
         {
@@ -38,6 +40,8 @@ namespace RobotCastle.MainMenu
             ServiceLocator.Bind<IMergeItemsFactory>(_mergeItems);
             ServiceLocator.Bind<BarracksManager>(_barracksManager);
             ServiceLocator.Bind<BarracksHeroView>(_barrackHeroView);
+            ServiceLocator.Bind<FlyingUIScreen>(_flyingUIScreen);
+
             var ui = ServiceLocator.Get<IUIManager>();
             ui.ParentCanvas = _parentCanvas;
             ui.AddAsShown(UIConstants.UIMainMenuTabs, _tabs);
