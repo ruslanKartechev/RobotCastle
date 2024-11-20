@@ -141,6 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0771950ea152459ead144ccca855fb4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _energyMin: 60
+  _energyAdded: 40
 --- !u!1 &1333669282519715580
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,6 +354,10 @@ PrefabInstance:
     - target: {fileID: 2094841835787483776, guid: f3d33db484d50134295a7ae2bde119ba, type: 3}
       propertyPath: m_Name
       value: cheat ui
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094841835787483776, guid: f3d33db484d50134295a7ae2bde119ba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7234611710872948403, guid: f3d33db484d50134295a7ae2bde119ba, type: 3}
       propertyPath: m_Pivot.x

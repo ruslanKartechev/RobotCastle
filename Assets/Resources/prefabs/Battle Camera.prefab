@@ -102,6 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4294153064810088032}
   - component: {fileID: 910037817318768565}
+  - component: {fileID: 7346231172897393688}
   m_Layer: 0
   m_Name: Battle Camera
   m_TagString: Untagged
@@ -143,6 +144,7 @@ MonoBehaviour:
   _battlePoint: {fileID: 0}
   _cameraSizeNormal: 9
   _cameraSizeWide: 10.5
+  _cameraSizeMerge: 0
   _sizeAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -178,6 +180,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _sizeAnimationTime: 1
   _moveBackTime: 1
+  _moveBackDelay: 1
   _moveBackAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -202,3 +205,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _orthoCameraAdjuster: {fileID: 7346231172897393688}
+--- !u!114 &7346231172897393688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8466731600111633487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f35e743da5c4ad5923f182161a640ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 5592276004255277059}
+  _refResolution: {x: 1024, y: 1980}
+  _normalSize: 9
+  _autoAdjustOnEnable: 1

@@ -17,6 +17,7 @@ namespace RobotCastle.Battling
             
         public void Attack(IDamageReceiver target, int animationIndex)
         {
+            if (target == null || target.GetGameObject() == null) return;
             if(_components.shootParticles != null)
                 _components.shootParticles.Play();
 

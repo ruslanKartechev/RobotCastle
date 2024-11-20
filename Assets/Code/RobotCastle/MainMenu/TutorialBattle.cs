@@ -146,12 +146,10 @@ namespace RobotCastle.MainMenu
                     {
                         yield return PlayButtonTutoring();
                         rounds++;
-                        CLog.LogYellow($"Next round ======= {rounds}");
                     }
                     else
                     {
                         rounds++;
-                        CLog.LogYellow($"Next round ======= {rounds}");
                     }
                 }
                 yield return null;

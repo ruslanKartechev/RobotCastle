@@ -47,6 +47,9 @@ namespace RobotCastle.MainMenu
             _backGround.enabled = true;
             AddHeroesXpIfNecessary();
             AddMoneyIfNecessary();
+            var progSave = DataHelpers.GetPlayerData().progression;
+            progSave.chapters[0].tierData[1].unlocked = true;
+            
             var uiManager = ServiceLocator.Get<IUIManager>();
             var gate = uiManager.GetIfShown<GateTabUI>(UIConstants.UIGateTab);
             gate.battleBtn.SetInteractable(false);

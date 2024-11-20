@@ -122,7 +122,21 @@ namespace RobotCastle.Battling
                     return new AttackRangeRectangle(1,1);
                 case "golem_earth":
                     return new AttackRangeRhombus(2);
-
+                case "egglet":
+                    return new AttackRangeRectangle(1,1);
+                case "fledgling":
+                    return new AttackRangeRectangle(2,2);
+                case "shadow":
+                    return new AttackRangeRhombus(2);
+                case "dragon_spark":
+                    return new AttackRangeRhombus(4);
+                case "dragon_fire":
+                    return new AttackRangeRectangle(1,1);
+                case "dragon_inferno":
+                    return new AttackRangeRectangle(3,3);
+                case "golem_fire":
+                    return new AttackRangeRhombus(2);
+                
             }
             CLog.Log($"[AttackRangeFactory] No preset attack range for: {id}. Returning basic 1x1 \"PlusShape\" ");
             return new AttackRangeSingle();

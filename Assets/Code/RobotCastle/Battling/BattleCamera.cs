@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DG.Tweening;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.UI;
-using RobotCastle.Utils;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -46,6 +44,7 @@ namespace RobotCastle.Battling
         [SerializeField] private float _moveBackTime = 1; 
         [SerializeField] private float _moveBackDelay = 1;
         [SerializeField] private AnimationCurve _moveBackAnimationCurve;
+        [SerializeField] private OrthoCameraAdjuster _orthoCameraAdjuster;
         private CancellationTokenSource _tokenSource;
         private int _slideBlockers;
         private int _positionIndex;
@@ -160,13 +159,14 @@ namespace RobotCastle.Battling
             var t = 0f;
             while (t <= 1f && !token.IsCancellationRequested)
             {
-                _camera.orthographicSize = Mathf.Lerp(size1, size2, t);
+                var s = Mathf.Lerp(size1, size2, t);
+                SetCamSize(s);
                 elapsed += Time.deltaTime;
                 t = elapsed / time;
                 await Task.Yield();
             }
             if (token.IsCancellationRequested) return;
-            _camera.orthographicSize = size2;
+            SetCamSize(size2);
         }
         
         public async Task AnimateCameraSize(CancellationToken token)
@@ -179,14 +179,19 @@ namespace RobotCastle.Battling
             
             while (t <= 1f && !token.IsCancellationRequested)
             {
-                _camera.orthographicSize = Mathf.LerpUnclamped(size1, size2, _sizeAnimationCurve.Evaluate(t));
+                var s = Mathf.LerpUnclamped(size1, size2, _sizeAnimationCurve.Evaluate(t));
+                SetCamSize(s);
                 elapsed += Time.deltaTime;
                 t = elapsed / time;
                 await Task.Yield();
             }
             if (token.IsCancellationRequested) return;
-            _camera.orthographicSize = size2;
+            SetCamSize(size2);
         }
-        
+
+        private void SetCamSize(float size)
+        {
+            _orthoCameraAdjuster.SetAdjustedSize(size);
+        }
     }
 }

@@ -209,10 +209,12 @@ namespace RobotCastle.Battling
             damageUI.gameObject.SetActive(true);
             
             _mainUI = uiManager.Show<BattleMergeUI>(UIConstants.UIBattleMerge, () => { });
+            _mainUI.Init(_battleManager.battle, _chapter);
             _mainUI.BtnStart.AddMainCallback(StartBattle);
             _mainUI.BtnStart2.AddMainCallback(StartBattle);
-            _mainUI.TroopSizePurchaseUI.SetInteractable(true);
-            _mainUI.Init(_battleManager.battle, _chapter);
+            _mainUI.TroopSizePurchaseUI.SetInteractable(false);
+            _mainUI.BtnPurchaseHero.SetInteractable(false);
+            _mainUI.BtnStart.SetInteractable(false);
             _mainUI.StatsCollector.SetCollector((BattleDamageStatsCollector)_battleManager.playerStatCollector);
             _mainUI.AnimateShowUp();
             InitCurrentRound(_roundAttemptsCount);

@@ -26,7 +26,12 @@ namespace RobotCastle.Battling
 
         public void RemoveItem(IItemView view)
         {
-            // CLog.Log($"Removed item: {view.itemData.core.id}");
+            if (view.itemData.core.type == ItemsIds.TypeHeroes)
+            {
+                var hero = view.Transform.gameObject.GetComponent<IHeroController>();
+                if(hero != null)
+                    _heroes.Remove(hero);
+            }
             _allItems.Remove(view);
         }
         
