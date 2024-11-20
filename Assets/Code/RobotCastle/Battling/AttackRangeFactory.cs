@@ -102,7 +102,12 @@ namespace RobotCastle.Battling
                     return new AttackRangeRhombus(2);
                 case "skelet_giant":
                     return new AttackRangeRectangle(2,2);
-                
+                case "eyeball_bat":
+                    return new AttackRangeRectangle(2,3);
+                case "goblin_giant":
+                    return new AttackRangeRectangle(2,2);
+                case "eyeball_creep":
+                    return new AttackRangeRectangle(3,3);
             }
             CLog.Log($"[AttackRangeFactory] No preset attack range for: {id}. Returning basic 1x1 \"PlusShape\" ");
             return new AttackRangeSingle();

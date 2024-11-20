@@ -18,18 +18,15 @@ namespace RobotCastle.Saving
 
         #if UNITY_EDITOR
 
+        [ContextMenu("SetHeroesLevel 20")]
+        public void E_SetHeroesLevel20() => E_SetAllHeroesLevel(20);
+
         [ContextMenu("SetHeroesLevel 10")]
-        public void E_SetHeroesLevel10()
-        {
-            E_SetAllHeroesLevel(10);
-        }
+        public void E_SetHeroesLevel10() => E_SetAllHeroesLevel(10);
 
         [ContextMenu("SetHeroesLevel 0")]
-        public void E_SetHeroesLevel0()
-        {
-            E_SetAllHeroesLevel(0);
-        }
-        
+        public void E_SetHeroesLevel0() => E_SetAllHeroesLevel(0);
+
         private void E_SetAllHeroesLevel(int level)
         {
             var list = PlayerHeroes.heroSaves;

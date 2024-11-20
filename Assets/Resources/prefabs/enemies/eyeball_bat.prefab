@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &835229649397651210
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2893342232242259606}
+  m_Layer: 0
+  m_Name: projectile particles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2893342232242259606
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835229649397651210}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 0.295, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4462229398682597304}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 90}
 --- !u!1001 &4454573540745023541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -162,7 +193,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 17124858021406605, guid: 115789d8404918646849ee4c2bef6e22, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2893342232242259606}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5190626579188715984, guid: 115789d8404918646849ee4c2bef6e22, type: 3}
       insertIndex: -1
@@ -179,6 +213,11 @@ SkinnedMeshRenderer:
 --- !u!95 &2914638404685988133 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 1559146140643037456, guid: 115789d8404918646849ee4c2bef6e22, type: 3}
+  m_PrefabInstance: {fileID: 4454573540745023541}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4462229398682597304 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 17124858021406605, guid: 115789d8404918646849ee4c2bef6e22, type: 3}
   m_PrefabInstance: {fileID: 4454573540745023541}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8491849735991755237 stripped
@@ -314,9 +353,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2914638404685988133}
     - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _spellPoint
+      value: 
+      objectReference: {fileID: 2893342232242259606}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       propertyPath: _heroAnimationEvent
       value: 
       objectReference: {fileID: 7078147828471950346}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _projectileSpawnPoint
+      value: 
+      objectReference: {fileID: 2893342232242259606}
+    - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      propertyPath: _projectileSpawnPoint2
+      value: 
+      objectReference: {fileID: 2893342232242259606}
     - target: {fileID: 8901051233423639369, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       propertyPath: attackSounds.Array.size
       value: 1
@@ -334,14 +385,17 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2378445773442730016, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 9024756405377291348}
+      addedObject: {fileID: 5452775008500460802}
+    - targetCorrespondingSourceObject: {fileID: 2378445773442730016, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 925656138980193648}
   m_SourcePrefab: {fileID: 100100000, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
 --- !u!1 &6956103407515693580 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2378445773442730016, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}
   m_PrefabInstance: {fileID: 4722275885293386284}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9024756405377291348
+--- !u!114 &5452775008500460802
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -350,9 +404,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 6956103407515693580}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58110171326f4872acbf1725c3caba12, type: 3}
+  m_Script: {fileID: 11500000, guid: 400fbce984344766b340efa88840dd10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &925656138980193648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6956103407515693580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7fada622a2b430388acb90bb7025c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projId: bullet_eyeball_bat
+  _projPrefab: prefabs/projectiles/bullet_eyeball_bat
+  _startCount: 4
 --- !u!4 &7569041073362293861 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2918972633592098377, guid: 71d11d4ea5d11eb46a1b2a5ebf272970, type: 3}

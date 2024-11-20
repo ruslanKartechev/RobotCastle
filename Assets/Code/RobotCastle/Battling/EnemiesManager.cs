@@ -56,12 +56,10 @@ namespace RobotCastle.Battling
             var enemies = AllEnemies;
             var totalCount = enemies.Count;
             var additionalCount = Mathf.RoundToInt(totalCount * percent);
-            CLog.Log($"Additional enemies count: {additionalCount}");
+            CLog.Log($"[EnemiesManager] Additional enemies count: {additionalCount}");
             if (additionalCount == 0)
                 return;
-            // if(additionalCount == 0 && percent > 0)
-                // additionalCount = 1;
-            CLog.Log($"[{nameof(EnemiesManager)}] Adding: {additionalCount} more enemies ({Mathf.RoundToInt(percent*100)}%)");
+            // CLog.Log($"[{nameof(EnemiesManager)}] Adding: {additionalCount} more enemies ({Mathf.RoundToInt(percent*100)}%)");
             var countLeft = additionalCount;
             var newEnemies = new List<IHeroController>(additionalCount);
             var allFreeCells = new List<ICellView>(50);
@@ -74,8 +72,9 @@ namespace RobotCastle.Battling
             const string particlesId = "new_enemy_spawn";
             while (countLeft > 0)
             {
-                for (var i = 0; i < enemies.Count && countLeft > 0; i++)
+                for (var i = 0; i < totalCount && countLeft > 0; i++)
                 {
+                    countLeft--;
                     var original = enemies[i];
                     var cell = allFreeCells.RemoveRandom();
                     var mergeView = original.Components.gameObject.GetComponent<IItemView>();
@@ -84,7 +83,6 @@ namespace RobotCastle.Battling
                     args.preferredCoordinated = cell.cell.Coord;
                     var hero = _enemiesFactory.SpawnNew(args);
                     newEnemies.Add(hero);
-                    countLeft--;
                     var particles = pool.GetOne(particlesId) as OneTimeParticles;
                     particles.Show(cell.WorldPosition);
                     if (allFreeCells.Count == 0)
