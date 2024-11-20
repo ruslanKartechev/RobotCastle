@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    [CreateAssetMenu(menuName = "SO/Spells/Double On Death", fileName = "double_on_death", order = 0)]
+    [CreateAssetMenu(menuName = "SO/Spells/Double On Death", fileName = "double_on_death", order = 212)]
     public class SpellProviderDoubleOnDeath : SpellProvider
     {
         [SerializeField] private List<SpawnArgs> _spawnArgs;

@@ -55,7 +55,7 @@ namespace RobotCastle.Battling
                 await Task.Yield();
                 if (token.IsCancellationRequested) return; 
                 
-            } while (!token.IsCancellationRequested && !hasEnemiesInRange);
+            } while (!token.IsCancellationRequested && (!hasEnemiesInRange || !_components.state.isAttacking));
             if (token.IsCancellationRequested) return;
             var hero = _components.gameObject.GetComponent<IHeroController>();
             hero.PauseCurrentBehaviour();

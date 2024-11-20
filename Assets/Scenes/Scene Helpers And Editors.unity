@@ -2149,10 +2149,10 @@ MonoBehaviour:
   - {fileID: 4900000, guid: b33c4120f7a9044458705d1bfe10bb1d, type: 3}
   - {fileID: 4900000, guid: b2b693ae3cf01de4bb85d53906881df3, type: 3}
   - {fileID: 4900000, guid: dd3252a528637e74eb18c2b12170ee81, type: 3}
-  presetIndex: 0
+  presetIndex: 6
   enemyIndex: 0
-  currentPresetFile: {fileID: 4900000, guid: 3caaa2fce6a1d2449bc1745f760e1dce, type: 3}
-  currentCellCoord: {x: 4, y: 1}
+  currentPresetFile: {fileID: 4900000, guid: 16e628959893db042bda6ecfcc6cbf45, type: 3}
+  currentCellCoord: {x: 3, y: 2}
   _dbContainer: {fileID: 11400000, guid: 58513560c179fd04594e34e41030e433, type: 2}
   _enemiesGrid:
     size: {x: 7, y: 4}
@@ -2249,8 +2249,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: vampire_bat
           type: unit
         gridPos: {x: 1, y: 1}
         items: []
@@ -2261,7 +2261,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: bat_tiny
+          id: 
           type: unit
         gridPos: {x: 2, y: 1}
         items: []
@@ -2272,7 +2272,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: bat_tiny
+          id: 
           type: unit
         gridPos: {x: 3, y: 1}
         items: []
@@ -2283,7 +2283,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: bat_tiny
+          id: 
           type: unit
         gridPos: {x: 4, y: 1}
         items: []
@@ -2293,8 +2293,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: vampire_bat
           type: unit
         gridPos: {x: 5, y: 1}
         items: []
@@ -2349,15 +2349,15 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: spider
           type: unit
         gridPos: {x: 3, y: 2}
         items: []
         modifiers: []
         unitType: 0
         canDropItems: 1
-        giveRandomItem: 0
+        giveRandomItem: 1
       - heroLevel: 0
         enemy:
           level: 0
@@ -2473,10 +2473,10 @@ MonoBehaviour:
     enemies:
     - heroLevel: 0
       enemy:
-        level: 0
-        id: bat_tiny
+        level: 1
+        id: vampire_bat
         type: unit
-      gridPos: {x: 2, y: 1}
+      gridPos: {x: 1, y: 1}
       items: []
       modifiers: []
       unitType: 0
@@ -2484,21 +2484,21 @@ MonoBehaviour:
       giveRandomItem: 0
     - heroLevel: 0
       enemy:
-        level: 0
-        id: bat_tiny
+        level: 1
+        id: spider
         type: unit
-      gridPos: {x: 3, y: 1}
+      gridPos: {x: 3, y: 2}
       items: []
       modifiers: []
       unitType: 0
       canDropItems: 1
-      giveRandomItem: 0
+      giveRandomItem: 1
     - heroLevel: 0
       enemy:
-        level: 0
-        id: bat_tiny
+        level: 1
+        id: vampire_bat
         type: unit
-      gridPos: {x: 4, y: 1}
+      gridPos: {x: 5, y: 1}
       items: []
       modifiers: []
       unitType: 0
@@ -2507,15 +2507,15 @@ MonoBehaviour:
   currentEnemy:
     heroLevel: 0
     enemy:
-      level: 0
-      id: bat_tiny
+      level: 1
+      id: spider
       type: unit
-    gridPos: {x: 4, y: 1}
+    gridPos: {x: 3, y: 2}
     items: []
     modifiers: []
     unitType: 0
     canDropItems: 1
-    giveRandomItem: 0
+    giveRandomItem: 1
 --- !u!4 &227464861
 Transform:
   m_ObjectHideFlags: 0
@@ -2874,10 +2874,10 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 487a385db705bc040b7f14a503fa5f8e, type: 3}
   - {fileID: 4900000, guid: 48ba2b7c22fe5a64a92ba35a61c4d8c9, type: 3}
   - {fileID: 4900000, guid: 5cad04b6438127d44b4cee210b2442cc, type: 3}
-  presetIndex: 20
+  presetIndex: 12
   enemyIndex: 3
-  currentPresetFile: {fileID: 4900000, guid: 5cad04b6438127d44b4cee210b2442cc, type: 3}
-  currentCellCoord: {x: 3, y: 1}
+  currentPresetFile: {fileID: 4900000, guid: 41143fd51773fd948af1cec8032642b5, type: 3}
+  currentCellCoord: {x: 2, y: 1}
   _dbContainer: {fileID: 11400000, guid: 58513560c179fd04594e34e41030e433, type: 2}
   _enemiesGrid:
     size: {x: 7, y: 4}
@@ -2963,8 +2963,8 @@ MonoBehaviour:
     - columns:
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: scorpion_norm
           type: unit
         gridPos: {x: 0, y: 1}
         items: []
@@ -2985,10 +2985,21 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
+          level: 3
+          id: scorpion_king
+          type: unit
+        gridPos: {x: 2, y: 1}
+        items: []
+        modifiers: []
+        unitType: 0
+        canDropItems: 1
+        giveRandomItem: 1
+      - heroLevel: 0
+        enemy:
           level: 0
           id: 
           type: unit
-        gridPos: {x: 2, y: 1}
+        gridPos: {x: 3, y: 1}
         items: []
         modifiers: []
         unitType: 0
@@ -2996,19 +3007,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 4
-          id: queen_worm
-          type: unit
-        gridPos: {x: 3, y: 1}
-        items: []
-        modifiers: []
-        unitType: 2
-        canDropItems: 1
-        giveRandomItem: 0
-      - heroLevel: 0
-        enemy:
-          level: 0
-          id: 
+          level: 3
+          id: scorpling
           type: unit
         gridPos: {x: 4, y: 1}
         items: []
@@ -3029,8 +3029,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: scorpion_norm
           type: unit
         gridPos: {x: 6, y: 1}
         items: []
@@ -3041,8 +3041,8 @@ MonoBehaviour:
     - columns:
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: gigacactus
           type: unit
         gridPos: {x: 0, y: 2}
         items: []
@@ -3107,8 +3107,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: gigacactus
           type: unit
         gridPos: {x: 6, y: 2}
         items: []
@@ -3198,27 +3198,82 @@ MonoBehaviour:
     enemies:
     - heroLevel: 0
       enemy:
-        level: 4
-        id: queen_worm
+        level: 3
+        id: scorpion_norm
         type: unit
-      gridPos: {x: 3, y: 1}
+      gridPos: {x: 0, y: 1}
       items: []
       modifiers: []
-      unitType: 2
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 3
+        id: gigacactus
+        type: unit
+      gridPos: {x: 0, y: 2}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 3
+        id: scorpion_king
+        type: unit
+      gridPos: {x: 2, y: 1}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 1
+    - heroLevel: 0
+      enemy:
+        level: 3
+        id: scorpling
+        type: unit
+      gridPos: {x: 4, y: 1}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 3
+        id: scorpion_norm
+        type: unit
+      gridPos: {x: 6, y: 1}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 3
+        id: gigacactus
+        type: unit
+      gridPos: {x: 6, y: 2}
+      items: []
+      modifiers: []
+      unitType: 0
       canDropItems: 1
       giveRandomItem: 0
   currentEnemy:
     heroLevel: 0
     enemy:
-      level: 4
-      id: queen_worm
+      level: 3
+      id: scorpion_king
       type: unit
-    gridPos: {x: 3, y: 1}
+    gridPos: {x: 2, y: 1}
     items: []
     modifiers: []
-    unitType: 2
+    unitType: 0
     canDropItems: 1
-    giveRandomItem: 0
+    giveRandomItem: 1
 --- !u!4 &331089854
 Transform:
   m_ObjectHideFlags: 0
@@ -3344,10 +3399,10 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 06a10e98e140ad14f826015c5c061b97, type: 3}
   - {fileID: 4900000, guid: 8d088118a933f7a439d0ac890aa8e8af, type: 3}
   - {fileID: 4900000, guid: 9d6a5769683e74d4892a22c96fa029cd, type: 3}
-  presetIndex: 20
+  presetIndex: 6
   enemyIndex: 3
-  currentPresetFile: {fileID: 4900000, guid: 9d6a5769683e74d4892a22c96fa029cd, type: 3}
-  currentCellCoord: {x: 3, y: 2}
+  currentPresetFile: {fileID: 4900000, guid: 11c939f7ccfde754b96f93d709511326, type: 3}
+  currentCellCoord: {x: 6, y: 2}
   _dbContainer: {fileID: 11400000, guid: 58513560c179fd04594e34e41030e433, type: 2}
   _enemiesGrid:
     size: {x: 7, y: 4}
@@ -3355,8 +3410,8 @@ MonoBehaviour:
     - columns:
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: cyclop_small
           type: unit
         gridPos: {x: 0, y: 0}
         items: []
@@ -3377,8 +3432,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: cyclop_small
           type: unit
         gridPos: {x: 2, y: 0}
         items: []
@@ -3399,8 +3454,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: cyclop_small
           type: unit
         gridPos: {x: 4, y: 0}
         items: []
@@ -3421,8 +3476,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: cyclop_small
           type: unit
         gridPos: {x: 6, y: 0}
         items: []
@@ -3455,8 +3510,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 3
-          id: werewolf
+          level: 0
+          id: 
           type: unit
         gridPos: {x: 2, y: 1}
         items: []
@@ -3477,8 +3532,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 3
-          id: werewolf
+          level: 0
+          id: 
           type: unit
         gridPos: {x: 4, y: 1}
         items: []
@@ -3511,15 +3566,15 @@ MonoBehaviour:
     - columns:
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: wolf_big
           type: unit
         gridPos: {x: 0, y: 2}
         items: []
         modifiers: []
         unitType: 0
         canDropItems: 1
-        giveRandomItem: 0
+        giveRandomItem: 1
       - heroLevel: 0
         enemy:
           level: 0
@@ -3544,13 +3599,13 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 3
-          id: golem_ice
+          level: 0
+          id: 
           type: unit
         gridPos: {x: 3, y: 2}
         items: []
         modifiers: []
-        unitType: 2
+        unitType: 0
         canDropItems: 1
         giveRandomItem: 0
       - heroLevel: 0
@@ -3577,15 +3632,15 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: wolf_big
           type: unit
         gridPos: {x: 6, y: 2}
         items: []
         modifiers: []
         unitType: 0
         canDropItems: 1
-        giveRandomItem: 0
+        giveRandomItem: 1
     - columns:
       - heroLevel: 0
         enemy:
@@ -3668,10 +3723,10 @@ MonoBehaviour:
     enemies:
     - heroLevel: 0
       enemy:
-        level: 3
-        id: werewolf
+        level: 1
+        id: cyclop_small
         type: unit
-      gridPos: {x: 2, y: 1}
+      gridPos: {x: 0, y: 0}
       items: []
       modifiers: []
       unitType: 0
@@ -3679,38 +3734,71 @@ MonoBehaviour:
       giveRandomItem: 0
     - heroLevel: 0
       enemy:
-        level: 3
-        id: golem_ice
+        level: 1
+        id: wolf_big
         type: unit
-      gridPos: {x: 3, y: 2}
+      gridPos: {x: 0, y: 2}
       items: []
       modifiers: []
-      unitType: 2
+      unitType: 0
       canDropItems: 1
-      giveRandomItem: 0
+      giveRandomItem: 1
     - heroLevel: 0
       enemy:
-        level: 3
-        id: werewolf
+        level: 1
+        id: cyclop_small
         type: unit
-      gridPos: {x: 4, y: 1}
+      gridPos: {x: 2, y: 0}
       items: []
       modifiers: []
       unitType: 0
       canDropItems: 1
       giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 1
+        id: cyclop_small
+        type: unit
+      gridPos: {x: 4, y: 0}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 1
+        id: cyclop_small
+        type: unit
+      gridPos: {x: 6, y: 0}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 1
+        id: wolf_big
+        type: unit
+      gridPos: {x: 6, y: 2}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 1
   currentEnemy:
     heroLevel: 0
     enemy:
-      level: 3
-      id: golem_ice
+      level: 1
+      id: wolf_big
       type: unit
-    gridPos: {x: 3, y: 2}
+    gridPos: {x: 6, y: 2}
     items: []
     modifiers: []
-    unitType: 2
+    unitType: 0
     canDropItems: 1
-    giveRandomItem: 0
+    giveRandomItem: 1
 --- !u!4 &344909845
 Transform:
   m_ObjectHideFlags: 0
@@ -10063,10 +10151,10 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 4fc08ead003c4ee42ad906e21ba80247, type: 3}
   - {fileID: 4900000, guid: 04b22008ab9842441a5ca7b44e3dfb75, type: 3}
   - {fileID: 4900000, guid: 4ea2385487d8b7d4089f137a290af61e, type: 3}
-  presetIndex: 10
+  presetIndex: 6
   enemyIndex: 3
-  currentPresetFile: {fileID: 4900000, guid: 4ea2385487d8b7d4089f137a290af61e, type: 3}
-  currentCellCoord: {x: 3, y: 0}
+  currentPresetFile: {fileID: 4900000, guid: 11391dde8aac201439d7971c2413c79d, type: 3}
+  currentCellCoord: {x: 3, y: 1}
   _dbContainer: {fileID: 11400000, guid: 58513560c179fd04594e34e41030e433, type: 2}
   _enemiesGrid:
     size: {x: 7, y: 4}
@@ -10075,7 +10163,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: mushroom_3
+          id: 
           type: unit
         gridPos: {x: 0, y: 0}
         items: []
@@ -10107,7 +10195,7 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 2
+          level: 1
           id: flower
           type: unit
         gridPos: {x: 3, y: 0}
@@ -10115,7 +10203,7 @@ MonoBehaviour:
         modifiers: []
         unitType: 0
         canDropItems: 1
-        giveRandomItem: 1
+        giveRandomItem: 0
       - heroLevel: 0
         enemy:
           level: 0
@@ -10141,7 +10229,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: mushroom_3
+          id: 
           type: unit
         gridPos: {x: 6, y: 0}
         items: []
@@ -10164,7 +10252,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: mushroom_2
+          id: 
           type: unit
         gridPos: {x: 1, y: 1}
         items: []
@@ -10185,15 +10273,15 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: mushroom_2
           type: unit
         gridPos: {x: 3, y: 1}
         items: []
         modifiers: []
         unitType: 0
         canDropItems: 1
-        giveRandomItem: 0
+        giveRandomItem: 1
       - heroLevel: 0
         enemy:
           level: 0
@@ -10208,7 +10296,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: mushroom_2
+          id: 
           type: unit
         gridPos: {x: 5, y: 1}
         items: []
@@ -10252,8 +10340,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: mushroom_3
           type: unit
         gridPos: {x: 2, y: 2}
         items: []
@@ -10274,8 +10362,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 1
+          id: mushroom_3
           type: unit
         gridPos: {x: 4, y: 2}
         items: []
@@ -10342,13 +10430,13 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: shade
+          id: 
           type: unit
         gridPos: {x: 3, y: 3}
         items: []
         modifiers: []
-        unitType: 2
-        canDropItems: 0
+        unitType: 0
+        canDropItems: 1
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
@@ -10387,10 +10475,10 @@ MonoBehaviour:
     enemies:
     - heroLevel: 0
       enemy:
-        level: 0
+        level: 1
         id: mushroom_3
         type: unit
-      gridPos: {x: 0, y: 0}
+      gridPos: {x: 2, y: 2}
       items: []
       modifiers: []
       unitType: 0
@@ -10398,18 +10486,7 @@ MonoBehaviour:
       giveRandomItem: 0
     - heroLevel: 0
       enemy:
-        level: 0
-        id: mushroom_2
-        type: unit
-      gridPos: {x: 1, y: 1}
-      items: []
-      modifiers: []
-      unitType: 0
-      canDropItems: 1
-      giveRandomItem: 0
-    - heroLevel: 0
-      enemy:
-        level: 2
+        level: 1
         id: flower
         type: unit
       gridPos: {x: 3, y: 0}
@@ -10417,35 +10494,24 @@ MonoBehaviour:
       modifiers: []
       unitType: 0
       canDropItems: 1
-      giveRandomItem: 1
-    - heroLevel: 0
-      enemy:
-        level: 0
-        id: shade
-        type: unit
-      gridPos: {x: 3, y: 3}
-      items: []
-      modifiers: []
-      unitType: 2
-      canDropItems: 0
       giveRandomItem: 0
     - heroLevel: 0
       enemy:
-        level: 0
+        level: 1
         id: mushroom_2
         type: unit
-      gridPos: {x: 5, y: 1}
+      gridPos: {x: 3, y: 1}
       items: []
       modifiers: []
       unitType: 0
       canDropItems: 1
-      giveRandomItem: 0
+      giveRandomItem: 1
     - heroLevel: 0
       enemy:
-        level: 0
+        level: 1
         id: mushroom_3
         type: unit
-      gridPos: {x: 6, y: 0}
+      gridPos: {x: 4, y: 2}
       items: []
       modifiers: []
       unitType: 0
@@ -10454,10 +10520,10 @@ MonoBehaviour:
   currentEnemy:
     heroLevel: 0
     enemy:
-      level: 2
-      id: flower
+      level: 1
+      id: mushroom_2
       type: unit
-    gridPos: {x: 3, y: 0}
+    gridPos: {x: 3, y: 1}
     items: []
     modifiers: []
     unitType: 0
@@ -13608,7 +13674,7 @@ MonoBehaviour:
   presetIndex: 10
   enemyIndex: 4
   currentPresetFile: {fileID: 4900000, guid: bb5dd534dcfa4db408462fc1537d5d57, type: 3}
-  currentCellCoord: {x: 3, y: 0}
+  currentCellCoord: {x: 5, y: 1}
   _dbContainer: {fileID: 11400000, guid: 58513560c179fd04594e34e41030e433, type: 2}
   _enemiesGrid:
     size: {x: 7, y: 4}
@@ -13655,7 +13721,7 @@ MonoBehaviour:
         gridPos: {x: 3, y: 0}
         items: []
         modifiers: []
-        unitType: 0
+        unitType: 2
         canDropItems: 1
         giveRandomItem: 0
       - heroLevel: 0
@@ -13957,7 +14023,7 @@ MonoBehaviour:
       gridPos: {x: 3, y: 0}
       items: []
       modifiers: []
-      unitType: 0
+      unitType: 2
       canDropItems: 1
       giveRandomItem: 0
     - heroLevel: 0
@@ -13985,10 +14051,10 @@ MonoBehaviour:
   currentEnemy:
     heroLevel: 0
     enemy:
-      level: 1
-      id: skelet_giant
+      level: 0
+      id: 
       type: unit
-    gridPos: {x: 3, y: 0}
+    gridPos: {x: 0, y: 0}
     items: []
     modifiers: []
     unitType: 0
@@ -14863,10 +14929,10 @@ MonoBehaviour:
   - {fileID: 4900000, guid: f67a18e8b49063f4fb4bdac4cb90731e, type: 3}
   - {fileID: 4900000, guid: 37bc3eda03718b04e8290ca672f5942b, type: 3}
   - {fileID: 4900000, guid: 8a5373e6d96e3d3458d16167318a4181, type: 3}
-  presetIndex: 0
-  enemyIndex: 1
-  currentPresetFile: {fileID: 4900000, guid: 7b6caf1415b243f4b9176834e0455490, type: 3}
-  currentCellCoord: {x: 1, y: 1}
+  presetIndex: 16
+  enemyIndex: 3
+  currentPresetFile: {fileID: 4900000, guid: 020b7ff2feb5e1e48a41a5308a6cb597, type: 3}
+  currentCellCoord: {x: 3, y: 0}
   _dbContainer: {fileID: 11400000, guid: 58513560c179fd04594e34e41030e433, type: 2}
   _enemiesGrid:
     size: {x: 7, y: 4}
@@ -14896,8 +14962,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: mole_rat
           type: unit
         gridPos: {x: 2, y: 0}
         items: []
@@ -14907,19 +14973,19 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: mole_rat_king
           type: unit
         gridPos: {x: 3, y: 0}
         items: []
         modifiers: []
         unitType: 0
         canDropItems: 1
-        giveRandomItem: 0
+        giveRandomItem: 1
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: mole_rat
           type: unit
         gridPos: {x: 4, y: 0}
         items: []
@@ -14964,7 +15030,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: sprout
+          id: 
           type: unit
         gridPos: {x: 1, y: 1}
         items: []
@@ -15008,7 +15074,7 @@ MonoBehaviour:
       - heroLevel: 0
         enemy:
           level: 0
-          id: sprout
+          id: 
           type: unit
         gridPos: {x: 5, y: 1}
         items: []
@@ -15041,8 +15107,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: dog_norm
           type: unit
         gridPos: {x: 1, y: 2}
         items: []
@@ -15063,8 +15129,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: cat
           type: unit
         gridPos: {x: 3, y: 2}
         items: []
@@ -15085,8 +15151,8 @@ MonoBehaviour:
         giveRandomItem: 0
       - heroLevel: 0
         enemy:
-          level: 0
-          id: 
+          level: 3
+          id: dog_norm
           type: unit
         gridPos: {x: 5, y: 2}
         items: []
@@ -15187,10 +15253,10 @@ MonoBehaviour:
     enemies:
     - heroLevel: 0
       enemy:
-        level: 0
-        id: sprout
+        level: 3
+        id: dog_norm
         type: unit
-      gridPos: {x: 1, y: 1}
+      gridPos: {x: 1, y: 2}
       items: []
       modifiers: []
       unitType: 0
@@ -15198,10 +15264,54 @@ MonoBehaviour:
       giveRandomItem: 0
     - heroLevel: 0
       enemy:
-        level: 0
-        id: sprout
+        level: 3
+        id: mole_rat
         type: unit
-      gridPos: {x: 5, y: 1}
+      gridPos: {x: 2, y: 0}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 3
+        id: mole_rat_king
+        type: unit
+      gridPos: {x: 3, y: 0}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 1
+    - heroLevel: 0
+      enemy:
+        level: 3
+        id: cat
+        type: unit
+      gridPos: {x: 3, y: 2}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 3
+        id: mole_rat
+        type: unit
+      gridPos: {x: 4, y: 0}
+      items: []
+      modifiers: []
+      unitType: 0
+      canDropItems: 1
+      giveRandomItem: 0
+    - heroLevel: 0
+      enemy:
+        level: 3
+        id: dog_norm
+        type: unit
+      gridPos: {x: 5, y: 2}
       items: []
       modifiers: []
       unitType: 0
@@ -15210,15 +15320,15 @@ MonoBehaviour:
   currentEnemy:
     heroLevel: 0
     enemy:
-      level: 0
-      id: sprout
+      level: 3
+      id: mole_rat_king
       type: unit
-    gridPos: {x: 1, y: 1}
+    gridPos: {x: 3, y: 0}
     items: []
     modifiers: []
     unitType: 0
     canDropItems: 1
-    giveRandomItem: 0
+    giveRandomItem: 1
 --- !u!4 &2058050873
 Transform:
   m_ObjectHideFlags: 0

@@ -62,6 +62,15 @@ namespace RobotCastle.Battling
         private IAttackAction _attackAction;
         private IAttackHitAction _hitAction;
 
+        private void Start()
+        {
+            if (Hero != null)
+            {
+                HitAction = new MeleeHitAction(Hero.Components);
+                AttackAction = new MeleeAttackAction(Hero.Components);
+            }
+        }
+        
         private void OnAttack()
         {
             if (!_activated)

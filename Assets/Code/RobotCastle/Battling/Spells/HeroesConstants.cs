@@ -51,6 +51,8 @@ namespace RobotCastle.Battling
         public const string SpellFXPrefab_Bombard = "prefabs/spells/bombard";
         public const string SpellFXPrefab_Cheapshot = "prefabs/spells/cheapshot";
         public const string SpellFXPrefab_Terrorize = "prefabs/spells/terrorize";
+        public const string SpellFXPrefab_SoulBurn = "prefabs/spells/soul_burn";
+        public const string SpellFXPrefab_DeathSentence = "prefabs/spells/death_sentence";
 
 
     }

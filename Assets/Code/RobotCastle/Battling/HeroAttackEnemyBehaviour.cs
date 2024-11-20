@@ -25,6 +25,7 @@ namespace RobotCastle.Battling
             if (_rangeCoverCheck == null)
                 _rangeCoverCheck = new HeroRangeCoverCheck(_hero);
             _hero.Battle.AttackPositionCalculator.AddUnit(_hero.Components.state);
+            _mainToken?.Cancel();
             _mainToken = new CancellationTokenSource();
             _hero.Components.stats.CheckManaFull();
             SearchAndAttack(_mainToken.Token);

@@ -24,6 +24,7 @@ namespace RobotCastle.Battling
             _callback = endCallback;
             _token?.Cancel();
             _token = new CancellationTokenSource();
+            _isActive = true;
             Working(_token.Token);
         }
 

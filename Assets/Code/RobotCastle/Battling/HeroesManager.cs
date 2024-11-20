@@ -149,7 +149,10 @@ namespace RobotCastle.Battling
             var db = ServiceLocator.Get<ModifiersDataBase>();
             var list = new List<ModifierProvider>(3);
             foreach (var id in ids)
-                list.Add(db.GetModifier(id));
+            {
+                if(id != null)
+                    list.Add(db.GetModifier(id));
+            }
             return list;
         }
 

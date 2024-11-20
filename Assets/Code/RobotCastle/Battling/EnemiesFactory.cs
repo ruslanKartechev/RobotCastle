@@ -64,17 +64,7 @@ namespace RobotCastle.Battling
                 var spells = HeroesManager.GetModifiers(enemyPreset.modifiers);
                 if (spells.Count == 0)
                 {
-                    var db = ServiceLocator.Get<HeroesDatabase>();
-                    var stats = db.GetHeroSpellInfo(enemyPreset.enemy.id);
-                    
-                    var ids = new List<string>(3);
-                    if(!string.IsNullOrEmpty( stats.mainSpellId))
-                        ids.Add(stats.mainSpellId);
-                    if(!string.IsNullOrEmpty(stats.secondSpellId))
-                        ids.Add(stats.secondSpellId);
-                    if(!string.IsNullOrEmpty(stats.thirdSpellId))
-                        ids.Add(stats.thirdSpellId);
-                    spells = HeroesManager.GetModifiers(ids);
+                    spells = GetSpells(enemyPreset.enemy.id);
                 }
                 hero.InitHero(enemyPreset.enemy.id, enemyPreset.heroLevel, enemyPreset.enemy.level, spells);
                 
@@ -123,7 +113,9 @@ namespace RobotCastle.Battling
             if (args.overrideSpells)
                 spells = HeroesManager.GetModifiers(args.modifiersIds);
             else
-                spells = new();
+            {
+                spells = GetSpells(args.coreData.id);
+            }
             hero.InitHero(args.coreData.id, heroLvl, args.coreData.level, spells);
             hero.Components.heroUI.AssignStatsTracking(hero.Components);
             if(animate)
@@ -135,6 +127,19 @@ namespace RobotCastle.Battling
         [SerializeField] private string _presetsDirectory;
         private List<IHeroController> _spawnedEnemies;
         
+        private List<ModifierProvider> GetSpells(string id)
+        {
+            var db = ServiceLocator.Get<HeroesDatabase>();
+            var stats = db.GetHeroSpellInfo(id);
+            var ids = new List<string>(3);
+            if(!string.IsNullOrEmpty( stats.mainSpellId))
+                ids.Add(stats.mainSpellId);
+            if(!string.IsNullOrEmpty(stats.secondSpellId))
+                ids.Add(stats.secondSpellId);
+            if(!string.IsNullOrEmpty(stats.thirdSpellId))
+                ids.Add(stats.thirdSpellId);
+            return HeroesManager.GetModifiers(ids);
+        }
         
         private void SetItems(IHeroController hero, EliteItemsPreset itemsPreset)
         {

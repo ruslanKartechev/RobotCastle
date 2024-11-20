@@ -4,111 +4,6 @@ using UnityEngine;
 
 namespace RobotCastle.Battling
 {
-    public interface IAttackAction
-    {
-        void Attack(IDamageReceiver target, int animationIndex);
-    }
-    
-    public interface IAttackHitAction
-    {
-        void Hit(object target);
-    }
-
-    public class RangedFireAttackAction : IAttackAction
-    {
-         public RangedFireAttackAction(HeroComponents components,
-             HeroRangedAttackManager rangedAttack,
-             Action<object> hitCallback)
-         {
-            _components = components;
-            _rangedAttack = rangedAttack;
-            _hitCallback = hitCallback;
-
-         }
-            
-        public void Attack(IDamageReceiver target, int animationIndex)
-        {
-            if(_components.shootParticles != null)
-                _components.shootParticles.Play();
-
-            var pp = animationIndex == 0 ? _components.projectileSpawnPoint : _components.projectileSpawnPoint2;
-            
-            var projectile = _rangedAttack.ProjectileFactory.GetProjectile();
-            projectile.LaunchProjectile(pp, target.GetGameObject().transform, 
-                _components.stats.ProjectileSpeed, _hitCallback, target);
-
-            if (_components.attackSounds.Count > 0)
-            {
-                var s = _components.attackSounds.Random();
-                s.Play();
-            }
-        }
-        private HeroComponents _components;
-        private HeroRangedAttackManager _rangedAttack;
-        private Action<object> _hitCallback;
-    }
-
-    public class MeleeAttackAction : IAttackAction
-    {
-        public MeleeAttackAction(HeroComponents components)
-        {
-            _components = components;
-        }
-        
-        public void Attack(IDamageReceiver target, int animationIndex)
-        {
-            if (_components.attackSounds.Count > 0)
-            {
-                var s = _components.attackSounds.Random();
-                s.Play();
-            }
-        }
-
-        private HeroComponents _components;
-    }
-    
-    public class MeleeHitAction : IAttackHitAction
-    {
-        public MeleeHitAction(HeroComponents components)
-        {
-            _components = components;
-        }
-        
-        public void Hit(object target)
-        {
-            var dm = (IDamageReceiver)target;
-            if (dm != null)
-            {
-                _components.damageSource.DamagePhys(dm);
-                _components.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
-            }
-        }
-        
-        private HeroComponents _components;
-    }
-    
-    public class RangedHitAction : IAttackHitAction
-    {
-        public RangedHitAction(HeroComponents components)
-        {
-            _components = components;
-        }
-
-        public void Hit(object target)
-        {
-            var dm = (IDamageReceiver)target;
-            if (dm != null)
-            {
-                _components.damageSource.DamagePhys(dm);
-                _components.stats.ManaAdder.AddMana(HeroesConstants.AddedMana);
-            }
-        }
-
-        private HeroComponents _components;
-    }
-    
-    
-    
     public class HeroRangedAttackManager : MonoBehaviour, IHeroAttackManager
     {
         public event Action OnAttackStep;
@@ -196,8 +91,13 @@ namespace RobotCastle.Battling
             HitAction.Hit(target);
         }
 
-        private void Awake()
+        private void Start()
         {
+            if (Hero != null)
+            {
+                HitAction = new RangedHitAction(Hero.Components);
+                AttackAction = new RangedFireAttackAction(Hero.Components, this, HitCallback);
+            }
             _projectileFactory = gameObject.GetComponent<IProjectileFactory>();
             if (_projectileFactory == null)
             {

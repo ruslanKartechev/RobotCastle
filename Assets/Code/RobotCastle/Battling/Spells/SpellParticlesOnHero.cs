@@ -24,7 +24,6 @@ namespace RobotCastle.Battling
 
         public void ShowUntilOff(Transform target)
         {
-            _token = new CancellationTokenSource();
             gameObject.SetActive(true);
             _particles.gameObject.SetActive(true);
             _particles.Play();
@@ -64,11 +63,12 @@ namespace RobotCastle.Battling
         
         private IEnumerator Tracking(Transform target)
         {
-            while (gameObject.activeSelf)
+            while (gameObject.activeSelf && target != null)
             {
                 transform.position = target.position;
                 yield return null;
             }
+            gameObject.SetActive(false);
         }
     }
 }
