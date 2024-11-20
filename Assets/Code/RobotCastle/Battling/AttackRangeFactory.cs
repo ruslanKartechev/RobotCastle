@@ -108,6 +108,21 @@ namespace RobotCastle.Battling
                     return new AttackRangeRectangle(2,2);
                 case "eyeball_creep":
                     return new AttackRangeRectangle(3,3);
+                case "spore":
+                    return new AttackRangeRectangle(1,1);
+                case "pollen":
+                    return new AttackRangeRectangle(3,3);
+                case "plant_chewer":
+                    return new AttackRangeRectangle(1,1);
+                case "sun_blossom":
+                    return new AttackRangeRectangle(1,1);
+                case "sunflower_fairy":
+                    return new AttackRangeRhombus(3);
+                case "sunflora_pixie":
+                    return new AttackRangeRectangle(1,1);
+                case "golem_earth":
+                    return new AttackRangeRhombus(2);
+
             }
             CLog.Log($"[AttackRangeFactory] No preset attack range for: {id}. Returning basic 1x1 \"PlusShape\" ");
             return new AttackRangeSingle();
