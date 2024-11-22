@@ -23,8 +23,6 @@ namespace RobotCastle.Merging
             _mergeController = mergeController;
         }
 
-   
-
         public void SetActive(bool active)
         {
             if (_isActive == active)
@@ -51,11 +49,8 @@ namespace RobotCastle.Merging
                 ui.OnUpMain -= OnUp;
                 ui.OnDoubleClick -= OnDoubleClick;
                 _mergeController.OnUp(Input.mousePosition);
-                if (_refundMode)
-                {
-                    _refundMode = false;
-                    _battleUI.ReturnItemButton.Hide();
-                }
+                _refundMode = false;
+                _battleUI.ReturnItemButton.Hide();
             }
         }
         
@@ -67,8 +62,18 @@ namespace RobotCastle.Merging
                 return;
             var lvl = itemData.core.level;
             _refundedMoney = (lvl + 1) * HeroesConstants.HeroRefundMoney;
-            if(_refundMode)
-                _battleUI.ReturnItemButton.SetMoney(_refundedMoney);
+            _battleUI.ReturnItemButton.SetMoney(_refundedMoney);
+            var container = ServiceLocator.Get<MergeManager>().Container;
+            var size = container.heroes.Count;
+            if (size > 1 && _refundAllowed)
+            {
+                _battleUI.ReturnItemButton.Show();
+                _positionChecking = StartCoroutine(PositionAndRefundCheck());
+            }
+            else
+            {
+                _positionChecking = StartCoroutine(PositionChecking());
+            }
         }
 
         private void OnDoubleClick(Vector3 obj)
@@ -80,17 +85,16 @@ namespace RobotCastle.Merging
         {
             if (_refundMode)
             {
+                _refundMode = false;
                 var lvl = _mergeController.DropToReturnItem();
                 _refundedMoney = (lvl + 1) * HeroesConstants.HeroRefundMoney;
                 ServiceLocator.Get<GameMoney>().levelMoney.AddValue(_refundedMoney);
-                _battleUI.ReturnItemButton.Hide();
-                _refundMode = false;
             }
             else
             {
                 _mergeController.OnUp(pos);
             }
-
+            _battleUI.ReturnItemButton.Hide();
             if (ServiceLocator.GetIfContains<BattleCamera>(out var cam))
                 cam.SlideBlockers--;
             if (_positionChecking != null)
@@ -101,15 +105,7 @@ namespace RobotCastle.Merging
         {
             if (ServiceLocator.GetIfContains<BattleCamera>(out var cam))
                 cam.SlideBlockers++;
-            if (_refundAllowed)
-            {
-              
-                _positionChecking = StartCoroutine(PositionAndRefundCheck());
-            }
-            else
-            {
-                _positionChecking = StartCoroutine(PositionChecking());
-            }
+        
             _mergeController.OnDown(pos);
         }
 
@@ -118,7 +114,6 @@ namespace RobotCastle.Merging
             while (true)
             {
                 _mergeController.OnMove(Input.mousePosition);
-
                 yield return null;
             }
         }
@@ -127,20 +122,20 @@ namespace RobotCastle.Merging
         {
             while (true)
             {
-                if (_battleUI.ReturnItemButton.IsAbove() && !_refundMode)
+                if (!_refundMode && _battleUI.ReturnItemButton.IsAbove() )
                 {
                     var container = ServiceLocator.Get<MergeManager>().Container;
                     var size = container.heroes.Count;
                     if (size > 1)
                     {
                         _refundMode = true;
-                        _battleUI.ReturnItemButton.Show();
+                        _battleUI.ReturnItemButton.ScaleOn(true);
                     }
                 }
-                else if (!_battleUI.ReturnItemButton.IsAbove() && _refundMode)
+                else if (_refundMode && !_battleUI.ReturnItemButton.IsAbove())
                 {
                     _refundMode = false;
-                    _battleUI.ReturnItemButton.Hide();
+                    _battleUI.ReturnItemButton.ScaleOn(false);
                 }
                 if(!_refundMode)
                     _mergeController.OnMove(Input.mousePosition);

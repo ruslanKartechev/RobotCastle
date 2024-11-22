@@ -21,7 +21,8 @@
         public const string UISettings = "ui_settings";
         public const string UIAltars = "ui_altars";
         public const string UIShop = "ui_shop";
-        
+        public const string UIRateUs = "ui_rate_us";
+
 
         public const string DescriptionItemShort = "ui_item_description_short";
         public const string DescriptionItemLong = "ui_item_description_long";

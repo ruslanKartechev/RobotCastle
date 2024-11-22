@@ -1,5 +1,4 @@
-﻿using SleepDev;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RobotCastle.Battling
 {
@@ -11,6 +10,8 @@ namespace RobotCastle.Battling
             var r2 = (float)Screen.width / Screen.height;
             return r1 / r2;
         }
+
+        public float GetCurrentNormalized() => _camera.orthographicSize / GetRatio();
         
         public float AdjustSize(float size)
         {

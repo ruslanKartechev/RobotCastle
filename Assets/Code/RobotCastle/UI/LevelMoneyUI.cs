@@ -26,10 +26,9 @@ namespace RobotCastle.UI
                 pos.y = _posStart;
                 _text.rectTransform.anchoredPosition = pos;
                 _text.alpha = 1f;
-                _text.rectTransform.DOAnchorPosX(_posEnd, _animationTime);
                 _seq?.Kill();
                 var seq = DOTween.Sequence();
-                seq.Append(_text.rectTransform.DOAnchorPosX(_posEnd, _animationTime));
+                seq.Append(_text.rectTransform.DOAnchorPosY(_posEnd, _animationTime));
                 seq.Join(_text.DOFade(0f, _animationTime));
                 seq.OnComplete(Off);
                 _seq = seq;

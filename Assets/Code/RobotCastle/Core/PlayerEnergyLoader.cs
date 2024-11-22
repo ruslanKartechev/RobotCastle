@@ -1,4 +1,5 @@
 ﻿using RobotCastle.Data;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Core
@@ -11,6 +12,7 @@ namespace RobotCastle.Core
         
         public void Load() 
         {
+            CLog.Log($"[PlayerEnergyLoader] checking energy minimum");
             var save = DataHelpers.GetPlayerData();
             if (save.playerEnergy < _energyMin)
             {

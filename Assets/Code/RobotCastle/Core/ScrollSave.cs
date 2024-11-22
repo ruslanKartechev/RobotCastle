@@ -1,4 +1,6 @@
-﻿namespace RobotCastle.Core
+﻿using SleepDev;
+
+namespace RobotCastle.Core
 {
     [System.Serializable]
     public class ScrollSave

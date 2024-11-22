@@ -10,6 +10,8 @@ namespace RobotCastle.Battling
 {
     public class BattleCamera : MonoBehaviour
     {
+        private const float thresholdMinDistance = .1f;
+
         public int SlideBlockers
         {
             get => _slideBlockers;
@@ -97,15 +99,19 @@ namespace RobotCastle.Battling
             _tokenSource?.Cancel();
             _tokenSource = new CancellationTokenSource();
         }
-                
+
         public void MoveAndSizeToBattlePoint()
         {
+            if ((transform.position - _battlePoint.position).magnitude <= thresholdMinDistance)
+                return;
             Stop();
             MovingAndScalingToBattle(_tokenSource.Token);
         }
 
         public void MoveAndSizeToMergePoint()
         {
+            if ((transform.position - _mergePoint.position).magnitude <= thresholdMinDistance)
+                return;
             Stop();
             MovingAndScalingToMerge(_tokenSource.Token);
         }
@@ -114,14 +120,14 @@ namespace RobotCastle.Battling
         {
             _positionIndex = 0;
             await Task.WhenAll(MovingCamera(transform.position, _mergePoint.position, _moveTime, _moveBackAnimationCurve, token),
-                ChangeCameraSize(_camera.orthographicSize, _cameraSizeMerge, _moveTime, token));
+                ChangeCameraSize(_orthoCameraAdjuster.GetCurrentNormalized(), _cameraSizeMerge, _moveTime, token));
         }
         
         public async Task MovingAndScalingToBattle(CancellationToken token)
         {
             _positionIndex = 1;
             await Task.WhenAll(MovingCamera(transform.position, _battlePoint.position, _moveTime, _moveBackAnimationCurve, token),
-                ChangeCameraSize(_camera.orthographicSize, _cameraSizeNormal, _moveTime, token));
+                ChangeCameraSize(_orthoCameraAdjuster.GetCurrentNormalized(), _cameraSizeNormal, _moveTime, token));
         }
         
         public async Task PlayStartAnimation(CancellationToken token)

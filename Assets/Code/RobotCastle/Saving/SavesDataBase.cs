@@ -1,4 +1,5 @@
-﻿using RobotCastle.Core;
+﻿using MergeHunt;
+using RobotCastle.Core;
 using RobotCastle.Merging;
 using RobotCastle.Shop;
 using UnityEngine;
@@ -14,6 +15,8 @@ namespace RobotCastle.Saving
         public SavePlayerHeroes PlayerHeroes;
         [Space(10)]
         public ShopSaveData shopSave;
+        [Space(10)]
+        public RateUsData rateUs;
 
 
         #if UNITY_EDITOR

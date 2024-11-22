@@ -1,4 +1,5 @@
-﻿using RobotCastle.Core;
+﻿using MergeHunt;
+using RobotCastle.Core;
 using RobotCastle.Merging;
 using RobotCastle.Shop;
 using SleepDev;
@@ -26,12 +27,14 @@ namespace RobotCastle.Saving
                 saver.Delete<SavePlayerData>();
                 saver.Delete<SaveLevelsProgress>();
                 saver.Delete<SavePlayerHeroes>();
+                saver.Delete<RateUsData>();
             }
 
             var playerData = saver.LoadSave<SavePlayerData>(new SavePlayerData(_initialSaves.PlayerData));
             saver.LoadSave<ShopSaveData>(new ShopSaveData(_initialSaves.shopSave));
             var heroes = saver.LoadSave<SavePlayerHeroes>(new SavePlayerHeroes(_initialSaves.PlayerHeroes));
-            
+            saver.LoadSave<RateUsData>(new RateUsData(_initialSaves.rateUs));
+
             heroes.InitAfterLoad();
             playerData.InitAfterLoad();
 
