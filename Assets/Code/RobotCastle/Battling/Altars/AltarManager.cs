@@ -131,7 +131,7 @@ namespace RobotCastle.Battling.Altars
             var player = DataHelpers.GetPlayerData();
             return player.playerLevel + 1;
         }
-        
+
         /// <summary>
         /// </summary>
         /// <returns>0 - can, 1 - not enough money, 2 - level not met, 3 - max points</returns>

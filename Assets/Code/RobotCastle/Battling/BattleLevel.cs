@@ -235,6 +235,10 @@ namespace RobotCastle.Battling
                     save.battle = true;
                 });
             }
+            else
+            {
+                GrantPlayerInput();
+            }
         }
 
         private Battle CreateBattle()
@@ -314,7 +318,6 @@ namespace RobotCastle.Battling
                 InitUI();
             } catch(System.Exception ex) { CLog.LogError($"{ex.Message}\n{ex.StackTrace}"); }
             
-            GrantPlayerInput();
         }
         
 
@@ -381,13 +384,14 @@ namespace RobotCastle.Battling
             CLog.Log($"[{nameof(BattleLevel)}] Round index: {battle.roundIndex}, status: {didWin}");
             if (didWin && battle.roundIndex >= _chapter.levelData.levels.Count - 1)
             {
-                CLog.Log($"[Battle Level] Level Completed!");
+                CLog.Log($"[{nameof(BattleLevel)}] Level Completed!");
                 await Task.Delay((int)(_winFailDelay * 1000), token);
                 if (token.IsCancellationRequested) return;
                 if (ServiceLocator.Get<IDataSaver>().GetData<RateUsData>().ShallShow(_selectionData.chapterIndex + _selectionData.tierIndex))
                 {
-                    CLog.Log($"Showing rate us offer first");
+                    CLog.Log($"[{nameof(BattleLevel)}] Showing rate us offer first");
                     var offer = new RateUsOffer(AddRewardForLevelAndShowUI);
+                    offer.Show();
                     return;
                 }
                 AddRewardForLevelAndShowUI();

@@ -130,11 +130,10 @@ namespace RobotCastle.Battling.Altars
                     _costText.text = $"<color={redColor}>{(int)_db.GetNextPointCost(lvl)}</color>";
                     break;
                 case 2: // Level not met
-                    CLog.Log($"[Altars] Level not met");
+                    CLog.Log($"[Altars] Player level: {lvl}, cannot buy points");
                     _btnPurchasePoint.gameObject.SetActive(false);
                     _requirementsObj.gameObject.SetActive(true);
-                    _requiredLevelText.text = $"Increase Castle Level";
-                    CLog.Log($"[Altars] Player level: {lvl}, cannot buy points");
+                    _requiredLevelText.text = $"Reach Castle Level {lvl+1}";
                     break;
                 case 3: // max points reached
                     CLog.Log($"[Altars] Max points already");
