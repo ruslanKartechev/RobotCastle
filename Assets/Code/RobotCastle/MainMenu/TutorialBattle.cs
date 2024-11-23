@@ -15,6 +15,7 @@ namespace RobotCastle.MainMenu
 {
     public class TutorialBattle : TutorialBase
     {
+        public override string Id => "first_battle";
     
         public override void Begin(Action finishedCallback)
         {

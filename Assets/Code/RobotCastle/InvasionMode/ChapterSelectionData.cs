@@ -1,4 +1,6 @@
-﻿namespace RobotCastle.InvasionMode
+﻿using SleepDev;
+
+namespace RobotCastle.InvasionMode
 {
     [System.Serializable]
     public class ChapterSelectionData
@@ -21,6 +23,25 @@
         public int tierIndex;
         public bool corruption;
         public int goldReward;
+        /// <summary>
+        /// 0 => regular, 1 => corruption
+        /// </summary>
+        public int mode = 0;
+
+        public bool IsCorruption => mode == 1;
+        public bool IsNormal => mode == 0;
+
+        public string GetModeAsStr()
+        {
+            switch (mode)
+            {
+                case 0: return "normal";
+                case 1: return "corruption";
+                default:
+                    CLog.LogError($"GameMode: {mode} is unknown code!!");
+                return "unknown";
+            }
+        }
         
         public ChapterSelectionData(){}
 

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Bomber;
+using MergeHunt;
 using RobotCastle.Battling.Altars;
 using RobotCastle.Battling.DevilsOffer;
 using RobotCastle.Battling.MerchantOffer;
@@ -65,11 +66,10 @@ namespace RobotCastle.Battling
         private SavePlayerData _playerData;
         private IUIManager _uiManager;
         private int _roundAttemptsCount = 0;
-
+        private string _gameModeStr;
         
         public void OnBattleStarted(Battle battle)
         {
-            // AllowPlayerUIInput(true);
             _gridSwitch.SetBattleMode();
             _mergeManager.AllowInput(false);
             ServiceLocator.Get<MergeManager>().StopHighlight();
@@ -77,9 +77,8 @@ namespace RobotCastle.Battling
 
         public void OnBattleEnded(Battle battle)
         {
-            BattleRoundCompletion(battle, _token.Token);
+            OnRoundCompleted(battle, _token.Token);
         }
-
 
         private void Start()
         {
@@ -87,6 +86,7 @@ namespace RobotCastle.Battling
             GameState.Mode = GameState.EGameMode.InvasionBattle;
             _playerData = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>();
             _selectionData = _playerData.chapterSelectionData;
+            _gameModeStr = _selectionData.GetModeAsStr();
             _uiManager = ServiceLocator.Get<IUIManager>(); 
             _chapter = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
             _playerMergeFactory = gameObject.GetComponent<IPlayerFactory>();
@@ -371,16 +371,25 @@ namespace RobotCastle.Battling
             }
         }
 
-        private async Task BattleRoundCompletion(Battle battle, CancellationToken token)
+        private async Task OnRoundCompleted(Battle battle, CancellationToken token)
         {
             var didWin = battle.State == BattleState.PlayerWin;
+            if(didWin)
+                SleepDev.Analytics.OnLevelCompleted(_selectionData.chapterIndex, _selectionData.tierIndex, battle.roundIndex, _gameModeStr);
+            else
+                SleepDev.Analytics.OnLevelFailed(_selectionData.chapterIndex, _selectionData.tierIndex, battle.roundIndex, _gameModeStr);
             CLog.Log($"[{nameof(BattleLevel)}] Round index: {battle.roundIndex}, status: {didWin}");
             if (didWin && battle.roundIndex >= _chapter.levelData.levels.Count - 1)
             {
                 CLog.Log($"[Battle Level] Level Completed!");
                 await Task.Delay((int)(_winFailDelay * 1000), token);
                 if (token.IsCancellationRequested) return;
-                SleepDev.Analytics.OnLevelCompleted(_selectionData.chapterIndex, _selectionData.tierIndex);
+                if (ServiceLocator.Get<IDataSaver>().GetData<RateUsData>().ShallShow(_selectionData.chapterIndex + _selectionData.tierIndex))
+                {
+                    CLog.Log($"Showing rate us offer first");
+                    var offer = new RateUsOffer(AddRewardForLevelAndShowUI);
+                    return;
+                }
                 AddRewardForLevelAndShowUI();
                 return;
             }
@@ -535,9 +544,7 @@ namespace RobotCastle.Battling
             {
                 AddRew(outputRewards, chapterConfig.tiers[_selectionData.tierIndex].additionalRewards);
                 if (_selectionData.tierIndex == chapterConfig.tiers.Count - 1)
-                {
                     AddRew(outputRewards, chapterConfig.chapterCompletedRewards);
-                }
             }
             if (_logRewardItems)
             {
@@ -562,7 +569,8 @@ namespace RobotCastle.Battling
             });
         }
 
-        private void AddRew(List<CoreItemData> outputRewards,  List<CoreItemData> configRewards)
+        private void AddRew(List<CoreItemData> outputRewards, 
+            List<CoreItemData> configRewards)
         {
             var playerData = DataHelpers.GetPlayerData();
             foreach (var reward in configRewards)

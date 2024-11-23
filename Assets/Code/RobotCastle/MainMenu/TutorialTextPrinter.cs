@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using RobotCastle.UI;
-using SleepDev;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +13,8 @@ namespace RobotCastle.MainMenu
             _isWorking = true;
             _messages = messages;
             _index = 0;
+            foreach (var go in _offWhenDone)
+                go.SetActive(true);
             PrintCurrentIndex();
         }
 
@@ -56,6 +57,7 @@ namespace RobotCastle.MainMenu
         [SerializeField] private TextMeshProUGUI _infoText;
         [SerializeField] private MyButton _skipBtn;
         [SerializeField] private TextFiller _textFiller;
+        [SerializeField] private List<GameObject> _offWhenDone;
         private List<string> _messages;
         private int _index;
         private bool _isWorking;
@@ -82,6 +84,8 @@ namespace RobotCastle.MainMenu
                 _textFiller.StopFilling();
                 _textFiller.SetText(_messages[^1]);
                 _isWorking = false;
+                foreach (var go in _offWhenDone)
+                    go.SetActive(false);
                 _callback?.Invoke();
                 return;
             }

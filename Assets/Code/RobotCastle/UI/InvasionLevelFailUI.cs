@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using RobotCastle.Core;
+using RobotCastle.Data;
 using RobotCastle.MainMenu;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace RobotCastle.UI
         [SerializeField] private TextMeshProUGUI _lvlText;
         [SerializeField] private Image _xpImage;
         [SerializeField] private TextMeshProUGUI _energyText;
+        [SerializeField] private TextMeshProUGUI _textChapter;
+
         private Action _replay;
         private Action _return;
         private bool _inputActive;
@@ -33,7 +36,9 @@ namespace RobotCastle.UI
             _lvlText.text = $"{xp.GetLevel() + 1}";
             var energy = ServiceLocator.Get<PlayerEnergyManager>();
             _energyText.text = energy.GetAsStr();
-            
+            var data = DataHelpers.GetPlayerData();
+            _textChapter.text = $"Chapter: {data.chapterSelectionData.chapterIndex + 1}";
+
             StartCoroutine(Animating());
             _inputActive = true;
             _btnReturn.AddMainCallback(Return);

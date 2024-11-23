@@ -2,6 +2,7 @@
 using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 using RobotCastle.Relics;
+using SleepDev;
 
 namespace RobotCastle.Core
 {
@@ -18,6 +19,7 @@ namespace RobotCastle.Core
         public int playerXp;
         public int playerEnergy;
         public int playerEnergyMax;
+        public DateTimeData timeWhenOutOfEnergy;
         public EGameMode gameMode;
         public SavePlayerParty party;
         public PlayerInventory inventory;
@@ -41,6 +43,7 @@ namespace RobotCastle.Core
             playerXp = other.playerXp;
             playerEnergy = other.playerEnergy;
             playerEnergyMax = other.playerEnergyMax;
+            timeWhenOutOfEnergy = new DateTimeData(other.timeWhenOutOfEnergy);
             gameMode = other.gameMode;
             party = new SavePlayerParty(other.party);
             inventory = new PlayerInventory(other.inventory);

@@ -23,6 +23,14 @@ MonoBehaviour:
     playerXp: 0
     playerEnergy: 60
     playerEnergyMax: 40
+    timeWhenOutOfEnergy:
+      year: 0
+      month: 0
+      day: 0
+      hour: 0
+      minute: 0
+      second: 0
+      milliSecond: 0
     gameMode: 0
     party:
       maxCount: 6
@@ -536,6 +544,7 @@ MonoBehaviour:
       tierIndex: 0
       corruption: 0
       goldReward: 0
+      mode: 0
     altars:
       pointsTotal: 0
       pointsFree: 0
@@ -652,5 +661,24 @@ MonoBehaviour:
       xp: 0
       xpForNext: 5
       isUnlocked: 0
-  mergeGrid:
-    rows: []
+  shopSave:
+    dailyOfferStartTime:
+      year: 0
+      month: 0
+      day: 0
+      hour: 0
+      minute: 0
+      second: 0
+      milliSecond: 0
+    dailyItems: []
+  rateUs:
+    didShow: 0
+    didAccept: 0
+    nextShowTime:
+      year: 0
+      month: 0
+      day: 0
+      hour: 0
+      minute: 0
+      second: 0
+      milliSecond: 0

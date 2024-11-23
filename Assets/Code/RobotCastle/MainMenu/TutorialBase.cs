@@ -8,7 +8,10 @@ namespace RobotCastle.MainMenu
 {
     public abstract class TutorialBase : MonoBehaviour
     {
+        
         public abstract void Begin(Action finishedCallback);
+        
+        public abstract  string Id { get; }
 
         [SerializeField] protected FadeInOutAnimator _panelAnimator;
         [SerializeField] protected TutorialTextPrinter _textPrinter;
@@ -36,10 +39,13 @@ namespace RobotCastle.MainMenu
         }
         
         protected void StopWaiting() => _isWaiting = false;
+
+
+        public void SendEventCompleted()
+        {
+            SleepDev.Analytics.OnTutorialCompleted(Id);
+        }
         
-
-
-
         protected class SubParent
         {
             private Transform _child;

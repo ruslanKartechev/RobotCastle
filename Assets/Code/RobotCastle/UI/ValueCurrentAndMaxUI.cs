@@ -8,11 +8,17 @@ namespace RobotCastle.UI
     {
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _fillImage;
+        private int _max;
 
-        public void SetValue(int current, int max)
+        public void SetMax(int max)
         {
-            _text.text = $"{current}/{max}";
-            _fillImage.fillAmount = (float)current / max;
+            _max = max;
+        }
+
+        public void SetValue(int current, int prev)
+        {
+            _text.text = $"{current}/{_max}";
+            _fillImage.fillAmount = (float)current / _max;
         }
         
     }

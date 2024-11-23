@@ -7,7 +7,7 @@ namespace MergeHunt
     [System.Serializable]
     public class RateUsData
     {
-        public const int LevelIndexToShowFirst = 3;
+        public const int LevelIndexToShowFirst = 0;
         public const int NextShowDelay = 3;
         
         public bool didShow;

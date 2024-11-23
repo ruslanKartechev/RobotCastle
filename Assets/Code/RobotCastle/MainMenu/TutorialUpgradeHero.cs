@@ -14,6 +14,9 @@ namespace RobotCastle.MainMenu
 {
     public class TutorialUpgradeHero : TutorialBase, IItemValidator
     {
+    
+        public override string Id => "hero_barracks_upgraded";
+
         public override void Begin(Action finishedCallback)
         {
             CLog.Log($"[TutorialUpgradeHero] Begin");

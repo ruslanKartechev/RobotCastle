@@ -15,6 +15,8 @@ namespace RobotCastle.MainMenu
 {
     public class TutorialAltars : TutorialBase
     {
+        public override string Id => "altars";
+        
         public override void Begin(Action finishedCallback)
         {
             CLog.Log($"[TutorialBattle] Begin");

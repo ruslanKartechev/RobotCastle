@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Net;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.Merging;
@@ -54,6 +55,7 @@ namespace RobotCastle.MainMenu
             
             DataHelpers.SaveData();
             TryStartTutorial();
+            AdsPlayer.Instance.ShowBanner();
         }
 
         private void TryStartTutorial()
@@ -73,6 +75,9 @@ namespace RobotCastle.MainMenu
             }
             else if (save.enterPlay && !save.heroUpgrade)
             {
+                var lvl2Unlocked = playerData.progression.chapters[0].tierData[1].unlocked;
+                if (!lvl2Unlocked)
+                    return;
                 var canvas = ServiceLocator.Get<IUIManager>().ParentCanvas;
                 var prefab = Resources.Load<TutorialBase>("prefabs/tutorials/ui_tutor_barracks");
                 var instance = Instantiate(prefab, canvas.transform);

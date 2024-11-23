@@ -35,6 +35,7 @@ namespace RobotCastle.UI
                     upgradeStatsCallback.Invoke();
                     upgradeLevelCallback.Invoke();
                     animateXpCallback.Invoke(prevXp, newXp, percent1, percent2);
+                    SleepDev.Analytics.HeroNewLevelUpgrade(heroSave.id, heroSave.level);
                 }
                 return result;
             }

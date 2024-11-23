@@ -25,6 +25,7 @@ namespace SleepDev
 
         public void ZeroAndPlay(Action onDone = null)
         {
+            gameObject.SetActive(true);
             ZeroScale();
             StartCoroutine(ScalingUp(onDone));
         }
@@ -180,11 +181,11 @@ namespace SleepDev
                 me.SetDurationAll();   
             GUILayout.Space(spacing);
 
-            if (GUILayout.Button($"Build Delay",GUILayout.Width(width), GUILayout.Height(height)))
+            if (GUILayout.Button($"Set Delay",GUILayout.Width(width), GUILayout.Height(height)))
                 me.SetDelayAll();
             GUILayout.Space(spacing);
 
-            if (GUILayout.Button($"Build Ease", GUILayout.Width(width), GUILayout.Height(height)))
+            if (GUILayout.Button($"Set Ease", GUILayout.Width(width), GUILayout.Height(height)))
                 me.SetEaseAll();   
             GUILayout.Space(spacing);
         }

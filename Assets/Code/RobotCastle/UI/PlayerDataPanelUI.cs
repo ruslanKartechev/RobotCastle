@@ -35,7 +35,8 @@ namespace RobotCastle.UI
             _experience.SetPlayerXp(xp.GetLevel(), xp.GetProgressToNextLvl());
 
             var energy = ServiceLocator.Get<PlayerEnergyManager>();
-            _energy.SetValue(energy.GetCurrent(), energy.GetMax());
+            _energy.SetMax(energy.GetMax());
+            _energy.SetValue(energy.GetCurrent(), 1);
             energy.OnEnergySet += _energy.SetValue;
         }
 

@@ -34,6 +34,6 @@
         public const string UIMerchantOffer = "ui_offer_merchant";
         
         public const string UIRelics = "ui_relics_inventory";
-
+        public const string UIEnergyOffer = "ui_energy_offer";
     }
 }

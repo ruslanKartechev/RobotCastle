@@ -8,6 +8,8 @@ namespace RobotCastle.MainMenu
 {
     public class TutorialWin : TutorialBase
     {
+        public override string Id => "win_screen_exit";
+    
         public void SetUI(InvasionLevelWinUI ui)
         {
             _ui = ui;

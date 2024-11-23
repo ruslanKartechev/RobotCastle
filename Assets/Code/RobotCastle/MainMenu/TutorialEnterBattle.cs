@@ -13,6 +13,8 @@ namespace RobotCastle.MainMenu
 {
     public class TutorialEnterBattle : TutorialBase
     {
+        public override string Id => "enter_battle";
+
         public override void Begin(Action finishedCallback)
         {
             CLog.LogGreen($"[TutorialEnterBattle] Begin");

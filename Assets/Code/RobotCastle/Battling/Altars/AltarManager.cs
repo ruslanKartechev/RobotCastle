@@ -63,6 +63,7 @@ namespace RobotCastle.Battling.Altars
             save.points++;
             _save.pointsFree--;
             altar.SetPoints(save.points);
+            SleepDev.Analytics.OnAltarPointAdded( altar.Id, save.points);
             OnFreePointsCountChanged?.Invoke(prevFree, _save.pointsFree);
             return true;
         }
@@ -88,6 +89,7 @@ namespace RobotCastle.Battling.Altars
                     && _save.pointsFree > 0;
             }
             altar.SetPoints(save.points);
+            SleepDev.Analytics.OnAltarPointAdded(altar.Id, save.points);
             OnFreePointsCountChanged?.Invoke(prevFree, _save.pointsFree);
             return true;
         }
@@ -102,6 +104,7 @@ namespace RobotCastle.Battling.Altars
                 _db.GetAltar(i).SetPoints(0);
             }
             _save.pointsFree = _save.pointsTotal;
+            SleepDev.Analytics.AltarPointsReset(_save.pointsFree);
             OnFreePointsCountChanged?.Invoke(prevFree, _save.pointsFree);
         }
         
@@ -167,6 +170,7 @@ namespace RobotCastle.Battling.Altars
             player.globalMoney = money;
             player.altars.pointsTotal++;
             player.altars.pointsFree++;
+            SleepDev.Analytics.AltarPointsPurchased(_save.pointsFree);
             OnFreePointsCountChanged?.Invoke(prevFree, _save.pointsFree);
             return true;
         }

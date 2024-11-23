@@ -175,6 +175,7 @@ namespace RobotCastle.Summoning
             var config = GetConfigForId(summonId);
             if (config == null)
                 return null;
+            SleepDev.Analytics.OnSummonUsed(summonId);
             return GetRandomItemsAndApply(config, outputMultiplier);
         }
         
@@ -226,6 +227,7 @@ namespace RobotCastle.Summoning
                             notOwnedHeroes.Remove(newHero);
                             ownedHeroes.Add(newHero);
                             outputResult.Add(new SummonOutput(SummonConfig.Id_NewHero, newHero.id, 1));
+                            SleepDev.Analytics.OnNewHeroObtained(newHero.id);
                         }
                         else
                         {

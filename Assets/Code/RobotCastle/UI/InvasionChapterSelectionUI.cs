@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.InvasionMode;
+using RobotCastle.MainMenu;
 using RobotCastle.Saving;
 using SleepDev;
 using SleepDev.Inventory;
@@ -48,6 +49,7 @@ namespace RobotCastle.UI
         private InvasionMode.ProgressionDataBase _chaptersDb;
         private SaveInvasionProgression _save;
         private bool _isLoading;
+        private EnergyOffer _energyOffer;
 
         public void Off()
         {
@@ -93,30 +95,15 @@ namespace RobotCastle.UI
             _returnBtn.AddMainCallback(Return);
             _isLoading = false;
         }
-
+        
         public void Play()
         {
             if (_isLoading) return;
-            if (_save.chapters[_selectionData.chapterIndex].unlocked == false)
-            {
-                CLog.Log($"Chapter not unlocked, won't play");
+            if(!CheckIfUnlocked())
                 return;
-            }
-            var tierUnlocked = GetChapterSave().tierData[_selectionData.tierIndex].unlocked;
-            if (!tierUnlocked)
-            {
-                CLog.Log("Tier not unlocked, won't play");
+            if (!CheckEnergy())
                 return;
-            }
-            _isLoading = true;
-            CLog.LogGreen($"Playing chapter {_selectionData.chapterIndex}, tier {_selectionData.tierIndex}");
-            _selectionData.corruption = _isCorruption;
-            DataHelpers.GetPlayerData().chapterSelectionData = _selectionData;
-            SoundManager.Inst.Play(_selectedChapterSound, false);
-            ScreenDarkening.Animate(() =>
-            {
-                ServiceLocator.Get<SceneLoader>().LoadBattleScene();
-            }, null);
+            StartLoadingLevel();
         }
 
         public void Return()
@@ -159,6 +146,61 @@ namespace RobotCastle.UI
         {
             _additionalReward.Off();
         }
+        
+             private bool CheckEnergy(bool makeOfferIfNotEnough = true)
+        {
+            var ss = ServiceLocator.Get<PlayerEnergyManager>();
+            var cost = _selectionData.totalEnergyCost;
+            if (ss.GetCurrent() < cost)
+            {
+                if (!makeOfferIfNotEnough)
+                    return false;
+                CLog.LogBlue($"Not enough energy: cost {cost}, amount: {ss.GetCurrent()}");
+                if (_energyOffer == null)
+                    _energyOffer = new EnergyOffer();
+                _energyOffer.MakeOffer(OnEnergyOfferCallback);
+                return false;
+            }
+            return true;
+        }
+
+        private void OnEnergyOfferCallback()
+        {
+            CLog.Log($"[OnEnergyOfferCallback]");
+            if (CheckEnergy(false))
+                StartLoadingLevel();
+        }
+
+        private bool CheckIfUnlocked()
+        {
+            if (_save.chapters[_selectionData.chapterIndex].unlocked == false)
+            {
+                CLog.Log($"Chapter not unlocked, won't play");
+                return false;
+            }
+            var tierUnlocked = GetChapterSave().tierData[_selectionData.tierIndex].unlocked;
+            if (!tierUnlocked)
+            {
+                CLog.Log("Tier not unlocked, won't play");
+                return false;
+            }
+            return true;
+        }
+
+        private void StartLoadingLevel()
+        {
+            _isLoading = true;
+            CLog.LogGreen($"Playing chapter {_selectionData.chapterIndex}, tier {_selectionData.tierIndex}");
+            _selectionData.corruption = _isCorruption;
+            DataHelpers.GetPlayerData().chapterSelectionData = _selectionData;
+            SoundManager.Inst.Play(_selectedChapterSound, false);
+            ServiceLocator.Get<PlayerEnergyManager>().Subtract(_selectionData.totalEnergyCost);
+            ScreenDarkening.Animate(() =>
+            {
+                ServiceLocator.Get<SceneLoader>().LoadBattleScene();
+            }, null);
+        }
+        
         
         private void OnNewTierPicked(Item item)
         {

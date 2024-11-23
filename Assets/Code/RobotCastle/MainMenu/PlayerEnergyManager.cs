@@ -1,20 +1,25 @@
-﻿using RobotCastle.Core;
+﻿using System;
+using System.Collections;
+using RobotCastle.Core;
 using RobotCastle.Saving;
 using SleepDev;
 using SleepDev.Data;
+using UnityEngine;
 
 namespace RobotCastle.MainMenu
 {
-    public class PlayerEnergyManager 
+    public class PlayerEnergyManager : MonoBehaviour
     {
         public static PlayerEnergyManager Create()
         {
-            var me = new PlayerEnergyManager();
+            var me = new GameObject("energy_manager").AddComponent<PlayerEnergyManager>();
+            DontDestroyOnLoad(me.gameObject);
             me._playerData = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerData>();
             if (me._playerData == null)
             {
                 CLog.LogRed("ERROR player data is null ------------");
             }
+            me.CheckEnergyDeficit();
             return me;
         }
 
@@ -22,9 +27,8 @@ namespace RobotCastle.MainMenu
         /// Passes current and max
         /// </summary>
         public event UpdateDelegate<int> OnEnergySet;
-        public const int PlayLevelEnergyCost = 5;
-        
-        private SavePlayerData _playerData;
+        public const int PlayLevelEnergyCost = 60;
+
         
         public int GetCurrent()
         {
@@ -55,9 +59,78 @@ namespace RobotCastle.MainMenu
             var prev = _playerData.playerEnergy;
             _playerData.playerEnergy = prev - amount;
             OnEnergySet?.Invoke(_playerData.playerEnergy, prev);
+            CheckEnergyDeficit();
         }
         
+        public void Add(int amount)
+        {
+            var prev = _playerData.playerEnergy;
+            _playerData.playerEnergy = prev + amount;
+            OnEnergySet?.Invoke(_playerData.playerEnergy, prev);
+        }
+        
+        
+        private const int SecondsBetweenAddedEnergy = 4;
+        private Coroutine _countingDownEnergy;
+        private SavePlayerData _playerData;
+        
         private PlayerEnergyManager(){}
+
+        private void CheckEnergyDeficit()
+        {
+            var deficit = _playerData.playerEnergyMax - _playerData.playerEnergy;
+            if (deficit > 0)
+            {
+                if (_playerData.timeWhenOutOfEnergy.IsNull())
+                {
+                    _playerData.timeWhenOutOfEnergy = DateTimeData.FromNow();
+                }
+                else
+                {
+                    var diffSeconds = (DateTime.Now - _playerData.timeWhenOutOfEnergy.GetDateTime()).Seconds;
+                    var energyAddedSinceLastTime = diffSeconds / SecondsBetweenAddedEnergy;
+                    if (energyAddedSinceLastTime > deficit)
+                        energyAddedSinceLastTime = deficit;
+                    CLog.Log($"[EnergyManager] SecondsPassed: {diffSeconds}, added energy: {energyAddedSinceLastTime}");
+                    _playerData.playerEnergy = energyAddedSinceLastTime;
+                    UpdateRestoringTimer();
+                }
+
+                if (_playerData.playerEnergyMax > _playerData.playerEnergy)
+                    StartEnergyAdding();
+            }
+        }
+
+        private void UpdateRestoringTimer()
+        {
+            if (_playerData.playerEnergy < _playerData.playerEnergyMax)
+                _playerData.timeWhenOutOfEnergy = DateTimeData.FromNow();
+            else
+                _playerData.timeWhenOutOfEnergy = new DateTimeData();
+        }
+
+        private void StartEnergyAdding()
+        {
+            if (_countingDownEnergy != null)
+                StopCoroutine(_countingDownEnergy);
+            _countingDownEnergy = StartCoroutine(CountingDownAddingEnergy());
+        }
+
+        private IEnumerator CountingDownAddingEnergy()
+        {
+            var elapsed = 0f;
+            while (_playerData.playerEnergy < _playerData.playerEnergyMax)
+            {
+                elapsed += Time.deltaTime;
+                if (elapsed >= SecondsBetweenAddedEnergy)
+                {
+                    elapsed = 0;
+                    Add(1);
+                    UpdateRestoringTimer();
+                }
+                yield return null;
+            }            
+        }
         
     }
 }

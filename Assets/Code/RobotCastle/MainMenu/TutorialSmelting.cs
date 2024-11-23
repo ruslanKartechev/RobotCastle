@@ -9,6 +9,8 @@ namespace RobotCastle.MainMenu
 {
     public class TutorialSmelting : TutorialBase
     {
+        public override string Id => "smelting";
+
         public void SetSmeltingUI(SmeltingOfferUI smeltingUI)
         {
             _smeltingUI = smeltingUI;
