@@ -13,6 +13,7 @@ namespace RobotCastle.UI
         public List<CoreItemData> rewards = new();
         public Action returnCallback;
         public Action replayCallback;
+        public Action<List<CoreItemData>> doubleRewardCallback;
         public ChapterSelectionData selectionData;
     }
 }

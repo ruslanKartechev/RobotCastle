@@ -116,7 +116,7 @@ namespace RobotCastle.Battling
             if (vamp > 0)
             {
                 var healthAdded = (int)(vamp * receivedArgs.amountReceived);
-                CLog.Log($"Vampirism health: {healthAdded}");
+                // CLog.Log($"Vampirism health: {healthAdded}");
                 _components.stats.HealthCurrent.Val += healthAdded;
                 ServiceLocator.Get<IDamageDisplay>().ShowVampirism(healthAdded, _components.pointVamp.position);
             }

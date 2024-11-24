@@ -22,6 +22,23 @@ namespace RobotCastle.Core
         public event Action<Vector3> OnSlideMain;
         public event Action<Vector3> OnZoom;
 
+        public void ResetEvents()
+        {
+            OnDownIgnoreUI = null;
+            OnUpIgnoreUI = null;
+            OnDownLongIgnoreUIClick = null;
+            OnDoubleClick = null;
+            OnDownLongClick = null;
+            OnShortClick = null;
+            OnShortClick = null;
+            OnDownMain = null;
+            OnUpMain = null;
+            OnDownSecond = null;
+            OnUpSecond = null;
+            OnSlideMain = null;
+            OnZoom = null;
+        }
+
         [SerializeField] private float _longClockTime = .2f;
         [SerializeField] private bool _raycastWorldButtons;
         [SerializeField] private LayerMask _worldButtonsLayer;

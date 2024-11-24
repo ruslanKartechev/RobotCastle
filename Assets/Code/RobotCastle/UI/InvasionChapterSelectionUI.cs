@@ -226,6 +226,7 @@ namespace RobotCastle.UI
             var unlocked = chapterSave.unlocked;
             if (!unlocked)
             {
+                _difficultyTierUI.Hide(); 
                 _chapterIcon.SetUnlockRequirement(_selectionData.chapterIndex - 1, chapter.prevTierRequired);
             }
             switch (nextOrPrev)
@@ -278,10 +279,10 @@ namespace RobotCastle.UI
             var goldReward = Mathf.RoundToInt(chapter.moneyGoldReward * multiplier);
             var tierSave = GetChapterSave().tierData[tierInd];
             _playBtn.SetInteractable(tierSave.unlocked);
-            if(tierSave.completed)
+            if(!tierSave.completed)
                 _rewardsUI.SetRewards(goldReward, chapter.tiers[tierInd].additionalRewards);
             else
-                _rewardsUI.SetRewards(goldReward, new List<CoreItemData>());
+                _rewardsUI.SetRewards(goldReward, null);
             _enemiesTotalPower.text = chapter.tiers[tierInd].totalPower.ToString();
         }
 
@@ -295,8 +296,12 @@ namespace RobotCastle.UI
             var goldReward = Mathf.RoundToInt(chapter.moneyGoldReward * multiplier);
             var tierSave = GetChapterSave().tierData[tierInd];
             _playBtn.SetInteractable(tierSave.unlocked);
-            _rewardsUI.SetRewards(goldReward, chapter.tiers[tierInd].additionalRewards);
 
+            if(!tierSave.completed)
+                _rewardsUI.SetRewards(goldReward, chapter.tiers[tierInd].additionalRewards);
+            else
+                _rewardsUI.SetRewards(goldReward, null);
+            
             _additionalReward.UpdateDataView();
             if (tierInd == 0)
             {

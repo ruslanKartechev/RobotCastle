@@ -24,7 +24,9 @@ namespace RobotCastle.MainMenu
         {
             if (didAccept)
             {
-                AdsPlayer.Instance.PlayReward(OnAdPlayed, PlacementName);
+                var (res, msg) = AdsPlayer.Instance.PlayReward(OnAdPlayed, PlacementName);
+                CLog.Log($"[{nameof(EnergyOffer)}] play rewarded: {res}. {msg}");
+
             }
             else
                 _callback?.Invoke();

@@ -15,6 +15,10 @@ namespace RobotCastle.Summoning
     // New hero scroll - 2 buttons, summon for scroll and purchase for 100 medals
     public class SummoningUI : MonoBehaviour, IScreenUI
     {
+        public LeftRightScroller Scroller => _scroller;
+        public List<SummonOptionUI> Options =>  _options;
+        public MyButton ReturnBtn =>  _returnBtn;
+            
         [SerializeField] private Canvas _canvas;
         [SerializeField] private List<SummonOptionUI> _options;
         [SerializeField] private LeftRightScroller _scroller;

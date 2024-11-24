@@ -76,7 +76,7 @@ namespace RobotCastle.MainMenu
             var barracksBtn = tabs.barracksBtn;
             barracksBtn.SetInteractable(true);
             _hand.On();
-            _hand.LoopClickingTracking(barracksBtn.transform, _clickOffsetBarracks, 0f);
+            _hand.LoopClickingTracking(barracksBtn.transform.GetChild(0), _clickOffsetBarracks, 0f);
             
             yield return WaitForBtn(barracksBtn);
             _subParent.Return();
@@ -137,7 +137,8 @@ namespace RobotCastle.MainMenu
             tabs.gateBtn.SetInteractable(true);
             tabs.barracksBtn.SetInteractable(false);
             barracksHeroView.OnHeroShown += OnHeroSelected;
-            AnimateHandHeroes();
+            _hand.Off();
+            // AnimateHandHeroes();
             yield return WaitForBtn(tabs.gateBtn);
             if (!_upgradeCompleted)
             {
@@ -155,7 +156,7 @@ namespace RobotCastle.MainMenu
             var gate = uiManager.GetIfShown<GateTabUI>(UIConstants.UIGateTab);
             gate.battleBtn.SetInteractable(true);
             _hand.On();
-            _hand.MoveToAndLoopClicking(gate.battleBtn.transform.position + _btnBattleOffset, _handMoveTime);
+            _hand.MoveToAndLoopClicking(gate.battleBtn.transform.GetChild(0).position + _btnBattleOffset, _handMoveTime);
             yield return WaitForBtn(gate.battleBtn);
             _hand.Off();
             yield return null;

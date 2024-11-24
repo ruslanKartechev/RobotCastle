@@ -65,12 +65,17 @@ namespace RobotCastle.Merging
         {
             if (!_isActive)
                 return;
+            if (!_refundAllowed)
+            {
+                _positionChecking = StartCoroutine(PositionChecking());
+                return;
+            }
             var lvl = itemData.core.level;
             _refundedMoney = (lvl + 1) * HeroesConstants.HeroRefundMoney;
             _battleUI.ReturnItemButton.SetMoney(_refundedMoney);
             var container = ServiceLocator.Get<MergeManager>().Container;
             var size = container.heroes.Count;
-            if (size > 1 && _refundAllowed)
+            if (size > 1)
             {
                 _battleUI.ReturnItemButton.Show();
                 _positionChecking = StartCoroutine(PositionAndRefundCheck());

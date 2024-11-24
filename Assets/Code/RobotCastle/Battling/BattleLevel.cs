@@ -520,7 +520,7 @@ namespace RobotCastle.Battling
             }
             return false;
         }
-
+        
         private void AddRewardForLevelAndShowUI()
         {
             var chapterConfig = ServiceLocator.Get<ProgressionDataBase>().chapters[_selectionData.chapterIndex];
@@ -529,58 +529,72 @@ namespace RobotCastle.Battling
 
             var rewardMultiplier = _selectionData.multiplierTier * _selectionData.tierRewardMultiplier;
             var goldReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.moneyGoldReward);
-            var xpReward = Mathf.RoundToInt(rewardMultiplier * chapterConfig.playerXpReward);
-
+            
+            var castleXP = Mathf.RoundToInt(rewardMultiplier * chapterConfig.playerXpReward);
+            var xpManager = ServiceLocator.Get<CastleXpManager>();
+            var currentXP = xpManager.GetXp();
+            var didReachNewLevel = xpManager.IsEnoughToReachNewLevel(currentXP + castleXP);
+            
+            var outputRewards = new List<CoreItemData>(5)
+            {
+                new CoreItemData(goldReward, "gold", "bonus"),
+                new CoreItemData(castleXP, "player_xp", "bonus")
+            };
+            
+            if (completedFirstTime)
+            {
+                AddConfigRewardsWithMultiplier(outputRewards, chapterConfig.tiers[_selectionData.tierIndex].additionalRewards, rewardMultiplier);
+                if (_selectionData.tierIndex == chapterConfig.tiers.Count - 1)
+                    AddConfigRewardsWithMultiplier(outputRewards, chapterConfig.chapterCompletedRewards, rewardMultiplier);
+            }
+            
             var addedHeroesXp = Mathf.RoundToInt(rewardMultiplier * chapterConfig.heroXpReward);
             var heroesSaves = ServiceLocator.Get<IDataSaver>().GetData<SavePlayerHeroes>();
             foreach (var id in playerData.party.heroesIds)
                 heroesSaves.GetSave(id).xp += addedHeroesXp;
-
-            var gm = ServiceLocator.Get<GameMoney>();
-            gm.globalMoney.AddValue(goldReward);
-            
-            var newPlayerXp = ServiceLocator.Get<CastleXpManager>().AddXp(xpReward);
-            var outputRewards = new List<CoreItemData>(5);
-            
-            outputRewards.Add(new CoreItemData(goldReward, "gold", "bonus"));
-            outputRewards.Add(new CoreItemData(goldReward, "player_xp", "bonus"));
-            if (completedFirstTime)
-            {
-                AddRew(outputRewards, chapterConfig.tiers[_selectionData.tierIndex].additionalRewards);
-                if (_selectionData.tierIndex == chapterConfig.tiers.Count - 1)
-                    AddRew(outputRewards, chapterConfig.chapterCompletedRewards);
-            }
-            if (_logRewardItems)
-            {
-                var msg = "Added rewards after level win!";
-                foreach (var it in outputRewards)
-                    msg += $"\n{it.id}  {it.level}";
-                CLog.Log(msg);          
-            }
-
             var heroesCount = playerData.party.maxCount;
             var addedXps = new List<float>(heroesCount) { addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp, addedHeroesXp};
+            
+            ApplyRewards(outputRewards);
+          
             var ui = ServiceLocator.Get<IUIManager>().Show<InvasionLevelWinUI>(UIConstants.UILevelWin, () => {});
             ui.Show(new InvasionWinArgs()
             {
-                playerNewLevelReached = newPlayerXp,
-                playerXpAdded = xpReward,
+                playerNewLevelReached = didReachNewLevel,
+                playerXpAdded = castleXP,
                 heroesXp = addedXps,
                 selectionData = _selectionData,
                 rewards = outputRewards,
                 replayCallback = Replay,
-                returnCallback = ReturnToMenu
+                returnCallback = ReturnToMenu,
+                doubleRewardCallback = DoubleReward
             });
         }
 
-        private void AddRew(List<CoreItemData> outputRewards, 
-            List<CoreItemData> configRewards)
+        private void ApplyRewards(List<CoreItemData> rewards)
+        {
+            CLog.Log($"Applying rewards");
+            var msg = "";
+            if (_logRewardItems)
+                 msg = "Added rewards after level win!";
+            foreach (var it in rewards)
+            {
+                if (_logRewardItems)
+                    msg += $"\n{it.id}  {it.level}";
+                HeroesManager.AddGlobalReward(it);
+            }
+            if(_logRewardItems)
+                CLog.Log(msg);
+        }
+
+        private void AddConfigRewardsWithMultiplier(List<CoreItemData> outputRewards, 
+            List<CoreItemData> configRewards, float multiplier)
         {
             var playerData = DataHelpers.GetPlayerData();
             foreach (var reward in configRewards)
             {
                 var upgReward = new CoreItemData(reward);
-                upgReward.level = Mathf.RoundToInt(upgReward.level);
+                upgReward.level = Mathf.RoundToInt(upgReward.level * multiplier);
                 outputRewards.Add(upgReward);
                 switch (reward.type)
                 {
@@ -597,19 +611,46 @@ namespace RobotCastle.Battling
             }
         }
 
+        private void DoubleReward(List<CoreItemData> rewards)
+        {
+            CLog.Log($"[{nameof(BattleLevel)}] Double reward call");
+            ApplyRewards(rewards);
+        }
+
         private void ReturnToMenu()
         {
-            CLog.Log($"[{nameof(BattleLevel)}] Return to menu call");
+            // CLog.Log($"[{nameof(BattleLevel)}] Return to menu call");
             SceneManager.LoadScene(GlobalConfig.SceneMainMenu);
         }
 
         private void Replay()
         {
             CLog.Log($"[{nameof(BattleLevel)}] Replay call");
+            var energy = ServiceLocator.Get<PlayerEnergyManager>();
+            if (energy.GetCurrent() < _selectionData.totalEnergyCost)
+            {
+                CLog.Log($"[{nameof(BattleLevel)}] Not enough energy");
+                var offer = new EnergyOffer();
+                offer.MakeOffer(EnergyOfferCallback);
+            }
+            energy.Subtract(_selectionData.totalEnergyCost);
             SleepDev.Analytics.LevelReplayCalled(_selectionData.chapterIndex, _selectionData.tierIndex);
             ServiceLocator.Get<PlayerEnergyManager>().Subtract(_selectionData.totalEnergyCost);
             SceneManager.LoadScene(GlobalConfig.SceneBattle);
         }
-   
+
+        private void EnergyOfferCallback()
+        {
+            var energy = ServiceLocator.Get<PlayerEnergyManager>();
+            if (energy.GetCurrent() >= _selectionData.totalEnergyCost)
+            {
+                energy.Subtract(_selectionData.totalEnergyCost);
+                SleepDev.Analytics.LevelReplayCalled(_selectionData.chapterIndex, _selectionData.tierIndex);
+                ServiceLocator.Get<PlayerEnergyManager>().Subtract(_selectionData.totalEnergyCost);
+                SceneManager.LoadScene(GlobalConfig.SceneBattle);
+                return;
+            }
+            CLog.Log($"Energy not enough to replay");
+        }
     }
 }

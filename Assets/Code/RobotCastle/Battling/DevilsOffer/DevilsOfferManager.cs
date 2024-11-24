@@ -86,7 +86,7 @@ namespace RobotCastle.Battling.DevilsOffer
             }
             
             var coreData = _currentOption.reward;
-            HeroesManager.AddRewardOrBonus(coreData);
+            HeroesManager.AddGameplayRewardOrBonus(coreData);
             
             await HeroesManager.WaitGameTime(waitTime, token);
             if (token.IsCancellationRequested) return;

@@ -53,6 +53,11 @@ namespace RobotCastle.MainMenu
             return (float)xp / max;
         }
 
+        public bool IsEnoughToReachNewLevel(int totalXp)
+        {
+            return totalXp >= GetMaxXp();
+        }
+        
         /// <summary>
         /// </summary>
         /// <returns>True if new level reached!</returns>

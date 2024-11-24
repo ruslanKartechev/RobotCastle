@@ -118,7 +118,7 @@ namespace RobotCastle.Battling.SmeltingOffer
         {
             foreach (var mod in _smeltModifiers)
                 data = mod.ModifySmeltItemBeforeApplied(data);
-            HeroesManager.AddRewardOrBonus(data);
+            HeroesManager.AddGameplayRewardOrBonus(data);
             _callback?.Invoke();
         }
         

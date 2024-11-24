@@ -78,7 +78,7 @@ namespace RobotCastle.Battling
             var enemies = HeroesManager.GetHeroesEnemies(_components);
             var framesInside = 0;
             const int minFrames = 3;
-            while (token.IsCancellationRequested == false)
+            while (token.IsCancellationRequested == false && _components != null)
             {
                 var tr = _components.transform;
                 var remainder = Mathf.Abs(tr.eulerAngles.y) % 90f;

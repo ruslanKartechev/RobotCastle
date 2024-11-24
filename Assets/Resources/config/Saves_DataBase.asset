@@ -17,12 +17,20 @@ MonoBehaviour:
     musicOn: 1
     vibrOn: 0
     levelMoney: 0
-    globalMoney: 1200
-    globalHardMoney: 1200
-    playerLevel: 1
+    globalMoney: 1000
+    globalHardMoney: 200
+    playerLevel: 2
     playerXp: 0
     playerEnergy: 60
     playerEnergyMax: 40
+    timeWhenOutOfEnergy:
+      year: 0
+      month: 0
+      day: 0
+      hour: 0
+      minute: 0
+      second: 0
+      milliSecond: 0
     gameMode: 0
     party:
       maxCount: 6
@@ -532,10 +540,11 @@ MonoBehaviour:
       multiplierTier: 1
       tierRewardMultiplier: 1
       totalEnergyCost: 5
-      chapterIndex: 9
+      chapterIndex: 0
       tierIndex: 1
       corruption: 0
       goldReward: 0
+      mode: 0
     altars:
       pointsTotal: 0
       pointsFree: 0
@@ -559,7 +568,7 @@ MonoBehaviour:
       win: 1
       heroUpgrade: 1
       heroSummon: 1
-      altars: 1
+      altars: 0
   PlayerHeroes:
     heroSaves:
     - id: alberon
@@ -662,3 +671,14 @@ MonoBehaviour:
       second: 0
       milliSecond: 0
     dailyItems: []
+  rateUs:
+    didShow: 0
+    didAccept: 0
+    nextShowTime:
+      year: 0
+      month: 0
+      day: 0
+      hour: 0
+      minute: 0
+      second: 0
+      milliSecond: 0

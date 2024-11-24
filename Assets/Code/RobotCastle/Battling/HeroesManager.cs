@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Bomber;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.MainMenu;
 using RobotCastle.Merging;
+using RobotCastle.Relics;
 using RobotCastle.Saving;
 using SleepDev;
 using SleepDev.Data;
@@ -25,7 +27,39 @@ namespace RobotCastle.Battling
 
         public static string Red(string msg) => $"<color=#BB0000>{msg}</color>";
 
-        public static void AddRewardOrBonus(CoreItemData data)
+        public static void AddGlobalReward(CoreItemData item)
+        {
+            switch (item.type)
+            {
+                case ItemsIds.TypeItem:
+                {
+                    var playerData = DataHelpers.GetPlayerData();
+                    playerData.inventory.AddItem(item.id, item.level);
+                    break;
+                }
+                case ItemsIds.TypeRelic:
+                {
+                    var playerData = DataHelpers.GetPlayerData();
+                    RelicsManager.AddRelic(playerData.relics, item.id);
+                    break;
+                }
+                case ItemsIds.TypeBonus:
+                    switch (item.id)
+                    {
+                        case "gold":
+                            var gm = ServiceLocator.Get<GameMoney>();
+                            gm.globalMoney.AddValue(item.level);
+                            break;
+                        case "player_xp":
+                            ServiceLocator.Get<CastleXpManager>().AddXp(item.level);
+                            break;
+
+                    }
+                    break;
+            }
+        }
+        
+        public static void AddGameplayRewardOrBonus(CoreItemData data)
         {
             switch (data.type)
             {

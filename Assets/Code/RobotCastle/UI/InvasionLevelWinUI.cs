@@ -6,6 +6,7 @@ using RobotCastle.Data;
 using RobotCastle.InvasionMode;
 using RobotCastle.MainMenu;
 using RobotCastle.Saving;
+using SleepDev;
 using SleepDev.Inventory;
 using TMPro;
 using UnityEngine;
@@ -17,9 +18,9 @@ namespace RobotCastle.UI
     {
 
         public MyButton BtnPlayAgain => _btnPlayAgain;
-        
         public MyButton BtnReturn => _btnReturn;
-        
+        public MyButton BtnDoubleReward => _btnDoubleReward;
+
         [SerializeField] private RectTransform _rectRewards;
         [SerializeField] private RectTransform _rectHeroes;
         [SerializeField] private RectTransform _rectXp;
@@ -32,9 +33,11 @@ namespace RobotCastle.UI
         [SerializeField] private TextMeshProUGUI _textPlayerEnegy;
         [SerializeField] private MyButton _btnPlayAgain;
         [SerializeField] private MyButton _btnReturn;
+        [SerializeField] private MyButton _btnDoubleReward;
         [SerializeField] private Image _xpProgBar;
         [SerializeField] private TextMeshProUGUI _playerLevelText;
         [SerializeField] private TextMeshProUGUI _addedXpText;
+        [SerializeField] private Image _doubleAdIcon;
         [Space(10)] 
         [SerializeField] private float _xpFillTime = .5f;
         [SerializeField] private float _levelPunchScale = .2f;
@@ -51,7 +54,8 @@ namespace RobotCastle.UI
         [SerializeField] private Image _backgroundImage;
         private InvasionWinArgs _args;
         private bool _inputActive;
-        
+        private bool _allowFreeDouble;
+
         public void Show(InvasionWinArgs args)
         {
             _args = args;
@@ -85,13 +89,41 @@ namespace RobotCastle.UI
             }
             _btnPlayAgain.AddMainCallback(Replay);
             _btnReturn.AddMainCallback(Return);
-            
+            _btnDoubleReward.AddMainCallback(DoubleReward);
             StartCoroutine(Animating(args));
+        }
+
+        public void SetFreeDouble()
+        {
+            _allowFreeDouble = true;
+            _doubleAdIcon.enabled = false;
+        }
+
+        private void DoubleReward()
+        {
+            CLog.Log($"[{nameof(InvasionLevelWinUI)}] DoubleReward callback");
+            if (_allowFreeDouble)
+            {
+                CLog.Log($"[{nameof(InvasionLevelWinUI)}] AdFree double");
+                _args.doubleRewardCallback?.Invoke(_args.rewards);
+                _args.returnCallback?.Invoke();
+                return;
+            }
+            var (res, msg) = AdsPlayer.Instance.PlayReward(did =>
+            {
+                CLog.Log($"Double reward AD callback result: {did}");
+                if(did)
+                {
+                    _btnDoubleReward.SetInteractable(false);
+                    _args.doubleRewardCallback?.Invoke(_args.rewards);
+                    _args.returnCallback?.Invoke();
+                }
+            }, AdsPlayer.Placement_Double);
+            CLog.Log($"[WinUI] Double Reward, msg: {msg}, result: {res}");
         }
 
         private IEnumerator Animating(InvasionWinArgs args)
         {
-      
             _inputActive = true;
             _rectRewards.gameObject.SetActive(false);
             _rectHeroes.gameObject.SetActive(false);

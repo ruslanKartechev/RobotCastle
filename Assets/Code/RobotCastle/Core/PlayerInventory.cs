@@ -104,10 +104,9 @@ namespace RobotCastle.Core
 
         public void AddItem(string id, int count)
         {
-            CLog.Log($"Adding item: {id}, count: {count}");
+            CLog.Log($"[Inventory] Adding item: {id}, count: {count}");
             if (id.Contains("scroll_tier"))
             {
-                CLog.Log($"Adding a scroll to inventory");
                 AddScrollsCount(id, count);
                 return;
             }

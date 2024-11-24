@@ -11,6 +11,7 @@ namespace SleepDev
     {
         public const string Placement_Merchant = "merchant_offer";
         public const string Placement_Shop = "shop_ads";
+        public const string Placement_Double = "double_rewrad";
 
         
         private static AdsPlayer _instance;
@@ -152,8 +153,8 @@ namespace SleepDev
         {
 #if SDK_MADPIXEL
             CLog.Log($"[{nameof(AdsPlayer)}] ShowBanner");
-            MAXHelper.AdsManager.ToggleBanner(true);
             _bannerCalled = true;
+            MAXHelper.AdsManager.ToggleBanner(_bannerCalled);
 #endif
         }
 
@@ -161,8 +162,8 @@ namespace SleepDev
         {
 #if SDK_MADPIXEL
             CLog.Log($"[{nameof(AdsPlayer)}] HideBanner");
-            MAXHelper.AdsManager.ToggleBanner(false);
             _bannerCalled = false;
+            MAXHelper.AdsManager.ToggleBanner(_bannerCalled);
 #endif
         }
 

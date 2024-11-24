@@ -52,7 +52,7 @@ namespace RobotCastle.Merging
 
         public void Hide()
         {
-            if (gameObject.activeInHierarchy)
+            if (gameObject && gameObject.activeInHierarchy)
             {
                 _animator.FadeOut();
                 SetNotActive();

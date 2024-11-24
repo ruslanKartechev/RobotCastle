@@ -65,13 +65,12 @@ namespace RobotCastle.MainMenu
           
             barracksBtn.SetInteractable(true);
             _hand.On();
-            _hand.LoopClickingTracking(barracksBtn.transform, _clickOffsetBarracks, 0f);
+            _hand.LoopClickingTracking(barracksBtn.transform.GetChild(0), _clickOffsetBarracks, 0f);
             yield return WaitForBtn(barracksBtn);
             _subParent.Return();
             _background.enabled = false;
             _textPrinter.Hide();
             
-
             var barracks = ui.GetIfShown<BarracksTabUI>(UIConstants.UIBarracksTab);
             barracks.altarsBtn.SetInteractable(true);
             barracks.summonBtn.SetInteractable(false);
@@ -97,10 +96,10 @@ namespace RobotCastle.MainMenu
             
             var altars = ui.GetIfShown<AltarsOverviewUI>(UIConstants.UIAltars);
             altars.BtnClose.SetInteractable(false);
-            pos = altars.BtnPurchasePoint.transform.position + _btnBuyPointOffset;
+            pos = altars.BtnPurchaseNewPoint.transform.position + _btnBuyPointOffset;
             _hand.On();
             _hand.LoopClicking(pos);
-            yield return WaitForBtn(altars.BtnPurchasePoint);
+            yield return WaitForBtn(altars.BtnPurchaseNewPoint);
             foreach (var alt in altars.Altars)
             {
                 var tr = alt.LvlUpBtnOne.transform;
@@ -130,6 +129,10 @@ namespace RobotCastle.MainMenu
             gameObject.SetActive(false);
         }
 
-        private void OnPointsChanged(int prevvalue, int newvalue) => _isWaiting = false;
+        private void OnPointsChanged(int prevvalue, int newvalue)
+        {
+            if (newvalue < prevvalue)
+                _isWaiting = false;
+        }
     }
 }

@@ -25,6 +25,8 @@ namespace RobotCastle.Core
         {
             StopLoading();
             RefreshAndSave();
+            if(ServiceLocator.GetIfContains(out GameInput input))
+                input.ResetEvents();
             _nextScene = GlobalConfig.SceneMainMenu;
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.LoadScene(GlobalConfig.SceneLoading);
@@ -34,6 +36,8 @@ namespace RobotCastle.Core
         {
             StopLoading();
             RefreshAndSave();
+            if(ServiceLocator.GetIfContains(out GameInput input))
+                input.ResetEvents();
             _nextScene = GlobalConfig.SceneBattle;
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.LoadScene(GlobalConfig.SceneLoading);

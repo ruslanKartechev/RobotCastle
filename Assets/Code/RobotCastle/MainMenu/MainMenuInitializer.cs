@@ -52,10 +52,11 @@ namespace RobotCastle.MainMenu
 
             _heroesPool.SpawnAll();
             _tabsSwitcher.SetGateTab();
-            
+
+            AdsPlayer.Instance.ShowBanner();
+
             DataHelpers.SaveData();
             TryStartTutorial();
-            AdsPlayer.Instance.ShowBanner();
         }
 
         private void TryStartTutorial()

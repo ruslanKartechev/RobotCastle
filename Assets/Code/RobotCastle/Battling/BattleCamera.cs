@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using RobotCastle.Core;
 using RobotCastle.Data;
 using RobotCastle.UI;
+using SleepDev;
 using UnityEngine;
 
 namespace RobotCastle.Battling
@@ -59,27 +60,44 @@ namespace RobotCastle.Battling
                 ServiceLocator.Get<GameInput>().OnSlideMain -= OnSlide;
         }
 
+        private void OnDestroy()
+        {
+            if (ServiceLocator.GetIfContains<GameInput>(out var input))
+            {
+                input.OnSlideMain -= OnSlide;
+            }
+        }
+
         private void OnSlide(Vector3 vec)
         {
-            if (SlideBlockers > 0)
-                return;
-            if (Mathf.Abs(vec.y) > Math.Abs(vec.x))
+            try
             {
-                if (vec.y < 0)
+                if(!this || !gameObject) return;
+                if (SlideBlockers > 0)
+                    return;
+                if (Mathf.Abs(vec.y) > Math.Abs(vec.x))
                 {
-                    MoveAndSizeToBattlePoint();
-                    var battleUI = ServiceLocator.Get<IUIManager>().GetIfShown<BattleMergeUI>(UIConstants.UIBattleMerge);
-                    if(battleUI)
-                        battleUI.SetMainAreaLowerPos();
-                }
-                else if (vec.y > 0)
-                {
-                    MoveAndSizeToMergePoint();
-                    var battleUI = ServiceLocator.Get<IUIManager>().GetIfShown<BattleMergeUI>(UIConstants.UIBattleMerge);
-                    if(battleUI)
-                        battleUI.SetMainAreaUpPos();
+                    if (vec.y < 0)
+                    {
+                        MoveAndSizeToBattlePoint();
+                        var battleUI = ServiceLocator.Get<IUIManager>().GetIfShown<BattleMergeUI>(UIConstants.UIBattleMerge);
+                        if(battleUI)
+                            battleUI.SetMainAreaLowerPos();
+                    }
+                    else if (vec.y > 0)
+                    {
+                        MoveAndSizeToMergePoint();
+                        var battleUI = ServiceLocator.Get<IUIManager>().GetIfShown<BattleMergeUI>(UIConstants.UIBattleMerge);
+                        if(battleUI)
+                            battleUI.SetMainAreaUpPos();
+                    }
                 }
             }
+            catch (System.Exception ex)
+            {
+                CLog.LogException(ex.Message, ex.StackTrace);
+            }
+            
         }
 
         public void SetMergePoint()

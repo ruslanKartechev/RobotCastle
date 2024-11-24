@@ -24,6 +24,12 @@ namespace RobotCastle.UI
             var uiInd = 0;
             _rewardItems[uiInd].SetIconAndCount(_goldSprite, gold);
             _rewardItems[uiInd].gameObject.SetActive(true);
+            if (rewards == null || rewards.Count == 0)
+            {
+                for(var i = 1; i < _rewardItems.Count; i++)
+                    _rewardItems[i].Off();
+                return;
+            }
             uiInd++;
             for (var i = 0; i < rewards.Count && i < _rewardItems.Count; i++)
             {

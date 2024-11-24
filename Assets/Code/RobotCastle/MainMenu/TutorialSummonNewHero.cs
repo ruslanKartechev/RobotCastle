@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using RobotCastle.Core;
 using RobotCastle.Data;
+using RobotCastle.Summoning;
 using RobotCastle.UI;
 using SleepDev;
 using UnityEngine;
@@ -68,7 +70,8 @@ namespace RobotCastle.MainMenu
             barracksManager.BarracksInput.SetActive(false);
        
             yield return WaitForBtn(barracks.summonBtn);
-     
+            yield return null;
+            
             _hand.Off();
             _textPrinter.Show();
             _textPrinter.ShowMessages(_messages2);
@@ -78,14 +81,65 @@ namespace RobotCastle.MainMenu
             _isWaiting = true;
             while(_isWaiting)
                 yield return null;
-            yield return new WaitForSeconds(_hideDelaySec);
-            tabs.SetAllInteractable(true);
+            
+            _textPrinter.Hide();
+            _background.enabled = false;
+            var summonUI = ui.GetIfShown<SummoningUI>(UIConstants.UISummon);
+            if (summonUI == null)
+            {
+                CLog.LogError($"Summon UI is null");
+            }
+            summonUI.Scroller.inputAllowed = false;
+            var subButtons = new List<MyButton>(4);
+            var op = (SummonOptionUI)summonUI.Scroller.currentObject;
+            var clickTarget = (Transform)null;
+            if (op.btn1 != null)
+            {
+                subButtons.Add(op.btn1);
+                op.btn1.AddMainCallback(StopWaiting);
+                clickTarget = op.btn1.transform;
+            }
+            if (op.btn2 != null)
+            {
+                subButtons.Add(op.btn2);
+                op.btn2.AddMainCallback(StopWaiting);
+                if(clickTarget is null)
+                    clickTarget = op.btn2.transform;
+                
+            }
+            if (op.btn3 != null)
+            {
+                subButtons.Add(op.btn3);
+                op.btn3.AddMainCallback(StopWaiting);
+                if(clickTarget is null)
+                    clickTarget = op.btn3.transform;
+            }
+            if (op.btnOptional != null)
+            {
+                subButtons.Add(op.btnOptional);
+                op.btnOptional.AddMainCallback(StopWaiting);
+                if(clickTarget is null)
+                    clickTarget = op.btnOptional.transform;
+            }
+            _hand.On();
+            _hand.LoopClickingTracking(clickTarget, Vector3.zero, 0f);
+            _isWaiting = true;
+            while(_isWaiting)
+                yield return null;
+            _hand.Off();
+
+            foreach (var bb in subButtons)
+                bb.RemoveMainCallback(StopWaiting);
+            summonUI.Scroller.inputAllowed = true;
             Complete();
+            // yield return new WaitForSeconds(_hideDelaySec);
+            // tabs.SetAllInteractable(true);
+            // Complete();
         }
         
         private void Complete()
         {
-            _panelAnimator.FadeOut();
+            _panelAnimator.Off();
             var barracksManager = ServiceLocator.Get<BarracksManager>();
             barracksManager.BarracksInput.SetActive(true);
             var tabs = ServiceLocator.Get<IUIManager>().GetIfShown<MainMenuTabsUI>(UIConstants.UIMainMenuTabs);

@@ -13,7 +13,7 @@ namespace RobotCastle.Battling.Altars
     public class AltarsOverviewUI : MonoBehaviour, IScreenUI
     {
         public MyButton BtnClose => _BtnClose;
-        public MyButton BtnPurchasePoint => _btnPurchasePoint;
+        public MyButton BtnPurchaseNewPoint => _btnPurchasePoint;
         public MyButton BtnRetrievePoints => _btnRetrievePoints;
         public List<AltarUI> Altars => _uiAltars;
         

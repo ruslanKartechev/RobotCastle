@@ -14,6 +14,7 @@ namespace RobotCastle.InvasionMode
             var chapterSave = playerData.progression.chapters[chapterIndex];
             var tierSave = chapterSave.tierData[tier];
             completedFirstTime = !tierSave.completed;
+            tierSave.unlocked = true;
             tierSave.completed = true;
             tierSave.completedCount++;
 

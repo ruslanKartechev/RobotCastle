@@ -91,8 +91,10 @@ namespace RobotCastle.Battling.MerchantOffer
             {
                 var (res, msg) = AdsPlayer.Instance.PlayReward((r) =>
                 {
-                    if(r) HeroesManager.AddRewardOrBonus(goods.ItemData);
+                    CLog.Log($"[{nameof(MerchantOfferManager)}] On Ad callback: {r}");
+                    if(r) HeroesManager.AddGameplayRewardOrBonus(goods.ItemData);
                 }, AdsPlayer.Placement_Merchant);
+                CLog.Log($"[{nameof(MerchantOfferManager)}] play rewarded: {res}. {msg}");
                 return res;
             }
 
@@ -103,7 +105,7 @@ namespace RobotCastle.Battling.MerchantOffer
                 return false;
             money -= cost;
             gm.levelMoney.UpdateWithContext(money, (int)EMoneyChangeContext.AfterPurchase);
-            HeroesManager.AddRewardOrBonus(goods.ItemData);
+            HeroesManager.AddGameplayRewardOrBonus(goods.ItemData);
             return true;
         }
 

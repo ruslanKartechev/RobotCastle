@@ -22,9 +22,11 @@ namespace RobotCastle.MainMenu
             _hand.On();
             var replayBtn = _ui.BtnPlayAgain;
             replayBtn.SetInteractable(false);
-            var returnBtn = _ui.BtnReturn;
+            _ui.SetFreeDouble();
+            var returnBtn = _ui.BtnDoubleReward;
             _hand.LoopClickingTracking(returnBtn.transform, _clickOffset, 0f);
             returnBtn.SetInteractable(true);
+            finishedCallback?.Invoke();
         }
         
         [SerializeField] private List<string> _messages1;
