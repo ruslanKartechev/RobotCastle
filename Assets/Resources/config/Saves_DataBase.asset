@@ -102,6 +102,10 @@ MonoBehaviour:
           completedCount: 0
           attemptedCount: 0
         - unlocked: 1
+          completed: 1
+          completedCount: 0
+          attemptedCount: 0
+        - unlocked: 1
           completed: 0
           completedCount: 0
           attemptedCount: 0
@@ -113,13 +117,9 @@ MonoBehaviour:
           completed: 0
           completedCount: 0
           attemptedCount: 0
-        - unlocked: 0
-          completed: 0
-          completedCount: 0
-          attemptedCount: 0
-      - unlocked: 0
+      - unlocked: 1
         tierData:
-        - unlocked: 0
+        - unlocked: 1
           completed: 0
           completedCount: 0
           attemptedCount: 0
@@ -139,9 +139,9 @@ MonoBehaviour:
           completed: 0
           completedCount: 0
           attemptedCount: 0
-      - unlocked: 0
+      - unlocked: 1
         tierData:
-        - unlocked: 0
+        - unlocked: 1
           completed: 0
           completedCount: 0
           attemptedCount: 0
@@ -568,7 +568,7 @@ MonoBehaviour:
       win: 1
       heroUpgrade: 1
       heroSummon: 1
-      altars: 0
+      altars: 1
   PlayerHeroes:
     heroSaves:
     - id: alberon

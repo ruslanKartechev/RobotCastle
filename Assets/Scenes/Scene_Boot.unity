@@ -1298,6 +1298,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: game boot first scene
       objectReference: {fileID: 0}
+    - target: {fileID: 5872349570644048071, guid: 3dbe5b4772214cc41bf68e0db9261dff, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8661320116897343453, guid: 3dbe5b4772214cc41bf68e0db9261dff, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1365,6 +1369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _firstScene: Scene_main_menu
   _loadingUI: {fileID: 109810305}
+  _loadingConstTime: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

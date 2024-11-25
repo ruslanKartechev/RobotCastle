@@ -8,6 +8,7 @@ namespace RobotCastle.Merging
     [DefaultExecutionOrder(30)]
     public class MergeManager : MonoBehaviour
     {
+        public bool IsActive { get; set; }
         public IGridView GridView => _gridView;
         public IGridSectionsController SectionsController => _sectionsController;
         public IMergeProcessor MergeProcessor => _mergeProcessor;
@@ -76,7 +77,11 @@ namespace RobotCastle.Merging
                 _mergeInput.SetActive(true);
         }
 
-        public void AllowInput(bool active) => _mergeInput.SetActive(active);
+        public void AllowInput(bool active)
+        {
+            IsActive = active;
+            _mergeInput.SetActive(active);
+        }
 
         public void FillActiveArea()
         {
@@ -105,6 +110,7 @@ namespace RobotCastle.Merging
 
         public void MergeAll()
         {
+            if (!IsActive) return;
             CLog.Log($"[{nameof(MergeManager)}] Merge All");
             var allItems = _sectionsController.GetAllItemsViews();
             var merged = _mergeProcessor.MergeAllItemsPossible(allItems, _gridView);
@@ -116,6 +122,8 @@ namespace RobotCastle.Merging
 
         public void SortAll()
         {
+            if (!IsActive) return;
+
             CLog.Log($"[{nameof(MergeManager)}] Sort All");   
             var items = _sectionsController.GetAllItemViewsInMergeArea();
             _mergeProcessor.SortAllItemsPossible(items, _gridView);
@@ -145,6 +153,7 @@ namespace RobotCastle.Merging
         
         private void OnItemPicked(ItemData srcItem)
         {
+            if (!IsActive) return;
             var allItems = _sectionsController.GetAllItems();
             _highlighter.HighlightForSpecificItem(allItems, srcItem);
             SoundManager.Inst.Play(_clickSound);
@@ -152,6 +161,8 @@ namespace RobotCastle.Merging
         
         private void OnItemPut(MergePutResult result)
         {
+            if (!IsActive) return;
+
             HighlightMergeOptions();
         }
         

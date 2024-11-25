@@ -490,9 +490,11 @@ namespace RobotCastle.Battling
         
         private void GrantPlayerInput()
         {
-            _mergeManager.AllowInput(true);
+            
             AllowPlayerUIInput(true);
             _battleCamera.AllowPlayerInput(true);
+            _mergeManager.AllowInput(true);
+            _mergeManager.HighlightMergeOptions();
         }
 
         private void AllowPlayerUIInput(bool allow) => _mainUI.AllowButtonsInput(allow);

@@ -34,8 +34,8 @@ namespace RobotCastle.UI
         [SerializeField] private List<DifficultyTierUI> _tierUis;
         [SerializeField] private ChapterIconUI _chapterIcon;
         [Space(10)]
-        [SerializeField] private MyButton _nextChapterBtn;
-        [SerializeField] private MyButton _prevChapterBtn;
+        [SerializeField] private ChapterSelectButton _nextChapterBtn;
+        [SerializeField] private ChapterSelectButton _prevChapterBtn;
         [Space(10)]
         [SerializeField] private MyButton _playBtn;
         [SerializeField] private MyButton _returnBtn;
@@ -147,7 +147,7 @@ namespace RobotCastle.UI
             _additionalReward.Off();
         }
         
-             private bool CheckEnergy(bool makeOfferIfNotEnough = true)
+        private bool CheckEnergy(bool makeOfferIfNotEnough = true)
         {
             var ss = ServiceLocator.Get<PlayerEnergyManager>();
             var cost = _selectionData.totalEnergyCost;
@@ -211,7 +211,6 @@ namespace RobotCastle.UI
         /// <param name="nextOrPrev">0 - none, 1 - prev, 2 - next </param>
         private void UpdateChapter(int nextOrPrev)
         {
-            var chapterInd = _selectionData.chapterIndex;
             // CLog.Log($"Updating chapter. Index: {chapterInd}. Unlocked: {_progresSave.chapters[chapterInd].unlocked}");
             var chapter = GetChapter();
             _txtLevel.text = $"Chapter {_selectionData.chapterIndex + 1}";
@@ -267,6 +266,29 @@ namespace RobotCastle.UI
                     _tierUis[i].SetLocked(true);
                 }
             }
+
+            SetNextButtonState();
+        }
+
+        private void SetNextButtonState()
+        {
+            var chapterInd = _selectionData.chapterIndex;
+            var allChapters = _isCorruption ? _chaptersDb.corruptionChapters : _chaptersDb.chapters;
+            var count = allChapters.Count;
+            if(chapterInd >= count - 1)
+                _nextChapterBtn.SetState(false);
+            else
+            {
+                var nextInd = chapterInd + 1;
+                var saves = _isCorruption ? _save.chaptersCorruption : _save.chapters;
+                if (saves[nextInd].unlocked && saves[nextInd].tierData[0].unlocked &&
+                    !saves[nextInd].tierData[0].completed)
+                {
+                    _nextChapterBtn.SetState(true);
+                    return;
+                }
+            }
+            _nextChapterBtn.SetState(false);
         }
 
         private void UpdateTierRewardOnly()
@@ -320,16 +342,14 @@ namespace RobotCastle.UI
         {
             if (_isCorruption)
                 return _chaptersDb.corruptionChapters[_selectionData.chapterIndex];
-            else
-                return _chaptersDb.chapters[_selectionData.chapterIndex];
+            return _chaptersDb.chapters[_selectionData.chapterIndex];
         }
 
         private SaveInvasionProgression.ChapterData GetChapterSave()
         {
             if (_isCorruption)
                 return _save.chaptersCorruption[_selectionData.chapterIndex];
-            else
-                return _save.chapters[_selectionData.chapterIndex];
+            return _save.chapters[_selectionData.chapterIndex];
         }
         
         private void CorrectTierIndex()

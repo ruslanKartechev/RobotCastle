@@ -53,7 +53,7 @@ namespace RobotCastle.Core
         private float _mainClickTime;
         private bool _didSlide;
         private Vector3 _slide;
-        private float _slideMinD2 = 200f * 200f;
+        private float _slideMinD2 = 300f * 300f;
         private float _prevClickTime;
         private int _clicksCount;
         private bool _inputAllowed = true;
@@ -261,7 +261,7 @@ namespace RobotCastle.Core
                 if (didWait)
                 {
                     oldMainPos = Input.mousePosition;
-                    didWait =false;
+                    didWait = false;
                 }
                 
                 var mainPos = MainMousePosition;
