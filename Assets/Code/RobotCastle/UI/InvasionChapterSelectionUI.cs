@@ -168,7 +168,7 @@ namespace RobotCastle.UI
         {
             CLog.Log($"[OnEnergyOfferCallback]");
             if (CheckEnergy(false))
-                StartLoadingLevel();
+                StartLoadingLevel(false);
         }
 
         private bool CheckIfUnlocked()
@@ -187,14 +187,15 @@ namespace RobotCastle.UI
             return true;
         }
 
-        private void StartLoadingLevel()
+        private void StartLoadingLevel(bool subtractEnergy = true)
         {
             _isLoading = true;
             CLog.LogGreen($"Playing chapter {_selectionData.chapterIndex}, tier {_selectionData.tierIndex}");
             _selectionData.corruption = _isCorruption;
             DataHelpers.GetPlayerData().chapterSelectionData = _selectionData;
             SoundManager.Inst.Play(_selectedChapterSound, false);
-            ServiceLocator.Get<PlayerEnergyManager>().Subtract(_selectionData.totalEnergyCost);
+            if(subtractEnergy)
+                ServiceLocator.Get<PlayerEnergyManager>().Subtract(_selectionData.totalEnergyCost);
             ScreenDarkening.Animate(() =>
             {
                 ServiceLocator.Get<SceneLoader>().LoadBattleScene();

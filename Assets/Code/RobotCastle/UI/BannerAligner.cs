@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace RobotCastle.UI
 {
@@ -9,6 +10,7 @@ namespace RobotCastle.UI
         public Vector2 normalSizeDelta;
         public Vector2 bannerSizeDelta;
         public bool startWithBanner;
+        private bool _isBannerMode;
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -38,20 +40,33 @@ namespace RobotCastle.UI
 
         private void OnEnable()
         {
-            if(SleepDev.AdsPlayer.Instance.BannerCalled)
-                SetBanner();
-            else
-                SetNoBanner();
+         
         }
 
         public void SetBanner()
         {
+            _isBannerMode = true;
             rect.sizeDelta = bannerSizeDelta;
         }
 
         public void SetNoBanner()
         {
+            _isBannerMode = false;
             rect.sizeDelta = normalSizeDelta;
+        }
+
+        private void Update()
+        {
+            if(SleepDev.AdsPlayer.Instance == null)
+                return;
+            var shouldBeBanner = SleepDev.AdsPlayer.Instance.BannerCalled;
+            if (_isBannerMode != shouldBeBanner)
+            {
+                if(shouldBeBanner)
+                    SetBanner();
+                else
+                    SetNoBanner();
+            }
         }
     }
 }

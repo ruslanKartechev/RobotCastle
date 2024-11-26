@@ -135,11 +135,26 @@ public abstract class MaxSdkBase
 #if UNITY_EDITOR
             sdkConfiguration.AppTrackingStatus = AppTrackingStatus.Authorized;
 #endif
-            var currentRegion = RegionInfo.CurrentRegion;
-            sdkConfiguration.CountryCode = currentRegion != null ? currentRegion.TwoLetterISORegionName : "US";
+            sdkConfiguration.CountryCode = TryGetCountryCode();
             sdkConfiguration.IsTestModeEnabled = false;
 
             return sdkConfiguration;
+        }
+
+        private static string TryGetCountryCode()
+        {
+            try
+            {
+                return RegionInfo.CurrentRegion.TwoLetterISORegionName;
+            }
+#pragma warning disable 0168
+            catch (Exception ignored)
+#pragma warning restore 0168
+            {
+                // Ignored
+            }
+
+            return "US";
         }
 #endif
 
@@ -275,17 +290,39 @@ public abstract class MaxSdkBase
         /// </summary>
         FullscreenAdNotReady = -24,
 
-#if UNITY_ANDROID
+#if UNITY_IOS || UNITY_IPHONE
         /// <summary>
-        /// This error code indicates that the SDK failed to load an ad because it could not find the top Activity.
+        /// This error code indicates you attempted to present a fullscreen ad from an invalid view controller.
         /// </summary>
-        NoActivity = -5601,
+        FullscreenAdInvalidViewController = -25,
+#endif
 
+        /// <summary>
+        /// This error code indicates you are attempting to load a fullscreen ad while another fullscreen ad is already loading.
+        /// </summary>
+        FullscreenAdAlreadyLoading = -26,
+
+        /// <summary>
+        /// This error code indicates you are attempting to load a fullscreen ad while another fullscreen ad is still showing.
+        /// </summary>
+        FullscreenAdLoadWhileShowing = -27,
+
+#if UNITY_ANDROID
         /// <summary>
         /// This error code indicates that the SDK failed to display an ad because the user has the "Don't Keep Activities" developer setting enabled.
         /// </summary>
         DontKeepActivitiesEnabled = -5602,
 #endif
+
+        /// <summary>
+        /// This error code indicates that the SDK failed to load an ad because the publisher provided an invalid ad unit identifier.
+        /// Possible reasons for an invalid ad unit identifier:
+        /// 1. Ad unit identifier is malformed or does not exist
+        /// 2. Ad unit is disabled
+        /// 3. Ad unit is not associated with the current app's package name
+        /// 4. Ad unit was created within the last 30-60 minutes
+        /// </summary>
+        InvalidAdUnitId = -5603
     }
 
     /**
@@ -541,6 +578,11 @@ public abstract class MaxSdkBase
         get { return MaxCmpService.Instance; }
     }
 
+    internal static bool DisableAllLogs
+    {
+        get; private set;
+    }
+
     protected static void ValidateAdUnitIdentifier(string adUnitIdentifier, string debugPurpose)
     {
         if (string.IsNullOrEmpty(adUnitIdentifier))
@@ -583,6 +625,15 @@ public abstract class MaxSdkBase
         return new Rect(originX, originY, width, height);
     }
 
+    protected static void HandleExtraParameter(string key, string value)
+    {
+        bool disableAllLogs;
+        if ("disable_all_logs".Equals(key) && bool.TryParse(value, out disableAllLogs))
+        {
+            DisableAllLogs = disableAllLogs;
+        }
+    }
+
     /// <summary>
     /// Handles forwarding callbacks from native to C#.
     /// </summary>
@@ -600,7 +651,7 @@ public abstract class MaxSdkBase
 
             var eventName = MaxSdkUtils.GetStringFromDictionary(eventProps, "name", "");
             MaxSdkLogger.UserError("Unable to notify ad delegate due to an error in the publisher callback '" + eventName + "' due to exception: " + exception.Message);
-            Debug.LogException(exception);
+            MaxSdkLogger.LogException(exception);
         }
     }
 
@@ -711,76 +762,6 @@ internal static class AdPositionExtenstion
         else // position == MaxSdkBase.AdViewPosition.BottomRight
         {
             return "bottom_right";
-        }
-    }
-}
-
-namespace AppLovinMax.Internal.API
-{
-    [Obsolete("This class has been deprecated and will be removed in a future SDK release.")]
-    public class CFError
-    {
-        public int Code { get; private set; }
-
-        public string Message { get; private set; }
-
-        public static CFError Create(int code = -1, string message = "")
-        {
-            return new CFError(code, message);
-        }
-
-        private CFError(int code, string message)
-        {
-            Code = code;
-            Message = message;
-        }
-
-        public override string ToString()
-        {
-            return "[CFError Code: " + Code +
-                   ", Message: " + Message + "]";
-        }
-    }
-
-    [Obsolete("This enum has been deprecated. Please use `MaxSdk.GetSdkConfiguration().ConsentFlowUserGeography` instead.")]
-    public enum CFType
-    {
-        Unknown,
-        Standard,
-        Detailed
-    }
-
-    public class CFService
-    {
-        [Obsolete("This property has been deprecated. Please use `MaxSdk.GetSdkConfiguration().ConsentFlowUserGeography` instead.")]
-        public static CFType CFType
-        {
-            get
-            {
-                switch (MaxSdk.GetSdkConfiguration().ConsentFlowUserGeography)
-                {
-                    case MaxSdkBase.ConsentFlowUserGeography.Unknown:
-                        return CFType.Unknown;
-                    case MaxSdkBase.ConsentFlowUserGeography.Gdpr:
-                        return CFType.Detailed;
-                    case MaxSdkBase.ConsentFlowUserGeography.Other:
-                        return CFType.Standard;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-        }
-
-        [Obsolete("This method has been deprecated. Please use `MaxSdk.CmpService.ShowCmpForExistingUser` instead.")]
-        public static void SCF(Action<CFError> onFlowCompletedAction)
-        {
-            MaxSdkBase.CmpService.ShowCmpForExistingUser(error =>
-            {
-                if (onFlowCompletedAction == null) return;
-
-                var cfError = error == null ? null : CFError.Create((int) error.Code, error.Message);
-                onFlowCompletedAction(cfError);
-            });
         }
     }
 }

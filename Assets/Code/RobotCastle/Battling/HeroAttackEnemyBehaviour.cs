@@ -139,6 +139,7 @@ namespace RobotCastle.Battling
                 movement.Stop();
                 _logicStep = EAttackLogicStep.Attacking;
                 enemy = targetEnemy;
+                
                 // CLog.LogGreen($"[{_hero.Components.gameObject.name}] Starting to attack: {targetEnemy.Components.gameObject.name}");
                 movement.RotateIfNecessary(enemy.Components.transform, _subToken.Token);
                 BeginAttackAndCheckIfDead(targetEnemy, _subToken.Token);
@@ -177,6 +178,7 @@ namespace RobotCastle.Battling
 
         private async Task BeginAttackAndCheckIfDead(IHeroController targetEnemy, CancellationToken token)
         {
+            _hero.Components.state.isMoving = false;
             _hero.Components.attackManager.BeginAttack(targetEnemy.Components.damageReceiver);
             var startEnemyCell = targetEnemy.Components.state.currentCell;
             while (!token.IsCancellationRequested)

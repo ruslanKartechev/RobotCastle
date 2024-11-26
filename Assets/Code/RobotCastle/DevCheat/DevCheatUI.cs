@@ -38,21 +38,23 @@ namespace RobotCastle.DevCheat
         [ContextMenu("Open")]
         public void Open()
         {
-            if (_clicks <= 0)
-            {
-                _clicks = 1;
-                _clickTime = Time.time;
-            }
-            else if (_clicks >= 1)
-            {
-                if (Time.time - _clickTime <= _doubleClickTime)
-                {
-                    _clicks = 0;
-                    ShowScreen();
-                }
-                else
-                    _clicks = 0;
-            }
+            ShowScreen();
+            // Double click case
+            // if (_clicks <= 0)
+            // {
+            //     _clicks = 1;
+            //     _clickTime = Time.time;
+            // }
+            // else if (_clicks >= 1)
+            // {
+            //     if (Time.time - _clickTime <= _doubleClickTime)
+            //     {
+            //         _clicks = 0;
+            //         ShowScreen();
+            //     }
+            //     else
+            //         _clicks = 0;
+            // }
         }
 
         [ContextMenu("Exit")]

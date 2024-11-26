@@ -309,7 +309,6 @@ namespace RobotCastle.Battling
 
         public async Task RotateIfNecessary(Vector2Int cellPos, CancellationToken token, Action callback = null)
         {
-            _unitView.state.isMoving = true;
             var worldPos = _map.GetWorldFromCell(cellPos);
             var rotation = Quaternion.LookRotation(worldPos - transform.position);
             var startRot = transform.rotation;
@@ -328,7 +327,6 @@ namespace RobotCastle.Battling
             if (token.IsCancellationRequested)
                 return;
             transform.rotation = rotation;
-            _unitView.state.isMoving = false;
             callback?.Invoke();
         }
 

@@ -20,8 +20,8 @@ namespace RobotCastle.MainMenu
             CLog.Log($"[TutorialWin] Begin");
             _finishedCallback = finishedCallback;
             _hand.On();
-            var replayBtn = _ui.BtnPlayAgain;
-            replayBtn.SetInteractable(false);
+            _ui.BtnPlayAgain.SetInteractable(false);
+            _ui.BtnReturn.SetInteractable(false);
             _ui.SetFreeDouble();
             var returnBtn = _ui.BtnDoubleReward;
             _hand.LoopClickingTracking(returnBtn.transform, _clickOffset, 0f);

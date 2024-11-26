@@ -12,11 +12,10 @@ namespace RobotCastle.MainMenu
         {   
             _callback = callback;
             var ui = ServiceLocator.Get<IUIManager>().Show<EnergyOfferUI>(UIConstants.UIEnergyOffer, () => {});
-                ui.Show(amount, AcceptCallback);
+                ui.Show(PlayerEnergyManager.EnergyGivenPerOffer, AcceptCallback);
         }
         
 
-        private const int amount = 40;
         private const string PlacementName = "more_energy";
         private Action _callback;
 
@@ -37,7 +36,7 @@ namespace RobotCastle.MainMenu
             if (didPlay)
             {
                 CLog.Log($"[{nameof(EnergyOffer)}] On Ad Played, giving reward");
-                ServiceLocator.Get<PlayerEnergyManager>().Add(amount);
+                ServiceLocator.Get<PlayerEnergyManager>().Add(PlayerEnergyManager.EnergyGivenPerOffer);
             }
             else
             {

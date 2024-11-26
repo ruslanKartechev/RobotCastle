@@ -136,16 +136,14 @@ namespace RobotCastle.MainMenu
             
             tabs.gateBtn.SetInteractable(true);
             tabs.barracksBtn.SetInteractable(false);
-            barracksHeroView.OnHeroShown += OnHeroSelected;
-            _hand.Off();
-            // AnimateHandHeroes();
-            yield return WaitForBtn(tabs.gateBtn);
-            if (!_upgradeCompleted)
-            {
-                barracksHeroView.OnHeroShown -= OnHeroSelected;
-                _textPrinter.Hide();
-            }
             
+            _hand.On();
+            _hand.MoveToAndLoopClicking(tabs.gateBtn.transform.GetChild(0).position, _handMoveTime);
+            var barracksManager = ServiceLocator.Get<BarracksManager>();
+            barracksManager.BarracksInput.Validator = null;
+            barracksManager.BarracksInput.SetActive(false);
+             yield return WaitForBtn(tabs.gateBtn);
+             _textPrinter.HideNow();
             yield return EnterNextBattle();
             Complete();
         }
@@ -248,6 +246,8 @@ namespace RobotCastle.MainMenu
             
             var barracksManager = ServiceLocator.Get<BarracksManager>();
             barracksManager.BarracksInput.Validator = this;
+            barracksManager.BarracksInput.SetActive(true);
+            barracksManager.AllowMergeInput(false);
 
             var grid = barracksManager.GridView.Grid;
             var cell = grid[1, 0];

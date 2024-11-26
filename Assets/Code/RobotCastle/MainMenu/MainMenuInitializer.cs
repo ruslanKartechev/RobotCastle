@@ -53,7 +53,7 @@ namespace RobotCastle.MainMenu
             _heroesPool.SpawnAll();
             _tabsSwitcher.SetGateTab();
 
-            AdsPlayer.Instance.ShowBanner();
+            // AdsPlayer.Instance.ShowBanner();
 
             DataHelpers.SaveData();
             TryStartTutorial();

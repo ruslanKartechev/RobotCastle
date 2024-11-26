@@ -57,8 +57,11 @@ namespace RobotCastle.MainMenu
         public void Subtract(int amount)
         {
             var prev = _playerData.playerEnergy;
-            _playerData.playerEnergy = prev - amount;
-            OnEnergySet?.Invoke(_playerData.playerEnergy, prev);
+            var newVal = prev - amount;
+            if (newVal < 0)
+                newVal = 0; 
+            _playerData.playerEnergy = newVal;
+            OnEnergySet?.Invoke(newVal, prev);
             CheckEnergyDeficit();
         }
         
@@ -67,10 +70,11 @@ namespace RobotCastle.MainMenu
             var prev = _playerData.playerEnergy;
             _playerData.playerEnergy = prev + amount;
             OnEnergySet?.Invoke(_playerData.playerEnergy, prev);
+            CheckEnergyDeficit();
         }
-        
-        
-        private const int SecondsBetweenAddedEnergy = 4;
+
+        public const int EnergyGivenPerOffer = 40;
+        private const int SecondsBetweenAddedEnergy = 300;
         private Coroutine _countingDownEnergy;
         private SavePlayerData _playerData;
         
@@ -92,12 +96,14 @@ namespace RobotCastle.MainMenu
                     if (energyAddedSinceLastTime > deficit)
                         energyAddedSinceLastTime = deficit;
                     CLog.Log($"[EnergyManager] SecondsPassed: {diffSeconds}, added energy: {energyAddedSinceLastTime}");
-                    _playerData.playerEnergy = energyAddedSinceLastTime;
+                    _playerData.playerEnergy += energyAddedSinceLastTime;
                     UpdateRestoringTimer();
                 }
-
                 if (_playerData.playerEnergyMax > _playerData.playerEnergy)
                     StartEnergyAdding();
+            }
+            else
+            {
             }
         }
 
@@ -121,7 +127,7 @@ namespace RobotCastle.MainMenu
             var elapsed = 0f;
             while (_playerData.playerEnergy < _playerData.playerEnergyMax)
             {
-                elapsed += Time.deltaTime;
+                elapsed += Time.unscaledDeltaTime;
                 if (elapsed >= SecondsBetweenAddedEnergy)
                 {
                     elapsed = 0;
